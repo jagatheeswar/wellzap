@@ -1,8 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import userReducer from "../features/userSlice";
 
-export const store = configureStore({
+import thunkMiddleware from "redux-thunk";
+
+export default configureStore({
   reducer: {
-    counter: counterReducer,
+    user: userReducer,
   },
+  middleware: [thunkMiddleware, ...getDefaultMiddleware({serializableCheck: false})],
 });
