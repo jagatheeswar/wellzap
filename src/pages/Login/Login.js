@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  login,
   selectUser,
   selectUserType,
   selectUserVerified,
+  setUserType,
+  setUserVerified,
 } from "../../features/userSlice";
 import "./Login.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
+import { auth, db } from "../../utils/firebase";
+
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -29,6 +35,55 @@ function Login() {
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const loginUser = (values) => {
+    console.log("Logging on ...",values.email,values.password);
+    auth
+      .signInWithEmailAndPassword(values.email, values.password)
+      .then((auth) => {
+        db.collection("coaches")
+          .where("email", "==", values.email)
+          .get()
+          .then((snap) => {
+            if (!snap.empty) {
+              setLoading(true)
+              setTimeout(() =>{
+              dispatch(setUserType("coach"));
+              dispatch(login(auth.user.email));
+              },1000);
+            } else {
+              db.collection("athletes")
+                .where("email", "==", values.email)
+                .get()
+                .then((snap) => {
+                  if (!snap.empty) {
+                    setLoading(true)
+
+                    setTimeout(() =>{
+                      snap.forEach(function (doc) {
+                        dispatch(setUserVerified(doc.data().verified));
+                      });
+
+                      dispatch(setUserType("athlete"));
+                      dispatch(login(auth.user.email));
+                    },1000)
+                   
+                   
+                  } else {
+                    alert(
+                      "Check your email and password",
+                    )
+                  }
+                });
+            }
+          });
+      })
+      .catch((e) => alert(e.message));
+  };
+
+  function forgotPass() {
+    console.log("Clicked on forgot password");
+  }
+
   return (
     <div className="login__container">
       <h1>Login</h1>
@@ -37,9 +92,12 @@ function Login() {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={({ setSubmitting }) => {
-          alert("Form is validated! Submitting the form...");
-          setSubmitting(false);
+        onSubmit={(values, { setSubmitting }) => {
+          // alert("Form is validated! Submitting the form...");
+          values.email = values.email.toLowerCase();
+          loginUser(values)
+         setSubmitting(false)
+         
         }}
       >
         {({ touched, errors, isSubmitting }) => (
@@ -78,13 +136,19 @@ function Login() {
               />
             </div>
 
+
+                <h6 className="login__heading">Forgot password?</h6>               
+
             <button
               type="submit"
               className="login__button"
               disabled={isSubmitting}
+              
             >
-              {isSubmitting ? "Please wait..." : "Login"}
+              Login
             </button>
+                  <h6 className="login__heading">New to Training Essence?</h6>
+            <Link className="signup-link" to="/signup">Create Account</Link>
           </Form>
         )}
       </Formik>

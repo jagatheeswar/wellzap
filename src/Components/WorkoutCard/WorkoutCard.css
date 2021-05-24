@@ -1,0 +1,44 @@
+.workoutCard {
+    display: flex;
+    align-items: center;
+    padding:20px;
+    width: 85%;
+    height: 100px;
+    background-color:white;
+    border-radius: 8px;
+}
+
+.workoutCard > img {
+    object-fit:contain
+}
+
+.workoutCard__info {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.workoutCard__info > h1 {
+    font-size:18px;
+    font-weight:500;
+}
+
+.workoutCard__macroNutrients {
+    display: flex;
+    align-items: center;
+    height: 20px;
+}
+
+
+.workoutCard__macroNutrients > h3 {
+    width: 100px;
+    font-size:12px;
+    font-weight:500;
+   
+}
+
+.right__arrow {
+    width: 45px;
+    height: 45px;
+    opacity: 0.4;
+}

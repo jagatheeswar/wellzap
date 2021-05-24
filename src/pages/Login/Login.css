@@ -29,3 +29,13 @@
   border: 0.12rem solid transparent;
   background-color: #fcd13f;
 }
+
+.login__heading {
+  color:gray;
+  margin: 0.3rem 0;
+}
+
+.signup-link {
+  text-decoration: underline;
+  color:blue
+}

@@ -1,0 +1,161 @@
+.profile {
+    width:100%;
+    min-height: 100vh;
+}
+
+.profile__container {
+    width:100%;
+    height:100%;
+    flex:1;
+    display: flex;
+    align-items:flex-start;
+    justify-content:center;
+    background-color:#f3f3f3
+}
+
+.profile__main {
+    flex:0.85;
+    width:100%;
+    height:100%;
+}
+
+
+.coachProfile__container {
+    display: flex;
+    align-items:center;
+    height:100%;
+    width: 100%;
+}
+
+.coachProfile__leftContainer {
+    flex:0.75;
+    border: 1px solid #d3d3d3;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content:center;
+    flex-wrap: wrap;
+    height:100%;
+    width: 100%;
+    padding: 0 20px;
+
+}
+
+
+.coachProfile__rightContainer {
+    flex:0.25;
+    border: 1px solid #d3d3d3;
+    height:100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content:center;
+}
+
+.coachProfile__header {
+    display: flex;
+    align-items: center;
+    background-color: #fcd13f;
+    width: 100%;
+ 
+}
+
+.leftarrow {
+    padding: 50px 15px;
+}
+
+.image {
+    border-radius:100px !important;
+    background-color: grey;
+    object-fit: cover;
+    margin: 15px 30px;
+}
+
+.coachProfile__content > h1 {
+    font-size: 27px;
+    font-weight: 600;
+    line-height:32px;
+}
+
+.coachProfile__content > h3 {
+    font-size: 15px;
+    font-weight: 500;
+    line-height:30px;
+}
+
+.coachProfile__info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.coachProfile__heading > h2 {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 32px;
+    padding-right: 590px;
+}
+
+.coachProfile__editButton {
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    padding:5px;
+    padding-right:20px;
+    background-color: #fcd13f;
+    height:30px;
+    width: 150px;
+    margin:10px 0;
+    border-radius: 18px;
+    font-size: 14px;
+}
+
+.coachProfileForm {
+    width: 97%;
+}
+
+.coachProfileForm > form > h4 {
+    font-size: 15px;
+    font-weight: 400;
+    line-height:30px;
+}
+
+.coachProfileForm > form > input {
+    padding: 10px; 
+    display: flex;
+    width: 100%;
+    border: none;
+    outline: gray ;
+    background-color:white;
+}
+
+.coachProfileForm > form > textarea {
+    background-color:white;
+    padding: 10px; 
+    display: flex;
+    width: 100%;
+    border: none;
+    outline: gray;
+    height: 60px;
+}    
+
+.coachProfileForm__Button {
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    padding:5px;
+    padding-right:20px;
+    background-color: #fcd13f;
+    height:30px;
+    width: 150px;
+    margin:10px 0;
+    border-radius: 18px;
+    font-size: 14px;
+}
+
+.coachAssessment > h2 {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 32px;
+}

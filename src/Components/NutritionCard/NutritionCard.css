@@ -1,0 +1,46 @@
+.nutritionCard {
+    display: flex;
+    align-items: center;
+    padding:20px;
+    width:85%;
+    height: 80px;
+    justify-content: flex-start;
+    background-color: white;
+    border-radius: 8px;
+
+}
+
+.nutritionCard > img {
+    object-fit:contain
+}
+
+.nutritionCard__info {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.nutritionCard__info > h1 {
+    font-size:18px;
+    font-weight:500;
+}
+
+.nutritionCard__macroNutrients {
+    display: flex;
+    align-items: center;
+    height: 20px;
+}
+
+
+.nutritionCard__macroNutrients > h3 {
+    width: 100px;
+    font-size:12px;
+    font-weight:500;
+   
+}
+
+.right__arrow {
+    width: 45px;
+    height: 45px;
+    opacity: 0.4;
+}
