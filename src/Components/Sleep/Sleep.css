@@ -1,0 +1,31 @@
+.sleep {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  width: 95%;
+}
+
+.soreness > h4 {
+  font-weight: 500;
+}
+
+.emoji__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+  margin: 10px 0;
+  height: 30px;
+  padding-bottom: 10px;
+}
+
+.emoji {
+  height: 5px;
+}
+
+.emoji__div {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

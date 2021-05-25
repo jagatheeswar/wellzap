@@ -1,15 +1,21 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, selectUser } from "./features/userSlice";
+import { login, selectUser, selectUserType } from "./features/userSlice";
 import { auth } from "./utils/firebase";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
+import CoachWorkouts from "./pages/Workouts/CoachWorkouts";
+import AthleteWorkouts from "./pages/Workouts/AthleteWorkouts";
+import Sidebar from "./Components/Sidebar/Sidebar";
+import Notification from "./Components/Notifications/Notification";
+import AthleteHome from "./pages/Home/AthleteHome";
+import CoachHome from "./pages/Home/CoachHome";
 
 function App() {
   const user = useSelector(selectUser);
+  const userType = useSelector(selectUserType);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,32 +31,43 @@ function App() {
 
   return (
     <div>
-
       {!user ? (
         <Router>
-        <Switch>
-        <Route exact path="/">
-        <Login />
-      </Route> 
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
 
-          <Route exact path="/signup">
-          <Signup /> 
-          </Route>
-       
-        </Switch>
+            <Route exact path="/signup">
+              <Signup />
+            </Route>
+          </Switch>
         </Router>
       ) : (
         <Router>
-        <Switch>
-        <Route exact path="/">
-        <Home />
-      </Route> 
-        <Route path="/profile">
-          <Profile />
-        </Route>
-
-      
-        </Switch>
+          <div className="home__container">
+            <Sidebar />
+            <div className="home__main">
+              <Switch>
+                <Route exact path="/">
+                  {userType === "athlete" ? <AthleteHome /> : <CoachHome />}
+                </Route>
+                <Route exact path="/profile">
+                  <Profile />
+                </Route>
+                <Route exact path="/workouts">
+                  {userType === "athlete" ? (
+                    <AthleteWorkouts />
+                  ) : (
+                    <CoachWorkouts />
+                  )}
+                </Route>
+              </Switch>
+            </div>
+            <div className="home__rightContainer">
+              <Notification />
+            </div>
+          </div>
         </Router>
       )}
     </div>
