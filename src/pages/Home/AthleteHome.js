@@ -1,6 +1,7 @@
 import React,{ useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import Notification from '../../Components/Notifications/Notification';
 import { selectUser, selectUserData, selectUserType, setUserData } from '../../features/userSlice'
 import { db } from '../../utils/firebase';
 import './Home.css'
@@ -41,7 +42,26 @@ function AthleteHome() {
       
     return (
         <div className="athletehome">
-            <h1>Hello, {userDetails?.data?.name}</h1>
+        <div className="athleteHome">
+        <div className="athleteHome__container">
+            <div className="home__leftContainer">
+            <div className="home__header">
+            <div className="home__headerFirst">
+                <h1>Hello, {userData?.data?.name}</h1>  
+                <h2>Here’s your progress summary.</h2>
+                </div>
+                <div className="fab__icon">
+                <img src="/assets/fab.png" alt="" width="26px" height="26px"/>
+                </div>
+            </div>
+          
+            </div>
+
+            <div className="home__rightContainer">
+            <Notification />
+            </div>
+            </div>
+        </div>
         </div>
           
     )

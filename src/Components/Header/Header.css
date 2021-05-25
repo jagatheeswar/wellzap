@@ -1,0 +1,23 @@
+.header {
+    width: 100%;
+}
+
+
+.coachProfile__header {
+    display: flex;
+    align-items: center;
+    background-color: #fcd13f;
+    width: 100%;
+ 
+}
+
+.leftarrow {
+    padding: 50px 15px;
+}
+
+.image {
+    border-radius:100px !important;
+    background-color: grey;
+    object-fit: cover;
+    margin: 15px 30px;
+}

@@ -154,8 +154,135 @@
     font-size: 14px;
 }
 
-.coachAssessment > h2 {
+.coachAssessment > h2, .coachMedicalAssessment > h2, .athleteProfile__leftContainer > h2 {
     font-size: 21px;
     font-weight: 600;
     line-height: 32px;
 }
+
+.athleteMeasurements {
+    width: 97%;
+}
+
+
+.athleteMeasurements__container > form > h4 {
+    font-size: 15px;
+    font-weight: 400;
+    line-height:30px;
+}
+
+.athleteMeasurements__container > form > input {
+    background-color:white;
+    padding: 10px; 
+    display: flex;
+    width: 100%;
+    border: none;
+    outline: gray;
+}
+
+.athleteMeasurements__container > form > h6 {
+    color: gray;
+}
+
+.athleteMeasurements__Button {
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    padding:5px;
+    padding-right:14px;
+    background-color: #fcd13f;
+    height:30px;
+    width: 150px;
+    margin:10px 0;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.athleteProfile__container {
+    display: flex;
+    align-items:flex-start;
+    height:100%;
+    width: 100%;
+}
+
+
+.athleteProfile__leftContainer {
+    flex:0.75;
+    border: 1px solid #d3d3d3;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content:center;
+    flex-wrap: wrap;
+    height:100%;
+    width: 100%;
+    padding: 0 20px;
+
+}
+
+
+.athleteProfile__rightContainer {
+    flex:0.25;
+    border: 1px solid #d3d3d3;
+    height:100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content:center;
+}
+
+
+.athleteAssessment{
+    width: 97%;
+}
+
+.athleteAssessments{
+    width: 100vh;
+}
+
+.athleteAssessment__features {
+    padding: 10px; 
+    display: flex;
+    width: 100%;
+    border: none;
+    outline: gray ;
+    background-color:white;
+    margin-bottom: 13px;
+    border-radius: 15px;
+    justify-content: space-between;
+}
+
+.athleteAssessment__features > img  {
+    height: 24px;
+    width: 24px;
+}
+
+.athleteAssessment__button {
+    font-size: 14px;
+}
+
+.viewReport {
+    padding: 10px; 
+    display: flex;
+    width: 97%;
+    border: none;
+    outline: gray ;
+    background-color:#4B4B4B;
+    margin-bottom: 13px;
+    border-radius: 15px;
+    justify-content: space-between;
+    color: white;
+    align-items: center;
+}
+
+.viewReport__button {
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+.viewReport > img {
+    height: 12px;
+    margin-right: 5px;
+}
+

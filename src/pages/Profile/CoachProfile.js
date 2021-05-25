@@ -4,9 +4,11 @@ import { useSelector } from 'react-redux';
 import Notification from '../../Components/Notifications/Notification';
 import { selectUser, selectUserData, selectUserType, setUserData } from '../../features/userSlice'
 import { db } from '../../utils/firebase';
-import CoachAssessment from './CoachAssessment';
-import CoachProfileForm from './CoachProfileForm';
+import CoachAssessment from './AthleteAssessment';
+import CoachProfileForm from './AthleteProfileForm';
+import Header from '../../Components/Header/Header'
 import './Profile.css'
+import CoachMedicalAssessment from './AthleteMedicalAssessment';
 
 function CoachProfile() {
 
@@ -57,24 +59,8 @@ function CoachProfile() {
         <div className="coachProfile">
             <div className="coachProfile__container">
                     <div className="coachProfile__leftContainer">
-                        <div className="coachProfile__header">
-                                <div className="coachProfile__img">
-                                <img className="leftarrow" src="/assets/left_arrow.png" alt="" />
-                                <img className="image" src={userData?.data?.imageUrl} alt={userData?.data.name} width="100px" height="100px"/>
-                                </div>
-                                <div className="coachProfile__content">
-                                <h1>{userData?.data.name}</h1>
-                                <h3>Strength and Conditioning Coach</h3>
-                                </div>       
-                        </div>
-                        <div className="coachProfile__info">
-                            <div className="coachProfile__heading">
-                            <h2>Profile</h2>
-                            </div>
-                            <div className="coachProfile__editButton">EDIT PROFILE</div>
-                        </div>
-                        <CoachProfileForm />
-                        <CoachAssessment />
+                          <Header />
+                          <CoachMedicalAssessment />
                     </div>
                     <div className="coachProfile__rightContainer">
                         <Notification />

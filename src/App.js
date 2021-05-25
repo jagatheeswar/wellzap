@@ -7,6 +7,9 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
+import CoachAddMeal from "./pages/Nutrition/CoachNutrition/CoachAddMeal";
+import AthleteMeasurements from "./pages/Profile/AthleteMeasurements";
+import AthleteMedicalAssessment from "./pages/Profile/AthleteMedicalAssessment";
 
 function App() {
   const user = useSelector(selectUser);
@@ -45,10 +48,18 @@ function App() {
         <Route exact path="/">
         <Home />
       </Route> 
-        <Route path="/profile">
+        <Route exact path="/profile">
           <Profile />
         </Route>
-
+        <Route exact path="/profile/measurements">
+          <AthleteMeasurements />
+        </Route>
+          <Route exact path="/nutrition/coach-add-meal">
+            <CoachAddMeal />
+          </Route>
+          <Route exact path="/profile/measurements/medical-assessment">
+          <AthleteMedicalAssessment />
+        </Route>
       
         </Switch>
         </Router>
