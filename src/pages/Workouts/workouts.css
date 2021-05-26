@@ -1,0 +1,117 @@
+.workoutsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.workoutsHeader__info {
+  display: flex;
+  align-items: center;
+}
+
+.workoutsHeader__info > h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.addWorkout__button {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 20px;
+  padding: 5px 20px;
+}
+
+.addWorkout__button > img {
+  margin-right: 8px;
+}
+
+.addWorkout__button > h5 {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.workoutsHeader__backButton > img {
+  object-fit: contain;
+  margin: 0 20px;
+}
+
+.workouts__homeContainer {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.workouts__homeLeftContainer,
+.workouts__homeRightContainer {
+  flex: 0.4;
+  padding: 10px;
+}
+
+.workoutHeading__row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-right:5px;
+}
+
+.workoutHeading__row > div {
+  cursor:pointer;
+  padding:0 5px;
+  font-size:12px;
+  text-align:center
+}
+.workoutHeading__row > div:hover {
+  background-color:#e6e6e6;
+  border-radius:5px;
+}
+
+.workoutHeading__row > h1,
+.workoutHeading__row > h1,
+.workouts__homeRightContainer > h1 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.workoutRecord {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background-color:white;
+  border-radius:5px;
+  position: relative;
+  height:80px;
+  margin:10px 0 ;
+}
+
+.workoutRecord__info {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding-right:5px;
+  border-right: 1px solid #d3d3d3;
+  width:33.33%;
+  height:60%;
+  position: relative;
+}
+
+.workoutRecord__info:nth-child(3){
+  border-right: 0px solid #d3d3d3;
+}
+
+.workoutRecord__info > h5 {
+  font-size:12px;
+  font-weight:800;
+  margin:5px;
+  text-align:center
+}
+.workoutRecord__info > h6 {
+  font-size:12px;
+  font-weight:400;
+  margin:5px;
+  text-align:center
+}

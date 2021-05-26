@@ -15,6 +15,7 @@ import CoachHome from "./pages/Home/CoachHome";
 import AthleteMeasurements from "./pages/Profile/AthleteMeasurements";
 import CoachAddMeal from "./pages/Nutrition/CoachNutrition/CoachAddMeal";
 import AthleteMedicalAssessment from "./pages/Profile/AthleteMedicalAssessment";
+import RightContainer from "./pages/RightContainer/RightContainer";
 
 function App() {
   const user = useSelector(selectUser);
@@ -56,17 +57,17 @@ function App() {
                   {userType === "athlete" ? <AthleteHome /> : <CoachHome />}
                 </Route>
                 <Route exact path="/profile">
-          <Profile />
-        </Route>
-        <Route exact path="/profile/measurements">
-          <AthleteMeasurements />
-        </Route>
-          <Route exact path="/nutrition/coach-add-meal">
-            <CoachAddMeal />
-          </Route>
-          <Route exact path="/profile/measurements/medical-assessment">
-          <AthleteMedicalAssessment />
-        </Route>
+                  <Profile />
+                </Route>
+                <Route exact path="/profile/measurements">
+                  <AthleteMeasurements />
+                </Route>
+                <Route exact path="/nutrition/coach-add-meal">
+                  <CoachAddMeal />
+                </Route>
+                <Route exact path="/profile/measurements/medical-assessment">
+                  <AthleteMedicalAssessment />
+                </Route>
                 <Route exact path="/workouts">
                   {userType === "athlete" ? (
                     <AthleteWorkouts />
@@ -77,7 +78,7 @@ function App() {
               </Switch>
             </div>
             <div className="home__rightContainer">
-              <Notification />
+              <RightContainer />
             </div>
           </div>
         </Router>
