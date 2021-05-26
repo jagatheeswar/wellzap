@@ -130,14 +130,15 @@
     background-color:white;
 }
 
-.coachProfileForm > form > textarea {
+.coachProfileForm > form > textarea, .athleteMedicalAssessment__form > textarea {
     background-color:white;
     padding: 10px; 
     display: flex;
     width: 100%;
     border: none;
     outline: gray;
-    height: 60px;
+    height: 80px;
+    width: 97%;
 }    
 
 .coachProfileForm__Button {
@@ -154,7 +155,7 @@
     font-size: 14px;
 }
 
-.coachAssessment > h2, .coachMedicalAssessment > h2, .athleteProfile__leftContainer > h2 {
+.coachAssessment > h2, .coachMedicalAssessment > h2, .athleteProfile__leftContainer > h2, .athleteTrainingAssessment > h2 {
     font-size: 21px;
     font-weight: 600;
     line-height: 32px;
@@ -184,7 +185,7 @@
     color: gray;
 }
 
-.athleteMeasurements__Button {
+.athleteMeasurements__Button, .athleteMedicalAssessment__Button {
     display:flex;
     align-items: center;
     justify-content:center;
@@ -207,7 +208,7 @@
 
 
 .athleteProfile__leftContainer {
-    flex:0.75;
+    flex:1;
     border: 1px solid #d3d3d3;
     display: flex;
     flex-direction: column;
@@ -217,12 +218,10 @@
     height:100%;
     width: 100%;
     padding: 0 20px;
-
 }
 
 
 .athleteProfile__rightContainer {
-    flex:0.25;
     border: 1px solid #d3d3d3;
     height:100%;
     width: 100%;
@@ -284,5 +283,78 @@
 .viewReport > img {
     height: 12px;
     margin-right: 5px;
+}
+
+.athleteMedicalAssessment__form > p, .athleteMedicalAssessment__form > h4 {
+    font-size: 15px;
+    font-weight: 500;
+    color: gray;
+}
+
+
+.MuiRadio-root > label {
+    width: 40px ;
+    height: 40px;
+    font-size: 13px;
+}
+
+.athleteMedicalAssessment__checkbox1 {
+    display: flex;
+    padding-Bottom : 20px;
+
+}
+
+.athleteMedicalAssessment__checkbox2 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content:flex-start ;
+    padding-Bottom : 20px;
+}
+
+.athleteTrainingAssessment > h2 {
+    padding-left: 20px;
+}
+
+
+.athleteTrainingAssessment > h4 {
+    font-size:  15px;
+    font-weight: 500;
+    line-height: 30px;
+    padding-left: 20px;
+}
+
+.athleteTrainingAssessment > h5 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 30px;
+    padding-left: 20px;
+}
+
+.athleteTrainingAssessment__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.athleteTrainingAssessment__checkBox {
+    display: flex;
+    flex-wrap: wrap;
+}   
+
+.athleteTrainingAssessment__Button {
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    padding:5px;
+    padding-right:14px;
+    background-color: #fcd13f;
+    height:30px;
+    width: 40%;
+    margin: 10px 0;
+    border-radius: 15px;
+    font-size: 14px;
+    margin-left: 15%;
+    margin-top: 5%;
 }
 

@@ -7,7 +7,7 @@ import { selectTemperoryId, selectUser, selectUserType } from '../../features/us
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import Header from '../../Components/Header/Header';
 import Notification from '../../Components/Notifications/Notification';
-import CheckboxesGroup from '../../Components/Buttons/Checkbox';
+import CheckboxesGroups from '../../Components/Buttons/Checkboxs';
 
 
 function AthleteMedicalAssessment() {
@@ -245,43 +245,66 @@ function AthleteMedicalAssessment() {
     return (
         <div className="AthleteMedicalAssessment">
         <div className="athleteProfile__container">
-        <Sidebar />
         <div className="athleteProfile__leftContainer">
         <Header />
         <h2>Medical Assessment</h2>
          <div className="athleteMedicalAssessment__container">
-         <form>
-         <FormControlLabelPlacement label="Has your doctor ever said that you have a heart condition and that you should only perform physical activity recommended by a doctor?" checked={yes === 'Yes'}  onClick={() => setYes('Yes') }/>
-         <FormControlLabelPlacement label="Do you feel pain in your chest when you perform physical activity? " />
-         <FormControlLabelPlacement label=" In the past month, have you had chest pain when you were not
-         performing any physical activity?" />
-         <FormControlLabelPlacement label=" Do you lose your balance because of dizziness or do you ever lose
-         consciousness?" />
-         <FormControlLabelPlacement label="Do you have a bone or joint problem that could be made worse by a
-         change in your physical activity?" />
-         <FormControlLabelPlacement label="  Is your doctor currently prescribing any medication for your blood
-         pressure or for a heart condition?" />
-       <FormControlLabelPlacement label="  Do you know of any other reason why you should not engage in
-       physical activity?" />
+         <form className="athleteMedicalAssessment__form">
+          <p>Has your doctor ever said that you have a heart condition and that you should only perform physical activity recommended by a doctor?</p>
+         <FormControlLabelPlacement />
+         <p>Do you feel pain in your chest when you perform physical activity?</p>
+         <FormControlLabelPlacement  />
+         <p> In the past month, have you had chest pain when you were not
+         performing any physical activity?</p>
+         <FormControlLabelPlacement />
+         <p>Do you lose your balance because of dizziness or do you ever lose
+         consciousness?</p>
+         <FormControlLabelPlacement />
+         <p>Do you have a bone or joint problem that could be made worse by a
+         change in your physical activity?</p>
+         <FormControlLabelPlacement />
+         <p>Is your doctor currently prescribing any medication for your blood
+         pressure or for a heart condition?</p>
+         <FormControlLabelPlacement />
+         <p>Do you know of any other reason why you should not engage in
+         physical activity?</p>
+       <FormControlLabelPlacement />
        <p>If you have answered “Yes” to one or more of the above questions,
        consult your physician before engaging in physical activity. Tell
        your physician which questions you answered “Yes” to. After a
        medical evaluation, seek advice from your physician on what type of
        activity is suitable for your current condition.</p>
-       <FormControlLabelPlacement label="  Have you ever had any pain or injuries?" />
-       <FormControlLabelPlacement label=" Have you ever had any surgeries?" />
+       <p>Have you ever had any pain or injuries?</p>
+       <FormControlLabelPlacement />
+       <p>Please select applicable areas</p>
+       <div className="athleteMedicalAssessment__checkbox1">
+       <CheckboxesGroups label1="Ankle" label2="Knee" />
+       <CheckboxesGroups label1="Shoulder" label2="Hip" />
+       <CheckboxesGroups label1="Hip" label2="Other" /></div>
+       <p>Have you ever had any surgeries?</p>
+       <FormControlLabelPlacement />
        <h4>Please Explain.</h4>
        <textarea type="text" placeholder="Please provide additional details of your surgery." />
-       <FormControlLabelPlacement label="   Has a medical doctor ever diagnosed you with a chronic disease?" />
-       <FormControlLabelPlacement label="Are you currently taking any medication?" />
-       <p>Please select applicable areas</p>
-       <CheckboxesGroup />
+       <p>Has a medical doctor ever diagnosed you with a chronic disease?</p>
+       <FormControlLabelPlacement />
+       <p>Please select applicable ailments</p>
+       <div className="athleteMedicalAssessment__checkbox2"> 
+       <CheckboxesGroups label1="Diabetes" label2="Pneumonia" />
+       <CheckboxesGroups label1="Back/Joint pains" label2="Hepatitis" />
+       <CheckboxesGroups label1="High Blood Pressure" label2="Heart murmur" />
+       <CheckboxesGroups label1="Low Blood Pressure" label2="Kidney Infection" />
+       <CheckboxesGroups label1="Heart disease" label2="Other" />
+       </div>
+      
+
+       <p>Are you currently taking any medication?</p>
+       <FormControlLabelPlacement />     
+       <p>Please Explain.</p>
+       <textarea type="text" placeholder="Please list any medication you are currently taking." />
+        <div className="athleteMedicalAssessment__Button">Complete Form</div>
      </form>     
    </div>
             </div>
-                <div className="athleteProfile__rightContainer">
-                    <Notification />
-                </div>
          </div>
     </div>
         

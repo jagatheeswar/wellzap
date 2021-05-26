@@ -15,6 +15,7 @@ import CoachHome from "./pages/Home/CoachHome";
 import AthleteMeasurements from "./pages/Profile/AthleteMeasurements";
 import CoachAddMeal from "./pages/Nutrition/CoachNutrition/CoachAddMeal";
 import AthleteMedicalAssessment from "./pages/Profile/AthleteMedicalAssessment";
+import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
 
 function App() {
   const user = useSelector(selectUser);
@@ -64,8 +65,11 @@ function App() {
           <Route exact path="/nutrition/coach-add-meal">
             <CoachAddMeal />
           </Route>
-          <Route exact path="/profile/measurements/medical-assessment">
+          <Route exact path="/profile/medical-assessment">
           <AthleteMedicalAssessment />
+        </Route>
+        <Route exact path="/profile/training-assessment">
+          <AthleteTrainingAssessment />
         </Route>
                 <Route exact path="/workouts">
                   {userType === "athlete" ? (
