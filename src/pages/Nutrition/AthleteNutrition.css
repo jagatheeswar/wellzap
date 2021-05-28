@@ -68,3 +68,166 @@
   opacity: 0.8;
   object-fit: cover;
 }
+
+.athleteAddMealfood__container {
+  margin: 20px;
+}
+
+.athleteAddMealfood__searchableDropdown {
+  margin-left: 8px;
+  margin-top: 10px;
+}
+
+.athleteFoodCard {
+  margin-bottom: 15px;
+  width: 70%;
+}
+
+.athleteFoodCard__open {
+  margin-bottom: 30px;
+}
+
+.athleteFoodCard__openContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding-right: 20px;
+}
+
+.athleteFoodCard__openContainer > h4 {
+  margin: 10px 0;
+}
+
+.quantity-servings__container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 15px;
+}
+
+.quantity-servings__container > div > h4 {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.foodCard__quantInput {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 33.3%;
+}
+
+.foodCard__servingsInputContainer {
+  align-items: flex-start;
+  margin-left: 1%;
+  margin-top: 15px;
+}
+
+.foodCard__macroNutrients {
+  margin: 30px 0;
+}
+
+.foodCard__macroNutrientsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.foodCard__macroNutrient {
+  display: flex;
+  align-items: center;
+  margin-right: 5%;
+}
+
+.foodCard__macroNutrient > h4 {
+  margin-right: 5px;
+  width: 70px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.foodCard__macroNutrient > h5 {
+  font-weight: 400;
+}
+
+.foodCard__macroNutrientsInput {
+  border: 1px solid #777;
+  width: 80px;
+  height: 30px;
+  text-align: center;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.foodCard__caloriesContainer {
+  display: flex;
+  align-items: center;
+}
+
+.foodCard__caloriesContainer > h4 {
+  width: 100px;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.foodCard__caloriesContainer > h5 {
+  font-weight: 400;
+}
+
+.foodCard__caloriesInput {
+  border: 1px solid #777;
+  width: 120px;
+  height: 30px;
+  text-align: center;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.foodCard__check {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 5px 7px;
+  padding-top: 0;
+  border-radius: 5px;
+}
+
+.foodCard__checkAlternative {
+  padding: 10px;
+  border: 0.7px solid grey;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.foodCard__checkAlternative > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.foodCard__addButtons {
+  display: flex;
+  align-items: center;
+}
+
+.foodCard__addfoodButton,
+.foodCard__addmealButton {
+  height: 40px;
+  width: 200px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fcd54a;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.foodCard__addfoodButton > h3,
+.foodCard__addmealButton > h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
