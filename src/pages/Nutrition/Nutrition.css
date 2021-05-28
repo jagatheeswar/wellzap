@@ -1,0 +1,70 @@
+.nutritionScreenHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nutritionHeader__info {
+  display: flex;
+  align-items: center;
+}
+
+.nutritionHeader__info > h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.addNutrition__button {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 20px;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+
+.addNutrition__button > img {
+  margin-right: 8px;
+}
+
+.addNutrition__button > h5 {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nutritionHeader__backButton > img {
+  object-fit: contain;
+  margin: 0 20px;
+}
+
+.no-upcoming-food-text {
+  font-size: 12px;
+  font-weight: 400;
+  background-color: #fff;
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.assignedByCoach__Card {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  margin: 10px 0px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.assignedByCoach__CardInfo > h4 {
+  font-size: 12px;
+}
+
+.assignByCoach__CardInfoDates > h4 {
+  font-size: 10px;
+}

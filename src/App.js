@@ -13,9 +13,11 @@ import Notification from "./Components/Notifications/Notification";
 import AthleteHome from "./pages/Home/AthleteHome";
 import CoachHome from "./pages/Home/CoachHome";
 import AthleteMeasurements from "./pages/Profile/AthleteMeasurements";
-import CoachAddMeal from "./pages/Nutrition/CoachNutrition/CoachAddMeal";
+import CoachAddMeal from "./pages/Nutrition/CoachAddMeal";
 import AthleteMedicalAssessment from "./pages/Profile/AthleteMedicalAssessment";
-import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
+import RightContainer from "./pages/RightContainer/RightContainer";
+import AthleteAddMeal from "./pages/Nutrition/AthleteAddMeal";
+import AthleteNutrition from "./pages/Nutrition/AthleteNutrition";
 
 function App() {
   const user = useSelector(selectUser);
@@ -48,7 +50,7 @@ function App() {
           </Switch>
         </Router>
       ) : (
-        <Router>
+        <Router >
           <div className="home__container">
             <Sidebar />
             <div className="home__main">
@@ -57,20 +59,17 @@ function App() {
                   {userType === "athlete" ? <AthleteHome /> : <CoachHome />}
                 </Route>
                 <Route exact path="/profile">
-          <Profile />
-        </Route>
-        <Route exact path="/profile/measurements">
-          <AthleteMeasurements />
-        </Route>
-          <Route exact path="/nutrition/coach-add-meal">
-            <CoachAddMeal />
-          </Route>
-          <Route exact path="/profile/medical-assessment">
-          <AthleteMedicalAssessment />
-        </Route>
-        <Route exact path="/profile/training-assessment">
-          <AthleteTrainingAssessment />
-        </Route>
+                  <Profile />
+                </Route>
+                <Route exact path="/profile/measurements">
+                  <AthleteMeasurements />
+                </Route>
+                <Route exact path="/nutrition/coach-add-meal">
+                  <CoachAddMeal />
+                </Route>
+                <Route exact path="/profile/measurements/medical-assessment">
+                  <AthleteMedicalAssessment />
+                </Route>
                 <Route exact path="/workouts">
                   {userType === "athlete" ? (
                     <AthleteWorkouts />
@@ -78,10 +77,24 @@ function App() {
                     <CoachWorkouts />
                   )}
                 </Route>
+                <Route exact path="/nutrition">
+                {userType === "athlete" ? (
+                  <AthleteNutrition />
+                ) : (
+                  <CoachAddMeal />
+                )}
+                </Route>
+                <Route exact path="/add-meal">
+                {userType === "athlete" ? (
+                  <AthleteAddMeal />
+                ) : (
+                  <CoachAddMeal />
+                )}
+                </Route>
               </Switch>
             </div>
             <div className="home__rightContainer">
-              <Notification />
+              <RightContainer />
             </div>
           </div>
         </Router>

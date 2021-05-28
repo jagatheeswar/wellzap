@@ -1,0 +1,47 @@
+.waterCard {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.waterCard__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 10px;
+}
+
+.waterCard__container > h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.waterCard__buttons {
+  display: flex;
+  align-items: center;
+}
+
+.waterCard__button {
+  margin: 0;
+  margin-right: 15px;
+  background-color: #fcd54a;
+  border-radius: 999px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: "bold";
+  margin-bottom: 2px;
+  text-align: center;
+  border-width: 0;
+}
+
+.waterCard > h4 {
+  font-size: 12px;
+  margin-top: 10px;
+}

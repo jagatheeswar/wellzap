@@ -1,9 +1,10 @@
 import React from 'react'
+import "./Nutrition.css"
 
 function CoachAddMeal() {
     return (
-        <div>
-            
+        <div className="coachAddMeal">
+             Coach Add Meals
         </div>
     )
 }

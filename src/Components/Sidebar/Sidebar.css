@@ -12,6 +12,8 @@
     align-items: center;
     justify-content: center;
     padding:30px;
+    
+    
 }
 
 .sidebar__container > img {
@@ -59,6 +61,12 @@
     width: 180px;
     margin:15px 0;
     border-radius: 12px;
+    cursor:pointer;
+}
+
+.drawer__container:hover {
+    background-color: #fcd11c;
+    box-shadow: 2px 4px #e6e6e6;
 }
 
 .drawer__container > h1 {

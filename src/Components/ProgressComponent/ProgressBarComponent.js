@@ -1,5 +1,4 @@
 import React from "react";
-import "./ProgressBarComponent.css";
 
 const ProgressBarComponent = ({ containerWidth, progress, progressColor }) => {
   return (

@@ -1,0 +1,39 @@
+.nutritionGoalProgress {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 10px 5px;
+  padding-bottom: 15px;
+}
+
+.nutritionGoalProgress__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nutritionGoalProgress__leftContainer,
+.nutritionGoalProgress__rightContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-right: 15px;
+}
+
+.nutritionGoalProgress__info > h2 {
+  font-size: 10px;
+}
+
+.nutritionGoalProgress__calories > h2 {
+  font-size: 10px;
+  position: absolute;
+  top: 20%;
+  bottom: 0;
+  left: 28%;
+  right: 0;
+  width: 40px;
+  text-align: center;
+}
