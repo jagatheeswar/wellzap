@@ -4,8 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: "sun@gmail.com",
-    userType: "athlete",
+    user: "surya@gmail.com",
+    userType: "coach",
     userData: null,
     temperoryId: null,
     userVerified: null,

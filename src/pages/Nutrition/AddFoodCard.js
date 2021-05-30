@@ -8,6 +8,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
+import CheckBoxOutlinedIcon from "@material-ui/icons/CheckBoxOutlined";
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -60,7 +62,7 @@ const AddFoodCard = (props) => {
               type="font-awesome-5"
               size={15}
             /> */}{" "}
-                  X
+                  <CloseOutlinedIcon style={{ cursor: "pointer" }} />
                 </div>
               )}
             </div>
@@ -110,6 +112,11 @@ const AddFoodCard = (props) => {
               </div>
             )}
           </div>
+          <textarea
+            className="foodCard__description"
+            type="text"
+            placeholder="Description"
+          />
 
           <div className="quantity-servings__container">
             <div
@@ -247,6 +254,8 @@ const AddFoodCard = (props) => {
               <div className="foodCard__macroNutrient">
                 <h4>Proteins</h4>
                 <input
+                  editable={false}
+                  readOnly={true}
                   className="foodCard__macroNutrientsInput"
                   value={
                     item.proteins
@@ -260,6 +269,8 @@ const AddFoodCard = (props) => {
               <div className="foodCard__macroNutrient">
                 <h4>Carbs</h4>
                 <input
+                  editable={false}
+                  readOnly={true}
                   className="foodCard__macroNutrientsInput"
                   value={
                     item.carbs
@@ -276,6 +287,8 @@ const AddFoodCard = (props) => {
               <div className="foodCard__macroNutrient">
                 <h4>Fat</h4>
                 <input
+                  editable={false}
+                  readOnly={true}
                   className="foodCard__macroNutrientsInput"
                   value={
                     item.fat
@@ -290,6 +303,8 @@ const AddFoodCard = (props) => {
             <div className="foodCard__caloriesContainer">
               <h4>Total Calories</h4>
               <input
+                editable={false}
+                readOnly={true}
                 className="foodCard__caloriesInput"
                 value={
                   item.calories
@@ -300,6 +315,14 @@ const AddFoodCard = (props) => {
               />
               <h5 style={{ marginLeft: "5px" }}>kcal</h5>
             </div>
+            <CheckBoxOutlinedIcon
+              style={{
+                cursor: "pointer",
+                marginLeft: "98%",
+                height: "30px",
+                width: "30px",
+              }}
+            />
           </div>
           <div
             className="foodCard__check"
@@ -315,12 +338,12 @@ const AddFoodCard = (props) => {
               }
             }}
           >
+            {" "}
             {/* <Icon
               name="check"
               type="font-awesome-5"
               size={20}
             /> */}
-            tick
           </div>
         </div>
       ) : (

@@ -97,6 +97,9 @@
 
 .athleteFoodCard__openContainer > h4 {
   margin: 10px 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 30px;
 }
 
 .quantity-servings__container {
@@ -127,6 +130,12 @@
 
 .foodCard__macroNutrients {
   margin: 30px 0;
+}
+
+.foodCard__macroNutrients > h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 30px;
 }
 
 .foodCard__macroNutrientsContainer {
@@ -210,6 +219,7 @@
 .foodCard__addButtons {
   display: flex;
   align-items: center;
+  margin-bottom: 70%;
 }
 
 .foodCard__addfoodButton,
@@ -224,6 +234,7 @@
   background-color: #fcd54a;
   border-radius: 8px;
   margin-right: 15px;
+  cursor: pointer;
 }
 
 .foodCard__addfoodButton > h3,

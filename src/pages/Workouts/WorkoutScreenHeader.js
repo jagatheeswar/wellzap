@@ -15,7 +15,7 @@ const WorkoutScreenHeader = () => {
       {userType === "coach" && (
         <div className="addWorkout__button">
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>ADD WORKOUT</h5>
+          <h5>{userType === "Athlete" ? "ADD WORKOUT" : "CREATE WORKOUT"}</h5>
         </div>
       )}
     </div>

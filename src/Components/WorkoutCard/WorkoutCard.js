@@ -11,18 +11,18 @@ function WorkoutCard({ workout }) {
         height="110px"
       />
       <div className="workoutCard__info">
-        <h1>{workout.data.preWorkout.workoutName}</h1>
+        <h1>{workout?.data?.preWorkout?.workoutName}</h1>
         <div className="workoutCard__macroNutrients">
           <h3>Calories</h3>
-          <h3>{workout.data.preWorkout.caloriesBurnEstimate}</h3>
+          <h3>{workout?.data?.preWorkout?.caloriesBurnEstimate}</h3>
         </div>
         <div className="workoutCard__macroNutrients">
           <h3>Difficulty</h3>
-          <h3>{workout.data.preWorkout.workoutDifficulty}</h3>
+          <h3>{workout?.data?.preWorkout?.workoutDifficulty}</h3>
         </div>
         <div className="workoutCard__macroNutrients">
           <h3>Duration</h3>
-          <h3>{workout.data.preWorkout.workoutDuration}</h3>
+          <h3>{workout?.data?.preWorkout?.workoutDuration}</h3>
         </div>
       </div>
 

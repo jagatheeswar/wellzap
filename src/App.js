@@ -18,6 +18,7 @@ import AthleteMedicalAssessment from "./pages/Profile/AthleteMedicalAssessment";
 import RightContainer from "./pages/RightContainer/RightContainer";
 import AthleteAddMeal from "./pages/Nutrition/AthleteAddMeal";
 import AthleteNutrition from "./pages/Nutrition/AthleteNutrition";
+import CreateNutrition from "./pages/Nutrition/CreateNutrition";
 
 function App() {
   const user = useSelector(selectUser);
@@ -50,7 +51,7 @@ function App() {
           </Switch>
         </Router>
       ) : (
-        <Router >
+        <Router>
           <div className="home__container">
             <Sidebar />
             <div className="home__main">
@@ -78,18 +79,18 @@ function App() {
                   )}
                 </Route>
                 <Route exact path="/nutrition">
-                {userType === "athlete" ? (
-                  <AthleteNutrition />
-                ) : (
-                  <CoachAddMeal />
-                )}
+                  {userType === "athlete" ? (
+                    <AthleteNutrition />
+                  ) : (
+                    <CreateNutrition />
+                  )}
                 </Route>
                 <Route exact path="/add-meal">
-                {userType === "athlete" ? (
-                  <AthleteAddMeal />
-                ) : (
-                  <CoachAddMeal />
-                )}
+                  {userType === "athlete" ? (
+                    <AthleteAddMeal />
+                  ) : (
+                    <CoachAddMeal />
+                  )}
                 </Route>
               </Switch>
             </div>

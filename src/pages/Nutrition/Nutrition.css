@@ -68,3 +68,66 @@
 .assignByCoach__CardInfoDates > h4 {
   font-size: 10px;
 }
+
+.foodCard__description {
+  margin-top: 20px;
+  font-size: 15px;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  border: none;
+  outline: gray;
+  height: 100px;
+  width: 60%;
+  margin-left: 9px;
+}
+
+.coachAddMeal__header > img,
+.createNutrition > img {
+  padding-top: 30px;
+  object-fit: contain;
+  margin-left: 16%;
+  justify-content: center;
+  height: 40%;
+  width: 60%;
+}
+
+.coachAddMeal__input,
+.createNutrition__input {
+  padding-left: 30px;
+}
+
+.coachAddMeal__input > h4,
+.coachAddMeal__textArea > h4,
+.createNutrition__input > h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.coachAddMeal__input > input,
+.createNutrition__input > input {
+  padding: 10px;
+  display: flex;
+  width: 45%;
+  outline: gray;
+  background-color: white;
+  border: 1px solid #777;
+}
+
+.coachAddMeal__textArea > textarea {
+  background-color: white;
+  border: 1px solid #777;
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  outline: gray;
+  height: 80px;
+  width: 46%;
+}
+
+.coachAddMeal__textArea {
+  padding-left: 15px;
+  padding-bottom: 30px;
+}
