@@ -21,6 +21,8 @@ import AthleteNutrition from "./pages/Nutrition/AthleteNutrition";
 import CreateNutrition from "./pages/Nutrition/CreateNutrition";
 import CoachNutritionHome from "./pages/Nutrition/CoachNutritionHome";
 import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
+import AllAthletes from "./pages/AllAthletes/AllAthletes";
+import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
 
 function App() {
   const user = useSelector(selectUser);
@@ -100,8 +102,14 @@ function App() {
                 <Route exact path="/coach-nutrition-home">
                   <CoachNutritionHome />
                 </Route>
-                <Route exact path="/saved-meal-plans/create-nutrition">
+                <Route exact path="/create-nutrition">
                   <CreateNutrition />
+                </Route>
+                <Route exact path="/all-athletes">
+                  <AllAthletes />
+                </Route>
+                <Route exact path="/invite-athlete">
+                  <InviteAthlete />
                 </Route>
               </Switch>
             </div>

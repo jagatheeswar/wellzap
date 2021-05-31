@@ -1,0 +1,125 @@
+.allAthletes,
+.inviteAthlete {
+  display: flex;
+  flex-direction: column;
+}
+
+.allAthletes__info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.inviteAthlete__info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.allAthletes__info > h1,
+.inviteAthlete__info > h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-right: 60%;
+}
+
+.allAthletes__backButton > img,
+.inviteAthlete__backButton > img {
+  object-fit: contain;
+  margin: 0 20px;
+}
+
+.allAthletes__inviteAthletesButton {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 10px;
+  height: 25px;
+  padding: 5px 20px;
+}
+
+.allathletes__backbutton:hover,
+.inviteAthlete__backButton:hover,
+.allAthletes__inviteAthletesButton:hover {
+  cursor: pointer;
+}
+
+.allAthletes__athletes {
+  justify-content: space-between;
+  display: flex;
+  background-color: white;
+  width: 90%;
+  align-items: center;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-left: 2%;
+  padding: 5px 18px;
+}
+
+.allAthletes__athleteslogo {
+  border-radius: 20px;
+}
+
+.allAthletes__athletes > h1 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.inviteAthlete__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inviteAthlete__form > h2 {
+  margin-bottom: 1px;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-left: 2%;
+}
+
+.inviteAthlete__form > h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-left: 2%;
+  color: gray;
+}
+
+.inviteAthlete__form > input {
+  padding: 10px;
+  display: flex;
+  width: 90%;
+  border: none;
+  outline: gray;
+  background-color: white;
+  margin-left: 2%;
+}
+
+.inviteAthlete__sendMailButton,
+.inviteAthlete__shareInvite {
+  margin-left: 2%;
+  margin-top: 20px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  background-color: #fcd13f;
+  border-radius: 10px;
+  height: 25px;
+  padding: 8px 20px;
+}
+
+.shareInvite {
+  margin-top: 30px;
+  padding: 10px;
+  display: flex;
+  width: 70%;
+  border: none;
+  outline: gray;
+  background-color: white;
+  margin-left: 2%;
+  height: 100px;
+}

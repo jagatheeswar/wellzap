@@ -30,8 +30,12 @@ function Sidebar() {
         {userType === "coach" ? (
           <div>
             <SidebarComponent logo="dumbell" name="Workouts" path="workouts" />
-            <SidebarComponent logo="hamburger" name="Nutrition" path="nutrition" />
-            <SidebarComponent logo="user" name="Athletes" />
+            <SidebarComponent
+              logo="hamburger"
+              name="Nutrition"
+              path="nutrition"
+            />
+            <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
             <SidebarComponent logo="calendar" name="Calendar" />
             <SidebarComponent logo="message" name="Messaging" />
             <SidebarComponent logo="settings" name="Settings" />
@@ -39,7 +43,11 @@ function Sidebar() {
         ) : (
           <div>
             <SidebarComponent logo="dumbell" name="Workout" path="workouts" />
-            <SidebarComponent logo="hamburger" name="Nutrition" path="nutrition" />
+            <SidebarComponent
+              logo="hamburger"
+              name="Nutrition"
+              path="nutrition"
+            />
             <SidebarComponent logo="user" name="Coaches" />
             <SidebarComponent logo="message" name="Messaging" />
             <SidebarComponent logo="calendar" name="Calendar" />
