@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./workouts.css";
+import "./Workouts.css";
 import { useSelector } from "react-redux";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import { selectUserData, selectUserType } from "../../features/userSlice";
@@ -72,7 +72,7 @@ function AthleteWorkouts() {
             <div className="workoutHeading__row">
               <h1>Upcoming Workouts</h1>
               <div>View All</div>
-             </div>
+            </div>
             {workouts?.map((workout, i) => (
               <WorkoutCard key={workout.id} workout={workout} />
             ))}
@@ -93,10 +93,10 @@ function AthleteWorkouts() {
                 <h6>Goals Met</h6>
               </div>
             </div>
-             <div className="workoutHeading__row">
+            <div className="workoutHeading__row">
               <h1>Past Workouts</h1>
               <div>View All</div>
-             </div>
+            </div>
             {pastWorkouts?.map((workout, i) => (
               <WorkoutCard key={workout.id} workout={workout} />
             ))}

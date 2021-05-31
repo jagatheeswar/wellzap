@@ -19,6 +19,8 @@ import RightContainer from "./pages/RightContainer/RightContainer";
 import AthleteAddMeal from "./pages/Nutrition/AthleteAddMeal";
 import AthleteNutrition from "./pages/Nutrition/AthleteNutrition";
 import CreateNutrition from "./pages/Nutrition/CreateNutrition";
+import CoachNutritionHome from "./pages/Nutrition/CoachNutritionHome";
+import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
 
 function App() {
   const user = useSelector(selectUser);
@@ -78,6 +80,9 @@ function App() {
                     <CoachWorkouts />
                   )}
                 </Route>
+                <Route exact path="/create-workout">
+                  <CoachCreateWorkout />
+                </Route>
                 <Route exact path="/nutrition">
                   {userType === "athlete" ? (
                     <AthleteNutrition />
@@ -91,6 +96,12 @@ function App() {
                   ) : (
                     <CoachAddMeal />
                   )}
+                </Route>
+                <Route exact path="/coach-nutrition-home">
+                  <CoachNutritionHome />
+                </Route>
+                <Route exact path="/saved-meal-plans/create-nutrition">
+                  <CreateNutrition />
                 </Route>
               </Switch>
             </div>

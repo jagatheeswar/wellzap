@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectUserType } from "../../features/userSlice";
 
-const WorkoutScreenHeader = () => {
+const WorkoutScreenHeader = ({ name }) => {
   const userType = useSelector(selectUserType);
   return (
     <div className="workoutsHeader">
@@ -10,7 +10,7 @@ const WorkoutScreenHeader = () => {
         <div className="workoutsHeader__backButton">
           <img src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
         </div>
-        <h1>Workouts</h1>
+        <h1>{name}</h1>
       </div>
       {userType === "coach" && (
         <div className="addWorkout__button">

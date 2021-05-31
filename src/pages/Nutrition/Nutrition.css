@@ -131,3 +131,31 @@
   padding-left: 15px;
   padding-bottom: 30px;
 }
+
+.assignedMealPlans__headings,
+.savedMealPlans__headings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+}
+
+.assignedMealPlans__headings > h3,
+.savedMealPlans__headings > h3 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.assignedMealPlans__headings > h4,
+.savedMealPlans__headings > h4 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 17px;
+  color: gray;
+}
+
+.assignedMealPlans__headings > h4:hover,
+.savedMealPlans__headings > h4:hover {
+  cursor: pointer;
+}
