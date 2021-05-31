@@ -8,7 +8,7 @@ function CoachWorkouts() {
 
   return (
     <div className="coachWorkouts">
-      <WorkoutScreenHeader />
+      <WorkoutScreenHeader name="Workouts" navigation="create-workout" />
     </div>
   );
 }

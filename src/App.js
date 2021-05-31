@@ -83,11 +83,14 @@ function App() {
                 <Route exact path="/create-workout">
                   <CoachCreateWorkout />
                 </Route>
+                <Route exact path="/assign-workout">
+                  <CoachCreateWorkout />
+                </Route>
                 <Route exact path="/nutrition">
                   {userType === "athlete" ? (
                     <AthleteNutrition />
                   ) : (
-                    <CreateNutrition />
+                    <CoachNutritionHome />
                   )}
                 </Route>
                 <Route exact path="/add-meal">
@@ -100,7 +103,7 @@ function App() {
                 <Route exact path="/coach-nutrition-home">
                   <CoachNutritionHome />
                 </Route>
-                <Route exact path="/saved-meal-plans/create-nutrition">
+                <Route exact path="/create-nutrition">
                   <CreateNutrition />
                 </Route>
               </Switch>

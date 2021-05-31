@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Workouts.css";
+import "./workouts.css";
 import { useSelector } from "react-redux";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import { selectUserData, selectUserType } from "../../features/userSlice";

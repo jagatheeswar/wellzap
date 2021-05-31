@@ -1,9 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { selectUserType } from "../../features/userSlice";
 
-const WorkoutScreenHeader = ({ name }) => {
+const WorkoutScreenHeader = ({ name, navigation }) => {
   const userType = useSelector(selectUserType);
+  const history = useHistory();
+
   return (
     <div className="workoutsHeader">
       <div className="workoutsHeader__info">
@@ -13,9 +16,12 @@ const WorkoutScreenHeader = ({ name }) => {
         <h1>{name}</h1>
       </div>
       {userType === "coach" && (
-        <div className="addWorkout__button">
+        <div
+          className="addWorkout__button"
+          onClick={() => history.push("create-workout")}
+        >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>{userType === "Athlete" ? "ADD WORKOUT" : "CREATE WORKOUT"}</h5>
+          <h5>CREATE WORKOUT</h5>
         </div>
       )}
     </div>
