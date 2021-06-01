@@ -1,0 +1,12 @@
+.messaging {
+  display: flex;
+  flex: 1;
+}
+
+.messaging__chatList {
+  flex: 0.35;
+}
+
+.messaging__chat {
+  flex: 0.65;
+}

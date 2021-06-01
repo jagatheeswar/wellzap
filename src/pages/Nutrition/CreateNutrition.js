@@ -567,6 +567,7 @@ function CreateNutrition() {
         ))}
       </div>
       <div className="athleteAddMeal__typeOfMeal">
+        <h2>Select Meal</h2>
         {entireFood.map((ent, index) => (
           <div className="athleteAddMealfood__container">
             <FormControl className={classes.formControl}>

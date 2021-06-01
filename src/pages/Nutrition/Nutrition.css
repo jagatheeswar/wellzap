@@ -18,11 +18,26 @@
 .addNutrition__button {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-right: 20px;
   background-color: #fcd13f;
   border-radius: 20px;
   height: 20px;
   padding: 5px 20px;
+  cursor: pointer;
+}
+
+.assignedNutrition__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 20px;
+  padding: 10px 20px;
+  width: 70%;
+  margin-left: 10%;
   cursor: pointer;
 }
 
@@ -84,7 +99,8 @@
 }
 
 .coachAddMeal__header > img,
-.createNutrition > img {
+.createNutrition > img,
+.assignedNutrition > img {
   padding-top: 30px;
   object-fit: contain;
   margin-left: 16%;
@@ -100,7 +116,8 @@
 
 .coachAddMeal__input > h4,
 .coachAddMeal__textArea > h4,
-.createNutrition__input > h4 {
+.createNutrition__input > h4,
+.assignedNutrition > h4 {
   font-size: 18px;
   font-weight: 600;
   line-height: 30px;
@@ -158,4 +175,19 @@
 .assignedMealPlans__headings > h4:hover,
 .savedMealPlans__headings > h4:hover {
   cursor: pointer;
+}
+
+.athleteAddMeal__typeOfMeal > h2 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 22px;
+  margin-left: 3%;
+}
+
+.nutritionHeader__backButton:hover {
+  cursor: pointer;
+}
+
+.assignedNutrition > h4 {
+  margin-left: 4%;
 }

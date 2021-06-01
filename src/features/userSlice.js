@@ -4,8 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: "surya@gmail.com",
-    userType: "coach",
+    user: null,
+    userType: null,
     userData: null,
     temperoryId: null,
     userVerified: null,
@@ -15,26 +15,26 @@ export const userSlice = createSlice({
     login: (state, action) => {
       state.user = action.payload;
       console.log(action.payload);
-      // try {
-      //   AsyncStorage.setItem("user", action.payload);
-      // } catch (e) {
-      //   console.log("userslice login error " + e);
-      // }
+      try {
+        localStorage.setItem("user", action.payload);
+      } catch (e) {
+        console.log("userslice login error " + e);
+      }
     },
     setUserType: (state, action) => {
       state.userType = action.payload;
-      // try {
-      //   AsyncStorage.setItem("userType", action.payload);
-      // } catch (e) {}
+      try {
+        localStorage.setItem("userType", action.payload);
+      } catch (e) {}
     },
     setUserVerified: (state, action) => {
       console.log("userVerified: " + action.payload);
       state.userVerified = action.payload;
-      // try {
-      //   AsyncStorage.setItem('userVerified',JSON.stringify(action.payload))
-      // } catch (e) {
-      //   console.log("userslice userVerified error " + e);
-      // }
+      try {
+        localStorage.setItem("userVerified", JSON.stringify(action.payload));
+      } catch (e) {
+        console.log("userslice userVerified error " + e);
+      }
     },
     setTemperoryID: (state, action) => {
       state.temperoryId = action.payload;
@@ -49,9 +49,9 @@ export const userSlice = createSlice({
       state.user = null;
       state.userType = null;
       state.userType = null;
-      // AsyncStorage.setItem('user', "")
-      // AsyncStorage.setItem('userType',"")
-      // AsyncStorage.setItem('userVerified',"")
+      localStorage.setItem("user", "");
+      localStorage.setItem("userType", "");
+      localStorage.setItem("userVerified", "");
     },
   },
 });

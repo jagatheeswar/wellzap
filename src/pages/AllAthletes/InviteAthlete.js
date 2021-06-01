@@ -36,7 +36,7 @@ function InviteAthlete() {
           {text}
         </textarea>
       </div>
-      <div className="inviteAthlete__shareInvite">Send Automated Email</div>
+      <div className="inviteAthlete__shareInvite">Share Invite</div>
     </div>
   );
 }

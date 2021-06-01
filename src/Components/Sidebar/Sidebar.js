@@ -1,13 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { selectUserData, selectUserType } from "../../features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import {
+  logout,
+  selectUserData,
+  selectUserType,
+} from "../../features/userSlice";
+import { auth } from "../../utils/firebase";
 import "./Sidebar.css";
 import SidebarComponent from "./SidebarComponent";
 
 function Sidebar() {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   return (
     <div className="sidebar">
@@ -37,7 +44,11 @@ function Sidebar() {
             />
             <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
             <SidebarComponent logo="calendar" name="Calendar" />
-            <SidebarComponent logo="message" name="Messaging" />
+            <SidebarComponent
+              logo="message"
+              name="Messaging"
+              path="messaging"
+            />
             <SidebarComponent logo="settings" name="Settings" />
           </div>
         ) : (
@@ -55,7 +66,14 @@ function Sidebar() {
         )}
       </div>
 
-      <div className="signout__button">
+      <div
+        className="signout__button"
+        onClick={() => {
+          auth.signOut();
+          dispatch(logout());
+          history.push("/");
+        }}
+      >
         <h2>Signout</h2>
       </div>
     </div>

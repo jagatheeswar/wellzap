@@ -1,8 +1,15 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login, selectUser, selectUserType } from "./features/userSlice";
-import { auth } from "./utils/firebase";
+import {
+  login,
+  selectUser,
+  selectUserType,
+  setUserData,
+  setUserType,
+  setUserVerified,
+} from "./features/userSlice";
+import { auth, db } from "./utils/firebase";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Profile from "./pages/Profile/Profile";
@@ -23,6 +30,9 @@ import CoachNutritionHome from "./pages/Nutrition/CoachNutritionHome";
 import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
 import AllAthletes from "./pages/AllAthletes/AllAthletes";
 import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
+import Messaging from "./pages/Messaging/Messaging";
+import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
+import Routes from "./Routes";
 
 function App() {
   const user = useSelector(selectUser);
@@ -30,15 +40,98 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) console.log(user);
-      // dispatch(login({
-      //   displayName: user.displayName,
-      //   email: user.email,
-      //   photoURL: user.photoURL
-      // }))
-    });
+    if (user) {
+      db.collection("athletes")
+        .where("email", "==", user)
+        .get()
+        .then((snap) => {
+          if (snap) {
+            dispatch(setUserType("athlete"));
+          } else {
+            dispatch(setUserType("coach"));
+          }
+        });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (userType === "athlete") {
+      db.collection("athletes")
+        .where("email", "==", user)
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            dispatch(
+              setUserData({
+                id: doc.id,
+                data: doc.data(),
+              })
+            );
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    } else {
+      db.collection("coaches")
+        .where("email", "==", user)
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            dispatch(
+              setUserData({
+                id: doc.id,
+                data: doc.data(),
+              })
+            );
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    }
+  }, [userType]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const user = await localStorage.getItem("user");
+        const userType = await localStorage.getItem("userType");
+        const userVerified = await localStorage.getItem("userVerified");
+
+        if (user != null) {
+          dispatch(login(user));
+        }
+        if (userType != null) {
+          dispatch(setUserType(userType));
+        }
+        if (userVerified != null) {
+          dispatch(setUserVerified(userVerified == "true" ? true : false));
+        }
+      } catch (e) {
+        console.log("error" + e);
+      }
+    };
+    getData();
   }, []);
+
+  const NotFound = () => {
+    return <h4>404 Not Found</h4>;
+  };
+
+  function RoutesComp({ AthleteComp, CoachComp }) {
+    return (
+      <div className="home__container">
+        <Sidebar />
+        <div className="home__main">
+          {userType === "coach" ? CoachComp : AthleteComp}
+        </div>
+        <div className="home__rightContainer">
+          <RightContainer />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -52,74 +145,84 @@ function App() {
             <Route exact path="/signup">
               <Signup />
             </Route>
+            <Route component={NotFound} />
           </Switch>
         </Router>
       ) : (
         <Router>
-          <div className="home__container">
-            <Sidebar />
-            <div className="home__main">
-              <Switch>
-                <Route exact path="/">
-                  {userType === "athlete" ? <AthleteHome /> : <CoachHome />}
-                </Route>
-                <Route exact path="/profile">
-                  <Profile />
-                </Route>
-                <Route exact path="/profile/measurements">
-                  <AthleteMeasurements />
-                </Route>
-                <Route exact path="/nutrition/coach-add-meal">
-                  <CoachAddMeal />
-                </Route>
-                <Route exact path="/profile/measurements/medical-assessment">
-                  <AthleteMedicalAssessment />
-                </Route>
-                <Route exact path="/workouts">
-                  {userType === "athlete" ? (
-                    <AthleteWorkouts />
-                  ) : (
-                    <CoachWorkouts />
-                  )}
-                </Route>
-                <Route exact path="/create-workout">
-                  <CoachCreateWorkout />
-                </Route>
-                <Route exact path="/assign-workout">
-                  <CoachCreateWorkout />
-                </Route>
-                <Route exact path="/nutrition">
-                  {userType === "athlete" ? (
-                    <AthleteNutrition />
-                  ) : (
-                    <CoachNutritionHome />
-                  )}
-                </Route>
-                <Route exact path="/add-meal">
-                  {userType === "athlete" ? (
-                    <AthleteAddMeal />
-                  ) : (
-                    <CoachAddMeal />
-                  )}
-                </Route>
-                <Route exact path="/coach-nutrition-home">
-                  <CoachNutritionHome />
-                </Route>
-                <Route exact path="/create-nutrition">
-                  <CreateNutrition />
-                </Route>
-                <Route exact path="/all-athletes">
-                  <AllAthletes />
-                </Route>
-                <Route exact path="/invite-athlete">
-                  <InviteAthlete />
-                </Route>
-              </Switch>
-            </div>
-            <div className="home__rightContainer">
-              <RightContainer />
-            </div>
-          </div>
+          <Switch>
+            <Route exact path="/">
+              <RoutesComp
+                AthleteComp={<AthleteHome />}
+                CoachComp={<CoachHome />}
+              />
+            </Route>
+
+            <Route path="/profile">
+              <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
+            </Route>
+            <Route path="/profile/measurements">
+              <RoutesComp
+                AthleteComp={<AthleteMeasurements />}
+                CoachComp={<AthleteMeasurements />}
+              />
+            </Route>
+            <Route path="/nutrition/coach-add-meal">
+              <RoutesComp
+                AthleteComp={<CoachAddMeal />}
+                CoachComp={<CoachAddMeal />}
+              />
+            </Route>
+            <Route path="/profile/measurements/medical-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteMedicalAssessment />}
+                CoachComp={<AthleteMedicalAssessment />}
+              />
+            </Route>
+            <Route path="/workouts">
+              <RoutesComp
+                AthleteComp={<AthleteWorkouts />}
+                CoachComp={<CoachWorkouts />}
+              />
+            </Route>
+            <Route path="/create-workout">
+              <RoutesComp
+                AthleteComp={<CoachCreateWorkout />}
+                CoachComp={<CoachCreateWorkout />}
+              />
+            </Route>
+            <Route path="/assign-workout">
+              <RoutesComp
+                AthleteComp={<CoachCreateWorkout />}
+                CoachComp={<CoachCreateWorkout />}
+              />
+            </Route>
+            <Route path="/nutrition">
+              <RoutesComp
+                AthleteComp={<AthleteNutrition />}
+                CoachComp={<CoachNutritionHome />}
+              />
+            </Route>
+            <Route path="/add-meal">
+              <RoutesComp
+                AthleteComp={<AthleteAddMeal />}
+                CoachComp={<CoachAddMeal />}
+              />
+            </Route>
+            <Route path="/coach-nutrition-home">
+              <RoutesComp
+                AthleteComp={<CoachNutritionHome />}
+                CoachComp={<CoachNutritionHome />}
+              />
+            </Route>
+            <Route path="/create-nutrition">
+              <RoutesComp
+                AthleteComp={<CreateNutrition />}
+                CoachComp={<CreateNutrition />}
+              />
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
         </Router>
       )}
     </div>

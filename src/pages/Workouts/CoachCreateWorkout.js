@@ -261,16 +261,6 @@ function CoachCreateWorkout() {
                   Exercise
                 </h3>
 
-                {exercises.length > 0 && (
-                  <SearchableDropdown
-                    name="Search for Exercise"
-                    list={exercises}
-                    idx={idx}
-                    state={group}
-                    setState={setGroup}
-                  />
-                )}
-
                 {grp.exercises?.map((workout, idx1) => (
                   <div key={idx1} style={{ width: "95%", marginLeft: "3%" }}>
                     <div
