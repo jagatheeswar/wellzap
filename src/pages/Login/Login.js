@@ -101,7 +101,7 @@ function Login() {
         }}
       >
         {({ touched, errors, isSubmitting }) => (
-          <Form>
+          <Form className="form">
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <Field

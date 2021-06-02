@@ -33,6 +33,8 @@ import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
 import Messaging from "./pages/Messaging/Messaging";
 import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
+import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
+import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
 
 function App() {
   const user = useSelector(selectUser);
@@ -183,6 +185,18 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthleteWorkouts />}
                 CoachComp={<CoachWorkouts />}
+              />
+            </Route>
+            <Route path="/view-all-workouts">
+              <RoutesComp
+                AthleteComp={<ViewAllWorkouts />}
+                CoachComp={<ViewAllWorkouts />}
+              />
+            </Route>
+            <Route path="/view-all-saved-workouts">
+              <RoutesComp
+                AthleteComp={<ViewAllSavedWorkouts />}
+                CoachComp={<ViewAllSavedWorkouts />}
               />
             </Route>
             <Route path="/create-workout">
