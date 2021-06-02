@@ -30,9 +30,10 @@ import CoachNutritionHome from "./pages/Nutrition/CoachNutritionHome";
 import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
 import AllAthletes from "./pages/AllAthletes/AllAthletes";
 import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
-import Messaging from "./pages/Messaging/Messaging";
+import Messaging from "./pages/Messaging/CoachMessaging";
 import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
+import CoachMessaging from "./pages/Messaging/CoachMessaging";
 
 function App() {
   const user = useSelector(selectUser);
@@ -219,6 +220,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<CreateNutrition />}
                 CoachComp={<CreateNutrition />}
+              />
+            </Route>
+            <Route path="/messaging">
+              <RoutesComp
+                CoachComp={<CoachMessaging />}
+                AtheleteComp={<CoachMessaging />}
               />
             </Route>
             <Route component={NotFound} />

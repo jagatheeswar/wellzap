@@ -60,7 +60,11 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Coaches" />
-            <SidebarComponent logo="message" name="Messaging" />
+            <SidebarComponent
+              logo="message"
+              name="Messaging"
+              path="messaging"
+            />
             <SidebarComponent logo="calendar" name="Calendar" />
           </div>
         )}

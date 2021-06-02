@@ -7,7 +7,6 @@ function RightContainer() {
     <div className="rightContainer">
       <Notification />
       <h1>Calendar</h1>
-      {/* <CalendarComponent /> */}
     </div>
   );
 }
