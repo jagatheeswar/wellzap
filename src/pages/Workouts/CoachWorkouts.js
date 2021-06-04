@@ -31,7 +31,7 @@ function CoachWorkouts() {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
-        .where("date", "==", formatDate()) // replace with formatDate() for realtime data
+        // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
         .limit(5)
         .onSnapshot((snapshot) => {
           setSavedWorkouts(
@@ -49,7 +49,7 @@ function CoachWorkouts() {
   return (
     <div className="workouts__home">
       <div className="coachDashboard__leftContainer">
-        <WorkoutScreenHeader />
+        <WorkoutScreenHeader name="Workouts" />
 
         <div className="workouts__homeContainer">
           <div className="workouts__homeLeftContainer">

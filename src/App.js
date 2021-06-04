@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   login,
@@ -9,7 +9,7 @@ import {
   setUserType,
   setUserVerified,
 } from "./features/userSlice";
-import { auth, db } from "./utils/firebase";
+import { db } from "./utils/firebase";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Profile from "./pages/Profile/Profile";
@@ -47,16 +47,14 @@ function App() {
         .where("email", "==", user)
         .get()
         .then((snap) => {
-          if (snap) {
-            dispatch(setUserType("athlete"));
-          } else {
+          if (snap.empty) {
             dispatch(setUserType("coach"));
+          } else {
+            dispatch(setUserType("athlete"));
           }
         });
     }
-  }, [user]);
 
-  useEffect(() => {
     if (userType === "athlete") {
       db.collection("athletes")
         .where("email", "==", user)
@@ -92,7 +90,7 @@ function App() {
           console.log("Error getting documents: ", error);
         });
     }
-  }, [userType]);
+  }, [user]);
 
   useEffect(() => {
     const getData = async () => {
@@ -122,17 +120,26 @@ function App() {
   };
 
   function RoutesComp({ AthleteComp, CoachComp }) {
-    return (
-      <div className="home__container">
-        <Sidebar />
-        <div className="home__main">
-          {userType === "coach" ? CoachComp : AthleteComp}
+    if (userType) {
+      console.log({ userType });
+      return (
+        <div className="home__container">
+          <Sidebar />
+          <div className="home__main">
+            {userType === "coach" ? CoachComp : AthleteComp}
+          </div>
+          <div className="home__rightContainer">
+            <RightContainer />
+          </div>
         </div>
-        <div className="home__rightContainer">
-          <RightContainer />
+      );
+    } else {
+      return (
+        <div>
+          <h1>Loading</h1>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   return (
