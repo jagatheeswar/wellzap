@@ -95,6 +95,7 @@ const Listbox = styled("ul")`
   width: 300px;
   margin: 2px 0 0;
   padding: 0;
+  margin-left: 3%;
   position: absolute;
   list-style: none;
   background-color: #fff;
@@ -151,17 +152,15 @@ function EquipmentsDropdown({ name, idx, list, state, setState }) {
   } = useAutocomplete({
     id: "customized-hook-demo1",
     multiple: true,
-    options: list,
+    options: list || [],
     getOptionLabel: (option) => option.name,
   });
 
   useEffect(() => {
     if (name === "Search for Exercise") {
-      console.log({ value });
-      let items = [...state];
-      items[idx].exercises.push({
-        ...value[idx],
-        sets: [
+      let len = value.length;
+      if (len !== 0) {
+        value[len - 1].sets = [
           {
             reps: 12,
             rest: 15,
@@ -177,9 +176,12 @@ function EquipmentsDropdown({ name, idx, list, state, setState }) {
             rest: 15,
             weights: 0,
           },
-        ],
-      });
-      setState(items);
+        ];
+
+        let items = [...state];
+        items[idx].exercises = value;
+        setState(items);
+      }
     } else {
       setState(value);
     }
