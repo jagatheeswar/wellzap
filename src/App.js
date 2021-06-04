@@ -235,12 +235,7 @@ function App() {
                 CoachComp={<CreateNutrition />}
               />
             </Route>
-            <Route path="/messaging">
-              <RoutesComp
-                CoachComp={<CoachMessaging />}
-                AtheleteComp={<CoachMessaging />}
-              />
-            </Route>
+
             <Route component={NotFound} />
           </Switch>
         </Router>

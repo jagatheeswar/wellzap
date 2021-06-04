@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Notification from "../../Components/Notifications/Notification";
+import PopupComponent from "../../Components/Popup/PopupComponent";
 import {
   selectUser,
   selectUserData,
@@ -65,8 +66,14 @@ function Home() {
               <h1>Hello, {userData?.data?.name}</h1>
               <h2>Here’s your progress summary.</h2>
             </div>
-            <div className="fab__icon">
-              <img src="/assets/fab.png" alt="" width="26px" height="26px" />
+            <div className="fab__icon" onClick={console.log("clicked")}>
+              <img
+                src="/assets/fab.png"
+                alt=""
+                width="26px"
+                height="26px"
+                onClick={console.log("clicked")}
+              />
             </div>
           </div>
           <CoachHomeReports />
