@@ -35,6 +35,8 @@ import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
 import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
+import AthletePayments from "./pages/Payments/AthletePayments";
+import CoachPayments from "./pages/Payments/CoachPayments";
 
 function App() {
   const user = useSelector(selectUser);
@@ -240,6 +242,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<CreateNutrition />}
                 CoachComp={<CreateNutrition />}
+              />
+            </Route>
+            <Route path="/payments">
+              <RoutesComp
+                AthleteComp={<AthletePayments />}
+                CoachComp={<CoachPayments />}
               />
             </Route>
             <Route component={NotFound} />

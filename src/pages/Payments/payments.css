@@ -1,0 +1,265 @@
+.workoutsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.workoutsHeader__info {
+  display: flex;
+  align-items: center;
+}
+
+.workoutsHeader__info > h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.addWorkout__button {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 20px;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+
+.addWorkout__button > img {
+  margin-right: 8px;
+}
+
+.addWorkout__button > h5 {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.workoutsHeader__backButton > img {
+  object-fit: contain;
+  margin: 0 20px;
+}
+
+.workouts__homeContainer {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.workouts__homeLeftContainer,
+.workouts__homeRightContainer {
+  flex: 0.4;
+  padding: 10px;
+}
+
+.workoutHeading__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 5px;
+}
+
+.workoutHeading__row > div {
+  cursor: pointer;
+  padding: 0 5px;
+  font-size: 12px;
+  text-align: center;
+}
+.workoutHeading__row > div:hover {
+  background-color: #e6e6e6;
+  border-radius: 5px;
+}
+
+.workoutHeading__row > h1,
+.workoutHeading__row > h1,
+.workouts__homeRightContainer > h1 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.workoutRecord {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 5px;
+  position: relative;
+  height: 80px;
+  margin: 10px 0;
+}
+
+.workoutRecord__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 5px;
+  border-right: 1px solid #d3d3d3;
+  width: 33.33%;
+  height: 60%;
+  position: relative;
+}
+
+.workoutRecord__info:nth-child(3) {
+  border-right: 0px solid #d3d3d3;
+}
+
+.workoutRecord__info > h5 {
+  font-size: 12px;
+  font-weight: 800;
+  margin: 5px;
+  text-align: center;
+}
+.workoutRecord__info > h6 {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 5px;
+  text-align: center;
+}
+
+.coachWorkouts__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.coachWorkouts__header > img {
+  height: 20px;
+  width: 20px;
+  background-color: gray;
+}
+
+.coachWorkouts__header > h2 {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.coachWorkouts__createButton {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 20px;
+  padding: 5px 20px;
+  font-weight: 500;
+}
+
+.coachWorkouts__createButton > img {
+  height: 14px;
+  width: 15px;
+  padding-right: 7px;
+}
+
+.coachWorkouts__main {
+  display: flex;
+  flex: 1;
+}
+
+.coachWorkouts__savedWorkouts {
+  flex: 0.5;
+}
+
+.coachWorkouts__workoutLibrary {
+  flex: 0.5;
+}
+
+.coachCreateWorkout > img {
+  margin-left: 5%;
+  margin-top: 1.9%;
+}
+
+.coachCreateWorkout__workoutName {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-left: 5%;
+}
+
+.coachCreateWorkout__workoutName > h3 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  color: gray;
+}
+
+.coachCreateWorkout__workoutName > input {
+  padding: 10px;
+  display: flex;
+  width: 45%;
+  outline: gray;
+  background-color: white;
+  border: none;
+}
+
+.selectDropdown1 {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5%;
+}
+
+.createWorkout__inputTime,
+.createWorkout__calorieBurn,
+.createWorkout__description,
+.createWorkout__workoutDifficulty,
+.createWorkout__exercises {
+  padding-bottom: 2%;
+  padding-left: 5%;
+}
+
+.createWorkout__inputTime > h3,
+.createWorkout__calorieBurn > h3,
+.createWorkout__description > h3,
+.createWorkout__workoutDifficulty > h3 {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.createWorkout__exercises > h3 {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.createWorkout__inputTime > input,
+.createWorkout__calorieBurn > input {
+  padding: 10px;
+  display: flex;
+  width: 39%;
+  outline: gray;
+  background-color: white;
+  border: none;
+}
+
+.createWorkout__description > textarea {
+  padding: 10px;
+  display: flex;
+  width: 49%;
+  outline: gray;
+  background-color: white;
+  border: none;
+  height: 70px;
+}
+
+.createWorkout__completeWorkoutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 30px;
+  padding: 5px 20px;
+  font-weight: 500;
+  width: 45%;
+  margin-left: 4%;
+  margin-bottom: 5%;
+}
