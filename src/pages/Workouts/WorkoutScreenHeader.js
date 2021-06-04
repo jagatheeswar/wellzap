@@ -10,7 +10,10 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
   return (
     <div className="workoutsHeader">
       <div className="workoutsHeader__info">
-        <div className="workoutsHeader__backButton">
+        <div
+          className="workoutsHeader__backButton"
+          onClick={() => history.goBack()}
+        >
           <img src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
         </div>
         <h1>{name}</h1>

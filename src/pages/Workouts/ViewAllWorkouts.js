@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
+import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
 function ViewAllWorkouts() {
   const userData = useSelector(selectUserData);
@@ -66,6 +67,7 @@ function ViewAllWorkouts() {
 
   return (
     <div>
+      <WorkoutScreenHeader name="Upcoming Workouts" />
       <div
         style={{
           display: "flex",
@@ -85,24 +87,33 @@ function ViewAllWorkouts() {
             paddingLeft: "15px",
             paddingRight: "15px",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             alignItems: "center",
+            flexWrap: "wrap",
           }}
         >
           {workouts.length > 0 ? (
             workouts?.map((item, idx) => (
-              <WorkoutCard
-                key={idx}
-                workouts={workouts}
-                item={item}
-                idx={idx}
-                navigation={"ViewAllWorkouts"}
-                showDate={true}
-                type="non-editable"
-                completed={
-                  userType === "athlete" || completed === true ? true : false
-                }
-              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <WorkoutCard
+                  key={idx}
+                  workouts={workouts}
+                  item={item}
+                  idx={idx}
+                  navigation={"ViewAllWorkouts"}
+                  showDate={true}
+                  type="non-editable"
+                  completed={
+                    userType === "athlete" || completed === true ? true : false
+                  }
+                />
+              </div>
             ))
           ) : (
             <h5
