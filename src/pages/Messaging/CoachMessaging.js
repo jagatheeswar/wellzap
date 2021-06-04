@@ -5,7 +5,6 @@ import NutritionScreenHeader from "../Nutrition/NutritionScreenHeader";
 import userType from "../../features/userSlice";
 
 function CoachMessaging({ route, navigation }) {
-  
   const [doc_id, setDoc_id] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
@@ -131,161 +130,161 @@ function CoachMessaging({ route, navigation }) {
       <h3 style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
         {to_name}
       </h3>
-      <div style={{ marginBottom: "40px", marginTop: "50px"}}>
-      {allMessages?.map((msg) => (
-        <div key={msg.id}>
-          {type === "coach" ? (
-            <div style={{ margin: "15px" }}>
-              {msg.format && msg.format == "image" ?
-              <img src={{uri:msg.message}} 
-              style={
-                msg.from_id === to_id
-                  ? {
-                      backgroundColor: "black",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                      paddingLeft: "15px",
-                      paddingRight: "15px",
-                      borderRadius: "15px",
-                      alignItems: "flex-start",
-                      color: "white",
-                      fontSize: "18px",
-                      borderBottomRightRadius: "0px",
-                      marginRight: "5px",
-                      height:"200px",
-                      width:"200px"
+      <div style={{ marginBottom: "40px", marginTop: "50px" }}>
+        {allMessages?.map((msg) => (
+          <div key={msg.id}>
+            {type === "coach" ? (
+              <div style={{ margin: "15px" }}>
+                {msg.format && msg.format == "image" ? (
+                  <img
+                    src={{ uri: msg.message }}
+                    style={
+                      msg.from_id === to_id
+                        ? {
+                            backgroundColor: "black",
+                            paddingTop: "10px",
+                            paddingBottom: "10px",
+                            paddingLeft: "15px",
+                            paddingRight: "15px",
+                            borderRadius: "15px",
+                            alignItems: "flex-start",
+                            color: "white",
+                            fontSize: "18px",
+                            borderBottomRightRadius: "0px",
+                            marginRight: "5px",
+                            height: "200px",
+                            width: "200px",
+                          }
+                        : {
+                            borderRadius: "15px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            alignItems: "flex-end",
+                            fontSize: "18px",
+                            color: "#63697B",
+                            borderBottomLeftRadius: "0px",
+                            marginLeft: "5px",
+                            height: "200px",
+                            width: "200px",
+                          }
                     }
-                  : {
-                      borderRadius: "15px",
-                      paddingLeft: "10px",
-                      paddingRight: "10px",
-                      paddingTop: "5px",
-                      paddingBottom: "5px",
-                      alignItems: "flex-end",
-                      fontSize: "18px",
-                      color: "#63697B",
-                      borderBottomLeftRadius: "0px",
-                      marginLeft: "5px",
-                      height:"200px",
-                      width:"200px",
+                  />
+                ) : (
+                  <h2
+                    style={
+                      msg.from_id === to_id
+                        ? {
+                            backgroundColor: "black",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            borderRadius: "15px",
+                            alignItems: "flex-end",
+                            color: "white",
+                            fontSize: "18px",
+                            borderBottomRightRadius: "0px",
+                            marginRight: "5px",
+                          }
+                        : {
+                            backgroundColor: "#EAECF2",
+                            borderRadius: "15px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            alignItems: "flex-start",
+                            fontSize: "18px",
+                            color: "#63697B",
+                            borderBottomLeftRadius: "0px",
+                            marginLeft: "5px",
+                          }
                     }
-              }
-              
-              /> :
-              <h2
-                style={
-                  msg.from_id === to_id
-                    ? {
-                        backgroundColor: "black",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        paddingTop: "5px",
-                        paddingBottom: "5px",
-                        borderRadius: "15px",
-                        alignItems: "flex-end",
-                        color: "white",
-                        fontSize: "18px",
-                        borderBottomRightRadius: "0px",
-                        marginRight: "5px",
-                      }
-                    : {
-                        backgroundColor: "#EAECF2",
-                        borderRadius: "15px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        paddingTop: "5px",
-                        paddingBottom: "5px",
-                        alignItems: "flex-start",
-                        fontSize:"18px",
-                        color: "#63697B",
-                        borderBottomLeftRadius: "0px",
-                        marginLeft: "5px",
-                      }
-                }
-              >
-                {msg.message}
-              </h2>}
-              
-            </div>
-          ) : (
-            <div style={{ margin: "15px" }}>
-              {msg.format && msg.format == "image" ?
-              <img src={{uri:msg.message}} 
-              style={
-                msg.from_id === to_id
-                  ? {
-                      backgroundColor: "black",
-                      paddingLeft: "10px",
-                      paddingRight: "10px",
-                      paddingTop: "5px",
-                      paddingBottom: "5px",
-                      borderRadius: "15px",
-                      alignItems: "flex-start",
-                      color: "white",
-                      fontSize: "18px",
-                      borderBottomRightRadius: "0px",
-                      marginRight: "5px",
-                      height:"200px",
-                      width:"200px"
+                  >
+                    {msg.message}
+                  </h2>
+                )}
+              </div>
+            ) : (
+              <div style={{ margin: "15px" }}>
+                {msg.format && msg.format == "image" ? (
+                  <img
+                    src={{ uri: msg.message }}
+                    style={
+                      msg.from_id === to_id
+                        ? {
+                            backgroundColor: "black",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            borderRadius: "15px",
+                            alignItems: "flex-start",
+                            color: "white",
+                            fontSize: "18px",
+                            borderBottomRightRadius: "0px",
+                            marginRight: "5px",
+                            height: "200px",
+                            width: "200px",
+                          }
+                        : {
+                            borderRadius: "15px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            alignItems: "flex-end",
+                            fontSize: "18px",
+                            color: "#63697B",
+                            borderBottomLeftRadius: "0px",
+                            marginLeft: "5px",
+                            height: "200px",
+                            width: "200px",
+                          }
                     }
-                  : {
-                      borderRadius: "15px",
-                      paddingLeft: "10px",
-                      paddingRight: "10px",
-                      paddingTop: "5px",
-                      paddingBottom: "5px",
-                      alignItems: "flex-end",
-                      fontSize:"18px",
-                      color: "#63697B",
-                      borderBottomLeftRadius: "0px",
-                      marginLeft: "5px",
-                      height:"200px",
-                      width:"200px",
+                  />
+                ) : (
+                  <h2
+                    style={
+                      msg.from_id === from_id
+                        ? {
+                            backgroundColor: "black",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            borderRadius: "15px",
+                            alignItems: "flex-end",
+                            color: "white",
+                            fontSize: "18px",
+                            borderBottomRightRadius: "0px",
+                            marginRight: "5px",
+                          }
+                        : {
+                            backgroundColor: "#EAECF2",
+                            borderRadius: "15px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                            paddingBottom: "5px",
+                            alignItems: "flex-start",
+                            fontSize: "18px",
+                            color: "#63697B",
+                            borderBottomLeftRadius: "0px",
+                            marginLeft: "5px",
+                          }
                     }
-              }
-              /> :
-              <h2
-                style={
-                  msg.from_id === from_id
-                    ? {
-                        backgroundColor: "black",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        paddingTop: "5px",
-                        paddingBottom: "5px",
-                        borderRadius: "15px",
-                        alignItems: "flex-end",
-                        color: "white",
-                        fontSize: "18px",
-                        borderBottomRightRadius: "0px",
-                        marginRight: "5px",
-                      }
-                    : {
-                        backgroundColor: "#EAECF2",
-                        borderRadius: "15px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        paddingTop: "5px",
-                        paddingBottom: "5px",
-                        alignItems: "flex-start",
-                        fontSize: "18px",
-                        color: "#63697B",
-                        borderBottomLeftRadius: "0px",
-                        marginLeft: "5px",
-                      }
-                }
-              >
-                {msg.message}
-              </h2>}
-           
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  </div>
-
-</div>
+                  >
+                    {msg.message}
+                  </h2>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
       <div onClick={(e) => sendMessage(e)}>
         <img src="/assets/send.png" style={{ width: "27px", height: "25px" }} />

@@ -5,6 +5,7 @@ import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
+import { useHistory } from "react-router";
 
 function AthleteWorkouts() {
   const userData = useSelector(selectUserData);
@@ -13,20 +14,24 @@ function AthleteWorkouts() {
   const [pastWorkouts, setPastWorkouts] = useState([]);
   const [completedWorkouts, setCompletedWorkouts] = useState("");
   const [averageWorkoutTime, setAverageWorkoutTime] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     if (userData?.id && userType === "athlete") {
       db.collection("athletes")
         .doc(userData?.id)
         .onSnapshot((doc) => {
-          setCompletedWorkouts(
-            doc.data().completedWorkouts ? doc.data().completedWorkouts : 0
-          );
-          setAverageWorkoutTime(
-            doc.data().averageWorkoutTime
-              ? doc.data().averageWorkoutTime?.toFixed(2)
-              : 0
-          );
+          if (doc.data()?.completedWorkouts) {
+            setCompletedWorkouts(doc.data().completedWorkouts);
+          } else {
+            setCompletedWorkouts(0);
+          }
+
+          if (doc.data()?.averageWorkoutTime) {
+            setAverageWorkoutTime(doc.data().averageWorkoutTime?.toFixed(2));
+          } else {
+            setAverageWorkoutTime(0);
+          }
         });
     }
   }, [userData?.id]);
@@ -71,10 +76,17 @@ function AthleteWorkouts() {
           <div className="workouts__homeLeftContainer">
             <div className="workoutHeading__row">
               <h1>Upcoming Workouts</h1>
-              <div>View All</div>
+              <div onClick={() => history.push("/view-all-workouts")}>
+                View All
+              </div>
             </div>
             {workouts?.map((workout, i) => (
-              <WorkoutCard key={workout.id} workout={workout} />
+              <WorkoutCard
+                key={workout.id}
+                workout={workouts}
+                item={workout}
+                idx={i}
+              />
             ))}
           </div>
           <div className="workouts__homeRightContainer">
@@ -95,10 +107,17 @@ function AthleteWorkouts() {
             </div>
             <div className="workoutHeading__row">
               <h1>Past Workouts</h1>
-              <div>View All</div>
+              <div onClick={() => history.push("/view-all-saved-workouts")}>
+                View All
+              </div>
             </div>
             {pastWorkouts?.map((workout, i) => (
-              <WorkoutCard key={workout.id} workout={workout} />
+              <WorkoutCard
+                key={workout.id}
+                workout={workouts}
+                item={workout}
+                idx={i}
+              />
             ))}
           </div>
         </div>
