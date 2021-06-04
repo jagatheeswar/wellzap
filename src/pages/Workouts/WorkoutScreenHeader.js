@@ -18,7 +18,7 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
         </div>
         <h1>{name}</h1>
       </div>
-      {userType === "coach" && (
+      {userType === "coach" && name === "Workouts" && (
         <div
           className="addWorkout__button"
           onClick={() => history.push("create-workout")}
