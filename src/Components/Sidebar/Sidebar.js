@@ -26,10 +26,10 @@ function Sidebar() {
           height="100px"
         />
         <h1>{userData?.data.name}</h1>
-        <h3>Strength and Conditioning Coach</h3>
+        {userType === "coach" && <h3>Strength and Conditioning Coach</h3>}
         <Link
           className="view-link"
-          to={userType === "athlete" ? "/athlete" : "/coach"}
+          to={userType === "athlete" ? "/profile" : "/coach"}
         >
           {" "}
           View Profile

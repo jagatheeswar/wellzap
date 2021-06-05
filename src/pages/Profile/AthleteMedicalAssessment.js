@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import './Profile.css'
-import FormControlLabelPlacement from '../../Components/Buttons/YesNoButton'
-import { db } from '../../utils/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectTemperoryId, selectUser, selectUserType } from '../../features/userSlice';
-import Sidebar from '../../Components/Sidebar/Sidebar';
-import Header from '../../Components/Header/Header';
-import Notification from '../../Components/Notifications/Notification';
-import CheckboxesGroups from '../../Components/Buttons/Checkboxs';
+import React, { useState, useEffect } from "react";
+import "./Profile.css";
+import FormControlLabelPlacement from "../../Components/Buttons/YesNoButton";
+import { db } from "../../utils/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectTemperoryId,
+  selectUser,
+  selectUserType,
+} from "../../features/userSlice";
+import Sidebar from "../../Components/Sidebar/Sidebar";
+import Header from "../../Components/Header/Header";
+import Notification from "../../Components/Notifications/Notification";
+import CheckboxesGroups from "../../Components/Buttons/Checkboxs";
 
-
-function AthleteMedicalAssessment() {
-    const user = useSelector(selectUser);
+function AthleteMedicalAssessment({ route, navigation }) {
+  const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
   const temperoryId = useSelector(selectTemperoryId);
   const [userData, setUserData] = useState(null);
@@ -22,9 +25,8 @@ function AthleteMedicalAssessment() {
   const [dizziness, setDizziness] = useState(false);
   const [dizziness1, setDizziness1] = useState(false);
   const [jointProblem, setJointProblem] = useState(false);
-  const [medicationForHeartProblem, setMedicationForHeartProblem] = useState(
-    false
-  );
+  const [medicationForHeartProblem, setMedicationForHeartProblem] =
+    useState(false);
   const [knowReason, setKnowReason] = useState(false);
 
   const [hadPain, setHadPain] = useState(false);
@@ -63,39 +65,39 @@ function AthleteMedicalAssessment() {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (userType === "coach") {
-  //     db.collection("athletes")
-  //       .doc(temperoryId)
-  //       .get()
-  //       .then(function (snap) {
-  //         setUserData({
-  //           id: temperoryId,
-  //           data: snap.data(),
-  //         });
-  //       })
-  //       .catch(function (error) {
-  //         console.log("Error getting documents: ", error);
-  //       });
-  //   } else {
-  //     setEditable(true)
-  //     db.collection("athletes")
-  //       .where("email", "==", user)
-  //       .get()
-  //       .then(function (querySnapshot) {
-  //         console.log("23");
-  //         querySnapshot.forEach(function (doc) {
-  //           setUserData({
-  //             id: doc.id,
-  //             data: doc.data(),
-  //           });
-  //         });
-  //       })
-  //       .catch(function (error) {
-  //         console.log("Error getting documents: ", error);
-  //       });
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (userType === "coach") {
+      db.collection("athletes")
+        .doc(temperoryId)
+        .get()
+        .then(function (snap) {
+          setUserData({
+            id: temperoryId,
+            data: snap.data(),
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    } else {
+      setEditable(true);
+      db.collection("athletes")
+        .where("email", "==", user)
+        .get()
+        .then(function (querySnapshot) {
+          console.log("23");
+          querySnapshot.forEach(function (doc) {
+            setUserData({
+              id: doc.id,
+              data: doc.data(),
+            });
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (userData) {
@@ -107,26 +109,92 @@ function AthleteMedicalAssessment() {
         .then(function (doc) {
           if (doc.exists) {
             console.log("Document data:", doc.data());
-            setHeartCondition(doc.data().heartCondition);
-            setChestPain(doc.data().chestPain);
-            setChestPain1(doc.data().chestPain1);
-            setSelectedApplicableAilments(
-              doc.data().selectedApplicableAilments
+            if (doc.data().heartCondition === "yes") {
+              setHeartCondition("yes");
+            } else {
+              setHeartCondition("no");
+            }
+            if (doc.data().chestPain === "yes") {
+              setChestPain("yes");
+            } else {
+              setChestPain("no");
+            }
+            if (doc.data().chestPain1 === "yes") {
+              setChestPain1("yes");
+            } else {
+              setChestPain1("no");
+            }
+            if (doc.data().selectedApplicableAilments === "yes") {
+              setSelectedApplicableAilments("yes");
+            } else {
+              setSelectedApplicableAilments("no");
+            }
+            if (doc.data().selectedApplicableAreas === "yes") {
+              setSelectedApplicableAreas("yes");
+            } else {
+              setSelectedApplicableAreas("no");
+            }
+            if (doc.data().dizziness === "yes") {
+              setDizziness("yes");
+            } else {
+              setDizziness("no");
+            }
+            if (doc.data().dizziness1 === "yes") {
+              setDizziness1("yes");
+            } else {
+              setDizziness1("no");
+            }
+            if (doc.data().jointProblem === "yes") {
+              setJointProblem("yes");
+            } else {
+              setJointProblem("no");
+            }
+            if (doc.data().medicationForHeartProblem === "yes") {
+              setMedicationForHeartProblem("yes");
+            } else {
+              setMedicationForHeartProblem("no");
+            }
+            if (doc.data().knowReason === "yes") {
+              setKnowReason("yes");
+            } else {
+              setKnowReason("no");
+            }
+            if (doc.data().hadPain === "yes") {
+              setHadPain("yes");
+            } else {
+              setHadPain("no");
+            }
+            if (doc.data().hadSurgeries === "yes") {
+              setHadSurgeries("yes");
+            } else {
+              setHadSurgeries("no");
+            }
+            if (doc.data().surgery === "yes") {
+              setSurgery("yes");
+            } else {
+              setSurgery("no");
+            }
+            if (doc.data().chronicDisease === "yes") {
+              setChronicDisease("yes");
+            } else {
+              setChronicDisease("no");
+            }
+            if (doc.data().takingMedication === "yes") {
+              setTakingMedication("yes");
+            } else {
+              setTakingMedication("no");
+            }
+            if (doc.data().medicationDetails === "yes") {
+              setMedicationDetails("yes");
+            } else {
+              setMedicationDetails("no");
+            }
+            setOtherAilments(
+              doc.data().otherAilments ? doc.data().otherAilments : ""
             );
-            setSelectedApplicableAreas(doc.data().selectedApplicableAreas);
-            setDizziness(doc.data().dizziness);
-            setDizziness1(doc.data().dizziness1);
-            setJointProblem(doc.data().jointProblem);
-            setMedicationForHeartProblem(doc.data().medicationForHeartProblem);
-            setKnowReason(doc.data().knowReason);
-            setHadPain(doc.data().hadPain);
-            setHadSurgeries(doc.data().hadSurgeries);
-            setSurgery(doc.data().surgery);
-            setChronicDisease(doc.data().chronicDisease);
-            setOtherAilments(doc.data().otherAilments ? doc.data().otherAilments : "")
-            setOtherPainAreas(doc.data().otherPainAreas ? doc.data().otherPainAreas : "")
-            setTakingMedication(doc.data().takingMedication);
-            setMedicationDetails(doc.data().medicationDetails);
+            setOtherPainAreas(
+              doc.data().otherPainAreas ? doc.data().otherPainAreas : ""
+            );
           } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -168,9 +236,9 @@ function AthleteMedicalAssessment() {
   };
 
   const saveDetails = () => {
-    // if(route?.params?.setAddDetails){
-    //   route.params.setAddDetails(true);
-    // }
+    if (route?.params?.setAddDetails) {
+      route.params.setAddDetails(true);
+    }
     db.collection("athletes")
       .doc(userData?.id)
       .collection("Medical")
@@ -236,83 +304,141 @@ function AthleteMedicalAssessment() {
     setEditable(false);
   };
 
-    
-    const [yes, setYes] = useState('No');
-    
-    useEffect(() => {
-        console.log(yes);
-    },[yes])
-    return (
-        <div className="AthleteMedicalAssessment">
-        <div className="athleteProfile__container">
+  return (
+    <div className="AthleteMedicalAssessment">
+      <div className="athleteProfile__container">
         <div className="athleteProfile__leftContainer">
-        <Header />
-        <h2>Medical Assessment</h2>
-         <div className="athleteMedicalAssessment__container">
-         <form className="athleteMedicalAssessment__form">
-          <p>Has your doctor ever said that you have a heart condition and that you should only perform physical activity recommended by a doctor?</p>
-         <FormControlLabelPlacement />
-         <p>Do you feel pain in your chest when you perform physical activity?</p>
-         <FormControlLabelPlacement  />
-         <p> In the past month, have you had chest pain when you were not
-         performing any physical activity?</p>
-         <FormControlLabelPlacement />
-         <p>Do you lose your balance because of dizziness or do you ever lose
-         consciousness?</p>
-         <FormControlLabelPlacement />
-         <p>Do you have a bone or joint problem that could be made worse by a
-         change in your physical activity?</p>
-         <FormControlLabelPlacement />
-         <p>Is your doctor currently prescribing any medication for your blood
-         pressure or for a heart condition?</p>
-         <FormControlLabelPlacement />
-         <p>Do you know of any other reason why you should not engage in
-         physical activity?</p>
-       <FormControlLabelPlacement />
-       <p>If you have answered “Yes” to one or more of the above questions,
-       consult your physician before engaging in physical activity. Tell
-       your physician which questions you answered “Yes” to. After a
-       medical evaluation, seek advice from your physician on what type of
-       activity is suitable for your current condition.</p>
-       <p>Have you ever had any pain or injuries?</p>
-       <FormControlLabelPlacement />
-       <p>Please select applicable areas</p>
-       <div className="athleteMedicalAssessment__checkbox1">
-       <CheckboxesGroups label1="Ankle" label2="Knee" />
-       <CheckboxesGroups label1="Shoulder" label2="Hip" />
-       <CheckboxesGroups label1="Hip" label2="Other" /></div>
-       <p>Have you ever had any surgeries?</p>
-       <FormControlLabelPlacement />
-       <h4>Please Explain.</h4>
-       <textarea type="text" placeholder="Please provide additional details of your surgery." />
-       <p>Has a medical doctor ever diagnosed you with a chronic disease?</p>
-       <FormControlLabelPlacement />
-       <p>Please select applicable ailments</p>
-       <div className="athleteMedicalAssessment__checkbox2"> 
-       <CheckboxesGroups label1="Diabetes" label2="Pneumonia" />
-       <CheckboxesGroups label1="Back/Joint pains" label2="Hepatitis" />
-       <CheckboxesGroups label1="High Blood Pressure" label2="Heart murmur" />
-       <CheckboxesGroups label1="Low Blood Pressure" label2="Kidney Infection" />
-       <CheckboxesGroups label1="Heart disease" label2="Other" />
-       </div>
-      
-
-       <p>Are you currently taking any medication?</p>
-       <FormControlLabelPlacement />     
-       <p>Please Explain.</p>
-       <textarea type="text" placeholder="Please list any medication you are currently taking." />
-        <div className="athleteMedicalAssessment__Button">Complete Form</div>
-     </form>     
-   </div>
-            </div>
-         </div>
+          <Header />
+          <h2>Medical Assessment</h2>
+          <div className="athleteMedicalAssessment__container">
+            <form className="athleteMedicalAssessment__form">
+              <p>
+                Has your doctor ever said that you have a heart condition and
+                that you should only perform physical activity recommended by a
+                doctor?
+              </p>
+              <FormControlLabelPlacement
+                value={heartCondition}
+                setValue={setHeartCondition}
+              />
+              <p>
+                Do you feel pain in your chest when you perform physical
+                activity?
+              </p>
+              <FormControlLabelPlacement
+                value={chestPain}
+                setValue={setChestPain}
+              />
+              <p>
+                {" "}
+                In the past month, have you had chest pain when you were not
+                performing any physical activity?
+              </p>
+              <FormControlLabelPlacement
+                value={chestPain1}
+                setValue={setChestPain1}
+              />
+              <p>
+                Do you lose your balance because of dizziness or do you ever
+                lose consciousness?
+              </p>
+              <FormControlLabelPlacement
+                value={dizziness}
+                setValue={setDizziness}
+              />
+              <p>
+                Do you have a bone or joint problem that could be made worse by
+                a change in your physical activity?
+              </p>
+              <FormControlLabelPlacement
+                value={jointProblem}
+                setValue={setJointProblem}
+              />
+              <p>
+                Is your doctor currently prescribing any medication for your
+                blood pressure or for a heart condition?
+              </p>
+              <FormControlLabelPlacement />
+              <p>
+                Do you know of any other reason why you should not engage in
+                physical activity?
+              </p>
+              <FormControlLabelPlacement />
+              <p>
+                If you have answered “Yes” to one or more of the above
+                questions, consult your physician before engaging in physical
+                activity. Tell your physician which questions you answered “Yes”
+                to. After a medical evaluation, seek advice from your physician
+                on what type of activity is suitable for your current condition.
+              </p>
+              <p>Have you ever had any pain or injuries?</p>
+              <FormControlLabelPlacement />
+              <p>Please select applicable areas</p>
+              <div className="athleteMedicalAssessment__checkbox1">
+                <CheckboxesGroups label1="Ankle" label2="Knee" />
+                <CheckboxesGroups label1="Shoulder" label2="Hip" />
+                <CheckboxesGroups label1="Hip" label2="Other" />
+              </div>
+              <p>Have you ever had any surgeries?</p>
+              <FormControlLabelPlacement />
+              <h4>Please Explain.</h4>
+              <textarea
+                type="text"
+                placeholder="Please provide additional details of your surgery."
+              />
+              <p>
+                Has a medical doctor ever diagnosed you with a chronic disease?
+              </p>
+              <FormControlLabelPlacement
+                value={chronicDisease}
+                setValue={setChronicDisease}
+              />
+              <p>Please select applicable ailments</p>
+              <div className="athleteMedicalAssessment__checkbox2">
+                <CheckboxesGroups label1="Diabetes" label2="Pneumonia" />
+                <CheckboxesGroups
+                  label1="Back/Joint pains"
+                  label2="Hepatitis"
+                />
+                <CheckboxesGroups
+                  label1="High Blood Pressure"
+                  label2="Heart murmur"
+                />
+                <CheckboxesGroups
+                  label1="Low Blood Pressure"
+                  label2="Kidney Infection"
+                />
+                <CheckboxesGroups label1="Heart disease" label2="Other" />
+              </div>
+              <p>Are you currently taking any medication?</p>
+              <FormControlLabelPlacement />
+              <p>Please Explain.</p>
+              <textarea
+                type="text"
+                placeholder="Please list any medication you are currently taking."
+              />
+              {userType !== "coach" &&
+                (!editable ? (
+                  <div
+                    className="editProfileButton"
+                    onClick={() => setEditable(true)}
+                  >
+                    <h3>EDIT PROFILE</h3>
+                  </div>
+                ) : (
+                  <div
+                    className="saveProfileButton"
+                    onClick={() => saveDetails()}
+                  >
+                    <h3>SAVE PROFILE</h3>
+                  </div>
+                ))}{" "}
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-        
-    )
+  );
 }
 
-export default AthleteMedicalAssessment
-
-               
-
-
+export default AthleteMedicalAssessment;

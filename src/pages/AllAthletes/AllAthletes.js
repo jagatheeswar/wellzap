@@ -31,13 +31,16 @@ function AllAthletes() {
   return (
     <div className="allAthletes">
       <div className="allAthletes__info">
-        <div className="allAthletes__backButton">
+        <div
+          className="allAthletes__backButton"
+          onClick={() => history.goBack()}
+        >
           <img src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
         </div>
         <h1>All Athletes</h1>
         <div
           className="allAthletes__inviteAthletesButton"
-          onClick={() => history.push("./invite-athlete")}
+          onClick={() => history.push("/invite-athlete")}
         >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
         </div>

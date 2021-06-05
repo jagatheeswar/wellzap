@@ -35,6 +35,8 @@ import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
 import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
+import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
+import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLifestyleAssessment";
 
 function App() {
   const user = useSelector(selectUser);
@@ -242,7 +244,33 @@ function App() {
                 CoachComp={<CreateNutrition />}
               />
             </Route>
-
+            <Route path="/anthropometric-measurements">
+              <RoutesComp
+                AthleteComp={<AthleteMeasurements />}
+                CoachComp={<AthleteMeasurements />}
+              />
+            </Route>
+            <Route path="/medical-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteMedicalAssessment />}
+                CoachComp={<AthleteMedicalAssessment />}
+              />
+            </Route>
+            <Route path="/training-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteTrainingAssessment />}
+                CoachComp={<AthleteTrainingAssessment />}
+              />
+            </Route>
+            <Route path="/food-and-lifestyle-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteFoodAndLifestyleAssessment />}
+                CoachComp={<AthleteFoodAndLifestyleAssessment />}
+              />
+            </Route>
+            <Route path="/all-athletes">
+              <RoutesComp CoachComp={<AllAthletes />} />S
+            </Route>
             <Route component={NotFound} />
           </Switch>
         </Router>
