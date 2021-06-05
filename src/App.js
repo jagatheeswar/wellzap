@@ -163,6 +163,7 @@ function App() {
             <Route path="/profile">
               <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
             </Route>
+
             <Route path="/profile/measurements">
               <RoutesComp
                 AthleteComp={<AthleteMeasurements />}

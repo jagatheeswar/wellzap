@@ -5,6 +5,7 @@ import Sleep from "../../Components/Sleep/Sleep";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
+
 import AthleteGoals from "./AthleteGoals";
 import "./Home.css";
 
