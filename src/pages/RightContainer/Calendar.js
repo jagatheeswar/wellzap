@@ -66,19 +66,20 @@ const Calendar_ = () => {
   });
   React.useEffect(() => {
     let date = selectedDay;
-
-    setSelectedDate(moment([date.year, date.month, date.day]));
+    console.log(date.month);
+    setSelectedDate(moment([date.year, date.month - 1, date.day]));
   }, [selectedDay]);
 
   React.useEffect(() => {
     var dates = [];
     var date_str = String(moment(moment(selectedDate).valueOf()).format("ll"));
-
+    console.log("dt", date_str);
     if (Object.keys(events).length > 0) {
       var s = "";
 
       Object.keys(events).forEach((item) => {
         s = String(moment(moment(events[item].eventDate)).format("ll"));
+
         if (s == date_str) {
           dates.push(item);
           console.log(item);
@@ -101,7 +102,7 @@ const Calendar_ = () => {
 
     let today_date = {
       year: now.get("year"),
-      month: now.get("month"),
+      month: now.get("month") + 1,
       day: now.get("day"),
     };
 
@@ -240,7 +241,8 @@ const Calendar_ = () => {
             ) : (
               <>
                 <div className="events_today_">
-                  No events scheduled on {moment(selectedDay).format("ll")}
+                  No events scheduled on{" "}
+                  {moment(moment(selectedDate).valueOf()).format("ll")}
                   <br />
                 </div>
                 <div className="events_today_arrow">
