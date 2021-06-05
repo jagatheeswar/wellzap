@@ -49,6 +49,7 @@ function Sidebar() {
               name="Messaging"
               path="messaging"
             />
+            <SidebarComponent logo="rupee" name="Payments" path="payments"/>
             <SidebarComponent logo="settings" name="Settings" />
           </div>
         ) : (

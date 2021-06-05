@@ -70,7 +70,7 @@ function AthleteWorkouts() {
   return (
     <div className="workouts__home">
       <div className="coachDashboard__leftContainer">
-        <WorkoutScreenHeader />
+        <WorkoutScreenHeader name="Workouts" />
 
         <div className="workouts__homeContainer">
           <div className="workouts__homeLeftContainer">

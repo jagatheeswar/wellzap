@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { selectUserType } from "../../features/userSlice";
 
-const WorkoutScreenHeader = ({ name, navigation }) => {
+const PaymentsScreenHeader = ({ name, navigation }) => {
   const userType = useSelector(selectUserType);
   const history = useHistory();
 
@@ -18,17 +18,8 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
         </div>
         <h1>{name}</h1>
       </div>
-      {userType === "coach" && name === "Workouts" && (
-        <div
-          className="addWorkout__button"
-          onClick={() => history.push("create-workout")}
-        >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>CREATE WORKOUT</h5>
-        </div>
-      )}
     </div>
   );
 };
 
-export default WorkoutScreenHeader;
+export default PaymentsScreenHeader;

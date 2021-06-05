@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
+import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
 function ViewAllSavedWorkouts() {
   const userData = useSelector(selectUserData);
@@ -26,6 +27,7 @@ function ViewAllSavedWorkouts() {
 
   return (
     <div>
+      <WorkoutScreenHeader name="Saved Templates" />
       <div
         style={{
           display: "flex",
@@ -40,24 +42,33 @@ function ViewAllSavedWorkouts() {
       >
         <div
           style={{
-            width: "80%",
+            width: "50%",
             marginTop: "20px",
             paddingLeft: "15px",
             paddingRight: "15px",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             alignItems: "center",
+            flexWrap: "wrap",
           }}
         >
           {workouts.length > 0 ? (
             workouts?.map((item, idx) => (
-              <WorkoutCard
-                key={idx}
-                workouts={workouts}
-                item={item}
-                idx={idx}
-                navigation={"ViewAllSavedWorkouts"}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <WorkoutCard
+                  key={idx}
+                  workouts={workouts}
+                  item={item}
+                  idx={idx}
+                  navigation={"ViewAllSavedWorkouts"}
+                />
+              </div>
             ))
           ) : (
             <h5

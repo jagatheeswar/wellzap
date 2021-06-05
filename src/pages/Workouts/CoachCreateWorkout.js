@@ -3,8 +3,6 @@ import "./workouts.css";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
 import NoSsr from "@material-ui/core/NoSsr";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { db } from "../../utils/firebase";
 import { useSelector } from "react-redux";
@@ -16,6 +14,9 @@ import Select from "@material-ui/core/Select";
 import { makeStyles } from "@material-ui/core";
 import Axios from "axios";
 import SearchableDropdown from "../../Components/SearchableDropdown";
+import AddIcon from "@material-ui/icons/Add";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -105,48 +106,58 @@ function CoachCreateWorkout() {
     <div className="coachCreateWorkout">
       <WorkoutScreenHeader name="Create Workout" />
       <div className="coachCreateWorkout__workoutName">
-        <h3>Workout Name</h3>
-        <input type="text" placeholder="Enter Workout Name" />
+        <h3 className="createWorkout__inputLabel">Workout Name</h3>
+        <input
+          className="createWorkout__input"
+          type="text"
+          placeholder="Enter Workout Name"
+        />
       </div>
-      <img src="/assets/illustration.jpeg" alt="" height="400px" width="90%" />
-
+      <div className="createWorkout__banner">
+        <img
+          src="/assets/illustration.jpeg"
+          alt=""
+          height="400px"
+          width="90%"
+        />
+      </div>
       <div className="coachCreateWorkout__selectDropdown">
-        <h3
-          style={{
-            fontSize: "24px",
-            fontWeight: "600",
-            lineHeight: "28px",
-          }}
-        >
-          Workout Details
-        </h3>
-        <SearchableDropdown
-          name="Equipments Needed"
-          list={listOfEquipments}
-          state={equipmentsNeeded}
-          setState={setEquipmentsNeeded}
-        />
-        <SearchableDropdown
-          name="Targeted Muscle Group"
-          list={listOfTargetedMuscles}
-          state={targetedMuscleGroup}
-          setState={setTargetedMuscleGroup}
-        />
+        <h3 className="createWorkout__subHeading">Workout Details</h3>
+        <div className="createWorkout__row">
+          <SearchableDropdown
+            name="Equipments Needed"
+            list={listOfEquipments}
+            state={equipmentsNeeded}
+            setState={setEquipmentsNeeded}
+          />
+          <SearchableDropdown
+            name="Targeted Muscle Group"
+            list={listOfTargetedMuscles}
+            state={targetedMuscleGroup}
+            setState={setTargetedMuscleGroup}
+          />
+        </div>
       </div>
       <div className="createWorkout__inputTime">
-        <h3>Workout Duration</h3>
-        <input value="00:00:00" type="time" value="18:00" />
+        <h3 className="createWorkout__inputLabel">Workout Duration</h3>
+        <input
+          className="createWorkout__input"
+          value="00:00:00"
+          type="time"
+          value="18:00"
+        />
       </div>
       <div className="createWorkout__calorieBurn">
-        <h3>Calories Burn Estimate</h3>
+        <h3 className="createWorkout__inputLabel">Calories Burn Estimate</h3>
         <input
+          className="createWorkout__input"
           type="number"
           min="0"
           placeholder="Enter Calories Burn Estimate"
         />
       </div>
       <div className="createWorkout__workoutDifficulty">
-        <h3>Workout Difficulty</h3>
+        <h3 className="createWorkout__inputLabel">Workout Difficulty</h3>
         <FormControl className={classes.formControl}>
           <InputLabel id="meal-select-label">
             Select the Workout difficulty
@@ -159,12 +170,11 @@ function CoachCreateWorkout() {
         </FormControl>
       </div>
       <div className="createWorkout__exercises">
-        <h3>Exercises</h3>
+        <h3 className="createWorkout__inputLabel">Exercises</h3>
         <div>
           <div
             style={{
               width: "70%",
-              marginLeft: "30px",
               marginRight: "30px",
               padding: "30px",
               backgroundColor: "#fff",
@@ -206,40 +216,21 @@ function CoachCreateWorkout() {
                     Group
                   </h3>
                   <div
+                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       let temp = [...group];
                       temp.splice(idx, 1);
                       setGroup(temp);
                     }}
                   >
-                    {/* <Icon
-                        name="times"
-                        size={19}
-                        style={{ marginRight: 0 }}
-                        type="font-awesome-5"
-                      /> */}
-                    X
+                    <CloseIcon />
                   </div>
                 </div>
                 <div>
-                  <h3
-                    style={{
-                      fontSize: "14px",
-                      marginVertical: 10,
-                    }}
-                  >
-                    Group Name
-                  </h3>
+                  <h3 className="createWorkout__inputLabel">Group Name</h3>
 
                   <input
-                    style={{
-                      borderWidth: "1px",
-                      borderColor: "#DBE2EA",
-                      backgroundColor: "#fff",
-                      width: "100px",
-                      borderRadius: "5px",
-                      padding: "7px",
-                    }}
+                    className="createWorkout__input"
                     value={grp.groupName}
                     onChange={(e) => {
                       let temp = [...group];
@@ -260,6 +251,15 @@ function CoachCreateWorkout() {
                 >
                   Exercise
                 </h3>
+                <div style={{ width: "95%" }}>
+                  <SearchableDropdown
+                    name="Search for Exercise"
+                    idx={idx}
+                    list={exercises}
+                    state={group}
+                    setState={setGroup}
+                  />
+                </div>
 
                 {grp.exercises?.map((workout, idx1) => (
                   <div key={idx1} style={{ width: "95%", marginLeft: "3%" }}>
@@ -269,6 +269,7 @@ function CoachCreateWorkout() {
                         alignItems: "center",
                         marginTop: "10px",
                         marginBottom: "10px",
+                        cursor: "pointer",
                       }}
                       onClick={() => {
                         if (selectedWorkoutEdit === "") {
@@ -279,6 +280,7 @@ function CoachCreateWorkout() {
                       }}
                     >
                       <div
+                        style={{ cursor: "pointer" }}
                         onClick={() => {
                           setWorkoutVideoUrl(workout.videoUrl);
                           setModal2(true);
@@ -291,6 +293,8 @@ function CoachCreateWorkout() {
                             height: "70px",
                             borderRadius: "8px",
                             backgroundColor: "#d3d3d3",
+                            objectFit: "cover",
+                            marginRight: "15px",
                           }}
                           src={
                             workout.thumbnail_url
@@ -307,8 +311,17 @@ function CoachCreateWorkout() {
                             justifyContent: "space-between",
                           }}
                         >
-                          <h4>{workout.name}</h4>
+                          <h4
+                            style={{
+                              fontSize: "15px",
+                              fontWeight: "600",
+                              height: "20px",
+                            }}
+                          >
+                            {workout.name}
+                          </h4>
                           <div
+                            style={{ cursor: "pointer" }}
                             onClick={() => {
                               let temp1 = [...group];
                               let temp = group[idx].exercises;
@@ -318,22 +331,23 @@ function CoachCreateWorkout() {
                               setGroup(temp1);
                             }}
                           >
-                            {/* <Icon
-                                name="times"
-                                size={15}
-                                style={{ marginRight: 10 }}
-                                type="font-awesome-5"
-                              /> */}
-                            X
+                            <CloseIcon />
                           </div>
                         </div>
                         <div
                           style={{
                             display: "flex",
                             alignItems: "center",
+                            height: "20px",
                           }}
                         >
-                          <h5 style={{ width: "50%", fontSize: "12px" }}>
+                          <h5
+                            style={{
+                              width: "30%",
+                              fontSize: "12px",
+                              fontWeight: "400",
+                            }}
+                          >
                             Reps
                           </h5>
                           {workout.sets.map((s, i) => (
@@ -342,6 +356,7 @@ function CoachCreateWorkout() {
                               style={{
                                 fontSize: "12px",
                                 textAlign: "center",
+                                fontWeight: "400",
                               }}
                             >
                               {s.reps ? s.reps : "12px"}
@@ -352,27 +367,51 @@ function CoachCreateWorkout() {
                         <div
                           style={{
                             display: "flex",
-                            flexDirection: "row",
                             alignItems: "center",
+                            justifyContent: "space-between",
                             width: "100%",
+                            height: "20px",
                           }}
                         >
-                          <h5 style={{ width: "50%", fontSize: "12px" }}>
-                            Weights
-                          </h5>
-                          {workout.sets.map((s, i) => (
-                            <h5 key={i} style={{ fontSize: "12px" }}>
-                              {s.weights ? s.weights : 0}
-                              {i < workout.sets.length - 1 ? " - " : null}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              width: "100%",
+                              marginRight: "20px",
+                            }}
+                          >
+                            <h5
+                              style={{
+                                width: "37%",
+                                fontSize: "12px",
+                                fontWeight: "400",
+                              }}
+                            >
+                              Weights
                             </h5>
-                          ))}
-                          <div style={{ marginLeft: "20px" }}>
+                            {workout.sets.map((s, i) => (
+                              <h5
+                                key={i}
+                                style={{
+                                  fontSize: "12px",
+                                  fontWeight: "400",
+                                  width: s === 0 && "20px",
+                                }}
+                              >
+                                {s.weights ? s.weights : 0}
+                                {i < workout.sets.length - 1 ? " - " : null}
+                              </h5>
+                            ))}
+                          </div>
+                          <div>
                             {selectedWorkoutEdit === idx1 ? (
                               <img
                                 style={{
                                   width: "25px",
                                   height: "20px",
                                   marginRight: "5px",
+                                  objectFit: "cover",
                                 }}
                                 src="/assets/up.png"
                               />
@@ -382,6 +421,7 @@ function CoachCreateWorkout() {
                                   width: "25px",
                                   height: "20px",
                                   marginRight: "5px",
+                                  objectFit: "cover",
                                 }}
                                 src="/assets/down.png"
                               />
@@ -392,13 +432,23 @@ function CoachCreateWorkout() {
                           style={{
                             display: "flex",
                             alignItems: "center",
+                            height: "20px",
                           }}
                         >
-                          <h5 style={{ width: "50%", fontSize: "12px" }}>
+                          <h5
+                            style={{
+                              width: "30%",
+                              fontSize: "12px",
+                              fontWeight: "400",
+                            }}
+                          >
                             Rest(secs)
                           </h5>
                           {workout.sets.map((s, i) => (
-                            <h5 key={i} style={{ fontSize: "12px" }}>
+                            <h5
+                              key={i}
+                              style={{ fontSize: "12px", fontWeight: "400" }}
+                            >
                               {s.rest ? s.rest : 15}
                               {i < workout.sets.length - 1 ? " - " : null}
                             </h5>
@@ -411,12 +461,18 @@ function CoachCreateWorkout() {
                         <div
                           style={{
                             borderWidth: "1px",
-                            borderColor: "#006d77",
+                            borderColor: "#fcd13c",
+                            borderStyle: "solid",
                             padding: "5px",
                             borderRadius: "50px",
                             width: "120px",
+                            height: "20px",
                             marginTop: "10px",
                             marginBottom: "10px",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                           onClick={() => {
                             // navigation.navigate("AddWorkout");
@@ -432,7 +488,14 @@ function CoachCreateWorkout() {
                             setGroup(temp);
                           }}
                         >
-                          <h5 style={{ color: "black", textAlign: "center" }}>
+                          <h5
+                            style={{
+                              color: "black",
+                              textAlign: "center",
+                              fontSize: "14px",
+                              fontWeight: "500",
+                            }}
+                          >
                             Add New Set
                           </h5>
                         </div>
@@ -449,7 +512,6 @@ function CoachCreateWorkout() {
                           >
                             <div
                               style={{
-                                marginTop: "20px",
                                 marginLeft: "-15px",
                                 marginRight: "5px",
                               }}
@@ -463,13 +525,7 @@ function CoachCreateWorkout() {
                                 setGroup(temp);
                               }}
                             >
-                              {/* <Icon
-                                  name="times"
-                                  size={15}
-                                  style={{ marginRight: 10 }}
-                                  type="font-awesome-5"
-                                /> */}
-                              X
+                              <CloseIcon />
                             </div>
                             <h5
                               style={{
@@ -487,13 +543,20 @@ function CoachCreateWorkout() {
                                 alignItems: "center",
                               }}
                             >
-                              <h5 style={{ fontSize: "14px", marginBottom: 5 }}>
+                              <h5
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: "500",
+                                  textAlign: "center",
+                                  marginRight: "10px",
+                                }}
+                              >
                                 Reps
                               </h5>
                               <input
                                 style={{
                                   width: "50px",
-                                  height: "35px",
+                                  height: "20px",
                                   borderWidth: "1px",
                                   borderColor: "#DBE2EA",
                                   backgroundColor: "#fff",
@@ -522,13 +585,20 @@ function CoachCreateWorkout() {
                                 alignItems: "center",
                               }}
                             >
-                              <h5 style={{ fontSize: "14px", marginBottom: 5 }}>
+                              <h5
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: "500",
+                                  textAlign: "center",
+                                  marginRight: "10px",
+                                }}
+                              >
                                 Weights
                               </h5>
                               <input
                                 style={{
                                   width: "50px",
-                                  height: "35px",
+                                  height: "20px",
                                   borderWidth: "1px",
                                   borderColor: "#DBE2EA",
                                   backgroundColor: "#fff",
@@ -557,13 +627,20 @@ function CoachCreateWorkout() {
                                 alignItems: "center",
                               }}
                             >
-                              <h5 style={{ fontSize: "14px", marginBottom: 5 }}>
+                              <h5
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: "500",
+                                  textAlign: "center",
+                                  marginRight: "10px",
+                                }}
+                              >
                                 Rest
                               </h5>
                               <input
                                 style={{
                                   width: "50px",
-                                  height: "35px",
+                                  height: "20px",
                                   borderWidth: "1px",
                                   borderColor: "#DBE2EA",
                                   backgroundColor: "#fff",
@@ -589,23 +666,20 @@ function CoachCreateWorkout() {
                         <div
                           onClick={() => setSelectedWorkoutEdit("")}
                           style={{
+                            position: "relative",
+                            left: "70%",
                             borderWidth: "1px",
                             borderRadius: "5px",
                             borderColor: "#DBE2EA",
+                            display: "flex",
                             alignSelf: "flex-end",
                             padding: "5px",
                             paddingLeft: "7px",
                             paddingRight: "7px",
+                            cursor: "pointer",
                           }}
                         >
-                          {/* <Icon
-                              name="check"
-                              size={20}
-                              style={{ alignSelf: "flex-end" }}
-                              color="black"
-                              type="font-awesome-5"
-                            /> */}
-                          Tick
+                          <CheckBoxIcon fontSize="large" />
                         </div>
                       </div>
                     )}
@@ -616,9 +690,7 @@ function CoachCreateWorkout() {
           </div>
           <div
             style={{
-              width: "60px",
-              marginLeft: "30px",
-              marginRight: "30px",
+              width: "70%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -626,8 +698,7 @@ function CoachCreateWorkout() {
               borderRadius: "4px",
               borderTopWidth: "1px",
               borderColor: "#e3e3e3",
-              paddingBottom: "15px",
-              paddingTop: "15px",
+              padding: "30px",
             }}
           >
             <div
@@ -636,6 +707,11 @@ function CoachCreateWorkout() {
                 padding: "10px",
                 borderRadius: "50px",
                 width: "150px",
+                height: "15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
               }}
               onClick={() => {
                 setGroup([
@@ -654,14 +730,8 @@ function CoachCreateWorkout() {
                   justifyContent: "center",
                 }}
               >
-                {/* <Icon
-                    name="plus"
-                    size={15}
-                    style={{ marginRight: 10 }}
-                    color="black"
-                    type="font-awesome-5"
-                  /> */}
-                +
+                <AddIcon fontSize="small" />
+
                 <h5
                   style={{
                     fontSize: "10px",
@@ -678,7 +748,7 @@ function CoachCreateWorkout() {
         </div>
       </div>
       <div className="createWorkout__description">
-        <h3>Workout Description</h3>
+        <h3 className="createWorkout__inputLabel">Workout Description</h3>
         <textarea placeholder="Enter Workout Description" />
       </div>
       <div className="createWorkout__completeWorkoutButton">
