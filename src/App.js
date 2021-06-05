@@ -37,7 +37,6 @@ import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
 import AthletePayments from "./pages/Payments/AthletePayments";
 import CoachPayments from "./pages/Payments/CoachPayments";
-import Reports from "./pages/Reports/Reports";
 
 function App() {
   const user = useSelector(selectUser);
