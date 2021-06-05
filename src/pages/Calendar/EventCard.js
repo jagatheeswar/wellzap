@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
-function Event_card(props) {
+
+function EventCard(props) {
   var events = props.data;
   let eventslength = events.length;
 
@@ -80,4 +81,4 @@ function Event_card(props) {
   );
 }
 
-export default Event_card;
+export default EventCard;

@@ -43,7 +43,7 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
-            <SidebarComponent logo="calendar" name="Calendar" />
+            <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
             <SidebarComponent
               logo="message"
               name="Messaging"
@@ -62,7 +62,7 @@ function Sidebar() {
             />
             <SidebarComponent logo="user" name="Coaches" />
             <SidebarComponent logo="message" name="Messaging" />
-            <SidebarComponent logo="calendar" name="Calendar" />
+            <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
           </div>
         )}
       </div>

@@ -37,6 +37,8 @@ import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
 import AthletePayments from "./pages/Payments/AthletePayments";
 import CoachPayments from "./pages/Payments/CoachPayments";
+import AthleteCalendar from "./pages/Calendar/AthleteCalendar";
+import CoachCalendar from "./pages/Calendar/CoachCalendar";
 
 function App() {
   const user = useSelector(selectUser);
@@ -249,6 +251,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthletePayments />}
                 CoachComp={<CoachPayments />}
+              />
+            </Route>
+            <Route path="/calendar">
+              <RoutesComp
+                AthleteComp={<AthleteCalendar />}
+                CoachComp={<CoachCalendar />}
               />
             </Route>
             <Route component={NotFound} />
