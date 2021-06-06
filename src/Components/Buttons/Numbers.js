@@ -16,13 +16,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Numbers() {
+function Numbers({ value, setValue, editable }) {
   const classes = useStyles();
   return (
     <div className="numbers">
       <FormControl className={classes.formControl}>
         <InputLabel id="meal-select-label">Number of times</InputLabel>
-        <Select labelId="meal-select-label" id="meal-select-label">
+        <Select
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          labelId="meal-select-label"
+          id="meal-select-label"
+          disabled={!editable}
+        >
           <MenuItem value={"1"}>1</MenuItem>
           <MenuItem value={"2"}>2</MenuItem>
           <MenuItem value={"3"}>3</MenuItem>

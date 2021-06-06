@@ -124,16 +124,19 @@ function AthleteMedicalAssessment({ route, navigation }) {
             } else {
               setChestPain1("no");
             }
-            if (doc.data().selectedApplicableAilments === "yes") {
-              setSelectedApplicableAilments("yes");
+            if (doc.data().selectedApplicableAilments) {
+              setSelectedApplicableAilments(
+                doc.data().selectedApplicableAilments
+              );
             } else {
-              setSelectedApplicableAilments("no");
+              setSelectedApplicableAilments([]);
             }
-            if (doc.data().selectedApplicableAreas === "yes") {
-              setSelectedApplicableAreas("yes");
+            if (doc.data().selectedApplicableAreas) {
+              setSelectedApplicableAreas(doc.data().selectedApplicableAreas);
             } else {
-              setSelectedApplicableAreas("no");
+              setSelectedApplicableAreas([]);
             }
+
             if (doc.data().dizziness === "yes") {
               setDizziness("yes");
             } else {
@@ -169,11 +172,7 @@ function AthleteMedicalAssessment({ route, navigation }) {
             } else {
               setHadSurgeries("no");
             }
-            if (doc.data().surgery === "yes") {
-              setSurgery("yes");
-            } else {
-              setSurgery("no");
-            }
+            setSurgery(doc.data().surgery);
             if (doc.data().chronicDisease === "yes") {
               setChronicDisease("yes");
             } else {
@@ -184,14 +183,11 @@ function AthleteMedicalAssessment({ route, navigation }) {
             } else {
               setTakingMedication("no");
             }
-            if (doc.data().medicationDetails === "yes") {
-              setMedicationDetails("yes");
-            } else {
-              setMedicationDetails("no");
-            }
+            setMedicationDetails(doc.data().medicationDetails);
             setOtherAilments(
               doc.data().otherAilments ? doc.data().otherAilments : ""
             );
+
             setOtherPainAreas(
               doc.data().otherPainAreas ? doc.data().otherPainAreas : ""
             );
@@ -304,6 +300,8 @@ function AthleteMedicalAssessment({ route, navigation }) {
     setEditable(false);
   };
 
+  console.log(selectedApplicableAilments);
+
   return (
     <div className="AthleteMedicalAssessment">
       <div className="athleteProfile__container">
@@ -320,6 +318,7 @@ function AthleteMedicalAssessment({ route, navigation }) {
               <FormControlLabelPlacement
                 value={heartCondition}
                 setValue={setHeartCondition}
+                editable={editable}
               />
               <p>
                 Do you feel pain in your chest when you perform physical
@@ -328,6 +327,7 @@ function AthleteMedicalAssessment({ route, navigation }) {
               <FormControlLabelPlacement
                 value={chestPain}
                 setValue={setChestPain}
+                editable={editable}
               />
               <p>
                 {" "}
@@ -337,6 +337,7 @@ function AthleteMedicalAssessment({ route, navigation }) {
               <FormControlLabelPlacement
                 value={chestPain1}
                 setValue={setChestPain1}
+                editable={editable}
               />
               <p>
                 Do you lose your balance because of dizziness or do you ever
@@ -345,6 +346,7 @@ function AthleteMedicalAssessment({ route, navigation }) {
               <FormControlLabelPlacement
                 value={dizziness}
                 setValue={setDizziness}
+                editable={editable}
               />
               <p>
                 Do you have a bone or joint problem that could be made worse by
@@ -353,17 +355,26 @@ function AthleteMedicalAssessment({ route, navigation }) {
               <FormControlLabelPlacement
                 value={jointProblem}
                 setValue={setJointProblem}
+                editable={editable}
               />
               <p>
                 Is your doctor currently prescribing any medication for your
                 blood pressure or for a heart condition?
               </p>
-              <FormControlLabelPlacement />
+              <FormControlLabelPlacement
+                value={medicationForHeartProblem}
+                setValue={setMedicationForHeartProblem}
+                editable={editable}
+              />
               <p>
                 Do you know of any other reason why you should not engage in
                 physical activity?
               </p>
-              <FormControlLabelPlacement />
+              <FormControlLabelPlacement
+                value={knowReason}
+                setValue={setKnowReason}
+                editable={editable}
+              />
               <p>
                 If you have answered “Yes” to one or more of the above
                 questions, consult your physician before engaging in physical
@@ -372,17 +383,48 @@ function AthleteMedicalAssessment({ route, navigation }) {
                 on what type of activity is suitable for your current condition.
               </p>
               <p>Have you ever had any pain or injuries?</p>
-              <FormControlLabelPlacement />
+              <FormControlLabelPlacement
+                value={hadPain}
+                setValue={setHadPain}
+                editable={editable}
+              />
               <p>Please select applicable areas</p>
               <div className="athleteMedicalAssessment__checkbox1">
-                <CheckboxesGroups label1="Ankle" label2="Knee" />
-                <CheckboxesGroups label1="Shoulder" label2="Hip" />
-                <CheckboxesGroups label1="Hip" label2="Other" />
+                <CheckboxesGroups
+                  label1="Ankle"
+                  label2="Knee"
+                  state={selectedApplicableAreas}
+                  setState={setSelectedApplicableAreas}
+                  editable={editable}
+                />
+                <CheckboxesGroups
+                  label1="Shoulder"
+                  label2="Hip"
+                  state={selectedApplicableAreas}
+                  setState={setSelectedApplicableAreas}
+                  editable={editable}
+                />
+                <CheckboxesGroups
+                  label1="Back"
+                  label2="Other"
+                  state={selectedApplicableAreas}
+                  setState={setSelectedApplicableAreas}
+                  editable={editable}
+                />
               </div>
               <p>Have you ever had any surgeries?</p>
-              <FormControlLabelPlacement />
+              <FormControlLabelPlacement
+                value={hadSurgeries}
+                setValue={setHadSurgeries}
+                editable={editable}
+              />
               <h4>Please Explain.</h4>
               <textarea
+                readOnly={!editable}
+                onChange={(e) => {
+                  setSurgery(e.target.value);
+                }}
+                value={surgery}
                 type="text"
                 placeholder="Please provide additional details of your surgery."
               />
@@ -392,28 +434,59 @@ function AthleteMedicalAssessment({ route, navigation }) {
               <FormControlLabelPlacement
                 value={chronicDisease}
                 setValue={setChronicDisease}
+                editable={editable}
               />
               <p>Please select applicable ailments</p>
               <div className="athleteMedicalAssessment__checkbox2">
-                <CheckboxesGroups label1="Diabetes" label2="Pneumonia" />
                 <CheckboxesGroups
+                  label1="Diabetes"
+                  label2="Pneumonia"
+                  state={selectedApplicableAilments}
+                  setState={setSelectedApplicableAilments}
+                  editable={editable}
+                />
+                <CheckboxesGroups
+                  state={selectedApplicableAilments}
+                  setState={setSelectedApplicableAilments}
                   label1="Back/Joint pains"
                   label2="Hepatitis"
+                  editable={editable}
                 />
                 <CheckboxesGroups
+                  state={selectedApplicableAilments}
+                  setState={setSelectedApplicableAilments}
                   label1="High Blood Pressure"
                   label2="Heart murmur"
+                  editable={editable}
                 />
                 <CheckboxesGroups
+                  state={selectedApplicableAilments}
+                  setState={setSelectedApplicableAilments}
                   label1="Low Blood Pressure"
                   label2="Kidney Infection"
+                  editable={editable}
                 />
-                <CheckboxesGroups label1="Heart disease" label2="Other" />
+                <CheckboxesGroups
+                  label1="Heart disease"
+                  label2="Other"
+                  state={selectedApplicableAilments}
+                  setState={setSelectedApplicableAilments}
+                  editable={editable}
+                />
               </div>
-              <p>Are you currently taking any medication?</p>
-              <FormControlLabelPlacement />
+              ;<p>Are you currently taking any medication?</p>
+              <FormControlLabelPlacement
+                value={takingMedication}
+                setValue={setTakingMedication}
+                editable={editable}
+              />
               <p>Please Explain.</p>
               <textarea
+                readOnly={!editable}
+                onChange={(e) => {
+                  setMedicationDetails(e.target.value);
+                }}
+                value={medicationDetails}
                 type="text"
                 placeholder="Please list any medication you are currently taking."
               />

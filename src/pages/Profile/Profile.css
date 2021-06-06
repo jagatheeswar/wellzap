@@ -127,7 +127,8 @@
 }
 
 .coachProfileForm > form > textarea,
-.athleteMedicalAssessment__form > textarea {
+.athleteMedicalAssessment__form > textarea,
+.athleteFoodAndLifestyleAssessment__textarea {
   background-color: white;
   padding: 10px;
   display: flex;
@@ -281,7 +282,9 @@
 }
 
 .editProfileButton > h3,
-.saveProfileButton > h3 {
+.saveProfileButton > h3,
+.athleteTrainingAssessment__editProfileButton > h3,
+.athleteTrainingAssessment__saveProfileButton > h3 {
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -362,6 +365,13 @@
   justify-content: space-around;
 }
 
+.athleteFoodAndLifestyleSelectdays__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
 .athleteTrainingAssessment__checkBox {
   display: flex;
   flex-wrap: wrap;
@@ -389,4 +399,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.athleteFoodAndLifestyleAssessment__completeForm {
+  margin-top: 50px;
+}
+
+.athleteTrainingAssessment__editProfileButton,
+.athleteTrainingAssessment__saveProfileButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  padding-right: 20px;
+  background-color: #fcd13f;
+  height: 30px;
+  width: 150px;
+  margin: 10px 0;
+  border-radius: 18px;
+  font-size: 14px;
+  margin-top: 50px;
+  cursor: pointer;
 }

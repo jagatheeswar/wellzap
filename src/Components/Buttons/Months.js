@@ -16,13 +16,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Months() {
+function Months({ value, setValue, editable }) {
   const classes = useStyles();
   return (
     <div>
       <FormControl className={classes.formControl}>
         <InputLabel id="meal-select-label">per</InputLabel>
-        <Select labelId="meal-select-label" id="meal-select-label">
+        <Select
+          labelId="meal-select-label"
+          id="meal-select-label"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={!editable}
+        >
           <MenuItem value={"per"}>per</MenuItem>
           <MenuItem value={"day"}>day</MenuItem>
           <MenuItem value={"week"}>week</MenuItem>
