@@ -15,6 +15,7 @@ import {
 import EventCard from "./EventCard";
 import SelectedEvents from "./SelectedEvents";
 import "./Calendar.css"
+import AddGoal from "./AddGoal"
 
 function AthleteCalendar() {
     const user = useSelector(selectUser);
@@ -24,12 +25,11 @@ function AthleteCalendar() {
       moment(new Date()).utc().format("YYYY-MM-DD")
     );
     const [events, setEvents] = useState({});
-    const [sideBar, setSideBar] = useState("");
+    const [sideBar, setSideBar] = useState("goals");
     const [eventHistory, setEventHistory] = useState([]);
     const [eventHistoryOpen, setEventHistoryOpen] = useState(false);
     const [goals, setGoals] = useState([]);
     const [selectedevents, setselectedevents] = useState([]);
-    const [goalsData, setGoalsData] = useState(null);
     const [tdy, settdy] = useState([]);
     const [upcomingevents, setupcomingevents] = useState([]);
     const defaultValue = {
@@ -201,7 +201,106 @@ function AthleteCalendar() {
           })
           .catch((e) => console.log(e));
       }
-    }, [userData?.id]);
+
+      if (userData?.data?.goals) {
+        var temp = [];
+        var keys = userData.data.goals;
+        var array = [...keys];
+        if (array.length > 1) {
+          array.sort(function (a, b) {
+            return (
+              new Date(
+                a.date.seconds
+                  ? a.date.seconds * 1000
+                  : new Date(
+                      a.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+                    )
+              ) -
+              new Date(
+                b.date.seconds
+                  ? b.date.seconds * 1000
+                  : new Date(
+                      b.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+                    )
+              )
+            );
+          });
+        }
+  
+          array.forEach((id)=>{
+            if( moment(new Date()).valueOf() < moment(id.date.seconds ? id.date.seconds*1000 : id.date.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).valueOf()){
+            temp.push(
+              <div
+              style={{
+                flexDirection: "row",
+                padding: 10,
+                alignItems: "center",
+                justifyContent: "space-between",
+                borderBottomWidth: 1,
+                marginTop: 15,
+                width:"85%",
+                display:"flex",
+              }}
+              key={id.date.seconds}
+            >
+              <div style={{ flexDirection: "row",display:"flex", alignItems: "center",width:"70%" }}>
+                <div
+                  style={{
+                    backgroundColor: "#2E2E2E",
+                    height: 10,
+                    width: 10,
+                    borderRadius: 80,
+                  }}
+                ></div>
+                <div style={{ marginLeft: 15 }}>
+                  <p
+                    style={{ fontSize:16, fontWeight: "bold", color: "black",margin:0,padding:0 }}
+                  >
+                    {id.name}
+                  </p>
+                  <p style={{ fontSize: 14, color: "black",marginTop:5,padding:0 }}>
+                    {moment(
+                      id.date.seconds
+                        ? id.date.seconds * 1000
+                        : new Date(
+                            id.date.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")
+                          )
+                    ).format("LL")}
+                  </p>
+                </div>
+              </div>
+              
+                  <div style={{ flexDirection: "row",width:"25%" }}>
+                    <div
+                      style={{
+                        backgroundColor: "#fcd54a",
+                        padding: 5,
+                        borderRadius: 7,
+                        width:"100%"
+                      }}
+                      activeOpacity={1}
+                    >
+                      <p style={{ color: "black", fontSize: 14 ,textAlign:"center",margin:0,padding:0}}>
+                      {moment(id.date.seconds ? id.date.seconds*1000 :  new Date(id.date.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).endOf('day').fromNow().slice(3,4) == 'a' ? 
+                      "1" + moment(id.date.seconds ? id.date.seconds*1000 :  new Date(id.date.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).endOf('day').fromNow().slice(4,)
+                      : moment(id.date.seconds ? id.date.seconds*1000 :  new Date(id.date.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))).endOf('day').fromNow().slice(3,)}
+                      </p>
+                      <p style={{ color: "black", fontSize: 14,alignSelf:"center" ,margin:0,padding:0,textAlign:"center"}}>
+                        Left
+                      </p>
+                    </div>
+                  </div>
+              </div>
+            )
+            }
+          })
+          setGoals(temp);
+        }
+    }, [userData?.id,userData?.data?.goals]);
+
+    const setsidebarfunc = () =>{
+      setSideBar("goals")
+    }
 
 
   return (
@@ -210,11 +309,11 @@ function AthleteCalendar() {
 
         <div style={{display:"flex",justifyContent:"space-evenly"}}>
           <div style={{flex:0.48,paddingLeft:20,width:"100%"}}>
-      <div style={{display:"flex",alignItems:"center",marginBottom:20,marginRight:20}}>
+      <div style={{display:"flex",alignItems:"center",marginBottom:20,marginRight:30}}>
           <span onClick={()=>setSideBar("eventsHistory")} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"auto"}}>
             Events History
           </span>
-        <button onClick={()=>setSideBar("createEvent")} style={{backgroundColor:"#fcd54a",fontSize:25,fontWeight:"bold",cursor:"pointer",padding:5,paddingLeft:12,paddingRight:12,border:"none",borderRadius:5,marginLeft:15}}>
+        <button onClick={()=>setSideBar("AddGoal")} style={{backgroundColor:"#fcd54a",fontSize:25,fontWeight:"bold",cursor:"pointer",padding:5,paddingLeft:12,paddingRight:12,border:"none",borderRadius:5,marginLeft:15}}>
            +
         </button>
       </div>
@@ -300,7 +399,13 @@ function AthleteCalendar() {
         )}
       </div>
           </div>
-          <div style={{flex:0.48,marginTop:60,backgroundColor:"white",paddingLeft:30,borderRadius:10,alignSelf:"flex-start",paddingBottom:20}}>
+          <div style={{flex:0.48,alignSelf:"flex-start"}}>
+          <div style={{display:"flex",alignItems:"center",marginBottom:20,marginRight:20}}>
+          <span onClick={()=>setSideBar("goals")} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"auto"}}>
+            Athlete Goals
+          </span>
+          </div>
+          <div style={{backgroundColor:"white",paddingLeft:30,borderRadius:10,alignSelf:"flex-start",paddingBottom:20,paddingTop:10,marginRight:15}}>
               {sideBar == "eventsHistory" ? 
                 eventHistoryOpen ? 
                   <div>
@@ -314,6 +419,30 @@ function AthleteCalendar() {
                     <p onClick={()=>setEventHistoryOpen(true)} style={{textAlign:"center",color: "#acacac",cursor:"pointer"}}>+ {eventHistory.length - 6} more</p>:null}
                 </div>
                  : null}
+
+              {sideBar == "goals" ? 
+                goals ? 
+                  <div>
+                      <p style={{fontWeight:"bold",fontSize:18}}>Goals</p>
+                    {goals}
+                </div> : 
+                <div>
+                    <p style={{fontWeight:"bold",fontSize:18}}>Goals</p>
+                    {goals.slice(0,6)}
+                    {goals.length > 6 ?
+                    <p onClick={()=>setEventHistoryOpen(true)} style={{textAlign:"center",color: "#acacac",cursor:"pointer"}}>+ {goals.length - 6} more</p>:null}
+                </div>
+                 : null}  
+
+              {sideBar == "AddGoal" ? 
+                <div>
+                  <p style={{fontWeight:"bold",fontSize:18}}>Add Goals</p>
+                  <AddGoal setsidebarfunc={setsidebarfunc}/>
+                </div>
+                 : null}  
+
+
+            </div>
           </div>
         </div>
 

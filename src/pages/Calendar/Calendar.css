@@ -105,7 +105,11 @@
   border-radius: 10px;
   min-width: 380px !important;
 }
-
+.customcalendarAddGoal{
+  min-width: 350px !important;
+  margin-left: -10px;
+  box-shadow: none;
+}
 .eventsContainerScreen {
   width: 380px;
   margin-top: 20px;
@@ -114,7 +118,7 @@
   background-color: white;
 
   font-size: 15px;
-  box-shadow: 0 1em 4em rgb(0 0 0 / 7%);
+  box-shadow: none;
   box-sizing: border-box;
 }
 .Calendar {
