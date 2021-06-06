@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Notification from "../../Components/Notifications/Notification";
-import PopupComponent from "../../Components/Popup/PopupComponent";
+
 import {
   selectUser,
   selectUserData,
@@ -13,7 +13,7 @@ import { db } from "../../utils/firebase";
 import CoachDashboard from "./CoachDashboard";
 import CoachHomeReports from "./CoachHomeReports";
 import "./Home.css";
-import "reactjs-popup/dist/index.css";
+
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import CloseIcon from "@material-ui/icons/Close";
