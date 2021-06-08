@@ -12,7 +12,7 @@ function Event_card(props) {
     <div>
       {events.map((item) => {
         return (
-          <div style={{}}>
+          <div key={item.id} style={{}}>
             <div
               className=""
               style={{
@@ -20,7 +20,8 @@ function Event_card(props) {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: 20,
+                marginTop: 10,
+                width: 300,
               }}
             >
               <div

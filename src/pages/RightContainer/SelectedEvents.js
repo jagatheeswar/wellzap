@@ -8,19 +8,19 @@ function Selected_events(props) {
   if (events.length > props.count) {
     var events = events.slice(0, props.count);
   }
-  console.log("sss,", events, dates);
+
   return (
     <div>
       {dates.map((item) => {
         return (
-          <div style={{}}>
+          <div key={item.id} style={{}}>
             <div
               className=""
               style={{
                 display: "flex",
                 width: 280,
                 flexDirection: "row",
-                marginTop: 20,
+                marginTop: 10,
                 justifyContent: "space-between",
               }}
             >

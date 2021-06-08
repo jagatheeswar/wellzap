@@ -14,7 +14,7 @@ import {
 import Event_card from "./Event_card";
 import Selected_events from "./SelectedEvents";
 
-const Calendar_ = () => {
+const Calendar_coach = () => {
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
   const dispatch = useDispatch();
@@ -108,7 +108,7 @@ const Calendar_ = () => {
     setSelectedDay(today_date);
     if (userData) {
       db.collection("events")
-        .where("athletes", "array-contains", userData.id)
+        .where("coachID", "==", userData.id)
         .get()
         .then((snapshot) => {
           snapshot.docs.forEach((item) => {
@@ -307,4 +307,4 @@ const Calendar_ = () => {
   );
 };
 
-export default Calendar_;
+export default Calendar_coach;

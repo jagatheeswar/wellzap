@@ -37,6 +37,8 @@ import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
 import AthletePayments from "./pages/Payments/AthletePayments";
 import CoachPayments from "./pages/Payments/CoachPayments";
+import Reports from "./pages/Reports/Reports";
+import Graph3_ from "./pages/Reports/Graph3";
 
 function App() {
   const user = useSelector(selectUser);
@@ -173,6 +175,7 @@ function App() {
               <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
             </Route>
 
+            <Route path="/r" component={Reports} />
             <Route path="/profile/measurements">
               <RoutesComp
                 AthleteComp={<AthleteMeasurements />}
