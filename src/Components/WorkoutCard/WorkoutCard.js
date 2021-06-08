@@ -1,17 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { selectUserType } from "../../features/userSlice";
 import "./WorkoutCard.css";
 
 function WorkoutCard({
-  workout,
+  workouts,
   idx,
   item,
-  navigation,
   showDate,
   type,
   completed,
+  athlete_id,
 }) {
+  const userType = useSelector(selectUserType);
+  const [date, setDate] = useState("");
+  const history = useHistory();
+
+  useEffect(() => {
+    if (showDate) {
+      if (item?.data?.date) {
+        setDate(item?.data?.date.split("-").reverse().join("-"));
+      }
+    }
+  }, [type, item]);
+
   return (
-    <div className="workoutCard">
+    <div
+      className="workoutCard"
+      onClick={() => {
+        if (userType === "coach") {
+          if (type === "non-editable" && !completed) {
+            console.log("clicked 1");
+            history.push({
+              pathname: "/assign-workout",
+              state: {
+                workout: workouts[idx],
+                workoutName: item?.data?.preWorkout?.workoutName,
+                assignType: "non-editable",
+              },
+            });
+          } else if (completed === true) {
+            console.log("clicked 2");
+            history.push({
+              pathname: "/post-workout",
+              state: {
+                workout: item,
+                workoutName: item?.data?.preWorkout?.workoutName,
+                completed: true,
+              },
+            });
+          } else {
+            if (item.data?.assignedToId) {
+              console.log("clicked 3");
+              history.push({
+                pathname: "/assign-workout",
+                state: {
+                  workout: workouts[idx],
+                  workoutName: item?.data?.preWorkout?.workoutName,
+                  assignType: "update",
+                  athlete_id: athlete_id,
+                },
+              });
+            } else {
+              console.log("clicked 4");
+              history.push({
+                pathname: "/assign-workout",
+                state: {
+                  workout: workouts[idx],
+                  workoutName: item?.data?.preWorkout?.workoutName,
+                  assignType: "create",
+                },
+              });
+            }
+          }
+        } else {
+          if (completed === true) {
+            history.push({
+              pathname: "/post-workout",
+              state: {
+                workout: item,
+                workoutName: item?.data?.preWorkout?.workoutName,
+                completed: true,
+              },
+            });
+          } else {
+            history.push({
+              pathname: "/post-workout",
+              state: {
+                workout: workouts[idx],
+                workoutName: item?.data?.preWorkout?.workoutName,
+                assignType: "view",
+              },
+            });
+          }
+        }
+      }}
+    >
       <img
         src="/assets/illustration.jpeg"
         alt=""
