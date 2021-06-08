@@ -1,27 +1,28 @@
 import React from "react";
 import moment from "moment";
-function Event_card(props) {
+
+function SelectedEvents(props) {
   var events = props.data;
+  var dates = props.dates;
   let eventslength = events.length;
 
   if (events.length > props.count) {
     var events = events.slice(0, props.count);
   }
-
+  console.log("sss,", events, dates);
   return (
     <div>
-      {events.map((item) => {
+      {dates.map((item) => {
         return (
-          <div key={item.id} style={{}}>
+          <div style={{}}>
             <div
               className=""
               style={{
                 display: "flex",
+                width: 280,
                 flexDirection: "row",
+                marginTop: 20,
                 justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: 10,
-                width: 300,
               }}
             >
               <div
@@ -47,17 +48,23 @@ function Event_card(props) {
                       fontWeight: "bold",
                       fontSize: 15,
                       marginBottom: 3,
+                      borderWidth: 1,
+                      borderColor: "red",
                     }}
                   >
-                    {item.eventName && item.eventName}
+                    {events[item].eventName && events[item].eventName}
                   </div>
                   <div className="upcoming_event_time" style={{ fontSize: 13 }}>
-                    {item.eventDate && moment(item.eventDate).format("LL")}
+                    {events[item].eventDate &&
+                      moment(events[item].eventDate).format("LL")}
                   </div>
                 </div>
               </div>
 
-              <div className="upcoming_event_right">
+              <div
+                className="upcoming_event_right"
+                style={{ marginRight: -20 }}
+              >
                 <button
                   style={{
                     height: 25,
@@ -65,13 +72,14 @@ function Event_card(props) {
                     color: "black",
                   }}
                 >
-                  {item.eventDate && moment(item.eventDate).format("LT")}
+                  {events[item].eventDate &&
+                    moment(events[item].eventDate).format("LT")}
                 </button>
               </div>
             </div>
             <div style={{ marginLeft: 20 }}>
-              <a style={{textDecoration:"none"}} href={item.showVideoLink && item.videolink}>
-                {item.showVideoLink && item.videolink}
+              <a style={{textDecoration:"none"}} href={events[item].showVideoLink && events[item].videolink}>
+                {events[item].showVideoLink && events[item].videolink}
               </a>
             </div>
           </div>
@@ -81,4 +89,4 @@ function Event_card(props) {
   );
 }
 
-export default Event_card;
+export default SelectedEvents;

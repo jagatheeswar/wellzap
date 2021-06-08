@@ -124,10 +124,10 @@ function CoachPayments() {
               </div>:today}
               <p><b>Pending</b></p>
               {pendingOpen ? null : pending.slice(0,4)}
-              {pending.length > 4 ? pendingOpen ? pending : <div onClick={()=>setPendingOpen(true)} style={{textAlign:"center"}}>{pending.length - 4} more</div> : null}
+              {pending.length > 4 ? pendingOpen ? pending : <div onClick={()=>setPendingOpen(true)} style={{textAlign:"center",cursor:"pointer"}}>{pending.length - 4} more</div> : null}
               <p><b>Due Soon</b></p>
               {upcomingOpen ?null: upcoming.slice(0,4)}
-              {upcoming.length > 4 ? upcomingOpen ? upcoming : <div onClick={()=>setUpcomingOpen(true)} style={{textAlign:"center"}}>{upcoming.length - 4} more</div> : null}
+              {upcoming.length > 4 ? upcomingOpen ? upcoming : <div onClick={()=>setUpcomingOpen(true)} style={{textAlign:"center",cursor:"pointer"}}>{upcoming.length - 4} more</div> : null}
 
             </div>
           </div>
@@ -171,7 +171,7 @@ function CoachPayments() {
             <div style={{margin:20,width:"100%"}}>
               <p><b>Completed</b></p>
               {completedOpen ?null: completed.slice(0,4)}
-              {completed.length > 4 ? completedOpen ? completed : <div onClick={()=>setCompletedOpen(true)} style={{textAlign:"center"}}>{completed.length - 4} more</div> : null}
+              {completed.length > 4 ? completedOpen ? completed : <div onClick={()=>setCompletedOpen(true)} style={{textAlign:"center",cursor:"pointer"}}>{completed.length - 4} more</div> : null}
             </div>
           </div>
         </div>

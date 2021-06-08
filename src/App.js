@@ -30,7 +30,7 @@ import CoachNutritionHome from "./pages/Nutrition/CoachNutritionHome";
 import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
 import AllAthletes from "./pages/AllAthletes/AllAthletes";
 import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
-import Messaging from "./pages/Messaging/Messaging";
+import Messaging from "./pages/Messaging/CoachMessaging";
 import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
 import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
@@ -39,6 +39,10 @@ import AthletePayments from "./pages/Payments/AthletePayments";
 import CoachPayments from "./pages/Payments/CoachPayments";
 import Reports from "./pages/Reports/Reports";
 import Graph3_ from "./pages/Reports/Graph3";
+import AthleteCalendar from "./pages/Calendar/AthleteCalendar";
+import CoachCalendar from "./pages/Calendar/CoachCalendar";
+import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
+import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLifestyleAssessment";
 
 function App() {
   const user = useSelector(selectUser);
@@ -188,12 +192,7 @@ function App() {
                 CoachComp={<CoachAddMeal />}
               />
             </Route>
-            <Route path="/profile/measurements/medical-assessment">
-              <RoutesComp
-                AthleteComp={<AthleteMedicalAssessment />}
-                CoachComp={<AthleteMedicalAssessment />}
-              />
-            </Route>
+
             <Route path="/workouts">
               <RoutesComp
                 AthleteComp={<AthleteWorkouts />}
@@ -252,6 +251,36 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthletePayments />}
                 CoachComp={<CoachPayments />}
+              />
+            </Route>
+            <Route path="/calendar">
+              <RoutesComp
+                AthleteComp={<AthleteCalendar />}
+                CoachComp={<CoachCalendar />}
+              />
+            </Route>
+            <Route path="/anthropometric-measurements">
+              <RoutesComp
+                AthleteComp={<AthleteMeasurements />}
+                CoachComp={<AthleteMeasurements />}
+              />
+            </Route>
+            <Route path="/medical-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteMedicalAssessment />}
+                CoachComp={<AthleteMedicalAssessment />}
+              />
+            </Route>
+            <Route path="/training-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteTrainingAssessment />}
+                CoachComp={<AthleteTrainingAssessment />}
+              />
+            </Route>
+            <Route path="/food-and-lifestyle-assessment">
+              <RoutesComp
+                AthleteComp={<AthleteFoodAndLifestyleAssessment />}
+                CoachComp={<AthleteFoodAndLifestyleAssessment />}
               />
             </Route>
             <Route component={NotFound} />

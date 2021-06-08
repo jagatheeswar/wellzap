@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
-function Event_card(props) {
+
+function EventCard(props) {
   var events = props.data;
   let eventslength = events.length;
 
@@ -12,7 +13,7 @@ function Event_card(props) {
     <div>
       {events.map((item) => {
         return (
-          <div key={item.id} style={{}}>
+          <div style={{}}>
             <div
               className=""
               style={{
@@ -20,8 +21,7 @@ function Event_card(props) {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: 10,
-                width: 300,
+                marginTop: 20,
               }}
             >
               <div
@@ -81,4 +81,4 @@ function Event_card(props) {
   );
 }
 
-export default Event_card;
+export default EventCard;

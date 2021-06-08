@@ -193,10 +193,6 @@ const Calendar_ = () => {
       <div className="calendar_header">
         <span className="calendar_title">Calendar</span>
         <span className="calendar_right">
-          <i
-            class="fa fa-search"
-            style={{ fontSize: "17px", fontWeight: 100 }}
-          ></i>
           <button className="add_event">+</button>
         </span>
       </div>
