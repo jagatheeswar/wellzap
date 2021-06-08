@@ -178,10 +178,13 @@ function EquipmentsDropdown({ name, idx, list, state, setState }) {
           },
         ];
 
-        let items = [...state];
-        items[idx].exercises = value;
-        setState(items);
+        setState(value);
       }
+    } else if (name === "Search for Athletes") {
+      value.map((v) => {
+        v.selectedDays = [];
+      });
+      setState(value);
     } else {
       setState(value);
     }

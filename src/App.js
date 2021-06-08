@@ -28,6 +28,7 @@ import AthleteNutrition from "./pages/Nutrition/AthleteNutrition";
 import CreateNutrition from "./pages/Nutrition/CreateNutrition";
 import CoachNutritionHome from "./pages/Nutrition/CoachNutritionHome";
 import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
+import AssignWorkout from "./pages/Workouts/AssignWorkout";
 import AllAthletes from "./pages/AllAthletes/AllAthletes";
 import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
 import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
@@ -43,6 +44,7 @@ import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLif
 import Messaging from "./pages/Messaging/Messaging";
 import ChatCard from "./pages/Messaging/ChatCard";
 import ChatHomeScreen from "./pages/Messaging/ChatHomeScreen";
+
 
 function App() {
   const user = useSelector(selectUser);
@@ -218,8 +220,8 @@ function App() {
             </Route>
             <Route path="/assign-workout">
               <RoutesComp
-                AthleteComp={<CoachCreateWorkout />}
-                CoachComp={<CoachCreateWorkout />}
+                AthleteComp={<AssignWorkout />}
+                CoachComp={<AssignWorkout />}
               />
             </Route>
             <Route path="/nutrition">
@@ -234,6 +236,7 @@ function App() {
                 CoachComp={<CoachAddMeal />}
               />
             </Route>
+            
             <Route path="/coach-nutrition-home">
               <RoutesComp
                 AthleteComp={<CoachNutritionHome />}
