@@ -36,13 +36,14 @@ import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
 import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
+import ViewAllNutrition from "./pages/Nutrition/ViewAllNutrition";
+import ViewAllSavedNutrition from "./pages/Nutrition/ViewAllSavedNutrition";
 import AthletePayments from "./pages/Payments/AthletePayments";
 import CoachPayments from "./pages/Payments/CoachPayments";
 import AthleteCalendar from "./pages/Calendar/AthleteCalendar";
 import CoachCalendar from "./pages/Calendar/CoachCalendar";
 import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
 import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLifestyleAssessment";
-
 
 function App() {
   const user = useSelector(selectUser);
@@ -228,13 +229,25 @@ function App() {
                 CoachComp={<CoachNutritionHome />}
               />
             </Route>
+            <Route path="/view-all-nutrition">
+              <RoutesComp
+                AthleteComp={<ViewAllNutrition />}
+                CoachComp={<ViewAllNutrition />}
+              />
+            </Route>
+            <Route path="/view-all-saved-nutrition">
+              <RoutesComp
+                AthleteComp={<ViewAllSavedNutrition />}
+                CoachComp={<ViewAllSavedNutrition />}
+              />
+            </Route>
             <Route path="/add-meal">
               <RoutesComp
                 AthleteComp={<AthleteAddMeal />}
                 CoachComp={<CoachAddMeal />}
               />
             </Route>
-            
+
             <Route path="/coach-nutrition-home">
               <RoutesComp
                 AthleteComp={<CoachNutritionHome />}
