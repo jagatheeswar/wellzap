@@ -10,7 +10,7 @@ function EventCard(props) {
   }
 
   return (
-    <div>
+    <div style={{width:"100%"}}>
       {events.map((item) => {
         return (
           <div style={{}}>
@@ -31,10 +31,6 @@ function EventCard(props) {
                   alignItems: "center",
                 }}
               >
-                <i
-                  class="fa fa-circle"
-                  style={{ fontSize: 10, marginRight: 8 }}
-                ></i>
                 <div
                   style={{
                     display: "flex",
@@ -49,9 +45,13 @@ function EventCard(props) {
                       marginBottom: 3,
                     }}
                   >
+                  <i
+                  class="fa fa-circle"
+                  style={{ fontSize: 10, marginRight: 8 }}
+                ></i>
                     {item.eventName && item.eventName}
                   </div>
-                  <div className="upcoming_event_time" style={{ fontSize: 13 }}>
+                  <div className="upcoming_event_time" style={{ fontSize: 13,marginLeft:20 }}>
                     {item.eventDate && moment(item.eventDate).format("LL")}
                   </div>
                 </div>

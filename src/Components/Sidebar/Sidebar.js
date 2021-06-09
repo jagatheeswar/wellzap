@@ -62,6 +62,7 @@ function Sidebar() {
             />
             <SidebarComponent logo="user" name="Coaches" />
             <SidebarComponent logo="message" name="Messaging" />
+            <SidebarComponent logo="rupee" name="Payments" path="payments"/>
             <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
           </div>
         )}
