@@ -17,6 +17,7 @@ const options = {
   maintainAspectRatio: false,
   labels: {
     fontColor: "red",
+    display: "false",
   },
   plugins: {
     legend: {
@@ -39,6 +40,7 @@ const options = {
 
       ticks: {
         color: "black",
+        display: false,
         font: {
           size: 14,
         },
@@ -95,8 +97,8 @@ const Graph3_ = () => {
   const [graph3Data3, setGraph3Data3] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [bar_colors, setbar_colors] = useState([]);
   useEffect(() => {
-    if (userData) {
-      if (userType === "coach") {
+    if (userType) {
+      if (userType) {
         db.collection("athletes")
           .doc("Zonwno1E5oyZ3sYImBjY")
           .get()
@@ -234,10 +236,9 @@ const Graph3_ = () => {
 
       console.log("Inside weight graph useEffect");
       console.log("Second one");
-      console.log(graph3Options);
+
       console.log("Tthird one");
       if (athleteDetails?.data?.metrics) {
-        console.log(athleteDetails.data);
         if (graph3Options === "weight") {
           while (count <= diff) {
             if (athleteDetails?.data?.metrics[tempDate]) {
@@ -479,7 +480,7 @@ const Graph3_ = () => {
         setGraph3Data3(temp3);
       }
     }
-  }, [currentStartWeek, currentEndWeek, graph3Options, athleteDetails]);
+  }, [graph3Options, athleteDetails]);
 
   useEffect(() => {
     let labels = [];
@@ -502,26 +503,46 @@ const Graph3_ = () => {
 
       labels.push(s);
     }
-    console.log(graph3Data1, graph3Data3);
 
-    const data1 = {
-      labels: labels,
-      datasets: [
-        { label: "1", data: graph3Data1, borderColor: "#fcd54a" },
-        {
-          label: "2",
-          data: graph3Data2,
-          borderColor: "#3d3d3d",
-        },
-        {
-          label: "3",
-          data: graph3Data3,
-          borderColor: "#d3d3d3",
-        },
-      ],
-    };
-    setchart_data2(data1);
-  }, [complianceData]);
+    if (graph3Options == "weight") {
+      var data1 = {
+        labels: labels,
+        datasets: [{ label: "1", data: graph3Data1, borderColor: "#d3d3d3" }],
+      };
+      setchart_data2(data1);
+    } else if (graph3Options == "fat") {
+      var data1 = {
+        labels: labels,
+        datasets: [{ label: "1", data: graph3Data2, borderColor: "#fcd54a" }],
+      };
+      setchart_data2(data1);
+    } else if (graph3Options == "muscle") {
+      var data1 = {
+        labels: labels,
+        datasets: [{ label: "1", data: graph3Data3, borderColor: "black" }],
+      };
+      setchart_data2(data1);
+    } else {
+      var data1 = {
+        labels: labels,
+        datasets: [
+          { label: "1", data: graph3Data1, borderColor: "#d3d3d3" },
+          {
+            label: "2",
+            data: graph3Data2,
+            borderColor: "#fcd54a",
+          },
+          {
+            label: "3",
+            data: graph3Data3,
+            borderColor: "black",
+          },
+        ],
+      };
+
+      setchart_data2(data1);
+    }
+  }, [complianceData, graph3Options, graph3Data1, graph3Data2, graph3Data3]);
 
   useEffect(() => {
     var curr = new Date(); // get current date
@@ -654,7 +675,7 @@ const Graph3_ = () => {
     }
 
     const data1 = {
-      labels: labels,
+      labels: [labels],
 
       datasets: [
         {
@@ -697,23 +718,6 @@ const Graph3_ = () => {
     return [day, month, year].join(" ");
   }
 
-  const dropdown_options = [
-    {
-      key: "1",
-      text: "weight",
-      value: "weight",
-    },
-    {
-      key: "2",
-      text: "fat",
-      value: "fat",
-    },
-    {
-      key: "3",
-      text: "muscle",
-      value: "muscle",
-    },
-  ];
   function labels() {
     let datasets = chart_data2.datasets;
     let data = [
@@ -723,7 +727,7 @@ const Graph3_ = () => {
       },
       {
         label: "Muscle",
-        color: "#fcd54a",
+        color: "black",
       },
       {
         label: "Weight",
@@ -732,7 +736,6 @@ const Graph3_ = () => {
     ];
     if (data) {
       let stack_label = Object.keys(data).map((item) => {
-        console.log(data[item]);
         return (
           <li
             style={{
@@ -740,6 +743,7 @@ const Graph3_ = () => {
               justifyContent: "center",
               flexDirection: "row",
               alignItems: "center",
+              marginRight: 20,
             }}
           >
             {" "}
@@ -750,7 +754,7 @@ const Graph3_ = () => {
                 borderRadius: 7,
                 borderWidth: 1,
                 borderColor: "red",
-                marginRight: 10,
+                marginRight: 5,
                 backgroundColor: data[item]["color"],
               }}
             ></div>
@@ -759,12 +763,13 @@ const Graph3_ = () => {
         );
       });
       return (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <ul
             style={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
+              flexDirection: "row",
+              justifyContent: "center",
+              marginBlockStart: 0,
             }}
           >
             , {stack_label}
@@ -775,78 +780,61 @@ const Graph3_ = () => {
   }
 
   return (
-    <div className="chart_">
-      <div
-        className="chart_legend"
-        style={{ color: "#808080", fontSize: 20, margin: 20 }}
-      >
-        Weekly Report
-      </div>
-      {/* <div className="dropdown_" style={{ padding: 20 }}>
-        <Dropdown_
-          change_graph={changeGraph_option}
-          options={dropdown_options}
-        />
-      </div> */}
-
-      <div className="chart_header">
-        <img
-          onClick={() => {
-            var curr = new Date(currentStartWeek); // get current date
-            var first = curr.getDate() - curr.getDay() - 30; // First day is the  day of the month - the day of the week \
-
-            var firstday = new Date(curr.setDate(first)).toUTCString();
-            console.log(firstday, first);
-            var lastday = new Date(
-              curr.setDate(curr.getDate() + 6)
-            ).toUTCString();
-
-            setCurrentStartWeek(formatSpecificDate(firstday));
-          }}
-          className="left_arrow"
-          width={10}
-          alt="legend"
-          style={{ marginRight: "auto" }}
-          src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
-        />
+    <div className="chart_container">
+      <div className="chart_">
         <div
           className="chart_legend"
-          style={{ color: "#808080", fontSize: 17 }}
-        >
-          {
-            (console.log(currentStartWeek),
-            console.log(formatDate2(currentStartWeek)))
-          }
-          {formatDate2(currentStartWeek)} - {formatDate2(currentEndWeek)}
-        </div>
-        <img
-          onClick={() => {
-            var curr = new Date(currentStartWeek); // get current date
-            var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
-
-            var firstday = new Date(curr.setDate(first)).toUTCString();
-            var lastday = new Date(
-              curr.setDate(curr.getDate() + 6)
-            ).toUTCString();
-            if (!(moment(firstday).valueOf() > moment().valueOf())) {
-              setCurrentStartWeek(formatSpecificDate(firstday));
-              setCurrentEndWeek(formatSpecificDate(lastday));
-            }
+          style={{
+            color: "#808080",
+            display: "flex",
+            fontSize: 20,
+            justifyContent: "space-around",
+            alignItems: "center",
+            marginBottom: 5,
+            paddingBottom: 20,
           }}
-          className="right_arrow"
-          width={10}
-          alt="legend"
-          src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
-          style={{ transform: "rotate(180deg)", marginLeft: "auto" }}
-        />
-      </div>
-      {labels()}
+        >
+          Weekly Report
+          <div className="dropdown_" style={{ padding: 15 }}>
+            <Dropdown_
+              change_graph={changeGraph_option}
+              options={dropdown_options}
+            />
+          </div>
+        </div>
 
-      <div className="chart_bar" style={{ marginTop: 20 }}>
-        <Line width="350" height="300" data={chart_data2} options={options} />
+        <div className="chart_header"></div>
+        {graph3Options !== "all" ? "" : labels()}
+
+        <div className="chart_bar" style={{ marginTop: 20 }}>
+          <Line width="350" height="200" data={chart_data2} options={options} />
+        </div>
       </div>
     </div>
   );
 };
 
 export default Graph3_;
+
+const dropdown_options = [
+  {
+    key: "1",
+    text: "all",
+    value: "all",
+  },
+  {
+    key: "2",
+    text: "fat",
+    value: "fat",
+  },
+  {
+    key: "3",
+    text: "muscle",
+    value: "muscle",
+  },
+  {
+    key: "4",
+    text: "weight",
+    value: "weight",
+  },
+];

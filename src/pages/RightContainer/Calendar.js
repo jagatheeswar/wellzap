@@ -183,6 +183,7 @@ const Calendar_ = () => {
           setUpcoming(upcoming_temp);
           settdy(tdy);
           setupcomingevents(upcomingevents);
+          console.log(upcomingevents);
         })
         .catch((e) => console.log(e));
     }

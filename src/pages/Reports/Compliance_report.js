@@ -27,7 +27,7 @@ const options = {
     },
   },
   scales: {
-    xAxes: {
+    x: {
       scaleFontSize: 40,
       fontSize: 20,
       grid: {
@@ -48,9 +48,12 @@ const options = {
       borderWidth: 10,
     },
 
-    yAxes: {
+    y: {
+      stacked: true,
       ticks: {
         beginAtZero: true,
+        min: 0,
+        stepSize: 1,
       },
 
       grid: {
@@ -63,12 +66,13 @@ const options = {
   },
 };
 
-const Compliance_report = () => {
+const Compliance_report = (props) => {
   const [chart_data, setchart_data] = useState({});
   const [chart_data2, setchart_data2] = useState({});
   const [chart_data3, setchart_data3] = useState({});
   const userType = useSelector(selectUserType);
 
+  var height = props.height ? props.height : 300;
   const userData = useSelector(selectUserData);
   const temperoryId = useSelector(selectTemperoryId);
   const [athleteDetails, setAthleteDetails] = useState(null);
@@ -95,8 +99,8 @@ const Compliance_report = () => {
   const [graph3Data3, setGraph3Data3] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [bar_colors, setbar_colors] = useState([]);
   useEffect(() => {
-    if (userData) {
-      if (userType === "coach") {
+    if (userType) {
+      if (userType) {
         db.collection("athletes")
           .doc("Zonwno1E5oyZ3sYImBjY")
           .get()
@@ -135,12 +139,12 @@ const Compliance_report = () => {
             querySnapshot.forEach((doc) => {
               if (doc.data().postWorkout) {
                 if (tempDate === doc.data().date && doc.data().compliance) {
-                  console.log(tempDate, doc.data().date, doc.data().compliance);
-
                   if (doc.data().compliance === "Non compliant") {
                     total = 2;
                   } else if (doc.data().compliance === "Partially compliant") {
                     total = 6;
+                  } else if (doc.data().compliance === "Fully compliant") {
+                    total = 8;
                   } else {
                     total = 5;
                   }
@@ -152,17 +156,18 @@ const Compliance_report = () => {
               }
             });
 
-            console.log(total);
-
             if (total == 2) {
               bar_color.push("#454545");
-              compliance.push(2);
+              compliance.push(1);
             } else if (total == 6) {
               bar_color.push("#d3d3d3");
-              compliance.push(2);
+              compliance.push(1);
             } else if (total == 5) {
               bar_color.push("red");
-              compliance.push(2);
+              compliance.push(1);
+            } else if (total == 8) {
+              bar_color.push("#fcd54a");
+              compliance.push(1);
             } else {
               compliance.push(0);
             }
@@ -176,10 +181,7 @@ const Compliance_report = () => {
           }
           setbar_colors(bar_color);
 
-          console.log(bar_color);
-
           setComplianceData(compliance);
-          console.log("comp", compliance);
         })
         .catch((error) => {
           console.log("Error getting documents: ", error);
@@ -407,6 +409,8 @@ const Compliance_report = () => {
         label: "Partially Compliant",
         color: "#d3d3d3",
       },
+    ];
+    let data1 = [
       {
         label: "Non Compliant",
         color: "#454545",
@@ -416,102 +420,158 @@ const Compliance_report = () => {
         color: "red",
       },
     ];
-    if (data) {
-      let stack_label = Object.keys(data).map((item) => {
-        console.log(data[item]);
-        return (
-          <li style={{ display: "flex", alignItems: "center" }}>
-            {" "}
-            <div
-              style={{
-                width: 14,
-                height: 14,
-                borderRadius: 7,
-                borderWidth: 1,
-                borderColor: "red",
-                marginRight: 10,
-                backgroundColor: data[item]["color"],
-              }}
-            ></div>
-            {data[item]["label"]}
-          </li>
-        );
-      });
+
+    let stack_label = Object.keys(data).map((item) => {
       return (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <ul
+        <li
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: 12,
+          }}
+        >
+          {" "}
+          <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
+              width: 12,
+              height: 12,
+              borderRadius: 6,
+              borderWidth: 1,
+              borderColor: "red",
+              marginRight: 10,
+
+              backgroundColor: data[item]["color"],
             }}
-          >
-            , {stack_label}
-          </ul>
-        </div>
+          ></div>
+          {data[item]["label"]}
+        </li>
       );
-    }
+    });
+    let stack_label1 = Object.keys(data1).map((item) => {
+      return (
+        <li
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: 12,
+          }}
+        >
+          {" "}
+          <div
+            style={{
+              width: 12,
+              height: 12,
+              borderRadius: 6,
+              borderWidth: 1,
+              borderColor: "red",
+              marginRight: 10,
+
+              backgroundColor: data1[item]["color"],
+            }}
+          ></div>
+          {data1[item]["label"]}
+        </li>
+      );
+    });
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          paddingInlineStart: 0,
+        }}
+      >
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+
+            paddingInlineStart: 0,
+          }}
+        >
+          {stack_label}
+        </ul>
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            paddingInlineStart: 0,
+          }}
+        >
+          {stack_label1}
+        </ul>
+      </div>
+    );
   }
   return (
-    <div className="chart_">
-      <div
-        className="chart_legend"
-        style={{ color: "#808080", fontSize: 20, margin: 20 }}
-      >
-        Weekly Report
-      </div>
-
-      <div className="chart_header">
-        <img
-          onClick={() => {
-            var curr = new Date(currentStartWeek1); // get current date
-            var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
-
-            var firstday = new Date(curr.setDate(first)).toUTCString();
-            var lastday = new Date(
-              curr.setDate(curr.getDate() + 6)
-            ).toUTCString();
-
-            setCurrentStartWeek1(formatSpecificDate(firstday));
-            setCurrentEndWeek1(formatSpecificDate(lastday));
-          }}
-          className="left_arrow"
-          width={10}
-          alt="legend"
-          style={{ marginRight: "auto" }}
-          src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
-        />
+    <div className="chart_container">
+      <div className="chart_">
         <div
           className="chart_legend"
-          style={{ color: "#808080", fontSize: 17 }}
+          style={{ color: "#808080", fontSize: 20, margin: 15 }}
         >
-          {formatDate2(currentStartWeek1)} - {formatDate2(currentEndWeek1)}
+          Compliance Weekly Report
         </div>
-        <img
-          onClick={() => {
-            var curr = new Date(currentStartWeek1); // get current date
-            var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
-            var firstday = new Date(curr.setDate(first)).toUTCString();
-            var lastday = new Date(
-              curr.setDate(curr.getDate() + 6)
-            ).toUTCString();
-            if (!(moment(firstday).valueOf() > moment().valueOf())) {
+        <div className="chart_header">
+          <img
+            onClick={() => {
+              var curr = new Date(currentStartWeek1); // get current date
+              var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
+
+              var firstday = new Date(curr.setDate(first)).toUTCString();
+              var lastday = new Date(
+                curr.setDate(curr.getDate() + 6)
+              ).toUTCString();
+
               setCurrentStartWeek1(formatSpecificDate(firstday));
               setCurrentEndWeek1(formatSpecificDate(lastday));
-            }
-          }}
-          className="right_arrow"
-          width={10}
-          alt="legend"
-          src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
-          style={{ transform: "rotate(180deg)", marginLeft: "auto" }}
-        />
-      </div>
-      {labels()}
+            }}
+            className="left_arrow"
+            width={10}
+            alt="legend"
+            style={{ marginRight: "auto" }}
+            src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
+          />
+          <div
+            className="chart_legend"
+            style={{ color: "#808080", fontSize: 17 }}
+          >
+            {formatDate2(currentStartWeek1)} - {formatDate2(currentEndWeek1)}
+          </div>
+          <img
+            onClick={() => {
+              var curr = new Date(currentStartWeek1); // get current date
+              var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
-      <div className="chart_bar" style={{ marginTop: 20 }}>
-        <Bar width="350" height="300" data={chart_data2} options={options} />
+              var firstday = new Date(curr.setDate(first)).toUTCString();
+              var lastday = new Date(
+                curr.setDate(curr.getDate() + 6)
+              ).toUTCString();
+              if (!(moment(firstday).valueOf() > moment().valueOf())) {
+                setCurrentStartWeek1(formatSpecificDate(firstday));
+                setCurrentEndWeek1(formatSpecificDate(lastday));
+              }
+            }}
+            className="right_arrow"
+            width={10}
+            alt="legend"
+            src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
+            style={{ transform: "rotate(180deg)", marginLeft: "auto" }}
+          />
+        </div>
+        {labels()}
+
+        <div className="chart_bar" style={{ marginTop: 20 }}>
+          <Bar
+            width="350"
+            height={height}
+            data={chart_data2}
+            options={options}
+          />
+        </div>
       </div>
     </div>
   );

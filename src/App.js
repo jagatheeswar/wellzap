@@ -43,6 +43,8 @@ import AthleteCalendar from "./pages/Calendar/AthleteCalendar";
 import CoachCalendar from "./pages/Calendar/CoachCalendar";
 import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
 import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLifestyleAssessment";
+import Report_coach from "./pages/Reports/Report_coach";
+import Test from "./pages/Reports/Test";
 
 function App() {
   const user = useSelector(selectUser);
@@ -179,7 +181,12 @@ function App() {
               <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
             </Route>
 
-            <Route path="/r" component={Reports} />
+            <Route path="/reports">
+              <RoutesComp
+                AthleteComp={<Reports />}
+                CoachComp={<Report_coach />}
+              />
+            </Route>
             <Route path="/profile/measurements">
               <RoutesComp
                 AthleteComp={<AthleteMeasurements />}
