@@ -10,108 +10,73 @@ import {
 import { db } from "../../utils/firebase";
 
 
-function Notification({route}) {
+function AthleteNotifications({route}) {
 
   const userData = useSelector(selectUserData);
-  const [docId,setDocId] = React.useState('')
   const [readMessages,setReadMessages] = React.useState([]);
   const [unreadMessages,setUnreadMessages] = React.useState([]);
   const [switchScreen, setSwitchScreen] = React.useState(false);
 
+
+
+
+
   React.useEffect(() => {
-    if(route?.params?.docId) {
-        setDocId(route.params.docId)
-    }
-},[route?.params?.docId])
-
-
-React.useEffect(() =>{
-  if(userData?.id){
-      db.collection("CoachNotifications")
-      .where("coach_id","==", userData.id)
-      .get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-              setDocId(doc.id)
-          });
-      });
-      if(docId){
-          db.collection("CoachNotifications")
-          .doc(docId)
-          .collection("notifications")
-          .where("seen","==",false)
-          .onSnapshot((snapshot) => {
-              
-          })
-      }
-  }
+    let temp1 = [];
+    let temp2 = [];
+    db.collection("AthleteNotifications")
+    .doc(userData.id)
+    .collection("notifications")
+    .where("seen","==",false)
+    .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+            let currentID = doc.id;
+            let appObj = { ...doc.data(), ["id"]: currentID };
+            temp1.push(appObj);
+        })
+        setUnreadMessages(temp1)
+    })
+    db.collection("AthleteNotifications")
+    .doc(userData.id)
+    .collection("notifications")
+    .where("seen","==",true)
+    .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+            let currentID = doc.id;
+            let appObj = { ...doc.data(), ["id"]: currentID };
+            temp2.push(appObj);
+        })
+        setReadMessages(temp2)
+    })
 },[userData?.id])
 
-React.useEffect(() => {
-  if(docId){
-      let temp1 = [];
-      let temp2 = [];
-      db.collection("CoachNotifications")
-      .doc(docId)
-      .collection("notifications")
-      .where("seen","==",false)
-      .onSnapshot((snapshot) => {
-          snapshot.forEach((doc) => {
-              let currentID = doc.id;
-              let appObj = { ...doc.data(), ["id"]: currentID };
-              temp1.push(appObj);
-          })
-          setUnreadMessages(temp1)
-      })
-      console.log(docId)
-      db.collection("CoachNotifications")
-      .doc(docId)
-      .collection("notifications")
-      .where("seen","==",true)
-      .onSnapshot((snapshot) => {
-          snapshot.forEach((doc) => {
-              let currentID = doc.id;
-              let appObj = { ...doc.data(), ["id"]: currentID };
-              temp2.push(appObj);
-          })
-          setReadMessages(temp2)
-      })
-
-    
-  }
-},[docId,userData?.id])
-
 const getData = () => {
-  if(docId){
-      let temp1 = [];
-      let temp2 = [];
-      db.collection("CoachNotifications")
-      .doc(docId)
-      .collection("notifications")
-      .where("seen","==",false)
-      .onSnapshot((snapshot) => {
-          snapshot.forEach((doc) => {
-              let currentID = doc.id;
-              let appObj = { ...doc.data(), ["id"]: currentID };
-              temp1.push(appObj);
-          })
-          setUnreadMessages(temp1)
-      })
-      console.log(docId)
-      db.collection("CoachNotifications")
-      .doc(docId)
-      .collection("notifications")
-      .where("seen","==",true)
-      .onSnapshot((snapshot) => {
-          snapshot.forEach((doc) => {
-              let currentID = doc.id;
-              let appObj = { ...doc.data(), ["id"]: currentID };
-              temp2.push(appObj);
-          })
-          setReadMessages(temp2)
-      })
-
-    
-  }
+    let temp1 = [];
+    let temp2 = [];
+    db.collection("AthleteNotifications")
+    .doc(userData.id)
+    .collection("notifications")
+    .where("seen","==",false)
+    .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+            let currentID = doc.id;
+            let appObj = { ...doc.data(), ["id"]: currentID };
+            temp1.push(appObj);
+        })
+        setUnreadMessages(temp1)
+    })
+    db.collection("AthleteNotifications")
+    .doc(userData.id)
+    .collection("notifications")
+    .where("seen","==",true)
+    .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+            let currentID = doc.id;
+            let appObj = { ...doc.data(), ["id"]: currentID };
+            temp2.push(appObj);
+        })
+        setReadMessages(temp2)
+    })
 }
   return (
       <div style={{flex:1}}>
@@ -120,13 +85,12 @@ const getData = () => {
         {switchScreen === false &&
            <div style={{borderColor:"#d3d3d3", borderwidth:1,borderRadius:8,cursor:"pointer"}} 
                onClick={() => {
-                   db.collection("CoachNotifications")
-                   .doc(docId)
+                   db.collection("AthleteNotifications")
+                   .doc(userData.id)
                    .collection("notifications")
                    .get()
                   .then(function(querySnapshot) {
-                  // Once we get the results, begin a batch
-                 var batch = db.batch();
+                    var batch = db.batch();
 
                   querySnapshot.forEach(function(doc) {
                   // For each doc, add a delete operation to the batch
@@ -183,4 +147,4 @@ const getData = () => {
   );
 }
 
-export default Notification;
+export default AthleteNotifications;

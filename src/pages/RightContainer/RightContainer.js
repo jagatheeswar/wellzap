@@ -1,16 +1,23 @@
 import React from "react";
 import CalendarComponent from "../../Components/Calendar/CalendarComponent";
 import Notification from "../../Components/Notifications/Notification";
+import AthleteNotifications from "../../Components/Notifications/AthleteNotifications"
 import Calendar_ from "./Calendar";
 import Calendar_coach from "./Calendar_coach";
-import { useSelector } from "react-redux";
-import { selectUserType } from "../../features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUser,
+  selectUserData,
+  selectUserType,
+  setUserData,
+} from "../../features/userSlice";
+
 function RightContainer() {
   const userType = useSelector(selectUserType);
   console.log(userType);
   return (
     <div className="rightContainer">
-      <Notification />
+      {userType == "coach" ?<Notification /> : <AthleteNotifications />}
       <h1>Calendar</h1>
       {userType == "coach" ? <Calendar_coach /> : <Calendar_ />}
 

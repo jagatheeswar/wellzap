@@ -43,13 +43,9 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
-            <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
-            <SidebarComponent
-              logo="message"
-              name="Messaging"
-              path="messaging"
-            />
-            <SidebarComponent logo="rupee" name="Payments" path="payments"/>
+            <SidebarComponent logo="calendar" name="Calendar" path="calendar" />
+            <SidebarComponent logo="message" name="Messaging" path="chat" />
+            <SidebarComponent logo="rupee" name="Payments" path="payments" />
             <SidebarComponent logo="settings" name="Settings" />
           </div>
         ) : (
@@ -61,8 +57,13 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Coaches" />
-            <SidebarComponent logo="message" name="Messaging" />
+            <SidebarComponent logo="rupee" name="Payments" path="payments"/>
             <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
+            <SidebarComponent
+              logo="message"
+              name="Messaging"
+              path="messaging"
+            />
           </div>
         )}
       </div>

@@ -11,7 +11,7 @@ function SelectedEvents(props) {
   }
   console.log("sss,", events, dates);
   return (
-    <div>
+    <div style={{width:"100%"}}>
       {dates.map((item) => {
         return (
           <div style={{}}>
@@ -19,7 +19,7 @@ function SelectedEvents(props) {
               className=""
               style={{
                 display: "flex",
-                width: 280,
+                width: "100%",
                 flexDirection: "row",
                 marginTop: 20,
                 justifyContent: "space-between",
@@ -32,10 +32,7 @@ function SelectedEvents(props) {
                   alignItems: "center",
                 }}
               >
-                <i
-                  class="fa fa-circle"
-                  style={{ fontSize: 10, marginRight: 8 }}
-                ></i>
+
                 <div
                   style={{
                     display: "flex",
@@ -52,9 +49,13 @@ function SelectedEvents(props) {
                       borderColor: "red",
                     }}
                   >
+                  <i
+                  class="fa fa-circle"
+                  style={{ fontSize: 10, marginRight: 8 }}
+                ></i>
                     {events[item].eventName && events[item].eventName}
                   </div>
-                  <div className="upcoming_event_time" style={{ fontSize: 13 }}>
+                  <div className="upcoming_event_time" style={{ fontSize: 13,marginLeft:20 }}>
                     {events[item].eventDate &&
                       moment(events[item].eventDate).format("LL")}
                   </div>
@@ -63,7 +64,6 @@ function SelectedEvents(props) {
 
               <div
                 className="upcoming_event_right"
-                style={{ marginRight: -20 }}
               >
                 <button
                   style={{

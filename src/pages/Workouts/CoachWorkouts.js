@@ -18,7 +18,7 @@ function CoachWorkouts() {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("saved", "==", false)
-        // .where("selectedDates", "array-contains", formatDate())
+        .where("selectedDates", "array-contains", formatDate())
         .limit(3)
         .onSnapshot((snapshot) => {
           setWorkouts(
@@ -62,9 +62,10 @@ function CoachWorkouts() {
             {workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
-                workout={workouts}
+                workouts={workouts}
                 item={workout}
                 idx={i}
+                type="non-editable"
               />
             ))}
           </div>
@@ -78,7 +79,7 @@ function CoachWorkouts() {
             {savedWorkouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
-                workout={workouts}
+                workouts={savedWorkouts}
                 item={workout}
                 idx={i}
               />

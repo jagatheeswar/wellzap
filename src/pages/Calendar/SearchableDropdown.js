@@ -178,13 +178,10 @@ function EquipmentsDropdown({ name, idx, list, state, setState }) {
           },
         ];
 
-        setState(value);
+        let items = [...state];
+        items[idx].exercises = value;
+        setState(items);
       }
-    } else if (name === "Search for Athletes") {
-      value.map((v) => {
-        v.selectedDays = [];
-      });
-      setState(value);
     } else {
       setState(value);
     }
@@ -192,8 +189,8 @@ function EquipmentsDropdown({ name, idx, list, state, setState }) {
 
   return (
     <NoSsr>
-      <div>
-        <div {...getRootProps()} className="selectDropdown1">
+      <div style={{width:"100%"}}>
+        <div {...getRootProps()} style={{width:"100%"}}>
           <Label
             style={{
               fontSize: "18px",
