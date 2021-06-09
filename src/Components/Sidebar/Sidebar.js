@@ -26,10 +26,10 @@ function Sidebar() {
           height="100px"
         />
         <h1>{userData?.data.name}</h1>
-        <h3>Strength and Conditioning Coach</h3>
+        {userType === "coach" && <h3>Strength and Conditioning Coach</h3>}
         <Link
           className="view-link"
-          to={userType === "athlete" ? "/athlete" : "/coach"}
+          to={userType === "athlete" ? "/profile" : "/coach"}
         >
           {" "}
           View Profile
@@ -43,13 +43,9 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
-            <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
-            <SidebarComponent
-              logo="message"
-              name="Messaging"
-              path="messaging"
-            />
-            <SidebarComponent logo="rupee" name="Payments" path="payments"/>
+            <SidebarComponent logo="calendar" name="Calendar" path="calendar" />
+            <SidebarComponent logo="message" name="Messaging" path="chat" />
+            <SidebarComponent logo="rupee" name="Payments" path="payments" />
             <SidebarComponent logo="settings" name="Settings" />
           </div>
         ) : (
@@ -61,9 +57,13 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Coaches" />
-            <SidebarComponent logo="message" name="Messaging" />
             <SidebarComponent logo="rupee" name="Payments" path="payments"/>
             <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
+            <SidebarComponent
+              logo="message"
+              name="Messaging"
+              path="messaging"
+            />
           </div>
         )}
       </div>

@@ -38,10 +38,9 @@
   height: 25px;
   padding: 5px 20px;
 }
-
-.allathletes__backbutton:hover,
-.inviteAthlete__backButton:hover,
-.allAthletes__inviteAthletesButton:hover {
+.allAthletes__backButton,
+.inviteAthlete__backButton,
+.allAthletes__inviteAthletesButton {
   cursor: pointer;
 }
 

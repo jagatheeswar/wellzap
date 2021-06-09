@@ -1,12 +1,77 @@
-.messaging {
+.messaging__sendMessage > img {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  top: 9px;
+}
+
+.messaging__leftArrow > img {
+  cursor: pointer;
+}
+
+.messaging__bar {
   display: flex;
-  flex: 1;
+  align-items: center;
 }
 
-.messaging__chatList {
-  flex: 0.35;
+.messaging__bar > input {
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  border: none;
+  outline: gray;
+  background-color: white;
 }
 
-.messaging__chat {
-  flex: 0.65;
+.chatCard {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  height: 70px;
+  margin-left: 15px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.athlete_card {
+  display: flex;
+  align-items: center;
+}
+
+.athlete_image {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-left: 10px;
+}
+
+.athlete_name {
+  font-size: 17px;
+  line-height: 17px;
+  font-weight: 600;
+}
+
+.message_icon > img {
+  height: 20px;
+  width: 20px;
+}
+
+.athlete_message > h3 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.athlete_list {
+  display: flex;
+  align-items: center;
+  background-color: #fcd13f;
+  border-radius: 10px;
+  height: 25px;
+  padding: 5px 20px;
+  margin-left: 550px;
+  cursor: pointer;
 }

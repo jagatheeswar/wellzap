@@ -275,6 +275,7 @@
   width: 45%;
   margin-left: 4%;
   margin-bottom: 5%;
+  cursor: pointer;
 }
 
 .createWorkout__input {
@@ -291,3 +292,126 @@
   font-size: 15px;
   font-weight: 500;
 }
+
+.createWorkout__modal {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.createWorkout__modal > h3 {
+  font-size: 15px;
+  font-weight: 700;
+  height: 5px;
+}
+.createWorkout__modal > h4 {
+  font-size: 14px;
+  font-weight: 500;
+  height: 5px;
+}
+
+.createWorkout__modalButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.createWorkout__modalButton {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  background-color: #fcd13f;
+  border-radius: 20px;
+  height: 30px;
+  padding: 5px 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Assign Workout */
+
+.assignWorkout {
+  padding: 10px;
+}
+
+.assignWorkout > h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.assignWorkout__summaryCard {
+  padding: 10px;
+  padding-top: 3px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  flex: 0.5;
+  margin-bottom: 15px;
+}
+
+.assignWorkout__summaryCardLeft,
+.assignWorkout__summaryCardRight {
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.assignWorkout__summaryCardLeftComponents {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.assignWorkout__summaryCardLeftComponents > input {
+  width: 70px;
+  margin: 0 7px;
+}
+
+.assignWorkout__summaryCardRow {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.assignWorkout__summaryCardRow > h5 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 5px;
+}
+.assignWorkout__summaryCardRow > h6 {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.assignWorkout__banner {
+  display: flex;
+  align-items: center;
+  padding: 2px 10px;
+  background-color: #fcd13f;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+.assignWorkout__banner > div {
+  margin-left: 10px;
+}
+
+.assignWorkout__banner > div > h5 {
+  font-size: 14px;
+  font-weight: 600;
+  height: 0px;
+  line-height: 1px;
+}
+/* .assignWorkout__banner > div > h6 {
+  font-size: 13px;
+  font-weight: 500;
+  height: 0px;
+  line-height: 1px;
+} */

@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { formatDate } from "../../functions/formatDate";
+// import React, { useState } from "react";
+// import { Datepicker, Eventcalendar } from "@mobiscroll/react";
+// import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
-function CalendarComponent() {
-  const [value, onChange] = useState(new Date());
+// function CalendarComponent() {
+//   const [birthday, setBirthday] = useState(null);
+//   const onBirthdayChange = (e) => {
+//     setBirthday(e.value);
+//   };
+//   return (
+//     <div className="calendarComponent">
+//       <Datepicker
+//         value={birthday}
+//         onChange={onBirthdayChange}
+//         label="When were you born?"
+//       />
+//     </div>
+//   );
+// }
 
-  console.log(formatDate(value));
-  return (
-    <div>
-      <Calendar
-        style={{ width: "80%", height: "200px", backgroundColor: "grey" }}
-        onClick={(value, event) => alert("New date selected is: ", value)}
-        value={value}
-      />
-    </div>
-  );
-}
-
-export default CalendarComponent;
+// export default CalendarComponent;

@@ -14,7 +14,7 @@
 }
 
 .home__main {
-  flex: 0.85;
+  flex: 0.75;
   width: 100%;
   height: 100%;
 }
@@ -30,7 +30,7 @@
 }
 
 .home__leftContainer {
-  flex: 1;
+  flex: 0.85;
   border: 1px solid #d3d3d3;
   display: flex;
   flex-direction: column;
@@ -192,4 +192,108 @@
   align-items: center;
   justify-content: center;
   height: 40px;
+}
+
+.fab__icon:hover {
+  cursor: pointer;
+}
+
+.modal__coachComponents {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 100px;
+  margin-left: 90px;
+}
+
+.modal__addAthelete,
+.modal__createNutritionPlans,
+.modal__createWorkout,
+.modal__createEvent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 80px;
+}
+
+.modal__addAthleteImg,
+.modal__createEventImg,
+.modal__createWorkoutImg,
+.modal__createNutritionPlansImg {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: #fcd13f;
+  justify-content: center;
+}
+
+.modal__addAthelete > h3,
+.modal__createNutritionPlans > h3,
+.modal__createWorkout > h3,
+.modal__createEvent > h3,
+.modal__addWorkout > h3,
+.modal__addGoal > h3,
+.modal__addMeal > h3,
+.modal__logWeight > h3,
+.modal__viewReport > h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.modal__addAthleteImg > img,
+.modal__createEventImg > img,
+.modal__createNutritionPlansImg > img,
+.modal__createWorkoutImg > img,
+.modal__addWorkoutImg > img,
+.modal__addMealImg > img,
+.modal__addGoalImg > img,
+.modal__logWeightImg > img,
+.modal__viewReportImg > img {
+  margin-top: 11px;
+  margin-left: 28%;
+}
+
+.modal__closeButton {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+}
+
+.modal__addWorkout,
+.modal__addMeal,
+.modal__logWeight,
+.modal__viewReport,
+.modal__addGoal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 80px;
+}
+
+.modal__addWorkoutImg,
+.modal__addMealImg,
+.modal__logWeightImg,
+.modal__viewReportImg,
+.modal__addGoalImg {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: #fcd13f;
+  justify-content: center;
+}
+
+.modal__addGoalImg > img,
+.modal__logWeightImg > img,
+.modal__viewReportImg > img {
+  height: 20px;
+  width: 20px;
+}
+
+.modal__athleteComponents {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 100px;
+  margin-left: 70px;
 }

@@ -6,6 +6,14 @@ import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
