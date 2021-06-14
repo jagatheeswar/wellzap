@@ -254,7 +254,7 @@ function App() {
                 CoachComp={<CoachNutritionHome />}
               />
             </Route>
-            <Route path="/create-nutrition">
+            <Route path="/assign-nutrition">
               <RoutesComp
                 AthleteComp={<CreateNutrition />}
                 CoachComp={<CreateNutrition />}

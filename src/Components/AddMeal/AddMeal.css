@@ -10,7 +10,7 @@
 .foodCard__addButtons {
   display: flex;
   align-items: center;
-  margin-bottom: 70%;
+  margin-bottom: 70px;
 }
 
 .foodCard__addfoodButton,
