@@ -31,7 +31,6 @@ import CoachCreateWorkout from "./pages/Workouts/CoachCreateWorkout";
 import AssignWorkout from "./pages/Workouts/AssignWorkout";
 import AllAthletes from "./pages/AllAthletes/AllAthletes";
 import InviteAthlete from "./pages/AllAthletes/InviteAthlete";
-import Messaging from "./pages/Messaging/CoachMessaging";
 import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
 import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
@@ -44,6 +43,9 @@ import AthleteCalendar from "./pages/Calendar/AthleteCalendar";
 import CoachCalendar from "./pages/Calendar/CoachCalendar";
 import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
 import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLifestyleAssessment";
+import Messaging from "./pages/Messaging/Messaging";
+import ChatCard from "./pages/Messaging/ChatCard";
+import ChatHomeScreen from "./pages/Messaging/ChatHomeScreen";
 
 function App() {
   const user = useSelector(selectUser);
@@ -267,6 +269,7 @@ function App() {
               />
             </Route>
             <Route path="/calendar">
+              
               <RoutesComp
                 AthleteComp={<AthleteCalendar />}
                 CoachComp={<CoachCalendar />}
@@ -294,6 +297,24 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthleteFoodAndLifestyleAssessment />}
                 CoachComp={<AthleteFoodAndLifestyleAssessment />}
+              />
+            </Route>
+            <Route path="/messaging">
+              <RoutesComp
+                AthleteComp={<Messaging />}
+                CoachComp={<Messaging />}
+              />
+            </Route>
+            <Route path="/chat">
+              <RoutesComp
+                AthleteComp={<ChatHomeScreen />}
+                CoachComp={<ChatHomeScreen />}
+              />
+            </Route>
+            <Route path="/all-athletes">
+              <RoutesComp
+                AthleteComp={<AllAthletes />}
+                CoachComp={<AllAthletes />}
               />
             </Route>
             <Route component={NotFound} />
