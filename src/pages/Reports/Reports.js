@@ -14,62 +14,10 @@ import Dropdown_ from "./Dropdown_";
 import Compliance_report from "./Compliance_report";
 import { Chart } from "chart.js";
 import Graph3_ from "./Graph3";
+import { useParams } from "react-router";
+import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
 
-const options = {
-  scaleShowVerticalLines: false,
-  maintainAspectRatio: false,
-  labels: {
-    fontColor: "red",
-  },
-  plugins: {
-    legend: {
-      display: false,
-      labels: {
-        fontColor: "red",
-      },
-    },
-  },
-  scales: {
-    xAxes: {
-      scaleFontSize: 40,
-      fontSize: 20,
-      grid: {
-        display: false,
-        color: "rgba(0,0,0,0)",
-        lineWidth: 0,
-        borderWidth: 0,
-      },
-
-      ticks: {
-        color: "black",
-        font: {
-          size: 14,
-        },
-        fontSize: 20,
-        beginAtZero: true,
-      },
-      borderWidth: 10,
-    },
-
-    yAxes: {
-      ticks: {
-        beginAtZero: true,
-        min: 0,
-        step: 1,
-        stepSize: 0.5,
-      },
-
-      grid: {
-        display: false,
-        color: "rgba(0,0,0,0)",
-        lineWidth: 0,
-        borderWidth: 0,
-      },
-    },
-  },
-};
-
-const Reports = () => {
+const Reports = (props) => {
   const [chart_data, setchart_data] = useState({});
   const [chart_data2, setchart_data2] = useState({});
   const [chart_data3, setchart_data3] = useState({});
@@ -99,76 +47,28 @@ const Reports = () => {
   const [graph3Data1, setGraph3Data1] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [graph3Data2, setGraph3Data2] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [graph3Data3, setGraph3Data3] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [iscompliancedata_empty, setiscompliance_empty] = useState(true);
+  var params = props.Id;
+  var Id = props.Id && props.Id;
 
   useEffect(() => {
     if (userType) {
-      if (userType) {
-        db.collection("athletes")
-          .doc("Zonwno1E5oyZ3sYImBjY")
-          .get()
-          .then(function (snap) {
-            setAthleteDetails({
-              id: "Zonwno1E5oyZ3sYImBjY",
-              data: snap.data(),
-            });
-          })
-          .catch(function (error) {
-            console.log("Error getting documents: ", error);
-          });
-      } else {
-        setAthleteDetails(userData);
-      }
-    }
-  }, [userData, temperoryId]);
-
-  useEffect(() => {
-    if (currentStartWeek1 && athleteDetails) {
-      var compliance = [];
-      var tempDate = currentStartWeek1;
-      var total = 0;
-      var count = 0;
-      //console.log("Inside compliance graph useEffect", athleteDetails);
-
-      db.collection("workouts")
-        .where("assignedToId", "==", "Zonwno1E5oyZ3sYImBjY")
-        .where("date", ">=", currentStartWeek1)
-        .where("date", "<=", currentEndWeek1)
-        .orderBy("date")
+      db.collection("athletes")
+        .doc(Id ? Id : "Zonwno1E5oyZ3sYImBjY")
         .get()
-        .then((querySnapshot) => {
-          while (count < 7) {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().postWorkout) {
-                if (tempDate === doc.data().date && doc.data().compliance) {
-                  if (doc.data().compliance === "Non compliant") {
-                    total = 2;
-                  } else if (doc.data().compliance === "Partially compliant") {
-                    total = 6;
-                  } else {
-                    total = 10;
-                  }
-                } else {
-                  total = 0;
-                }
-              } else {
-                total = 0;
-              }
-            });
-            compliance.push(total);
-            let tDate = new Date(tempDate);
-            tempDate = formatSpecificDate(
-              new Date(tDate.setDate(tDate.getDate() + 1)).toUTCString()
-            );
-            count = count + 1;
-            total = 0;
-          }
-          setComplianceData(compliance);
+        .then(function (snap) {
+          setAthleteDetails({
+            id: Id,
+            data: snap.data(),
+          });
         })
-        .catch((error) => {
+        .catch(function (error) {
           console.log("Error getting documents: ", error);
         });
+    } else {
+      setAthleteDetails(userData);
     }
-  }, [currentStartWeek1, currentEndWeek1, temperoryId, athleteDetails]);
+  }, [userData, Id, temperoryId]);
 
   useEffect(() => {
     let labels = [];
@@ -259,7 +159,7 @@ const Reports = () => {
       var tempDate = currentStartWeek2;
       var total = 0;
       var count = 0;
-
+      setiscompliance_empty(true);
       if (athleteDetails?.data?.metrics) {
         while (count < 7) {
           if (athleteDetails?.data?.metrics[tempDate]) {
@@ -295,6 +195,10 @@ const Reports = () => {
           } else {
             total = 0;
           }
+          if (total > 0) {
+            setiscompliance_empty(false);
+          }
+
           temp.push(total);
           let tDate = new Date(tempDate);
 
@@ -354,6 +258,62 @@ const Reports = () => {
     setGraph2Options(val);
   }
 
+  const options = {
+    scaleShowVerticalLines: false,
+    maintainAspectRatio: false,
+    labels: {
+      fontColor: "red",
+    },
+    plugins: {
+      legend: {
+        display: false,
+        labels: {
+          fontColor: "red",
+        },
+      },
+    },
+    scales: {
+      xAxes: {
+        scaleFontSize: 40,
+        fontSize: 20,
+        grid: {
+          display: false,
+          color: "rgba(0,0,0,0)",
+          lineWidth: 0,
+          borderWidth: 0,
+        },
+
+        ticks: {
+          color: "black",
+          display: !iscompliancedata_empty,
+          font: {
+            size: 14,
+          },
+          fontSize: 20,
+          beginAtZero: true,
+        },
+        borderWidth: 10,
+      },
+
+      yAxes: {
+        ticks: {
+          display: !iscompliancedata_empty,
+          beginAtZero: true,
+          min: 0,
+          step: 1,
+          stepSize: 0.5,
+        },
+
+        grid: {
+          display: false,
+          color: "rgba(0,0,0,0)",
+          lineWidth: 0,
+          borderWidth: 0,
+        },
+      },
+    },
+  };
+
   function formatDate2(date) {
     const monthNames = [
       "Jan",
@@ -405,6 +365,19 @@ const Reports = () => {
     <div className="reports__container">
       <div className="chart_container">
         <div className="chart_">
+          {iscompliancedata_empty && (
+            <div
+              style={{
+                position: "absolute",
+                marginLeft: "auto",
+                marginRight: "auto",
+                transform: "translateX(50%)",
+                top: 240,
+              }}
+            >
+              No data available to show
+            </div>
+          )}
           <div
             className="chart_legend"
             style={{
@@ -413,8 +386,6 @@ const Reports = () => {
               fontSize: 20,
               justifyContent: "space-around",
               alignItems: "center",
-              marginBottom: 5,
-              paddingBottom: 20,
             }}
           >
             Weekly Report
@@ -474,13 +445,16 @@ const Reports = () => {
             />
           </div>
 
-          <div className="chart_bar" style={{ marginTop: 20 }}>
+          <div className="chart_bar" style={{ marginTop: 80 }}>
             {Weekly_report()}
           </div>
         </div>
       </div>
-      {<Compliance_report height={200} />}
-      {<Graph3_ />}
+      {<Compliance_report Id={Id} height={200} />}
+      {<Graph3_ Id={Id} />}
+      <div className="chart_container" style={{ alignItems: "center" }}>
+        <NutritionGoalProgress />
+      </div>
     </div>
   );
 };

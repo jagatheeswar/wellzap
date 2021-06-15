@@ -55,7 +55,9 @@ function AllAthletes() {
             width="40px"
             height="40px"
           />
-          <h1>{athlete.name}</h1>
+          <h1 onClick={() => history.push("/Athlete/" + athlete.id)}>
+            {athlete.name}
+          </h1>
           <img src="/assets/message.png" alt="" width="20px" height="20px" />
         </div>
       ))}

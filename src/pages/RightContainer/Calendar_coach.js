@@ -191,7 +191,7 @@ const Calendar_coach = () => {
   return (
     <div className="calendar_container">
       <div className="calendar_header">
-        <span className="calendar_title">Calendar</span>
+        <h3 className="calendar_title">Calendar</h3>
         <span className="calendar_right">
           <i
             class="fa fa-search"

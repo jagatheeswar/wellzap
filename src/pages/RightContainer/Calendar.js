@@ -192,7 +192,9 @@ const Calendar_ = () => {
   return (
     <div className="calendar_container">
       <div className="calendar_header">
-        <span className="calendar_title">Calendar</span>
+        <h3 className="calendar_title" style={{ fontWeight: 600 }}>
+          Calendar
+        </h3>
         <span className="calendar_right">
           <button className="add_event">+</button>
         </span>

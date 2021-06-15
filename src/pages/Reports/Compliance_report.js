@@ -12,60 +12,6 @@ import moment from "moment";
 import "./Report.css";
 import Dropdown_ from "./Dropdown_";
 
-const options = {
-  scaleShowVerticalLines: false,
-  maintainAspectRatio: false,
-  labels: {
-    fontColor: "red",
-  },
-  plugins: {
-    legend: {
-      display: false,
-      labels: {
-        fontColor: "red",
-      },
-    },
-  },
-  scales: {
-    x: {
-      scaleFontSize: 40,
-      fontSize: 20,
-      grid: {
-        display: false,
-        color: "rgba(0,0,0,0)",
-        lineWidth: 0,
-        borderWidth: 0,
-      },
-
-      ticks: {
-        color: "black",
-        font: {
-          size: 14,
-        },
-        fontSize: 20,
-        beginAtZero: true,
-      },
-      borderWidth: 10,
-    },
-
-    y: {
-      stacked: true,
-      ticks: {
-        beginAtZero: true,
-        min: 0,
-        stepSize: 1,
-      },
-
-      grid: {
-        display: false,
-        color: "rgba(0,0,0,0)",
-        lineWidth: 0,
-        borderWidth: 0,
-      },
-    },
-  },
-};
-
 const Compliance_report = (props) => {
   const [chart_data, setchart_data] = useState({});
   const [chart_data2, setchart_data2] = useState({});
@@ -97,27 +43,28 @@ const Compliance_report = (props) => {
   const [graph3Data1, setGraph3Data1] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [graph3Data2, setGraph3Data2] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [graph3Data3, setGraph3Data3] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [iscompliancedata_empty, setiscompliance_empty] = useState(true);
   const [bar_colors, setbar_colors] = useState([]);
+  var Id = props.Id && props.Id;
+
   useEffect(() => {
     if (userType) {
-      if (userType) {
-        db.collection("athletes")
-          .doc("Zonwno1E5oyZ3sYImBjY")
-          .get()
-          .then(function (snap) {
-            setAthleteDetails({
-              id: "Zonwno1E5oyZ3sYImBjY",
-              data: snap.data(),
-            });
-          })
-          .catch(function (error) {
-            console.log("Error getting documents: ", error);
+      db.collection("athletes")
+        .doc(Id ? Id : "Zonwno1E5oyZ3sYImBjY")
+        .get()
+        .then(function (snap) {
+          setAthleteDetails({
+            id: Id,
+            data: snap.data(),
           });
-      } else {
-        setAthleteDetails(userData);
-      }
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    } else {
+      setAthleteDetails(userData);
     }
-  }, [userData, temperoryId]);
+  }, [userData, Id, temperoryId]);
 
   useEffect(() => {
     if (currentStartWeek1 && athleteDetails) {
@@ -126,10 +73,12 @@ const Compliance_report = (props) => {
       var total = 0;
       var count = 0;
       let bar_color = [];
+      let data = 0;
+      setiscompliance_empty(true);
       //console.log("Inside compliance graph useEffect", athleteDetails);
-
+      // console.log("2", Id);
       db.collection("workouts")
-        .where("assignedToId", "==", "rrU9qlLHjra0dlUhnpX1")
+        .where("assignedToId", "==", Id ? Id : "Zonwno1E5oyZ3sYImBjY")
         .where("date", ">=", currentStartWeek1)
         .where("date", "<=", currentEndWeek1)
         .orderBy("date")
@@ -139,6 +88,7 @@ const Compliance_report = (props) => {
             querySnapshot.forEach((doc) => {
               if (doc.data().postWorkout) {
                 if (tempDate === doc.data().date && doc.data().compliance) {
+                  //console.log(doc.data().compliance, tempDate);
                   if (doc.data().compliance === "Non compliant") {
                     total = 2;
                   } else if (doc.data().compliance === "Partially compliant") {
@@ -155,6 +105,9 @@ const Compliance_report = (props) => {
                 total = total + 0;
               }
             });
+            if (total > 0) {
+              setiscompliance_empty(false);
+            }
 
             if (total == 2) {
               bar_color.push("#454545");
@@ -187,7 +140,7 @@ const Compliance_report = (props) => {
           console.log("Error getting documents: ", error);
         });
     }
-  }, [currentStartWeek1, currentEndWeek1, temperoryId, athleteDetails]);
+  }, [currentStartWeek1, currentEndWeek1, Id, temperoryId, athleteDetails]);
 
   useEffect(() => {
     let labels = [];
@@ -279,6 +232,8 @@ const Compliance_report = (props) => {
       var total = 0;
       var count = 0;
 
+      var data = 0; //to check Empty data
+
       if (athleteDetails?.data?.metrics) {
         while (count < 7) {
           if (athleteDetails?.data?.metrics[tempDate]) {
@@ -314,16 +269,22 @@ const Compliance_report = (props) => {
           } else {
             total = 0;
           }
+          data = data + total;
+
           temp.push(total);
           let tDate = new Date(tempDate);
 
           tempDate = formatSpecificDate(
             new Date(tDate.setDate(tDate.getDate() + 1)).toUTCString()
           );
+          console.log(data);
+          if (data > 0) {
+            setiscompliance_empty(false);
+          }
           count = count + 1;
           total = 0;
         }
-        setGraph2Data(temp);
+        if (temp) setGraph2Data(temp);
       } else {
         temp = [];
         total = 0;
@@ -353,6 +314,18 @@ const Compliance_report = (props) => {
 
       labels.push(s);
     }
+
+    console.log("graph2data", graph2Data);
+    // let sum = 0;
+    // graph2Data.forEach((item) => {
+    //   sum = sum + item[0] + item[1] + item[2] + item[3];
+    //   console.log(sum);
+    //   if (sum > 0) {
+    //     setiscompliance_empty(false);
+    //     console.log(sum);
+    //     return;
+    //   }
+    // });
 
     const data1 = {
       labels: labels,
@@ -397,6 +370,63 @@ const Compliance_report = (props) => {
 
     return [day, month, year].join(" ");
   }
+
+  const options = {
+    scaleShowVerticalLines: false,
+    maintainAspectRatio: false,
+    labels: {
+      fontColor: "red",
+    },
+    plugins: {
+      legend: {
+        display: false,
+        labels: {
+          fontColor: "red",
+        },
+      },
+    },
+    scales: {
+      x: {
+        scaleFontSize: 40,
+        fontSize: 20,
+
+        grid: {
+          display: false,
+          color: "rgba(0,0,0,0)",
+          lineWidth: 0,
+          borderWidth: 0,
+        },
+
+        ticks: {
+          color: "black",
+          display: !iscompliancedata_empty,
+          font: {
+            size: 14,
+          },
+          fontSize: 20,
+          beginAtZero: true,
+        },
+        borderWidth: 10,
+      },
+
+      y: {
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          min: 0,
+          stepSize: 1,
+          display: !iscompliancedata_empty,
+        },
+
+        grid: {
+          display: false,
+          color: "rgba(0,0,0,0)",
+          lineWidth: 0,
+          borderWidth: 0,
+        },
+      },
+    },
+  };
 
   function labels() {
     let datasets = chart_data2.datasets;
@@ -508,12 +538,20 @@ const Compliance_report = (props) => {
   return (
     <div className="chart_container">
       <div className="chart_">
-        <div
-          className="chart_legend"
-          style={{ color: "#808080", fontSize: 20, margin: 15 }}
-        >
-          Compliance Weekly Report
-        </div>
+        {iscompliancedata_empty && (
+          <div
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              transform: "translateX(50%)",
+              top: 240,
+            }}
+          >
+            No data available to show
+          </div>
+        )}
+        <div className="chart_legend">Compliance Weekly Report</div>
 
         <div className="chart_header">
           <img
@@ -535,10 +573,7 @@ const Compliance_report = (props) => {
             style={{ marginRight: "auto" }}
             src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
           />
-          <div
-            className="chart_legend"
-            style={{ color: "#808080", fontSize: 17 }}
-          >
+          <div className="chart_legend" style={{ fontSize: 17 }}>
             {formatDate2(currentStartWeek1)} - {formatDate2(currentEndWeek1)}
           </div>
           <img

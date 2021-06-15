@@ -57,6 +57,7 @@ function Report_coach(props) {
   const [complianceCount, setComplianceCount] = React.useState(0);
   const [maxCompliance, setMaxCompliance] = React.useState(0);
   const [chart_data, setchart_data] = useState({});
+  const [iscompliancedata_empty, setiscompliance_empty] = useState(true);
 
   React.useEffect(() => {
     var curr = new Date(); // get current date
@@ -199,6 +200,7 @@ function Report_coach(props) {
       let temp = [];
       let count = 0;
       let maxArr = [];
+      setiscompliance_empty(true);
       for (let i = 0; i < 7; i++) {
         let t1 = workouts.filter(
           (w) => w.date === tDate && w.compliance === "Fully compliant"
@@ -216,7 +218,11 @@ function Report_coach(props) {
         count = t1.length + t2.length + t3.length + t4.length;
         maxArr.push(count);
         tDate = incr_date(tDate);
+        if (count > 0) {
+          setiscompliance_empty(false);
+        }
       }
+
       setCompliance(temp);
       console.log(temp);
       setComplianceCount(count);
@@ -374,6 +380,47 @@ function Report_coach(props) {
     // };
   }, [compliance, complianceCount]);
 
+  const options = {
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        display: false,
+        labels: {
+          // This more specific font property overrides the global property
+          fontColor: "red",
+        },
+      },
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: {
+          display: false,
+          lineWidth: 0,
+          borderWidth: 0,
+        },
+        ticks: {
+          display: !iscompliancedata_empty,
+        },
+
+        borderWidth: 10,
+      },
+      y: {
+        stacked: true,
+        grid: {
+          display: false,
+          lineWidth: 0,
+          borderWidth: 0,
+        },
+        ticks: {
+          display: !iscompliancedata_empty,
+          min: 0,
+          stepSize: 1,
+        },
+      },
+    },
+  };
+
   function labels() {
     let data = [
       {
@@ -483,6 +530,19 @@ function Report_coach(props) {
   return (
     <div className="chart_container">
       <div className="chart_">
+        {iscompliancedata_empty && (
+          <div
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              transform: "translateX(50%)",
+              top: 240,
+            }}
+          >
+            No data available to show
+          </div>
+        )}
         <div
           className="chart_legend"
           style={{ color: "#808080", fontSize: 20, margin: 10 }}

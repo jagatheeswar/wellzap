@@ -4,8 +4,8 @@ import "react-dropdown/style.css";
 
 const Dropdown_ = (props) => {
   var options = props.options;
-  console.log(options);
-  const defaultOption = options[0].text;
+  // console.log(options);
+  const defaultOption = options[0].text ? options[0].text : "all";
 
   return (
     <span>

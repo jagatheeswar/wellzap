@@ -10,7 +10,10 @@
 .nutritionGoalProgress__container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+}
+.makeStyles-circle-2 {
+  color: rgb(221, 221, 221) !important;
 }
 
 .nutritionGoalProgress__leftContainer,

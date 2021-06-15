@@ -11,6 +11,14 @@ import {
 import moment from "moment";
 import "./Report.css";
 import Dropdown_ from "./Dropdown_";
+import id from "date-fns/locale/id";
+
+import { TapAndPlay } from "@material-ui/icons";
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import DateRange from "./DateRange";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const options = {
   scaleShowVerticalLines: false,
@@ -65,7 +73,7 @@ const options = {
   },
 };
 
-const Graph3_ = () => {
+const Graph3_ = (props) => {
   const [chart_data, setchart_data] = useState({});
   const [chart_data2, setchart_data2] = useState({});
   const [chart_data3, setchart_data3] = useState({});
@@ -78,9 +86,7 @@ const Graph3_ = () => {
   moment.locale("en-in");
   const [metric, setMetric] = useState("weight");
   const [metricData, setMetricData] = useState([0, 0]);
-  const [currentStartWeek, setCurrentStartWeek] = useState(
-    moment(new Date()).subtract(30, "days").utc().format("DD-MM-YYYY")
-  );
+  const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(
     moment(new Date()).utc().format("DD-MM-YYYY")
   );
@@ -96,91 +102,98 @@ const Graph3_ = () => {
   const [graph3Data2, setGraph3Data2] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [graph3Data3, setGraph3Data3] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [bar_colors, setbar_colors] = useState([]);
+  var today = new Date();
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, setstartDate] = useState(null);
+  const [endDate, setendDate] = useState(null);
+
+  const [mindate, setmindate] = useState(new Date());
+  const [maxdate, setmaxdate] = useState(null);
+
+
+  const min_date = {
+    year: 2021,
+    month: "05",
+    day: 10,
+  };
+  const max_date = {
+    year: today.getFullYear(),
+    month:
+      today.getMonth().toString().length == 1
+        ? "0" + (today.getMonth() + 1).toString()
+        : today.getMonth,
+
+    day:
+      today.getDate().toString().length == 1
+        ? "0" + today.getDate().toString()
+        : today.getDate(),
+  };
+
+  console.log(max_date, min_date);
+  const defaultValue = {
+    from: min_date,
+    to: max_date,
+  };
+  const [selectedDayRange, setSelectedDayRange] = useState(defaultValue);
+
+  var Id = props.Id && props.Id;
+
   useEffect(() => {
     if (userType) {
-      if (userType) {
-        db.collection("athletes")
-          .doc("Zonwno1E5oyZ3sYImBjY")
-          .get()
-          .then(function (snap) {
-            setAthleteDetails({
-              id: "Zonwno1E5oyZ3sYImBjY",
-              data: snap.data(),
-            });
-          })
-          .catch(function (error) {
-            console.log("Error getting documents: ", error);
+      db.collection("athletes")
+        .doc(Id ? Id : "Zonwno1E5oyZ3sYImBjY")
+        .get()
+        .then(function (snap) {
+          setAthleteDetails({
+            id: Id,
+            data: snap.data(),
           });
-      } else {
-        setAthleteDetails(userData);
-      }
+          console.log(snap.data());
+          if (snap.data().metrics) {
+            let key = Object.keys(snap.data().metrics);
+            let dates = [];
+            key.forEach((item) => {
+              dates.push(new Date(moment(item)));
+            });
+            if (dates.length == key.length) {
+              var minimumDate = new Date(Math.min.apply(null, dates));
+              if (minimumDate) {
+                setmindate(minimumDate);
+              } else {
+                setmindate(new Date());
+              }
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+    } else {
+      setAthleteDetails(userData);
     }
   }, [userData, temperoryId]);
 
   useEffect(() => {
-    if (currentStartWeek1 && athleteDetails) {
-      var compliance = [];
-      var tempDate = currentStartWeek1;
-      var total = 0;
-      var count = 0;
-      let bar_color = [];
-      //console.log("Inside compliance graph useEffect", athleteDetails);
+    if (mindate) {
+      let a = moment(new Date());
+      let b = moment(mindate);
+      let diff = a.diff(b, "days");
+      setendDate(new Date())
 
-      db.collection("workouts")
-        .where("assignedToId", "==", "rrU9qlLHjra0dlUhnpX1")
-        .where("date", ">=", currentStartWeek1)
-        .where("date", "<=", currentEndWeek1)
-        .orderBy("date")
-        .get()
-        .then((querySnapshot) => {
-          while (count < 7) {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().postWorkout) {
-                if (tempDate === doc.data().date && doc.data().compliance) {
-                  if (doc.data().compliance === "Non compliant") {
-                    total = 2;
-                  } else if (doc.data().compliance === "Partially compliant") {
-                    total = 6;
-                  } else {
-                    total = 5;
-                  }
-                } else {
-                  total = total + 0;
-                }
-              } else {
-                total = total + 0;
-              }
-            });
-
-            if (total == 2) {
-              bar_color.push("#454545");
-              compliance.push(2);
-            } else if (total == 6) {
-              bar_color.push("#d3d3d3");
-              compliance.push(2);
-            } else if (total == 5) {
-              bar_color.push("red");
-              compliance.push(2);
-            } else {
-              compliance.push(0);
-            }
-
-            let tDate = new Date(tempDate);
-            tempDate = formatSpecificDate(
-              new Date(tDate.setDate(tDate.getDate() + 1)).toUTCString()
-            );
-            count = count + 1;
-            total = 0;
-          }
-          setbar_colors(bar_color);
-
-          setComplianceData(compliance);
-        })
-        .catch((error) => {
-          console.log("Error getting documents: ", error);
-        });
+      if (diff > 32) {
+        setCurrentStartWeek(
+          moment(new Date()).subtract(30, "days").utc().format("DD-MM-YYYY")
+        );
+       
+        setstartDate( new Date().setDate(new Date().getDate() - 30))
+      } else {
+        setCurrentStartWeek(
+          moment(new Date()).subtract(diff, "days").utc().format("DD-MM-YYYY")
+        );
+        setstartDate( new Date().setDate(new Date().getDate() - diff))
+      }
     }
-  }, [currentStartWeek1, currentEndWeek1, temperoryId, athleteDetails]);
+  }, [mindate]);
 
   function decr_date(date_str) {
     var parts = date_str.split("-");
@@ -220,6 +233,29 @@ const Graph3_ = () => {
     }
     return parts.join("-");
   }
+  function formatSpecificDate(d) {
+    var d = new Date(d),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+  useEffect(() => {
+    if (startDate !== null && endDate !== null) {
+      console.log("sd", startDate, endDate);
+      let date = formatSpecificDate(endDate);
+      setCurrentEndWeek(date.split("-").reverse().join("-"));
+      let date1 = formatSpecificDate(startDate);
+      setCurrentStartWeek(date1.split("-").reverse().join("-"));
+
+      console.log(currentStartWeek, currentEndWeek);
+    }
+  }, [startDate, endDate]);
+
   useEffect(() => {
     if (currentStartWeek && athleteDetails) {
       var temp1 = [];
@@ -234,10 +270,16 @@ const Graph3_ = () => {
       var end = moment(currentEndWeek.split("-").reverse().join("-"));
       var diff = end.diff(start, "days") + 1;
 
+      let a = moment(new Date());
+      let b = moment(mindate);
+      var total_diff = a.diff(b, "days");
+
       console.log("Inside weight graph useEffect");
       console.log("Second one");
 
       console.log("Tthird one");
+      console.log(currentStartWeek, currentEndWeek);
+
       if (athleteDetails?.data?.metrics) {
         if (graph3Options === "weight") {
           while (count <= diff) {
@@ -375,14 +417,19 @@ const Graph3_ = () => {
                 weight = athleteDetails?.data?.metrics[tempDate].weight;
               } else {
                 let val = 0;
+                let c = 0;
                 let tDate = decr_date(tempDate);
-                while (!val) {
+                while (c < total_diff) {
                   if (
                     athleteDetails?.data?.metrics[tDate] &&
                     athleteDetails?.data.metrics[tDate].weight
                   ) {
                     val = athleteDetails?.data.metrics[tDate].weight;
+                    if (val) {
+                      break;
+                    }
                   }
+                  c = c + 1;
                   tDate = decr_date(tDate);
                 }
                 weight = val;
@@ -392,13 +439,18 @@ const Graph3_ = () => {
               } else {
                 let val = 0;
                 let tDate = decr_date(tempDate);
-                while (!val) {
+                let c = 0;
+                while (c < total_diff) {
                   if (
                     athleteDetails?.data?.metrics[tDate] &&
                     athleteDetails?.data.metrics[tDate].fat
                   ) {
                     val = athleteDetails?.data.metrics[tDate].fat;
+                    if (val) {
+                      break;
+                    }
                   }
+                  c = c + 1;
                   tDate = decr_date(tDate);
                 }
                 fat = val;
@@ -407,16 +459,22 @@ const Graph3_ = () => {
                 muscle = athleteDetails?.data?.metrics[tempDate].muscle;
               } else {
                 let val = 0;
+                let c = 0;
                 let tDate = decr_date(tempDate);
-                while (!val) {
+                while (c < total_diff) {
                   if (
                     athleteDetails?.data?.metrics[tDate] &&
                     athleteDetails?.data.metrics[tDate].muscle
                   ) {
                     val = athleteDetails?.data.metrics[tDate].muscle;
+                    if (val) {
+                      break;
+                    }
                   }
+                  c = c + 1;
                   tDate = decr_date(tDate);
                 }
+
                 muscle = val;
               }
             } else {
@@ -426,31 +484,49 @@ const Graph3_ = () => {
               let tDate1 = decr_date(tempDate);
               let tDate2 = decr_date(tempDate);
               let tDate3 = decr_date(tempDate);
-              while (!val1) {
+              let a1 = 0;
+              let a2 = 0;
+              let a3 = 0;
+
+              while (a1 < total_diff) {
                 if (
                   athleteDetails?.data.metrics[tDate1] &&
                   athleteDetails?.data.metrics[tDate1].weight
                 ) {
                   val1 = athleteDetails?.data.metrics[tDate1].weight;
+                  if (val1) {
+                    break;
+                  }
                 }
+
+                a1 = a1 + 1;
                 tDate1 = decr_date(tDate1);
               }
-              while (!val2) {
+              while (a2 < total_diff) {
                 if (
                   athleteDetails?.data.metrics[tDate2] &&
                   athleteDetails?.data.metrics[tDate2].fat
                 ) {
                   val2 = athleteDetails?.data.metrics[tDate2].fat;
+                  if (val2) {
+                    break;
+                  }
                 }
+
+                a2 = a2 + 1;
                 tDate2 = decr_date(tDate2);
               }
-              while (!val3) {
+              while (a3 < total_diff) {
                 if (
                   athleteDetails?.data.metrics[tDate3] &&
                   athleteDetails?.data.metrics[tDate3].muscle
                 ) {
                   val3 = athleteDetails?.data.metrics[tDate3].muscle;
+                  if (val3) {
+                    break;
+                  }
                 }
+                a3 = a3 + 1;
                 tDate3 = decr_date(tDate3);
               }
               weight = val1;
@@ -480,7 +556,7 @@ const Graph3_ = () => {
         setGraph3Data3(temp3);
       }
     }
-  }, [graph3Options, athleteDetails]);
+  }, [athleteDetails, currentStartWeek]);
 
   useEffect(() => {
     let labels = [];
@@ -542,20 +618,7 @@ const Graph3_ = () => {
 
       setchart_data2(data1);
     }
-  }, [complianceData, graph3Options, graph3Data1, graph3Data2, graph3Data3]);
-
-  useEffect(() => {
-    var curr = new Date(); // get current date
-    var first = curr.getDate() - curr.getDay(); // First day is the  day of the month - the day of the week \
-
-    var firstday = new Date(curr.setDate(first)).toUTCString();
-    var lastday = new Date(curr.setDate(curr.getDate() + 6)).toUTCString();
-
-    setCurrentStartWeek1(formatSpecificDate(firstday));
-    setCurrentEndWeek1(formatSpecificDate(lastday));
-    setCurrentStartWeek2(formatSpecificDate(firstday));
-    setCurrentEndWeek2(formatSpecificDate(lastday));
-  }, []);
+  }, [graph3Options, graph3Data1, graph3Data2, graph3Data3]);
 
   function formatSpecificDate(d) {
     var d = new Date(d),
@@ -591,102 +654,6 @@ const Graph3_ = () => {
       },
     ],
   };
-
-  useEffect(() => {
-    if (currentStartWeek2 && athleteDetails) {
-      var temp = [];
-      var tempDate = currentStartWeek2;
-      var total = 0;
-      var count = 0;
-
-      if (athleteDetails?.data?.metrics) {
-        while (count < 7) {
-          if (athleteDetails?.data?.metrics[tempDate]) {
-            if (
-              athleteDetails?.data?.metrics[tempDate].water &&
-              graph2Options === "water"
-            ) {
-              total = athleteDetails?.data?.metrics[tempDate].water;
-            } else if (
-              athleteDetails?.data?.metrics[tempDate].sleep &&
-              graph2Options === "sleep"
-            ) {
-              total = athleteDetails?.data?.metrics[tempDate].sleep;
-            } else if (
-              athleteDetails?.data?.metrics[tempDate].soreness &&
-              graph2Options === "soreness"
-            ) {
-              if (
-                athleteDetails?.data?.metrics[tempDate].soreness &&
-                athleteDetails?.data?.metrics[tempDate].soreness === "very-sore"
-              ) {
-                total = 9;
-              } else if (
-                athleteDetails?.data?.metrics[tempDate].soreness &&
-                athleteDetails?.data?.metrics[tempDate].soreness ===
-                  "moderately-sore"
-              ) {
-                total = 6;
-              } else if (athleteDetails?.data?.metrics[tempDate].soreness) {
-                total = 3;
-              }
-            }
-          } else {
-            total = 0;
-          }
-          temp.push(total);
-          let tDate = new Date(tempDate);
-
-          tempDate = formatSpecificDate(
-            new Date(tDate.setDate(tDate.getDate() + 1)).toUTCString()
-          );
-          count = count + 1;
-          total = 0;
-        }
-        setGraph2Data(temp);
-      } else {
-        temp = [];
-        total = 0;
-        setGraph2Data(temp);
-      }
-    }
-  }, [currentStartWeek2, currentEndWeek2, graph2Options, athleteDetails]);
-
-  useEffect(() => {
-    let labels = [];
-
-    var tempDate = currentStartWeek2;
-    let tDate = new Date(tempDate);
-    labels.push(
-      formatSpecificDay(
-        formatSpecificDate(
-          new Date(tDate.setDate(tDate.getDate())).toUTCString()
-        )
-      )
-    );
-    for (var n = 0; n < 6; n = n + 1) {
-      let tDate = new Date(tempDate);
-      tempDate = formatSpecificDate(
-        new Date(tDate.setDate(tDate.getDate() + 1)).toUTCString()
-      );
-      let s = formatSpecificDay(tempDate);
-
-      labels.push(s);
-    }
-
-    const data1 = {
-      labels: [labels],
-
-      datasets: [
-        {
-          data: graph2Data,
-          backgroundColor: "#fcd549",
-          padding: 30,
-        },
-      ],
-    };
-    setchart_data(data1);
-  }, [graph2Data]);
 
   function changeGraph_option(val) {
     setGraph3Options(val);
@@ -772,7 +739,7 @@ const Graph3_ = () => {
               marginBlockStart: 0,
             }}
           >
-            , {stack_label}
+            {stack_label}
           </ul>
         </div>
       );
@@ -782,18 +749,20 @@ const Graph3_ = () => {
   return (
     <div className="chart_container">
       <div className="chart_">
-        <div
-          className="chart_legend"
-          style={{
-            color: "#808080",
-            display: "flex",
-            fontSize: 20,
-            justifyContent: "space-around",
-            alignItems: "center",
-            marginBottom: 5,
-            paddingBottom: 20,
-          }}
-        >
+        {!athleteDetails?.data?.metrics && (
+          <div
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              transform: "translateX(50%)",
+              top: 240,
+            }}
+          >
+            No data available to show
+          </div>
+        )}
+        <div className="chart_legend">
           Weekly Report
           <div className="dropdown_" style={{ padding: 15 }}>
             <Dropdown_
@@ -802,7 +771,32 @@ const Graph3_ = () => {
             />
           </div>
         </div>
-
+        {/* <DatePicker
+          value={selectedDayRange}
+          onChange={setSelectedDayRange}
+          inputPlaceholder="Select a date" // placeholder
+          // format value
+          inputClassName="date_range_input" // custom class
+          shouldHighlightWeekends
+          minimumDate={min_date}
+          maximumDate={max_date}
+        /> */}
+        <div style={{textAlign:'center', marginTop: 15, display:'flex',justifyContent:'center',alignItems:'center' }}>
+         
+          <DatePicker
+      selected={startDate}
+      onChange={(date) => setstartDate(date)}
+      minDate={mindate}
+    
+    />
+    <span>and</span>
+    <DatePicker
+      selected={endDate}
+      maxDate={new Date()}
+      onChange={(date) => setendDate(date)}
+      
+    />
+        </div>
         <div className="chart_header"></div>
         {graph3Options !== "all" ? "" : labels()}
 

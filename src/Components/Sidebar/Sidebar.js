@@ -36,6 +36,8 @@ function Sidebar() {
         </Link>
         {userType === "coach" ? (
           <div>
+            <SidebarComponent logo="Home" name="Home" path="" />
+            
             <SidebarComponent logo="dumbell" name="Workouts" path="workouts" />
             <SidebarComponent
               logo="hamburger"
@@ -50,6 +52,7 @@ function Sidebar() {
           </div>
         ) : (
           <div>
+            <SidebarComponent logo="Home" name="Home" path="" />
             <SidebarComponent logo="dumbell" name="Workout" path="workouts" />
             <SidebarComponent
               logo="hamburger"

@@ -1927,7 +1927,7 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@popperjs/core@^2.6.0":
+"@popperjs/core@^2.6.0", "@popperjs/core@^2.9.2":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
   integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
@@ -3925,7 +3925,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.3:
+classnames@^2.2.3, classnames@^2.2.6:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
@@ -4606,7 +4606,7 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns@^2.22.1:
+date-fns@^2.0.1, date-fns@^2.22.1:
   version "2.22.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.22.1.tgz#1e5af959831ebb1d82992bf67b765052d8f0efc4"
   integrity sha512-yUFPQjrxEmIsMqlHhAhmxkuH769baF21Kk+nZwZGyrMoyLA+LugaQtC0+Tqf9CBUUULWwUJt6Q5ySI3LJDDCGg==
@@ -10001,11 +10001,7 @@ react-awesome-modal@^2.0.5:
   resolved "https://registry.yarnpkg.com/react-awesome-modal/-/react-awesome-modal-2.0.5.tgz#d19702f7e3bc1f43e734f5a60814c2d1593c693a"
   integrity sha512-H+0xKBhcGJCoDtMww5K+XUzQtK+oRNpXr1VZoN1tbBgu+fzrLrF+ZkdRC1XiPLJ5gpVd9uR90yg8nyPTtYj/OQ==
 
-<<<<<<< HEAD
-react-calendar@^3.4.0:
-=======
 react-calendar@^3.3.1, react-calendar@^3.4.0:
->>>>>>> 14ba0edfcbbac44bf1c93a0dfa2b882b83a9d82b
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/react-calendar/-/react-calendar-3.4.0.tgz#25396ca0992b3b2042abca334515f6ff4d9878bc"
   integrity sha512-ykbvXASArQQ8KZlCEXEdE+w+KFGSj7kDpdTRzbLVJeN26oUIu+EFavFDAqg4G//zTO0tSq5SMfqAa6fjrdGQjQ==
@@ -10045,6 +10041,18 @@ react-date-picker@^8.1.0:
     react-calendar "^3.3.1"
     react-fit "^1.0.3"
     update-input-width "^1.1.1"
+
+react-datepicker@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-4.1.1.tgz#5ecef49c672b2250fca26327c988464e6ba52b62"
+  integrity sha512-vtZIA7MbUrffRw1CHiyOGtmTO/tTdZGr5BYaiRucHMTb6rCqA8TkaQhzX6tTwMwP8vV38Khv4UWohrJbiX1rMw==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
+    classnames "^2.2.6"
+    date-fns "^2.0.1"
+    prop-types "^15.7.2"
+    react-onclickoutside "^6.10.0"
+    react-popper "^2.2.5"
 
 react-datetime-picker@^3.3.0:
   version "3.3.0"
@@ -10160,7 +10168,12 @@ react-modern-calendar-datepicker@^3.1.6:
   dependencies:
     jalaali-js "^1.1.0"
 
-react-popper@^2.2.4:
+react-onclickoutside@^6.10.0:
+  version "6.11.2"
+  resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.11.2.tgz#790e2100b9a3589eefca1404ecbf0476b81b7928"
+  integrity sha512-640486eSwU/t5iD6yeTlefma8dI3bxPXD93hM9JGKyYITAd0P1JFkkcDeyHZRqNpY/fv1YW0Fad9BXr44OY8wQ==
+
+react-popper@^2.2.4, react-popper@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.2.5.tgz#1214ef3cec86330a171671a4fbcbeeb65ee58e96"
   integrity sha512-kxGkS80eQGtLl18+uig1UIf9MKixFSyPxglsgLBxlYnyDf65BiY9B3nZSc6C9XUNDgStROB0fMQlTEz1KxGddw==

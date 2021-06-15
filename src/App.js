@@ -43,15 +43,18 @@ import AthleteCalendar from "./pages/Calendar/AthleteCalendar";
 import CoachCalendar from "./pages/Calendar/CoachCalendar";
 import AthleteTrainingAssessment from "./pages/Profile/AthleteTrainingAssessment";
 import AthleteFoodAndLifestyleAssessment from "./pages/Profile/AthleteFoodAndLifestyleAssessment";
-<<<<<<< HEAD
 import Report_coach from "./pages/Reports/Report_coach";
 import Test from "./pages/Reports/Test";
-=======
 import Messaging from "./pages/Messaging/Messaging";
 import ChatCard from "./pages/Messaging/ChatCard";
 import ChatHomeScreen from "./pages/Messaging/ChatHomeScreen";
+import AthleteStats from "./pages/AllAthletes/AthleteStats";
+import AthleteProfile_coach from "./pages/AllAthletes/AthleteProfile_Coach";
+import AthleteMedicalAssessment_coach from "./pages/AllAthletes/AthleteMedicalAssessment";
+import AthleteFoodAndLifestyleAssessment_coach from "./pages/AllAthletes/AthleteFoodAndLifestyleAssessment";
 
->>>>>>> 14ba0edfcbbac44bf1c93a0dfa2b882b83a9d82b
+import AthleteMeasurements_coach from "./pages/AllAthletes/AthleteMeasurements";
+import AthleteTrainingAssessment_coach from "./pages/AllAthletes/AthleteTrainingAssessment";
 
 function App() {
   const user = useSelector(selectUser);
@@ -206,6 +209,49 @@ function App() {
                 CoachComp={<CoachAddMeal />}
               />
             </Route>
+            <Route path="/Athlete/training-assessment/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteTrainingAssessment_coach />}
+              ></RoutesComp>
+            </Route>
+            <Route path="/Athlete/food-and-lifestyle-assessment/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteFoodAndLifestyleAssessment_coach />}
+              ></RoutesComp>
+            </Route>
+            <Route path="/Athlete/anthropometric-measurements/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteMeasurements_coach />}
+              ></RoutesComp>
+            </Route>
+            <Route path="/Athlete/medical-assessment/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteMedicalAssessment_coach />}
+              ></RoutesComp>
+            </Route>
+            <Route path="/Athlete/reports/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteStats />}
+              />
+            </Route>
+
+            <Route path="/Athlete/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteProfile_coach />}
+              />
+            </Route>
+            <Route path="/Athlete/medical-assessment/:AthleteId">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteMedicalAssessment_coach />}
+              ></RoutesComp>
+            </Route>
 
             <Route path="/workouts">
               <RoutesComp
@@ -249,7 +295,7 @@ function App() {
                 CoachComp={<CoachAddMeal />}
               />
             </Route>
-            
+
             <Route path="/coach-nutrition-home">
               <RoutesComp
                 AthleteComp={<CoachNutritionHome />}
@@ -269,7 +315,6 @@ function App() {
               />
             </Route>
             <Route path="/calendar">
-              
               <RoutesComp
                 AthleteComp={<AthleteCalendar />}
                 CoachComp={<CoachCalendar />}
