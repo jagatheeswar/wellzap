@@ -1,0 +1,21 @@
+.coachFoodCard__addmealButton > h3,
+.coachFoodCard__submitMealButton > h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.coachFoodCard__addmealButton,
+.coachFoodCard__submitMealButton {
+  height: 40px;
+  width: 270px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fcd54a;
+  border-radius: 8px;
+  cursor: pointer;
+}

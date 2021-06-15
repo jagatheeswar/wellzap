@@ -1,13 +1,3 @@
-.home {
-  width: 100%;
-  min-height: 100vh;
-}
-.home__main {
-  flex: 0.85;
-  width: 100%;
-  height: 100%;
-}
-
 .home__container {
   width: 100%;
   height: 100%;
@@ -18,11 +8,15 @@
   background-color: #f3f3f3;
 }
 
+.home__main {
+  flex: 0.7;
+  height: 100%;
+}
+
 .home__rightContainer {
-  flex: 0.25;
   border: 1px solid #d3d3d3;
   height: 100%;
-  width: 100%;
+  flex: 0.3;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

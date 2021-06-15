@@ -35,6 +35,8 @@ import AssignedNutrition from "./pages/Nutrition/AssignedNutrition";
 import Routes from "./Routes";
 import ViewAllWorkouts from "./pages/Workouts/ViewAllWorkouts";
 import ViewAllSavedWorkouts from "./pages/Workouts/ViewAllSavedWorkouts";
+import ViewAllNutrition from "./pages/Nutrition/ViewAllNutrition";
+import ViewAllSavedNutrition from "./pages/Nutrition/ViewAllSavedNutrition";
 import AthletePayments from "./pages/Payments/AthletePayments";
 import CoachPayments from "./pages/Payments/CoachPayments";
 import Reports from "./pages/Reports/Reports";
@@ -289,6 +291,18 @@ function App() {
                 CoachComp={<CoachNutritionHome />}
               />
             </Route>
+            <Route path="/view-all-nutrition">
+              <RoutesComp
+                AthleteComp={<ViewAllNutrition />}
+                CoachComp={<ViewAllNutrition />}
+              />
+            </Route>
+            <Route path="/view-all-saved-nutrition">
+              <RoutesComp
+                AthleteComp={<ViewAllSavedNutrition />}
+                CoachComp={<ViewAllSavedNutrition />}
+              />
+            </Route>
             <Route path="/add-meal">
               <RoutesComp
                 AthleteComp={<AthleteAddMeal />}
@@ -302,7 +316,7 @@ function App() {
                 CoachComp={<CoachNutritionHome />}
               />
             </Route>
-            <Route path="/create-nutrition">
+            <Route path="/assign-nutrition">
               <RoutesComp
                 AthleteComp={<CreateNutrition />}
                 CoachComp={<CreateNutrition />}

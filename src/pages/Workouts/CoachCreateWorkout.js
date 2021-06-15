@@ -626,7 +626,7 @@ function CoachCreateWorkout() {
                 setModal1(true);
               }}
             >
-              Dont Save
+               DON'T SAVE
             </div>
             <div
               className="createWorkout__modalButton"
@@ -654,14 +654,14 @@ function CoachCreateWorkout() {
                   .catch((e) => console.error(e));
               }}
             >
-              Save
+              SAVE
             </div>
           </div>
           <div
             className="createWorkout__modalButton"
             onClick={() => setModal(false)}
           >
-            Return
+            RETURN
           </div>
         </div>
       </Modal>
@@ -682,7 +682,7 @@ function CoachCreateWorkout() {
                 setModal1(false);
               }}
             >
-              No
+              NO
             </div>
             <div
               className="createWorkout__modalButton"
@@ -719,14 +719,14 @@ function CoachCreateWorkout() {
                 setModal1(false);
               }}
             >
-              Yes
+              YES
             </div>
           </div>
           <div
             className="createWorkout__modalButton"
             onClick={() => setModal1(false)}
           >
-            Return
+            RETURN
           </div>
         </div>
       </Modal>

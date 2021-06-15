@@ -2,6 +2,8 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
+import { db } from "../../utils/firebase";
+import NutritionScreenHeader from "./NutritionScreenHeader";
 
 function ViewAllNutrition() {
   const userData = useSelector(selectUserData);
@@ -64,6 +66,7 @@ function ViewAllNutrition() {
 
   return (
     <div>
+      <NutritionScreenHeader name="Assigned Meal Plans" />
       <div
         style={{
           display: "flex",

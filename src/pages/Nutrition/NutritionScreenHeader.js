@@ -2,9 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { selectUserType } from "../../features/userSlice";
+import { formatDate } from "../../functions/formatDate";
 import "./Nutrition.css";
 
-function NutritionScreenHeader({ name }) {
+function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
 
@@ -23,7 +24,15 @@ function NutritionScreenHeader({ name }) {
       {name === "Nutrition" && (
         <div
           className="addNutrition__button"
-          onClick={() => history.push("/add-meal")}
+          onClick={() =>
+            history.push({
+              pathname: "/add-meal",
+              state: {
+                entireFood: entireFood,
+                todaysFoodId: todaysFoodId,
+              },
+            })
+          }
         >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
           <h5>ADD MEAL</h5>

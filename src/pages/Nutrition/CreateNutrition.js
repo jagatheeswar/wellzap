@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectUserData } from "../../features/userSlice";
+import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import NutritionScreenHeader from "./NutritionScreenHeader";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
@@ -20,6 +20,9 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
+import { useHistory, useLocation } from "react-router";
+import firebase from "firebase";
+import "./CoachNutrition.css";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -158,22 +161,11 @@ const Listbox = styled("ul")`
 
 function CreateNutrition() {
   const classes = useStyles();
-  const [serverData, setServerData] = useState([]);
-  const [entireFood, setEntireFood] = useState([
-    {
-      meal: "",
-      description: "",
-      food: [
-        {
-          foodName: "",
-          quantity: 1,
-        },
-      ],
-    },
-  ]);
-  const [foodId, setFoodId] = useState("");
-
   const userData = useSelector(selectUserData);
+  const userType = useSelector(selectUserType);
+  const [nutritionId, setNutritionId] = useState("");
+  const [nutritionName, setNutritionName] = useState("");
+  const [plan, setPlan] = useState([]);
   const [athletes, setAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
@@ -189,6 +181,8 @@ function CreateNutrition() {
   ]);
   const [specificDates, setSpecificDates] = useState([]);
   const [type, setType] = useState("");
+  const location = useLocation();
+  const history = useHistory();
   const {
     getRootProps,
     getInputLabelProps,
@@ -215,16 +209,30 @@ function CreateNutrition() {
   }, [value]);
 
   useEffect(() => {
-    fetch("https://rongoeirnet.herokuapp.com/getFood")
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Successful response from the API Call
-        setServerData(responseJson.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    if (location.state.nutrition) {
+      if (location.state.type === "update") {
+        // setType(location.state.type);
+        // setNutrition(location.state.nutrition.data.nutrition);
+        // setNutritionId(location.state.nutrition.id);
+        // setPlan(location.state.nutrition.data.nutrition.plan);
+        // setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+      } else if (location.state.type === "create") {
+        // setType(location.state.type);
+        // setNutrition(location.state.nutrition.data.nutrition);
+        // setNutritionId(location.state.nutrition.id);
+        // setPlan(location.state.nutrition.data.nutrition.plan);
+      } else if (location.state.type === "view") {
+        // setType(location.state.type);
+        // setNutrition(location.state.nutrition.data.nutrition);
+        // setNutritionId(location.state.nutrition.id);
+        // setPlan(location.state.nutrition.data.nutrition.plan);
+        // setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+      } else {
+        setNutritionName(location.state.nutrition.nutritionName);
+        setPlan(location.state.nutrition.plan);
+      }
+    }
+  }, [location]);
 
   useEffect(() => {
     if (type === "non-editable") {
@@ -287,7 +295,14 @@ function CreateNutrition() {
       <img src="/assets/nutrition.jpeg" alt="" />
       <div className="createNutrition__input">
         <h4>Nutrition Plan Name</h4>
-        <input type="text" placeholder="Enter Nutrition Plan Name" />
+        <input
+          type="text"
+          placeholder="Enter Nutrition Plan Name"
+          value={nutritionName}
+          onChange={(e) => {
+            setNutritionName(e.target.value);
+          }}
+        />
       </div>
 
       <div>
@@ -333,7 +348,7 @@ function CreateNutrition() {
                 backgroundColor: "#fcd54a",
                 borderRadius: "10px",
                 height: "45px",
-                width: "49%",
+                width: "350px",
               }}
             >
               <img
@@ -373,10 +388,10 @@ function CreateNutrition() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 flexWrap: "wrap",
                 marginBottom: "10px",
-                width: "45%",
+                width: "300px",
               }}
             >
               <div
@@ -385,7 +400,7 @@ function CreateNutrition() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "50%",
+                  width: "300px",
                 }}
               >
                 <IconButton
@@ -533,14 +548,14 @@ function CreateNutrition() {
                   alignItems: "center",
                   width: "100%",
                   height: "25px",
-                  marginLeft: "45px",
+                  marginLeft: "35px",
                   cursor: "pointer",
                 }}
               >
                 {specificDates?.map((tempDate, idx) => (
                   <div
                     style={{
-                      width: "43px",
+                      width: "45px",
                       height: "30px",
                     }}
                     key={idx}
@@ -566,77 +581,146 @@ function CreateNutrition() {
           </div>
         ))}
       </div>
-      <div className="athleteAddMeal__typeOfMeal">
-        <h2>Select Meal</h2>
-        {entireFood.map((ent, index) => (
-          <div className="athleteAddMealfood__container">
-            <FormControl className={classes.formControl}>
-              <InputLabel id="meal-select-label">
-                Select the type of meal
-              </InputLabel>
-              <Select
-                labelId="meal-select-label"
-                id="meal-select-label"
-                value={ent.meal}
-                onChange={(e) => {
-                  let temp = [...entireFood];
-                  temp[index].meal = e.target.value;
-                  setEntireFood(temp);
-                }}
-              >
-                <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-                <MenuItem value={"Lunch"}>Lunch</MenuItem>
-                <MenuItem value={"Snack"}>Snack</MenuItem>
-                <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
-                <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
-                <MenuItem value={"Dinner"}>Dinner</MenuItem>
-              </Select>
-            </FormControl>
-            <div className="coachAddMeal__textArea">
-              <h4>Description</h4>
-              <textarea type="text" placeholder="Enter Meal Description" />
-            </div>
-
-            <div className="foodCard__addButtons">
-              <div
-                className="foodCard__addfoodButton"
-                onClick={() => {
-                  let foodData = [...entireFood];
-                  let temp = [...ent.food];
-                  temp.push({
-                    foodName: "",
-                    quantity: 1,
-                  });
-                  foodData[index].food = temp;
-                  setEntireFood(foodData);
-                }}
-              >
-                <h3>Add Food</h3>
+      <div className="coachAddMeal__form">
+        <div className="athleteAddMeal__typeOfMeal">
+          {plan?.map((item, idx) => (
+            <div className="athleteAddMealfood__container">
+              <FormControl className={classes.formControl}>
+                <InputLabel id="meal-select-label">
+                  Select the type of meal
+                </InputLabel>
+                <Select
+                  labelId="meal-select-label"
+                  id="meal-select-label"
+                  value={item.meal}
+                  onChange={(e) => {
+                    let temp = [...plan];
+                    temp[idx].meal = e.target.value;
+                    setPlan(temp);
+                  }}
+                >
+                  <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                  <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                  <MenuItem value={"Snack"}>Snack</MenuItem>
+                  <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
+                  <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
+                  <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                </Select>
+              </FormControl>
+              <div className="coachAddMeal__textArea">
+                <h4>Description</h4>
+                <textarea
+                  type="text"
+                  placeholder="Enter Meal Description"
+                  value={item.description}
+                  onChange={(e) => {
+                    let temp = [...plan];
+                    temp[idx].description = e.target.value;
+                    setPlan(temp);
+                  }}
+                />
               </div>
+            </div>
+          ))}
 
-              <div
-                className="foodCard__addmealButton"
-                onClick={() => {
-                  setEntireFood([
-                    ...entireFood,
-                    {
-                      meal: "",
-                      description: "",
-                      food: [
-                        {
-                          foodName: "",
-                          quantity: 1,
+          {userType !== "athlete" && (
+            <div
+              className="coachFoodCard__addmealButton"
+              onClick={() => {
+                setPlan([
+                  ...plan,
+                  {
+                    meal: "",
+                    description: "",
+                  },
+                ]);
+              }}
+            >
+              <h3>Add Meal</h3>
+            </div>
+          )}
+          {userType !== "athlete" && (
+            <div
+              className="coachFoodCard__submitMealButton"
+              onClick={() => {
+                if (type === "view") {
+                  history.goBack();
+                } else {
+                  if (type === "update") {
+                    db.collection("Food")
+                      .doc(nutritionId)
+                      .update({
+                        nutrition: {
+                          nutritionName: nutritionName,
+                          plan,
                         },
-                      ],
-                    },
-                  ]);
-                }}
-              >
-                <h3>Add Meal</h3>
-              </div>
+                        saved: false,
+                      });
+                    if (type === "update") {
+                      history.goBack();
+                    } else {
+                      history.push("/post-add-screen");
+                    }
+                  } else {
+                    let tempDate1 = [];
+                    selectedAthletes.map((athlete) => {
+                      athlete.selectedDays.map((d) => {
+                        tempDate1.push(d);
+                      });
+                    });
+
+                    if (selectedAthletes && tempDate1.length > 0) {
+                      selectedAthletes.map((athlete, idx) => {
+                        // sendPushNotification(
+                        //   athlete.token,
+                        //   "new Nutrition Plan assigned"
+                        // );
+                        db.collection("Food").add({
+                          from_id: userData?.id,
+                          assignedTo_id: athlete.id,
+                          selectedDays: athlete.selectedDays,
+                          nutrition: {
+                            nutritionName: nutritionName,
+                            plan,
+                          },
+                          saved: false,
+                          selectedAthletes,
+                        });
+                      });
+
+                      selectedAthletes.forEach((id) => {
+                        db.collection("AthleteNotifications")
+                          .doc(id.id)
+                          .collection("notifications")
+                          .add({
+                            message: "New Nutrition plan assigned",
+                            seen: false,
+                            timestamp:
+                              firebase.firestore.FieldValue.serverTimestamp(),
+                            coach_id: userData.id,
+                          });
+                      });
+                      history.push({
+                        pathname: "/nutrition",
+                      });
+                    } else {
+                      alert("Please select an athlete and assign a date");
+                    }
+                  }
+                }
+              }}
+            >
+              <h3>
+                {" "}
+                {type === "view"
+                  ? "Return"
+                  : type === "update"
+                  ? "Update Plan"
+                  : "Complete Nutrition"}
+              </h3>
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
     </div>
   );
