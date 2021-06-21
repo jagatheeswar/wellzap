@@ -109,7 +109,6 @@ function CoachNutritionHome() {
                   nutrition={nutrition}
                   food={food}
                   idx={idx}
-                  type="view"
                 />
               ))
             ) : (

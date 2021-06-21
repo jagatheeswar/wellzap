@@ -106,6 +106,7 @@ const Compliance_report = (props) => {
               }
             });
             if (total > 0) {
+              console.log("total", total);
               setiscompliance_empty(false);
             }
 
@@ -278,9 +279,7 @@ const Compliance_report = (props) => {
             new Date(tDate.setDate(tDate.getDate() + 1)).toUTCString()
           );
           console.log(data);
-          if (data > 0) {
-            setiscompliance_empty(false);
-          }
+
           count = count + 1;
           total = 0;
         }

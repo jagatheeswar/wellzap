@@ -57,6 +57,8 @@ import AthleteFoodAndLifestyleAssessment_coach from "./pages/AllAthletes/Athlete
 
 import AthleteMeasurements_coach from "./pages/AllAthletes/AthleteMeasurements";
 import AthleteTrainingAssessment_coach from "./pages/AllAthletes/AthleteTrainingAssessment";
+import ViewNutrition from "./pages/Nutrition/ViewNutrition";
+import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 
 function App() {
   const user = useSelector(selectUser);
@@ -273,6 +275,12 @@ function App() {
                 CoachComp={<ViewAllSavedWorkouts />}
               />
             </Route>
+            <Route path="/post-workout">
+              <RoutesComp
+                AthleteComp={<PostWorkoutDetails />}
+                CoachComp={<AssignWorkout />}
+              />
+            </Route>
             <Route path="/create-workout">
               <RoutesComp
                 AthleteComp={<CoachCreateWorkout />}
@@ -289,6 +297,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthleteNutrition />}
                 CoachComp={<CoachNutritionHome />}
+              />
+            </Route>
+            <Route path="/view-nutrition">
+              <RoutesComp
+                AthleteComp={<AthleteNutrition />}
+                CoachComp={<ViewNutrition />}
               />
             </Route>
             <Route path="/view-all-nutrition">

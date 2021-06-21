@@ -127,7 +127,8 @@
 .createNutrition__input > input {
   padding: 10px;
   display: flex;
-  width: 45%;
+  box-sizing: border-box;
+  width: 96%;
   outline: gray;
   background-color: white;
   border: 1px solid #777;
@@ -138,10 +139,9 @@
   border: 1px solid #777;
   padding: 10px;
   display: flex;
-  width: 100%;
+  width: 96%;
   outline: gray;
   height: 80px;
-  width: 46%;
 }
 
 .coachAddMeal__textArea {

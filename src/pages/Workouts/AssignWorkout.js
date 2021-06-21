@@ -17,6 +17,7 @@ import { formatDate } from "../../functions/formatDate";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import Modal from "react-awesome-modal";
+import { getType } from "@reduxjs/toolkit";
 
 function AssignWorkout() {
   const location = useLocation();
@@ -27,6 +28,10 @@ function AssignWorkout() {
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
+  const [workoutDuration, setworkoutDuration] = useState(null);
+  const [caloriesBurnEstimate, setcaloriesBurnEstimate] = useState(null);
+  const [workoutDifficulty, setworkoutDifficulty] = useState(null);
+  const [workoutDescription, setworkoutDescription] = useState(null);
   const [daysList, setDaysList] = useState([
     "Sun",
     "Mon",
@@ -73,60 +78,84 @@ function AssignWorkout() {
     }
   }, [workoutVideoUrl]);
 
-  // useEffect(() => {
-  //   if (route.params?.assignType) {
-  //     setType(route.params?.assignType);
-  //   }
-  // }, [route.params?.assignType]);
+  useEffect(() => {
+    if (location.state?.assignType) {
+      setType(location.state?.assignType);
+    }
+  }, [location.state?.assignType]);
 
-  // useEffect(() => {
-  //   if (route.params?.athlete_id && route.params?.workout?.data?.selectedAthletes) {
-  //     let tmp = []
-  //     let selectedAthlete = route.params?.workout?.data?.selectedAthletes.find(x => x.id === route.params?.athlete_id)
-  //     tmp.push(selectedAthlete)
-  //     setSelectedAthletes(tmp)
-  //   }
-  // }, [route.params?.athlete_id]);
+  useEffect(() => {
+    if (
+      location.state?.athlete_id &&
+      location.state?.workout?.data?.selectedAthletes
+    ) {
+      let tmp = [];
+      let selectedAthlete =
+        location.state?.workout?.data?.selectedAthletes.find(
+          (x) => x.id === location.state?.athlete_id
+        );
+      tmp.push(selectedAthlete);
+      setSelectedAthletes(tmp);
+    }
+  }, [location.state?.athlete_id]);
 
   useEffect(() => {
     console.log(location.state.workout);
     if (location.state.workout) {
       setWorkout(location.state.workout);
+      setworkoutDifficulty(
+        location.state.workout?.data?.preWorkout?.workoutDifficulty
+      );
+
+      setworkoutDescription(
+        location.state.workout?.data?.preWorkout?.workoutDescription
+      );
+
+      setcaloriesBurnEstimate(
+        location.state.workout?.data?.preWorkout?.caloriesBurnEstimate
+      );
+
+      setworkoutDuration(
+        location.state.workout?.data?.preWorkout?.workoutDuration
+      );
       setSelectedExercises(
         location.state.workout?.data?.preWorkout?.selectedExercises
       );
 
-      // if (route.params?.workout?.data?.selectedAthletes && !route.params?.athlete_id) {
-      //   setSelectedAthletes(route.params?.workout?.data?.selectedAthletes);
-      // }
+      if (
+        location.state?.workout?.data?.selectedAthletes &&
+        !location.state?.athlete_id
+      ) {
+        setSelectedAthletes(location.state?.workout?.data?.selectedAthletes);
+      }
     }
   }, [location]);
 
-  // useEffect(() => {
-  //   if (group && workout) {
-  //     let temp = { ...workout };
-  //     temp.data.preWorkout.group = group;
-  //     setWorkout(temp);
-  //   }
-  // }, [group]);
+  useEffect(() => {
+    if (group && workout) {
+      let temp = { ...workout };
+      temp.data.preWorkout.group = group;
+      setWorkout(temp);
+    }
+  }, [group]);
 
-  // useEffect(() => {
-  //   if (route.params?.workout && userType === "athlete") {
-  //     db.collection("coaches")
-  //       .doc(route.params?.workout?.data?.assignedById)
-  //       .get()
-  //       .then((doc) => {
-  //         if (doc.exists) {
-  //           setCoachDetails({ id: doc.id, data: doc.data() });
-  //         } else {
-  //           console.log("No such document!");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log("Error getting document:", error);
-  //       });
-  //   }
-  // }, [route.params?.workout]);
+  useEffect(() => {
+    if (location.state?.workout && userType === "athlete") {
+      db.collection("coaches")
+        .doc(location.state?.workout?.data?.assignedById)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setCoachDetails({ id: doc.id, data: doc.data() });
+          } else {
+            console.log("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
+    }
+  }, [location.state?.workout]);
 
   useEffect(() => {
     if (type === "non-editable" && location.state.workout) {
@@ -213,29 +242,57 @@ function AssignWorkout() {
         <h3>Workout Details</h3>
         <div className="assignWorkout__summaryCard">
           <div className="assignWorkout__summaryCardLeft">
+            {console.log(type)}
             <textarea
               rows="5"
               cols="40"
               name="description"
-              value={workout?.data?.preWorkout?.workoutDescription}
-              disabled
+              value={workoutDescription}
+              disabled={type == "non-editable" || type == "view"}
+              onChange={(val) => {
+                let temp = workout;
+                setworkoutDescription(val.target.value);
+                temp.data.preWorkout.workoutDescription = workoutDescription;
+                setWorkout(temp);
+              }}
             />
 
             <div className="assignWorkout__summaryCardLeftComponents">
               <img src="/assets/Icon_material_access_time.png" alt="" />
               <input
-                value={workout?.data?.preWorkout?.workoutDuration}
-                disabled
+                value={workoutDuration}
+                disabled={type == "non-editable" || type == "view"}
+                onChange={(val) => {
+                  console.log(workout.data.preWorkout.workoutDuration);
+                  let temp = workout;
+                  setworkoutDuration(val.target.value);
+                  temp.data.preWorkout.workoutDuration = workoutDuration;
+                  setWorkout(temp);
+                }}
               />
               <img src="/assets/Icon_awesome_burn.png" alt="" />
               <input
-                value={workout?.data?.preWorkout?.caloriesBurnEstimate}
-                disabled
+                value={caloriesBurnEstimate}
+                disabled={type == "non-editable" || type == "view"}
+                onChange={(val) => {
+                  //console.log(workout.data.preWorkout.workoutDuration);
+                  let temp = workout;
+                  setcaloriesBurnEstimate(val.target.value);
+                  temp.data.preWorkout.caloriesBurnEstimate =
+                    caloriesBurnEstimate;
+                  setWorkout(temp);
+                }}
               />
               <img src="/assets/Icon_feather_trending_up.png" alt="" />
               <input
-                value={workout?.data?.preWorkout?.workoutDifficulty}
-                disabled
+                value={workoutDifficulty}
+                disabled={type == "non-editable" || type == "view"}
+                onChange={(val) => {
+                  let temp = workout;
+                  setworkoutDifficulty(val.target.value);
+                  temp.data.preWorkout.workoutDifficulty = workoutDifficulty;
+                  setWorkout(temp);
+                }}
               />
             </div>
           </div>
@@ -281,7 +338,7 @@ function AssignWorkout() {
                 if (userType === "athlete") {
                   // navigation.navigate("PostWorkoutDetails", {
                   //   workout: workout,
-                  //   workoutName: route.params?.workoutName,
+                  //   workoutName: location.state?.workoutName,
                   // });
                 } else {
                   if (type === "non-editable") {

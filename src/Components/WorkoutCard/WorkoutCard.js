@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { selectUserType } from "../../features/userSlice";
+import { db } from "../../utils/firebase";
+import { selectUserType, selectUserData } from "../../features/userSlice";
 import "./WorkoutCard.css";
+import { formatDate } from "../../functions/formatDate";
 
 function WorkoutCard({
   workouts,
@@ -13,9 +15,44 @@ function WorkoutCard({
   completed,
   athlete_id,
 }) {
+  console.log(workouts, item);
+  const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [date, setDate] = useState("");
+  const [workout, setWorkout] = useState([]);
+  const [savedWorkouts, setSavedWorkouts] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    if (userData) {
+      db.collection("CoachWorkouts")
+        .where("assignedById", "==", userData?.id)
+        .where("saved", "==", false)
+        .where("selectedDates", "array-contains", formatDate())
+        .limit(3)
+        .onSnapshot((snapshot) => {
+          setWorkout(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+      db.collection("CoachWorkouts")
+        .where("assignedById", "==", userData?.id)
+        .where("assignedToId", "==", "")
+        // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
+        .limit(5)
+        .onSnapshot((snapshot) => {
+          setSavedWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+    }
+  }, [userData?.id]);
 
   useEffect(() => {
     if (showDate) {
@@ -51,7 +88,7 @@ function WorkoutCard({
               },
             });
           } else {
-            if (item.data?.assignedToId) {
+            if (item?.data?.assignedToId) {
               console.log("clicked 3");
               history.push({
                 pathname: "/assign-workout",

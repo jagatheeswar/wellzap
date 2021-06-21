@@ -1,0 +1,350 @@
+import React, { useEffect, useState } from "react";
+import "./ViewNutrition.css";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import AddFoodCard from "../../pages/Nutrition/AddFoodCard";
+import { useHistory, useLocation } from "react-router-dom";
+import { selectUserType, selectUserData } from "../../features/userSlice";
+import { useSelector } from "react-redux";
+import "./CoachNutrition.css";
+import { makeStyles } from "@material-ui/core";
+import { db } from "../../utils/firebase";
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: "96%",
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+function ViewNutrition({}) {
+  const location = useLocation();
+  const history = useHistory();
+  const Classes = useStyles();
+  const [entireFood, setEntireFood] = useState([]);
+  const userData = useSelector(selectUserData);
+  const [Modal, setModal] = useState(true);
+  const [editable, seteditable] = useState(false);
+  const [athletes, setathlete] = useState([]);
+  const [dates, setdates] = useState([]);
+  const [selectedathlete, setselectedathlete] = useState([]);
+  const userType = useSelector(selectUserType);
+  const [nutritionId, setnutritionId] = useState(null);
+  const [athleteDates, setathleteDates] = useState(null);
+  const [currentStartWeek, setCurrentStartWeek] = useState(null);
+  const [currentEndWeek, setCurrentEndWeek] = useState(null);
+  const [current_athlete, setcurrent_athlete] = useState(null);
+  const [specificdates, setSpecificDates] = useState(null);
+  const [listOfAthletes, setListOfAthletes] = useState([]);
+  const [daysList, setDaysList] = useState([
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+  ]);
+  const [nutritionName, setnutritionName] = useState(
+    location?.state?.food?.data?.nutrition?.nutritionName
+  );
+  useEffect(() => {
+    if (location?.state?.food?.data?.nutrition?.plan) {
+      setEntireFood(location?.state?.food?.data?.nutrition?.plan);
+    }
+    if (location?.state?.food?.data?.selectedAthletes) {
+      setathlete(location?.state?.food?.data?.selectedAthletes);
+    }
+    if (location?.state?.food?.data?.selectedDays) {
+      setdates(location?.state?.food?.data?.selectedDays);
+    }
+    if (location?.state?.food?.id) {
+      setnutritionId(location?.state?.food?.id);
+    }
+
+    if (location?.state?.editable) {
+      seteditable(location?.state?.editable);
+    }
+  }, [location?.state]);
+
+  useEffect(() => {
+    if (!editable) {
+      var minDate = location?.state?.food?.data?.selectedDays?.reduce(function (
+        a,
+        b
+      ) {
+        return a < b ? a : b;
+      });
+      var curr = new Date(minDate); // get current date
+      var first = curr.getDate() - curr.getDay(); // First day is the  day of the month - the day of the week \
+
+      var firstday = new Date(curr.setDate(first)).toUTCString();
+      var lastday = new Date(curr.setDate(curr.getDate() + 6)).toUTCString();
+
+      setCurrentStartWeek(formatSpecificDate(firstday));
+      setCurrentEndWeek(formatSpecificDate(lastday));
+    } else {
+      var curr = new Date(); // get current date
+      var first = curr.getDate() - curr.getDay(); // First day is the  day of the month - the day of the week \
+
+      var firstday = new Date(curr.setDate(first)).toUTCString();
+      var lastday = new Date(curr.setDate(curr.getDate() + 6)).toUTCString();
+
+      setCurrentStartWeek(formatSpecificDate(firstday));
+      setCurrentEndWeek(formatSpecificDate(lastday));
+    }
+  }, [editable, dates]);
+
+  function incr_date(date_str) {
+    var parts = date_str.split("-");
+    var dt = new Date(
+      parseInt(parts[0], 10), // year
+      parseInt(parts[1], 10) - 1, // month (starts with 0)
+      parseInt(parts[2], 10) // date
+    );
+    dt.setDate(dt.getDate() + 1);
+    parts[0] = "" + dt.getFullYear();
+    parts[1] = "" + (dt.getMonth() + 1);
+    if (parts[1].length < 2) {
+      parts[1] = "0" + parts[1];
+    }
+    parts[2] = "" + dt.getDate();
+    if (parts[2].length < 2) {
+      parts[2] = "0" + parts[2];
+    }
+    return parts.join("-");
+  }
+
+  useEffect(() => {
+    if (currentStartWeek) {
+      let temp = currentStartWeek;
+
+      let datesCollection = [];
+
+      for (var i = 0; i < 7; i++) {
+        datesCollection.push(temp);
+        temp = incr_date(temp);
+      }
+
+      setSpecificDates(datesCollection);
+    }
+  }, [currentStartWeek]);
+
+  function formatSpecificDate(d) {
+    var d = new Date(d),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+
+  function formatSpecificDate1(d) {
+    var d = new Date(d),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [day, month].join("/");
+  }
+
+  useEffect(() => {
+    if (userData?.id) {
+      const data = [];
+      db.collection("athletes")
+        .orderBy("name", "asc")
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((athlete) => {
+            if (userData?.data?.listOfAthletes?.includes(athlete.id)) {
+              let currentID = athlete.id;
+              let appObj = { ...athlete.data(), ["id"]: currentID };
+              data.push(appObj);
+            }
+          });
+          setListOfAthletes(data);
+        });
+    }
+  }, [userData?.id]);
+
+  // const fetchUsers = (search) => {
+  //   let users = listOfAthletes.filter((l) => l.name >= search);
+  //   setAthletes(users);
+  // };
+  function formatDate() {
+    var d = new Date(),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+  return (
+    <div className="addMeal">
+      <div className="coachAddMeal__form">
+        <div className="athleteAddMeal__typeOfMeal">
+          <div className="coachAddMeal__input">
+            <h4>Nutrition Plan Name</h4>
+            <input
+              type="text"
+              placeholder="Enter Nutrition Plan Name"
+              value={nutritionName}
+              onChange={(val) => {
+                if (editable) {
+                  setnutritionName(val);
+                }
+              }}
+            />
+          </div>
+          <div style={{ marginLeft: 20 }}>
+            <h4>{editable ? "Select Athletes" : "Assigned Athletes"}</h4>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <FormControl className={(Classes.formControl, { width: "45%" })}>
+                <InputLabel id="Athletes_list">
+                  {athletes.length} Athletes selected
+                </InputLabel>
+                <Select
+                  labelId="Athleteslist"
+                  id="Athletes"
+                  value={current_athlete}
+                  onChange={(val) => {
+                    setcurrent_athlete(val.target.value);
+                  }}
+                >
+                  {editable
+                    ? listOfAthletes?.map((item) => (
+                        <MenuItem value={item.id}>
+                          {item.name}
+                          {console.log(item)}
+                        </MenuItem>
+                      ))
+                    : athletes?.map((item) => (
+                        <MenuItem
+                          value={item.name}
+                          onClick={() => {
+                            setselectedathlete(item.selectedDays);
+                          }}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                </Select>
+              </FormControl>
+              <div style={{ display: "flex", marginRight: 30 }}>
+                {daysList?.map((day,idx) => (
+                  <div style={{ margin: 5 }}>
+                    <h4 style={{ textAlign: "right" }}>{day}</h4>
+                    <h4 style={{ textAlign: "right" }}>{item.slice(5, 7)}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          {entireFood?.map((item, idx) => (
+            <div className="athleteAddMealfood__container">
+              <FormControl className={Classes.formControl} disabled={!editable}>
+                <InputLabel id="meal-select-label">
+                  Select the type of meal
+                </InputLabel>
+                <Select
+                  labelId="meal-select-label"
+                  id="meal-select-label"
+                  value={item.meal}
+                  onChange={(val) => {
+                    let temp = [...entireFood];
+                    temp[idx].meal = val.target.value;
+
+                    setEntireFood(temp);
+                  }}
+                >
+                  <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                  <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                  <MenuItem value={"Snack"}>Snack</MenuItem>
+                  <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
+                  <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
+                  <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                </Select>
+              </FormControl>
+              <div className="coachAddMeal__textArea">
+                <h4>Description</h4>
+                <textarea
+                  disabled={!editable}
+                  type="text"
+                  placeholder="Enter Meal Description"
+                  value={item.description}
+                  onChange={(val) => {
+                    let temp = [...entireFood];
+                    temp[idx].description = val.target.value;
+
+                    setEntireFood(temp);
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+
+          {userType !== "athlete" && editable && (
+            <div
+              className="coachFoodCard__addmealButton"
+              onClick={() => {
+                setEntireFood([
+                  ...entireFood,
+                  {
+                    meal: "",
+                    description: "",
+                  },
+                ]);
+              }}
+            >
+              <h3>Add Plan</h3>
+            </div>
+          )}
+          {userType !== "athlete" && editable && (
+            <div
+              className="coachFoodCard__submitMealButton"
+              onClick={() => {
+                db.collection("Food")
+                  .doc(nutritionId)
+                  .update({
+                    nutrition: {
+                      nutritionName: nutritionName,
+                      plan: entireFood,
+                    },
+                    saved: false,
+                  })
+                  .then(() => {
+                    alert("saved");
+
+                    history.push("/nutrition");
+                  });
+              }}
+            >
+              <h3>{editable ? "Update plan" : ""}</h3>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ViewNutrition;

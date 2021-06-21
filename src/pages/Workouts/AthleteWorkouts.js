@@ -83,9 +83,10 @@ function AthleteWorkouts() {
             {workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
-                workout={workouts}
+                workouts={workouts}
                 item={workout}
                 idx={i}
+                type={"non-editable"}
               />
             ))}
           </div>
@@ -114,9 +115,11 @@ function AthleteWorkouts() {
             {pastWorkouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
-                workout={workouts}
+                workouts={workouts}
                 item={workout}
                 idx={i}
+                type={"non-editable"}
+                completed={true}
               />
             ))}
           </div>

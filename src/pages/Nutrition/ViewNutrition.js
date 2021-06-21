@@ -166,11 +166,11 @@ function CreateNutrition() {
   const [nutritionId, setNutritionId] = useState("");
   const [nutritionName, setNutritionName] = useState("");
   const [plan, setPlan] = useState([]);
+  const [nutrition, setNutrition] = useState(null);
   const [athletes, setAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
-  const [Nutrition, setNutrition] = useState(null);
   const [daysList, setDaysList] = useState([
     "Sun",
     "Mon",
@@ -199,6 +199,7 @@ function CreateNutrition() {
     id: "customized-hook-demo",
     multiple: true,
     options: athletes,
+    getOptionSelected: (option, value) => value.id === option.id,
     getOptionLabel: (option) => option.name,
   });
 
@@ -211,27 +212,36 @@ function CreateNutrition() {
 
   useEffect(() => {
     if (location.state.nutrition) {
+      console.log(location.state);
       if (location.state.type === "update") {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
         setNutritionId(location.state.nutrition.id);
-        setPlan(location.state.nutrition.data.nutrition.plan);
-        if (location.state.nutrition.data.selectedAthletes) {
-          setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+        if (location.state.nutrition.data?.nutrition?.plan) {
+          setPlan(location.state.nutrition.data?.nutrition?.plan);
         }
+
+        setNutritionName(
+          location?.state?.nutrition?.data?.nutrition?.nutritionName
+        );
+        setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
       } else if (location.state.type === "create") {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
         setNutritionId(location.state.nutrition.id);
         setPlan(location.state.nutrition.data.nutrition.plan);
+        setNutritionName(
+          location?.state?.nutrition?.data?.nutrition?.nutritionName
+        );
       } else if (location.state.type === "view") {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
         setNutritionId(location.state.nutrition.id);
         setPlan(location.state.nutrition.data.nutrition.plan);
-        if (location.state.nutrition.data.selectedAthletes) {
-          setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
-        }
+        setNutritionName(
+          location?.state?.nutrition?.data?.nutrition?.nutritionName
+        );
+        setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
       } else {
         setNutritionName(location.state.nutrition.nutritionName);
         setPlan(location.state.nutrition.plan);
@@ -334,7 +344,7 @@ function CreateNutrition() {
       </div>
 
       <div>
-        {selectedAthletes.map((athlete, index) => (
+        {selectedAthletes?.map((athlete, index) => (
           <div
             key={index}
             style={{
@@ -435,11 +445,14 @@ function CreateNutrition() {
                   <div
                     key={idx}
                     onClick={() => {
+                      console.log(day);
                       if (type !== "view") {
+                        console.log(athlete?.selectedDays);
                         if (
                           athlete?.selectedDays?.includes(specificDates[idx])
                         ) {
                           let selected = selectedAthletes[index].selectedDays;
+                          console.log(selected);
                           var index1 = selected.indexOf(specificDates[idx]);
                           if (index1 !== -1) {
                             selected.splice(index1, 1);
@@ -448,6 +461,7 @@ function CreateNutrition() {
                               selected,
                             };
                             setSelectedAthletes([...selectedAthletes]);
+                            console.log(selectedAthletes);
                           }
                         } else {
                           if (
@@ -632,6 +646,7 @@ function CreateNutrition() {
             <div
               className="coachFoodCard__addmealButton"
               onClick={() => {
+                console.log(plan);
                 setPlan([
                   ...plan,
                   {
@@ -667,6 +682,7 @@ function CreateNutrition() {
                       history.push("/post-add-screen");
                     }
                   } else {
+                    console.log("works");
                     let tempDate1 = [];
                     selectedAthletes.map((athlete) => {
                       athlete.selectedDays.map((d) => {

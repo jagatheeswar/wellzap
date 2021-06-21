@@ -59,7 +59,7 @@ function ViewAllSavedNutrition() {
                 food={food}
                 idx={idx}
                 navigation={"ViewAllNutrition"}
-                type="view"
+                type={true}
               />
             ))
           ) : (

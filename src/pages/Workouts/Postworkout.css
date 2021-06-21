@@ -1,0 +1,36 @@
+.Postworkout__container {
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.Postworkout__body {
+  margin: 30px;
+
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.Datepicker__container {
+  justify-content: center;
+  display: flex;
+  width: 200px;
+  height: 30px;
+  border: 1px solid grey;
+  background-color: White;
+}
+.Planned_data {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+
+  flex-direction: row;
+}
+.Planned_data > div {
+  text-align: center;
+  margin-left: 20px;
+}

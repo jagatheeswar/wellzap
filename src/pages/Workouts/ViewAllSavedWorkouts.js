@@ -1,16 +1,72 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
-import { selectUserData } from "../../features/userSlice";
+import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
 function ViewAllSavedWorkouts() {
   const userData = useSelector(selectUserData);
-  const [workouts, setWorkouts] = useState([]);
+  const userType = useSelector(selectUserType);
+  const [workouts, setWorkouts] = React.useState([]);
+  const [savedWorkouts, setsavedWorkouts] = useState([]);
+  const [type, setType] = React.useState("");
+  const [athleteId, setAthleteId] = React.useState("");
+  const [completed, setCompleted] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (userData) {
+      if (userType === "athlete") {
+        db.collection("workouts")
+          .where("assignedToId", "==", userData?.id)
+          .where("completed", "==", true)
+          //.orderBy("date","desc")
+          .onSnapshot((snapshot) => {
+            setWorkouts(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data(),
+              }))
+            );
+          });
+      } else {
+        if (type && athleteId) {
+          db.collection("workouts")
+            .where("assignedToId", "==", athleteId)
+            .where("saved", "==", false)
+            .where("completed", "==", completed)
+            .onSnapshot((snapshot) => {
+              if (snapshot) {
+                console.log("Inside snapshot");
+                setWorkouts(
+                  snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    data: doc.data(),
+                  }))
+                );
+              } else {
+                console.log("outside snapshot");
+                setWorkouts([]);
+              }
+            });
+        } else {
+          db.collection("CoachWorkouts")
+            .where("assignedById", "==", userData?.id)
+            .where("saved", "==", false)
+            .onSnapshot((snapshot) => {
+              setWorkouts(
+                snapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  data: doc.data(),
+                }))
+              );
+            });
+        }
+      }
+    }
+  }, [userData?.id, athleteId]);
+  useEffect(() => {
+    if (userData?.userType == "coach") {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")

@@ -132,6 +132,7 @@
 
 .messaging {
   width: 100%;
+  height: 110px;
   display: flex;
   padding: 10px;
   align-items: center;
@@ -151,7 +152,13 @@
   border-radius: 12px;
   font-size: 14px;
 }
+.messaging__component:hover {
+  cursor: pointer;
+}
 
+.see_more_home {
+  cursor: pointer;
+}
 .athletes__card {
   width: 100%;
   display: flex;

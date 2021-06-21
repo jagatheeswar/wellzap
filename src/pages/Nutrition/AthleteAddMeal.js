@@ -83,7 +83,11 @@ function AthleteAddMeal() {
 
   return (
     <div className="athleteAddMeal">
-      <NutritionScreenHeader name="Add Meal" entireFood={entireFood} todaysFoodId={todaysFoodId} />
+      <NutritionScreenHeader
+        name="Add Meal"
+        entireFood={entireFood}
+        todaysFoodId={todaysFoodId}
+      />
       <AddMeal
         serverData={serverData}
         entireFood={entireFood}
@@ -128,17 +132,24 @@ function AthleteAddMeal() {
                       });
                   } else {
                     db.collection("Food")
-                      .doc(foodId)
-                      .update({
-                        entireFood,
+                      .where("user_id", "==", userData?.id)
+                      .where("date", "==", formatDate())
+                      .get()
+                      .then((snap) => {
+                        console.log(snap, snap.data());
+                        setFoodId(snap.docid);
+                        db.collection("food")
+                          .doc(foodId)
+                          .update({
+                            entireFood,
+                          })
+                          .then(() => {})
+                          .catch((err) => {
+                            console.log(err);
+                          });
                       })
-                      .then((docRef) => {
-                        console.log("Document successfully updated!", docRef);
-                        history.push("/nutrition");
-                      })
-                      .catch((error) => {
-                        // The document probably doesn't exist.
-                        console.error("Error updating document: ", error);
+                      .catch((err) => {
+                        console.log(err);
                       });
                   }
                 });
