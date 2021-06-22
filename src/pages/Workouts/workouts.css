@@ -207,7 +207,6 @@
 .selectDropdown1 {
   display: flex;
   flex-direction: column;
-  padding-left: 5%;
 }
 
 /* .createWorkout__row {
@@ -221,7 +220,6 @@
 .createWorkout__workoutDifficulty,
 .createWorkout__exercises {
   padding-bottom: 2%;
-  padding-left: 5%;
 }
 
 .createWorkout__inputTime > h3,
@@ -415,3 +413,7 @@
   height: 0px;
   line-height: 1px;
 } */
+
+.iYKfNu {
+  width: 100% !important;
+}

@@ -94,8 +94,7 @@
   border: none;
   outline: gray;
   height: 100px;
-  width: 60%;
-  margin-left: 9px;
+  width: 100%;
 }
 
 .coachAddMeal__header > img,

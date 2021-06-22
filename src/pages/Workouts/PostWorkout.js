@@ -107,12 +107,23 @@ export default function PostWorkoutDetails() {
         <h3>Post Workout details</h3>
       </div>
       <div className="Postworkout__body">
+        <h4> Title</h4>
+        <input
+          style={{
+            borderWidth: 1,
+            borderColor: "#DBE2EA",
+            borderwidth: 1,
+            height: 25,
+            color: "black",
+
+            textAlign: "center",
+          }}
+          // value={postWorkout?.workoutDuration}
+          placeholder="Title"
+          disabled={completed}
+        />
+        <h4 style={{ borderTop: 20 }}>Date</h4>
         <div className="Datepicker__container">
-          {console.log(
-            postWorkout?.date && postWorkout.date,
-            typeof postWorkout?.date,
-            new Date(moment(postWorkout?.date))
-          )}
           <DatePicker
             placeholder="Set Date"
             // dateFormat="YYYY-MM-DD"
@@ -134,23 +145,19 @@ export default function PostWorkoutDetails() {
           />
         </div>
         <div className="Planned_data">
-          <div>Duration</div>
-          <div
-            style={{
-              width: "50%",
-            }}
-          >
+          <div style={{ width: 100 }}>Duration</div>
+          <div style={{}}>
             <div>Planned</div>
             <input
               style={{
                 borderWidth: 1,
                 borderColor: "#DBE2EA",
-                backgroundColor: "#fcd54a",
-                color: "black",
+                backgroundColor: "black",
+                color: "white",
 
                 borderRadius: 8,
                 padding: 7,
-                height: 12,
+                height: 25,
                 textAlign: "center",
               }}
               disabled={true}
@@ -160,18 +167,14 @@ export default function PostWorkoutDetails() {
               setselectedworkouteditable={completed ? false : true}
             />
           </div>
-          <div
-            style={{
-              width: "50%",
-            }}
-          >
+          <div style={{}}>
             <div>Completed</div>
             <input
               style={{
                 borderWidth: 1,
                 borderColor: "#DBE2EA",
-
-                height: 12,
+                borderwidth: 1,
+                height: 25,
                 color: "black",
 
                 borderRadius: 8,
@@ -193,29 +196,19 @@ export default function PostWorkoutDetails() {
             />
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            marginBottom: 15,
-            alignSelf: "flex-start",
-            marginLeft: 20,
-            alignItems: "center",
-          }}
-        >
-          <h3>Calories</h3>
+        <div className="Planned_data">
+          <div style={{ width: 100 }}>Calories</div>
           <input
             style={{
               marginLeft: 20,
               borderWidth: 1,
               borderColor: "#DBE2EA",
-              backgroundColor: "#fcd54a",
-              color: "black",
-              width: 100,
+              backgroundColor: "black",
+              color: "white",
+              width: 150,
               borderRadius: 8,
               padding: 7,
-              height: 12,
+              height: 25,
               textAlign: "center",
             }}
             value={calories}
@@ -223,6 +216,48 @@ export default function PostWorkoutDetails() {
             onChange={setCalories}
             setselectedworkouteditable={false}
           />
+        </div>
+
+        <div className="excercise__container">
+          <div className="yellow"></div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            <div className="excercise__header">
+              <div>
+                Warm-Up
+                <div> 5 minutes</div>
+              </div>
+              <div>
+                {" "}
+                {selectedWorkoutEdit ? (
+                  <img
+                    style={{
+                      width: "25px",
+                      height: "20px",
+                      marginRight: "5px",
+                      objectFit: "cover",
+                    }}
+                    src="/assets/up.png"
+                  />
+                ) : (
+                  <img
+                    style={{
+                      width: "25px",
+                      height: "20px",
+                      marginRight: "5px",
+                      objectFit: "cover",
+                    }}
+                    src="/assets/down.png"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="excercises">

@@ -80,7 +80,7 @@
 
 .athleteFoodCard {
   margin-bottom: 15px;
-  width: 70%;
+  width: 100%;
 }
 
 .athleteFoodCard__open {
@@ -219,7 +219,7 @@
 .foodCard__addButtons {
   display: flex;
   align-items: center;
-  margin:0;
+  margin: 0;
 }
 
 .foodCard__addfoodButton,
