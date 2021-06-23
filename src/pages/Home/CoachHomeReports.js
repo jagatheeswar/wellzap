@@ -219,22 +219,30 @@ function CoachHomeReports() {
             >
               <div>
                 <PieChart
-                  data={data}
+                  data={data.filter((e) => e.value !== 0)}
                   lineWidth={50}
-                  labelPosition={75}
+                  labelPosition={110}
                   radius={35}
-                  label={() => (
-                    <div
-                      style={{
-                        backgroundColor: "white",
-                        borderRadius: 100,
-                        width: "20px",
-                        height: "20px",
-                      }}
-                    >
-                      <p>5</p>
-                    </div>
-                  )}
+                  labelStyle={{
+                    fontSize: 6,
+                    fontWeight: 'bold',
+                    backgroundColor: "grey",
+                    borderRadius: "50%",
+                    border: "1px solid #727272",
+                  }}
+                  label= {({dataEntry}) => dataEntry.value}
+                  // {() => (
+                  //   <div
+                  //     style={{
+                  //       backgroundColor: "white",
+                  //       borderRadius: 100,
+                  //       width: "20px",
+                  //       height: "20px",
+                  //     }}
+                  //   >
+                  //     <p>5</p>
+                  //   </div>
+                  // )}
                 />
               </div>
 
