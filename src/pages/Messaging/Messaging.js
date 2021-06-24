@@ -339,9 +339,10 @@ function Messaging({ route, navigation }) {
                             fontSize: "18px",
                             borderBottomRightRadius: 0,
                             marginRight: "5px",
-                            height: "200px",
+                            height: "50%",
                             width: "50%",
                             fontWeight: "500",
+                            objectFit: 'contain'
                           }
                         : {
                             borderRadius: "15px",
@@ -354,9 +355,10 @@ function Messaging({ route, navigation }) {
                             color: "#63697B",
                             borderBottomLeftRadius: 0,
                             marginLeft: "5px",
-                            height: "200px",
+                            height: "50%",
                             width: "50%",
                             fontWeight: "500",
+                            objectFit: 'contain'
                           }
                     }
                   />
@@ -430,7 +432,7 @@ function Messaging({ route, navigation }) {
         style={{
           display: "flex",
           alignItems: "center",
-          width: "92%",
+          width: "50%",
           backgroundColor: "white",
           justifyContent: "space-between",
           paddingLeft: "10px",
@@ -439,8 +441,10 @@ function Messaging({ route, navigation }) {
           marginLeft: "10px",
           paddingTop: "5px",
           paddingBottom: "5px",
-          position: "relative",
-          bottom: "30px",
+          // position: "relative",
+          bottom: "30px", 
+          position: 'absolute',
+          bottom: 10
         }}
       >
         <div
