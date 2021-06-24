@@ -231,7 +231,14 @@ const Calendar_coach = (props) => {
             class="fa fa-search"
             style={{ fontSize: "17px", fontWeight: 100 }}
           ></i>
-          <button className="add_event">+</button>
+          <button
+            onClick={() => {
+              history.push("/calendar");
+            }}
+            className="add_event"
+          >
+            +
+          </button>
         </span>
       </div>
       {selectedDay && (

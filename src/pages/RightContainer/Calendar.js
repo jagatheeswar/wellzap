@@ -223,7 +223,14 @@ const Calendar_ = (props) => {
           Calendar
         </h3>
         <span className="calendar_right">
-          <button className="add_event">+</button>
+          <button
+            onClick={() => {
+              history.push("/calendar");
+            }}
+            className="add_event"
+          >
+            +
+          </button>
         </span>
       </div>
       {selectedDay && (
