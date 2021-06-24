@@ -112,11 +112,6 @@ const AddFoodCard = (props) => {
               </div>
             )}
           </div>
-          <textarea
-            className="foodCard__description"
-            type="text"
-            placeholder="Description"
-          />
 
           <div className="quantity-servings__container">
             <div
@@ -315,6 +310,12 @@ const AddFoodCard = (props) => {
               />
               <h5 style={{ marginLeft: "5px" }}>kcal</h5>
             </div>
+            <textarea
+              className="foodCard__description"
+              type="text"
+              placeholder="Description"
+            />
+
             <CheckBoxOutlinedIcon
               style={{
                 cursor: "pointer",
@@ -324,6 +325,7 @@ const AddFoodCard = (props) => {
               }}
             />
           </div>
+
           <div
             className="foodCard__check"
             onClick={() => {

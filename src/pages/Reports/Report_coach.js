@@ -224,10 +224,9 @@ function Report_coach(props) {
       }
 
       setCompliance(temp);
-      console.log(temp);
+
       setComplianceCount(count);
       setMaxCompliance(arrayMax(maxArr));
-      console.log(currentStartWeek, temp);
     } else {
       setCompliance([]);
       setComplianceCount(0);

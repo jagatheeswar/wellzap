@@ -17,8 +17,9 @@ import "./Home.css";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import CloseIcon from "@material-ui/icons/Close";
-
-function Home() {
+import dateContext from "../../features/context";
+import moment from "moment";
+function Home(props) {
   const history = useHistory();
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
@@ -26,6 +27,8 @@ function Home() {
   const dispatch = useDispatch();
   const [athleteDetails, setAthleteDetails] = useState([]);
   const [visible, setVisible] = useState(false);
+  let contextType = React.useContext(dateContext);
+  console.log("coachHome", new Date(props.selectedDate));
 
   const openModal = () => {
     setVisible(true);
@@ -154,7 +157,7 @@ function Home() {
             </div>
           </div>
           <CoachHomeReports />
-          <CoachDashboard />
+          <CoachDashboard selectedDate={props.selectedDate} />
         </div>
       </div>
     </div>

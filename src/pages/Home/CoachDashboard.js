@@ -10,18 +10,19 @@ import CoachCreateWorkout from "../Workouts/CoachCreateWorkout";
 import CoachWorkouts from "../Workouts/CoachWorkouts";
 import "./Home.css";
 
-function CoachDashboard() {
+function CoachDashboard(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const history = useHistory();
   const [athletes, setAthletes] = useState([]);
   const [workout, setWorkout] = useState([]);
   const [savedWorkouts, setSavedWorkouts] = useState([]);
-
+  const [nutritoin_show, setnutirtion_show] = useState(0);
   const [nutrition, setNutrition] = React.useState([]);
   const [type, setType] = React.useState("");
   const [athleteId, setAthleteId] = React.useState("");
-
+  console.log("coachD", new Date(props.selectedDate));
+  console.log("cd", formatDate1(props?.selectedDate && props?.selectedDate));
   React.useEffect(() => {
     if (userData) {
       if (userType === "athlete") {
@@ -59,6 +60,12 @@ function CoachDashboard() {
           db.collection("Food")
             .where("from_id", "==", userData?.id)
             .where("saved", "==", false)
+            .where(
+              "selectedDays",
+              "array-contains",
+              formatDate1(props?.selectedDate && props?.selectedDate)
+            )
+            .limit(3)
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 setNutrition(
@@ -94,15 +101,30 @@ function CoachDashboard() {
     }
   }, [userData?.id]);
 
+  function formatDate1(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+
   useEffect(() => {
     if (userData) {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("saved", "==", false)
-        .where("selectedDates", "array-contains", formatDate())
+        .where(
+          "selectedDates",
+          "array-contains",
+          formatDate1(props?.selectedDate && props?.selectedDate)
+        )
         .limit(3)
         .onSnapshot((snapshot) => {
-          console.log(workout);
           setWorkout(
             snapshot.docs.map((doc) => ({
               id: doc.id,
@@ -126,11 +148,57 @@ function CoachDashboard() {
     }
   }, [userData?.id]);
 
+  useEffect(() => {
+    if (nutrition.length > 3) {
+      setnutirtion_show(3);
+    } else {
+      setnutirtion_show(nutrition.length);
+    }
+    {
+      console.log(nutrition);
+    }
+  }, [nutrition]);
+
   return (
     <div className="coachDashboard__container">
       <div className="coachDashboard__leftContainer">
-        <h1> Dashboard</h1>
-        <h2>Workouts</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Workout Plans on
+            <p
+              style={{
+                fontSize: 18,
+                fontWeight: 400,
+                marginLeft: 10,
+              }}
+            >
+              {" "}
+              {formatDate1(props?.selectedDate)}
+            </p>
+          </h2>{" "}
+          <p
+            onClick={() => {
+              history.push("/workouts");
+            }}
+          >
+            See all
+          </p>
+        </div>
         {savedWorkouts.length > 1
           ? savedWorkouts
               .slice(0, 1)
@@ -152,10 +220,46 @@ function CoachDashboard() {
                 type="non-editable"
               />
             ))}
-        {console.log("nut", nutrition)}
-        <h2>Nutrition Plans</h2>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Nutrition Plans on
+            <p
+              style={{
+                fontSize: 18,
+                fontWeight: 400,
+                marginLeft: 10,
+              }}
+            >
+              {" "}
+              {formatDate1(props?.selectedDate)}
+            </p>
+          </h2>{" "}
+          <p
+            onClick={() => {
+              history.push("/nutrition");
+            }}
+          >
+            See all
+          </p>
+        </div>
         {nutrition.length > 0 ? (
-          nutrition?.map((food, idx) => (
+          nutrition.map((food, idx) => (
             <NutritionCard
               key={idx}
               nutrition={nutrition}
@@ -179,6 +283,30 @@ function CoachDashboard() {
           >
             There are no nutrition for now
           </h5>
+        )}
+
+        {nutrition.length > nutritoin_show ? (
+          <p
+            onClick={() => {
+              setnutirtion_show(nutritoin_show + 3);
+            }}
+            style={{ textAlign: "center" }}
+          >
+            {" "}
+            View more
+          </p>
+        ) : (
+          <p
+            onClick={() => {
+              if (nutrition.length < 3) {
+                setnutirtion_show(nutrition.length);
+              } else {
+                setnutirtion_show(3);
+              }
+            }}
+          >
+            Hide all
+          </p>
         )}
       </div>
       <div className="coachDashboard__rightContainer">
@@ -221,7 +349,6 @@ function CoachDashboard() {
           athletes.slice(0, display_count).map((item) => (
             <div className="athletes__card" style={{ marginTop: 10 }}>
               <div className="athletes__cardInfo">
-                {console.log(item.id)}
                 <img
                   src={item.imageUrl}
                   alt={item.name}
@@ -245,7 +372,7 @@ function CoachDashboard() {
               />
             </div>
           ))}
-        {display_count < athletes.length ? (
+        {/* {display_count < athletes.length ? (
           <p
             className="see_more_home"
             onClick={() => {
@@ -269,7 +396,7 @@ function CoachDashboard() {
             {" "}
             Hide all
           </p>
-        )}
+        )} */}
       </div>
     </div>
   );

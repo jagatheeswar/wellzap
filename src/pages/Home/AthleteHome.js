@@ -15,7 +15,7 @@ import "./Home.css";
 import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
 
-function AthleteHome() {
+function AthleteHome(props) {
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -128,7 +128,7 @@ function AthleteHome() {
             </div>
           </div>
           <AthleteHomeReports />
-          <AthleteDashboard />
+          <AthleteDashboard selectedDate={props.selectedDate} />
         </div>
       </div>
     </div>

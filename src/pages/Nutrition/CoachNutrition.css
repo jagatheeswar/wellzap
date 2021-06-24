@@ -20,6 +20,30 @@
   cursor: pointer;
 }
 
+.MuiInput-underline:before {
+  content: "" !important;
+  border: none !important;
+}
+.MuiInputBase-root
+  .MuiInput-root
+  .MuiInput-underline
+  .MuiInputBase-formControl
+  .MuiInput-formControl {
+  border: 1px solid black !important;
+}
+#servings-select-label {
+  border: none !important;
+}
+label {
+  border: none;
+}
+
+#servings-select-label {
+}
+.MuiSelect-select.MuiSelect-select {
+  border: 1px solid black;
+  padding: 10px 10px;
+}
 .MuiFormControl-root {
   width: 100%;
 }
@@ -38,7 +62,14 @@ input {
   box-shadow: 0px 0px 5px 2px rgb(0 0 0 / 10%);
 }
 
-.MuiInput-underline::before {
+.MuiInput-underline {
   border: none;
-  box-shadow: 0px 0px 5px 2px rgb(0 0 0 / 10%);
+}
+
+.MuiInput-underline > input {
+  border: none;
+}
+.MuiInput-underline:before {
+  border: none;
+  box-shadow: none;
 }

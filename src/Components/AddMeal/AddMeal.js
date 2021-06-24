@@ -13,9 +13,15 @@ function AddMeal({ serverData, entireFood, setEntireFood, type, classes }) {
         {entireFood.map((ent, index) => (
           <div className="addMealfood__container">
             <FormControl className={classes.formControl}>
-              <InputLabel id="meal-select-label">
-                Select the type of meal
-              </InputLabel>
+              <div
+                style={{
+                  fontWeight: 500,
+                  fontSize: 18,
+                }}
+              >
+                Select Meal Type
+              </div>
+              <InputLabel id="meal-select-label"></InputLabel>
               <Select
                 labelId="meal-select-label"
                 id="meal-select-label"

@@ -311,3 +311,30 @@
   font-size: 12px;
   flex-direction: row;
 }
+
+.selectedAthletes_item:hover{
+  background-color: rgb(243, 222, 147)
+
+}
+.selectedAthletes_item{
+  background-color:red
+}
+
+.assignWorkout__athletesList{
+  scrollbar-width: thin;          /* "auto" or "thin" */
+  scrollbar-color: blue orange; 
+}
+
+
+/* Demonstrate a "mostly customized" scrollbar
+ * (won't be visible otherwise if width/height is specified) */
+.assignWorkout__athletesList::-webkit-scrollbar {
+  width: 5px !important;
+  height: 8px !important;
+  background-color: #aaa !important; /* or add it to the track */
+}
+
+/* Add a thumb */
+.assignWorkout__athletesList::-webkit-scrollbar-thumb {
+    background: #000 !important;
+}

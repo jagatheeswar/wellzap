@@ -89,12 +89,13 @@
   font-size: 15px;
   background-color: white;
   border-radius: 5px;
-  padding: 10px;
+  padding: 10px 0 10px 10px;
   display: flex;
-  border: none;
+  border: 1px solid black;
   outline: gray;
   height: 100px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .coachAddMeal__header > img,
