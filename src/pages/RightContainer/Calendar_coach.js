@@ -14,6 +14,7 @@ import {
 import Event_card from "./Event_card";
 import Selected_events from "./SelectedEvents";
 import dateContext from "../../features/context";
+import { useHistory } from "react-router-dom";
 const Calendar_coach = (props) => {
   let contextType = React.useContext(dateContext);
 
@@ -23,6 +24,7 @@ const Calendar_coach = (props) => {
   const [selectedDate, setSelectedDate] = useState(
     moment(new Date()).utc().format("YYYY-MM-DD")
   );
+  const history = useHistory();
 
   const [events, setEvents] = useState({});
   const [markedDates, setMarkedDates] = useState({});

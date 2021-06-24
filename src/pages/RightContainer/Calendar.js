@@ -13,6 +13,7 @@ import {
 } from "../../features/userSlice";
 import Event_card from "./Event_card";
 import Selected_events from "./SelectedEvents";
+import { useHistory } from "react-router-dom";
 
 const Calendar_ = (props) => {
   const user = useSelector(selectUser);
@@ -21,6 +22,7 @@ const Calendar_ = (props) => {
   const [selectedDate, setSelectedDate] = useState(
     moment(new Date()).utc().format("YYYY-MM-DD")
   );
+  const history = useHistory();
   const [events, setEvents] = useState({});
   const [markedDates, setMarkedDates] = useState({});
 
