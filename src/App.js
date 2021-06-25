@@ -62,6 +62,7 @@ import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutritionPlan";
 
 import dateContext from "../src/features/context";
+import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
@@ -356,6 +357,12 @@ function App() {
               <RoutesComp 
                 AthleteComp={<NotFound />}
                 CoachComp={<CreateLongTermNutritionPlan />}
+              />
+            </Route>
+            <Route path="/long-term-training">
+              <RoutesComp 
+                AthleteComp={<NotFound />}
+                CoachComp={<CreateLongTermTrainingPlan />}
               />
             </Route>
             <Route path="/payments">
