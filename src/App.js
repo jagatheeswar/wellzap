@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -61,10 +61,22 @@ import ViewNutrition from "./pages/Nutrition/ViewNutrition";
 import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutritionPlan";
 
+import dateContext from "../src/features/context";
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
   const dispatch = useDispatch();
+  var d = new Date();
+  d.setHours(0, 0, 0, 0);
+  //(new Date().setHours(0, 0, 0, 0));
+  const [selectedDate, setselectedDate] = useState(
+    new Date().setHours(0, 0, 0, 0)
+  );
+
+  const toggle_date = (date) => {
+    setselectedDate(date);
+    console.log("ch", date);
+  };
 
   useEffect(() => {
     if (user) {
@@ -154,7 +166,10 @@ function App() {
             {userType === "coach" ? CoachComp : AthleteComp}
           </div>
           <div className="home__rightContainer">
-            <RightContainer />
+            <RightContainer
+              toggle_date={toggle_date}
+              selectedDate={selectedDate}
+            />
           </div>
         </div>
       );
@@ -187,8 +202,8 @@ function App() {
           <Switch>
             <Route exact path="/">
               <RoutesComp
-                AthleteComp={<AthleteHome />}
-                CoachComp={<CoachHome />}
+                AthleteComp={<AthleteHome selectedDate={selectedDate} />}
+                CoachComp={<CoachHome selectedDate={selectedDate} />}
               />
             </Route>
 

@@ -14,6 +14,12 @@ import { useLocation } from "react-router";
 import { DriveEtaOutlined } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+          
+import MoodBadIcon from '@material-ui/icons/MoodBad';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+
+
 export default function PostWorkoutDetails() {
   const userData = useSelector(selectUserData);
   const location = useLocation();
@@ -107,7 +113,7 @@ export default function PostWorkoutDetails() {
         <h3>Post Workout details</h3>
       </div>
       <div className="Postworkout__body">
-        <h4> Title</h4>
+        <h4 > Title</h4>
         <input
           style={{
             borderWidth: 1,
@@ -115,6 +121,8 @@ export default function PostWorkoutDetails() {
             borderwidth: 1,
             height: 25,
             color: "black",
+            textAlign:'left',
+            backgroundColor:'white',
 
             textAlign: "center",
           }}
@@ -176,7 +184,7 @@ export default function PostWorkoutDetails() {
                 borderwidth: 1,
                 height: 25,
                 color: "black",
-
+                backgroundColor:'white',
                 borderRadius: 8,
                 padding: 7,
 
@@ -218,7 +226,10 @@ export default function PostWorkoutDetails() {
           />
         </div>
 
-        <div className="excercise__container">
+        <div className="excercise__container" 
+        style={{
+          marginTop: 20,
+        }}>
           <div className="yellow"></div>
           <div
             style={{
@@ -257,8 +268,9 @@ export default function PostWorkoutDetails() {
                 )}
               </div>
             </div>
-          </div>
-        </div>
+
+          
+
 
         <div className="excercises">
           {group?.map((grp, idx) => (
@@ -268,26 +280,20 @@ export default function PostWorkoutDetails() {
                 marginBottom: 20,
                 borderBottomWidth: 1,
                 borderColor: "#d3d3d3",
-                paddingBottom: 20,
+               
                 width: "100%",
               }}
             >
-              <div
-                style={{
-                  width: 8,
-                  height: 20,
-                  backgroundColor: "#fcd54a",
-                  marginLeft: -10,
-                  marginRight: 20,
-                  borderTopRightRadius: 4,
-                  borderBottomRightRadius: 4,
-                }}
-              ></div>
+             
 
               <div style={{ marginLeft: 10 }}>
                 {grp.exercises?.map((workout, idx1) =>
                   workout.cardio ? (
-                    <div key={idx1}>
+                    <div key={idx1}
+                    style={{
+                      border:'1px solid rgb(0,0,0,0.2)'
+                    }}
+                    >
                       <button
                         style={{
                           marginRight: 30,
@@ -305,6 +311,12 @@ export default function PostWorkoutDetails() {
                           }
                         }}
                       >
+
+                        <div
+                        style={{
+                          margin:5
+                        }}
+                        >
                         <input
                           type="checkbox"
                           disabled={completed ? true : false}
@@ -330,6 +342,10 @@ export default function PostWorkoutDetails() {
                             setGroup(temp);
                           }}
                         />
+
+                        
+
+                        
                         <img
                           style={{
                             width: 20,
@@ -393,6 +409,9 @@ export default function PostWorkoutDetails() {
                             ))}
                           </div>
                         </div>
+
+
+                        </div>
                         <div
                           style={{
                             display: "flex",
@@ -429,7 +448,13 @@ export default function PostWorkoutDetails() {
                         </div>
                       </button>
                       {selectedWorkoutEdit === idx1 && (
-                        <div>
+                        <div
+                        style={{
+                          backgroundColor:'white',
+                          padding:20,
+                          boxSizing:'border-box',
+                          
+                        }}>
                           {workout.sets?.map((set, idx2) => (
                             <div
                               key={idx2}
@@ -442,7 +467,11 @@ export default function PostWorkoutDetails() {
                                 justifyContent: "space-between",
                               }}
                             >
-                              <div>
+                              <div
+                              style={{
+                                margin:5
+                              }}
+                              >
                                 <h3
                                   style={{
                                     marginTop: 10,
@@ -567,7 +596,11 @@ export default function PostWorkoutDetails() {
                       )}
                     </div>
                   ) : (
-                    <div key={idx1}>
+                    <div key={idx1} 
+                    style={{
+                      borderBottom:'1px solid rgb(0,0,0,0.2)'
+                    }}
+                    >
                       <button
                         style={{
                           display: "flex",
@@ -576,6 +609,10 @@ export default function PostWorkoutDetails() {
                           justifyContent: "space-between",
                           alignItems: "center",
                           marginVertical: 10,
+                          backgroundColor:'white',
+                          border:'none',
+                          marginTop:20,
+                        
                         }}
                         onClick={() => {
                           console.log(3);
@@ -587,6 +624,13 @@ export default function PostWorkoutDetails() {
                           }
                         }}
                       >
+                        <div
+                        style={{
+                          display: "flex",
+                          flexDirection:'row',
+                          alignItems:'center'
+                        }}
+                        >
                         <input
                           type="checkbox"
                           disabled={completed}
@@ -615,7 +659,7 @@ export default function PostWorkoutDetails() {
                         <div>
                           <img
                             style={{
-                              width: 200,
+                              width: 100,
                               height: 100,
                               borderRadius: 8,
                               backgroundColor: "#d3d3d3",
@@ -627,18 +671,26 @@ export default function PostWorkoutDetails() {
                             }
                           />
                         </div>
-                        <div style={{ marginHorizontal: 10 }}>
+                        <div  style={{ marginHorizontal: 10, marginLeft:20, textAlign:'left' }}>
                           <h3>{workout.name}</h3>
+                          <div
+                          style={{
+                            display:'flex',
+                            flexDirection:'row'
+                          }}
+                          >
                           <div
                             style={{
                               display: "flex",
                               flexDirection: "row",
                               alignItems: "center",
+                              width: 100,
+                             
                             }}
                           >
                             <h3
                               style={{
-                                width: 100,
+                                marginRight:10,
                                 fontSize: 12,
                               }}
                             >
@@ -656,11 +708,13 @@ export default function PostWorkoutDetails() {
                               display: "flex",
                               flexDirection: "row",
                               alignItems: "center",
+                              width: 100,
+                              marginLeft:30
                             }}
                           >
                             <h3
                               style={{
-                                width: 100,
+                                marginRight:10,
                                 fontSize: 12,
                               }}
                             >
@@ -679,11 +733,14 @@ export default function PostWorkoutDetails() {
                               display: "flex",
                               flexDirection: "row",
                               alignItems: "center",
+                            
+                              width: 100,
+                              marginLeft:30
                             }}
                           >
                             <h3
                               style={{
-                                width: 100,
+                                marginRight:10,
                                 fontSize: 12,
                               }}
                             >
@@ -696,6 +753,7 @@ export default function PostWorkoutDetails() {
                               </h3>
                             ))}
                           </div>
+                          </div>
                         </div>
                         {/* <h3
                               style={{
@@ -704,8 +762,11 @@ export default function PostWorkoutDetails() {
                                 width: 70,
                               }}
                             >
-                              Tap to div
+                              Tap to di
+                              
+                              v
                             </h3> */}
+                        </div>
                         <div style={{ marginLeft: 30 }}>
                           <div style={{ alignItems: "center" }}>
                             <h3 style={{ fontSize: 11 }}>Edit</h3>
@@ -734,7 +795,20 @@ export default function PostWorkoutDetails() {
                         </div>
                       </button>
                       {selectedWorkoutEdit === idx1 && (
-                        <div>
+                        <div
+                        style={{
+                          backgroundColor:'white',
+                          padding:20,
+                          boxSizing:'border-box',
+                          
+                        }}
+                        >
+                          <div
+                          style={{
+                            width:'50%',
+                            marginLeft:120,
+                          }}
+                          >
                           {workout.sets?.map((set, idx2) => (
                             <div
                               key={idx2}
@@ -747,6 +821,7 @@ export default function PostWorkoutDetails() {
                                 marginVertical: 10,
                               }}
                             >
+                              
                               <div>
                                 <h3
                                   style={{
@@ -773,6 +848,7 @@ export default function PostWorkoutDetails() {
                                   marginHorizontal: 5,
                                   display: "flex",
                                   alignItems: "center",
+                                  flexDirection: 'column',
                                 }}
                               >
                                 <h3
@@ -788,12 +864,12 @@ export default function PostWorkoutDetails() {
                                     width: 50,
                                     height: 20,
                                     borderWidth: 1,
-                                    borderColor: "#DBE2EA",
-                                    backgroundColor: "#fcd54a",
+                                    borderColor: "black",
+                                    backgroundColor: "black",
                                     padding: 7,
                                     borderRadius: 8,
                                     textAlign: "center",
-                                    color: "black",
+                                    color: "white",
                                   }}
                                   value={String(set.reps)}
                                   onChange={(newVal) => {
@@ -814,6 +890,7 @@ export default function PostWorkoutDetails() {
                                   marginHorizontal: 5,
                                   display: "flex",
                                   alignItems: "center",
+                                  flexDirection: 'column',
                                 }}
                               >
                                 <h3
@@ -829,10 +906,12 @@ export default function PostWorkoutDetails() {
                                     width: 50,
                                     height: 20,
                                     borderWidth: 1,
-                                    borderColor: "#DBE2EA",
-                                    backgroundColor: "#f3f3f3",
+                                    
+                                    backgroundColor: "white",
                                     padding: 7,
                                     borderRadius: 8,
+                                    borderWidth:1,
+                                    borderColor:'rgba(0,0,0,0.8)',
                                     textAlign: "center",
                                   }}
                                   disabled={completed}
@@ -859,6 +938,7 @@ export default function PostWorkoutDetails() {
                                   marginHorizontal: 5,
                                   display: "flex",
                                   alignItems: "center",
+                                  flexDirection: 'column',
                                 }}
                               >
                                 <h3
@@ -874,8 +954,8 @@ export default function PostWorkoutDetails() {
                                     width: 50,
                                     height: 20,
                                     borderWidth: 1,
-                                    borderColor: "#DBE2EA",
-                                    backgroundColor: "#f3f3f3",
+                                    borderColor: "black",
+                                    backgroundColor: "white",
                                     padding: 7,
                                     borderRadius: 8,
                                     textAlign: "center",
@@ -899,6 +979,7 @@ export default function PostWorkoutDetails() {
                               </div>
                             </div>
                           ))}
+                          </div>
                           <button
                             onClick={() => {
                               console.log(4);
@@ -930,20 +1011,27 @@ export default function PostWorkoutDetails() {
               </div>
             </div>
           ))}
+          
+          </div>
+        </div>
         </div>
       </div>
 
-      <div>
+      <div 
+      style={{
+        width:'100%'
+      }}
+      >
         <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
         <input
           style={{
             borderWidth: 1,
             borderColor: "#DBE2EA",
             backgroundColor: "#fff",
-            width: 400,
+            width: '100%',
             borderRadius: 8,
             textAlignVertical: "top",
-            padding: 7,
+            padding: 10,
             height: 30,
             marginBottom: 15,
           }}
@@ -967,6 +1055,8 @@ export default function PostWorkoutDetails() {
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "flex-start",
+          flexDirection:'column',
+          alignSelf:'flex-start',
           width: 400,
         }}
       >
@@ -990,6 +1080,9 @@ export default function PostWorkoutDetails() {
             }}
           >
             <button
+            style={{
+              border:'none'
+            }}
               onClick={() => {
                 if (!completed) {
                   let temp = { ...postWorkout };
@@ -998,14 +1091,17 @@ export default function PostWorkoutDetails() {
                 }
               }}
             >
-              <Icon
-                name="fa fa-tired"
-                type="font-awesome-5"
-                color={postWorkout?.fatigue === "very-sore" ? "red" : "black"}
-                size={100}
-                solid
+          
+              <SentimentVeryDissatisfiedIcon
+              style={{
+                fill:`${postWorkout?.fatigue === "very-sore" ? "red" : "black"}`,
+                height:70,
+                width:70
+              }}
               />
-            </button>
+             
+           
+                </button>
           </div>
           <div
             style={{
@@ -1016,6 +1112,9 @@ export default function PostWorkoutDetails() {
             }}
           >
             <button
+            style={{
+              border:'none'
+            }}
               onClick={() => {
                 if (!completed) {
                   let temp = { ...postWorkout };
@@ -1024,17 +1123,11 @@ export default function PostWorkoutDetails() {
                 }
               }}
             >
-              <Icon
-                name="meh"
-                type="font-awesome-5"
-                color={
-                  postWorkout?.fatigue === "moderately-sore"
-                    ? "#f5dd4b"
-                    : "black"
-                }
-                size={30}
-                solid
-              />
+          
+               <MoodBadIcon style={{
+                  height:70,
+                  width:70
+               }} />
             </button>
           </div>
           <div
@@ -1046,6 +1139,9 @@ export default function PostWorkoutDetails() {
             }}
           >
             <button
+            style={{
+              border:'none'
+            }}
               onClick={() => {
                 if (!completed) {
                   let temp = { ...postWorkout };
@@ -1054,12 +1150,13 @@ export default function PostWorkoutDetails() {
                 }
               }}
             >
-              <Icon
-                name="laugh-beam"
-                type="font-awesome-5"
-                color={postWorkout?.fatigue === "not-sore" ? "green" : "black"}
-                size={40}
-                solid
+              
+              <InsertEmoticonIcon
+              style={{
+                fill:`${postWorkout?.fatigue === "not-sore" ? "green" : "black"}`,
+                height:70,
+                width:70
+              }}
               />
             </button>
           </div>

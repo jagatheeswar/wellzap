@@ -13,14 +13,16 @@ import {
 } from "../../features/userSlice";
 import Event_card from "./Event_card";
 import Selected_events from "./SelectedEvents";
+import { useHistory } from "react-router-dom";
 
-const Calendar_ = () => {
+const Calendar_ = (props) => {
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
   const dispatch = useDispatch();
   const [selectedDate, setSelectedDate] = useState(
     moment(new Date()).utc().format("YYYY-MM-DD")
   );
+  const history = useHistory();
   const [events, setEvents] = useState({});
   const [markedDates, setMarkedDates] = useState({});
 
@@ -50,11 +52,11 @@ const Calendar_ = () => {
   const [tdy, settdy] = useState([]);
   const [upcomingevents, setupcomingevents] = useState([]);
   const defaultValue = {
-    year: 2021,
-    month: 4,
-    day: 5,
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: new Date().getDate(),
   };
-  const [selectedDay, setSelectedDay] = useState(defaultValue);
+  const [selectedDay, setSelectedDay] = useState(null);
   const [showevent_count, setshowevent_count] = useState(3);
   React.useEffect(() => {
     var el = document.getElementsByClassName("Calendar__day -selected");
@@ -64,10 +66,31 @@ const Calendar_ = () => {
       el[0].setAttribute("week", weekname);
     }
   });
-  React.useEffect(() => {
-    let date = selectedDay;
 
-    setSelectedDate(moment([date.year, date.month - 1, date.day]));
+  React.useEffect(() => {
+    if (selectedDay) {
+      let date = selectedDay;
+
+      let temp = new Date(date.year, date.month - 1, date.day);
+
+      console.log(temp, date);
+      temp = temp.setHours(0, 0, 0, 0);
+      console.log(props?.selectedDate, temp);
+      if (props?.selectedDate == temp) {
+        console.log(props?.selectedDate);
+      } else {
+        //temp = temp.setHours(0, 0, 0, 0);
+        props?.toggle_date(temp);
+      }
+    }
+  }, [selectedDate]);
+
+  React.useEffect(() => {
+    if (selectedDay) {
+      let date = selectedDay;
+
+      setSelectedDate(moment([date.year, date.month - 1, date.day]));
+    }
   }, [selectedDay]);
 
   React.useEffect(() => {
@@ -97,12 +120,18 @@ const Calendar_ = () => {
     let tdy = [];
     var local_markedEvents = {};
 
-    let now = moment();
+    let now = new Date();
+    if (props?.selectedDate) {
+      var d = moment(new Date(props?.selectedDate));
+    } else {
+      var d = moment();
+    }
 
+    console.log(now);
     let today_date = {
-      year: now.get("year"),
-      month: now.get("month") + 1,
-      day: now.get("day"),
+      year: d.year(),
+      month: d.month() + 1,
+      day: d.date(),
     };
 
     setSelectedDay(today_date);
@@ -196,16 +225,25 @@ const Calendar_ = () => {
           Calendar
         </h3>
         <span className="calendar_right">
-          <button className="add_event">+</button>
+          <button
+            onClick={() => {
+              history.push("/calendar");
+            }}
+            className="add_event"
+          >
+            +
+          </button>
         </span>
       </div>
-      <Calendar
-        value={selectedDay}
-        onChange={setSelectedDay}
-        colorPrimary="#fcd54a" // added this
-        calendarClassName="custom-calendar" // and this
-        calendarTodayClassName="custom-today-day" // also this
-      />
+      {selectedDay && (
+        <Calendar
+          value={selectedDay ? selectedDay : defaultValue}
+          onChange={setSelectedDay}
+          colorPrimary="#fcd54a" // added this
+          calendarClassName="custom-calendar" // and this
+          calendarTodayClassName="custom-today-day" // also this
+        />
+      )}
 
       <div className="events_container">
         <div class="events_today">
@@ -305,5 +343,7 @@ const Calendar_ = () => {
     </div>
   );
 };
-
-export default Calendar_;
+export default React.memo(
+  Calendar_,
+  (prevProps, nextProps) => prevProps.selectedDate === nextProps.selectedDate
+);

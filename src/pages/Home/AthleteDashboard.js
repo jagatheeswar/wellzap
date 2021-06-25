@@ -10,11 +10,13 @@ import formatSpecificDate from "../../functions/formatSpecificDate";
 
 import AthleteGoals from "./AthleteGoals";
 import "./Home.css";
+import { useHistory } from "react-router-dom";
 
-function AthleteDashboard() {
+function AthleteDashboard(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [sleep, setSleep] = useState(0);
+  const history = useHistory();
   const [workouts, setWorkouts] = useState([]);
   const [nutrition, setNutrition] = useState([]);
   const [water, setWater] = useState(0);
@@ -56,6 +58,18 @@ function AthleteDashboard() {
         });
     }
   }, [userData?.id]);
+
+  function formatDate1(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
 
   useEffect(() => {
     let temp = [];
@@ -116,8 +130,13 @@ function AthleteDashboard() {
     if (userData) {
       db.collection("workouts")
         .where("assignedToId", "==", userData?.id)
-        .where("date", "==", "2021-05-21")
+        .where(
+          "date",
+          "==",
+          formatDate1(props?.selectedDate && props?.selectedDate)
+        )
         .where("completed", "==", false)
+
         .limit(3)
         .onSnapshot((snapshot) => {
           setWorkouts(
@@ -156,7 +175,43 @@ function AthleteDashboard() {
         <AthleteGoals />
         <h2>Sleep</h2>
         <Sleep sleep={sleep} setSleep={setSleep} />
-        <h2>Workouts</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Workout Plans on
+            <p
+              style={{
+                fontSize: 18,
+                fontWeight: 400,
+                marginLeft: 10,
+              }}
+            >
+              {" "}
+              {formatDate1(props?.selectedDate)}
+            </p>
+          </h2>{" "}
+          <p
+            onClick={() => {
+              history.push("/workouts");
+            }}
+          >
+            See all
+          </p>
+        </div>
         {workouts?.map((workout, i) => (
           <WorkoutCard
             key={workout.id}
@@ -182,7 +237,43 @@ function AthleteDashboard() {
           <img src="/assets/message.png" alt="" width="15px" height="15px" />
         </div>
 
-        <h2>Nutrition Plans</h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Nutrition Plans on
+            <p
+              style={{
+                fontSize: 18,
+                fontWeight: 400,
+                marginLeft: 10,
+              }}
+            >
+              {" "}
+              {formatDate1(props?.selectedDate)}
+            </p>
+          </h2>{" "}
+          <p
+            onClick={() => {
+              history.push("/nutrition");
+            }}
+          >
+            See all
+          </p>
+        </div>
         {console.log(nutrition)}
         {upcomingMealHistory.length > 0 ? (
           upcomingMealHistory?.map((food, idx) => (

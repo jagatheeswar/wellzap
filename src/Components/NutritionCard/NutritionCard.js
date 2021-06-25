@@ -8,7 +8,7 @@ import "./NutritionCard.css";
 function NutritionCard({ nutrition, food, idx, type, navigation }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
-  console.log(food);
+  console.log("fd", food);
   return (
     <div className="nutritionCard">
       <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />

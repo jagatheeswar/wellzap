@@ -15,7 +15,6 @@ function WorkoutCard({
   completed,
   athlete_id,
 }) {
-  console.log(workouts, item);
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [date, setDate] = useState("");
