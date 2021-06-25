@@ -1,6 +1,19 @@
 import React from "react";
 import moment from "moment";
+import { db } from "../../utils/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUser,
+  selectUserData,
+  selectUserType,
+  setUserData,
+} from "../../features/userSlice";
+import firebase from "firebase"
+
+
 function Event_card(props) {
+  const userData = useSelector(selectUserData);
+  const userType = useSelector(selectUserType);
   var events = props.data;
   let eventslength = events.length;
 
@@ -70,10 +83,20 @@ function Event_card(props) {
               </div>
             </div>
             <div style={{ marginLeft: 20 }}>
-              <a style={{textDecoration:"none"}} href={item.showVideoLink && item.videolink}>
+            {moment(new Date()).valueOf() > item.eventDate - 60000*20 ?
+              <a style={{textDecoration:"none"}} 
+                onClick={()=>   { 
+                  if(userType == "athlete"){
+                    db.collection("events").doc(item.id).update({
+                      attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
+                    })
+                  }}} href={item.showVideoLink && item.videolink}>
                 {item.showVideoLink && item.videolink}
-              </a>
+              </a> : 
+              item.showVideoLink && item.videolink
+              }
             </div>
+
           </div>
         );
       })}

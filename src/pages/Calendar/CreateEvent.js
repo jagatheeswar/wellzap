@@ -29,7 +29,8 @@ moment.locale("en-in");
 const useStyles = makeStyles({
     root: {
       "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-        borderColor: "black"
+        borderColor: "black",
+        zIndex:1,
       },
       "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
         borderColor: "black"
@@ -73,8 +74,8 @@ export default function CreateEvent(props){
   const [selectedDay, setSelectedDay] = useState(defaultValue);
 
   const [athletes, setAthletes] = useState([]);
-  const [eventName, setEventName] = useState(null);
-  const [description, setDescription] = useState(null);
+  const [eventName, setEventName] = useState("");
+  const [description, setDescription] = useState("");
   const [eventDate, setEventDate] = useState(new Date());
   const [eventTime, setEventTime] = useState("17:00");
   const [showVideoLink, setShowVideoLink] = useState(false);
@@ -110,17 +111,22 @@ export default function CreateEvent(props){
 
   useEffect(()=>{
     if(props.id && athletes.length>0){
-      setDescription(props.data[props.id].description)
-      setEventName(props.data[props.id].eventName)
-      let now = moment((new Date(props.data[props.id].eventDate)));
+      setDescription(props.data.description)
+      setEventName(props.data.eventName)
+      let now = moment((new Date(props.data.eventDate)));
       let today_date = {
         year: now.get("year"),
         month: now.get("month") + 1,
         day: now.get("day"),
       };
       setSelectedDay(today_date);
-      setEventTime(moment(new Date(props.data[props.id].eventDate)).format("HH:mm"))
-      setShowVideoLink(props.data[props.id].showVideoLink)
+      setEventTime(moment(new Date(props.data.eventDate)).format("HH:mm"))
+      setShowVideoLink(props.data.showVideoLink)
+    }else{
+      setDescription("")
+      setEventName("")
+      setEventTime("17:30")
+      setShowVideoLink(false)
     }
   },[props?.id,athletes])
 
@@ -140,7 +146,9 @@ export default function CreateEvent(props){
       })
 
       if(props?.id){
-        db.collection("events").doc(props.data[props.id].id)
+        alert(eventName)
+        
+        db.collection("events").doc(props.id)
           .update({
             eventName,
             date:firebase.firestore.Timestamp.fromDate(new Date(selectedDay.year,selectedDay.month - 1,selectedDay.day, eventTime.substring(0,2),eventTime.substring(3,5),0,0)),
@@ -149,7 +157,11 @@ export default function CreateEvent(props){
             coachID:userData.id,
             showVideoLink,
             videolink:userData?.data?.videolink,
+          }).then(()=>{
+            props.setAddedEventFunc();
+            alert("Event Updated")
           })
+
       }else{
         const newCityRef = db.collection("events").doc();
         const res = await newCityRef.set({
@@ -160,14 +172,14 @@ export default function CreateEvent(props){
           coachID:userData.id,
           showVideoLink:showVideoLink,
           videolink:userData?.data?.videolink,
-        });
-        props.setsidebarfunc();
-        alert("Event Added");
-        setEventName(null)
-        setEventTime("17:30")
-        setAthletes([])
-        setDescription(null)
-
+        }).then(()=>{
+          props.setAddedEventFunc();
+          alert("Event Added");
+          setEventName("")
+          setEventTime("17:30")
+          setAthletes([])
+          setDescription("")
+        })
       }
     } else {
       alert("Pls enter all fields");
@@ -184,7 +196,7 @@ export default function CreateEvent(props){
       day: now.get("day"),
     };
     setSelectedDay(today_date);
-  },[])
+  },[props?.id])
 
 
     return (
@@ -193,6 +205,7 @@ export default function CreateEvent(props){
       >
           <p>{props?.id ? "Edit Event" : "Create Event"}</p>
           <TextField label="Event Name" variant="outlined" 
+              className={classes.root}
               color="black"
               value={eventName}
               required
@@ -200,7 +213,6 @@ export default function CreateEvent(props){
                 const { value } = event.target;
                 setEventName(value)
               }}
-              className={classes.root}
           />
 
           <p style={{ fontSize:18, marginTop: 20 }}>Event Date *</p>   
@@ -229,7 +241,7 @@ export default function CreateEvent(props){
             />
 
             
-            <div style={{marginTop:20,width:"100%"}}>
+            <div style={{marginTop:20,width:"100%",zIndex:"2",position:"relative"}}>
             <SearchableDropdown
             name="Select Athletes"
             list={athletes}

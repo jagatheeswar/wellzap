@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
+import { db } from "../../utils/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUser,
+  selectUserData,
+  selectUserType,
+  setUserData,
+} from "../../features/userSlice";
+import firebase from "firebase"
 
 function EventCard(props) {
+  const userData = useSelector(selectUserData);
+  const userType = useSelector(selectUserType);
+
   var events = props.data;
   let eventslength = events.length;
 
   if (events.length > props.count) {
     var events = events.slice(0, props.count);
   }
+
 
   return (
     <div style={{width:"100%"}}>
@@ -22,7 +35,14 @@ function EventCard(props) {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginTop: 20,
+                cursor:"pointer"
               }}
+              onClick={()=>{
+                props.setEventInfoData(item);
+                props.setsidebarfunc("goals");
+                setTimeout(function(){ props.setsidebarfunc("eventInfo"); }, 500);
+              }}
+
             >
               <div
                 style={{
@@ -67,12 +87,39 @@ function EventCard(props) {
                 >
                   {item.eventDate && moment(item.eventDate).format("LT")}
                 </button>
+                {moment(new Date()).valueOf() > item.eventDate - 60000*20 ? 
+                <a style={{cursor:"pointer"}} href={item.showVideoLink && item.videolink}> 
+                <button
+                  style={{
+                    height: 25,
+                    backgroundColor: "#fcd54a",
+                    color: "black",
+                    cursor:"pointer"
+                  }}
+                  onClick={()=>   { 
+                    if(userType == "athlete"){
+                      db.collection("events").doc(item.id).update({
+                        attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
+                      })
+                    }}}
+                >
+                  Join now
+                </button> </a>:null}
               </div>
             </div>
             <div style={{ marginLeft: 20 }}>
-              <a style={{textDecoration:"none"}} href={item.showVideoLink && item.videolink}>
+            {moment(new Date()).valueOf() > item.eventDate - 60000*20 ?
+              <a style={{textDecoration:"none"}} 
+                onClick={()=>   { 
+                  if(userType == "athlete"){
+                    db.collection("events").doc(item.id).update({
+                      attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
+                    })
+                  }}} href={item.showVideoLink && item.videolink}>
                 {item.showVideoLink && item.videolink}
-              </a>
+              </a> : 
+              item.showVideoLink && item.videolink
+              }
             </div>
           </div>
         );

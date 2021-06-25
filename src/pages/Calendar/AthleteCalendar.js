@@ -16,6 +16,7 @@ import EventCard from "./EventCard";
 import SelectedEvents from "./SelectedEvents";
 import "./Calendar.css"
 import AddGoal from "./AddGoal"
+import EventInfo from "./EventInfo";
 
 function AthleteCalendar() {
     const user = useSelector(selectUser);
@@ -30,6 +31,7 @@ function AthleteCalendar() {
     const [eventHistoryOpen, setEventHistoryOpen] = useState(false);
     const [goals, setGoals] = useState([]);
     const [selectedevents, setselectedevents] = useState([]);
+    const [eventInfoData, setEventInfoData] = useState(null);
     const [tdy, settdy] = useState([]);
     const [upcomingevents, setupcomingevents] = useState([]);
     const defaultValue = {
@@ -298,8 +300,8 @@ function AthleteCalendar() {
         }
     }, [userData?.id,userData?.data?.goals]);
 
-    const setsidebarfunc = () =>{
-      setSideBar("goals")
+    const setsidebarfunc = (type) =>{
+      setSideBar(type)
     }
 
 
@@ -331,7 +333,7 @@ function AthleteCalendar() {
           <div style={{ fontWeight: 100, color: "grey" }}></div>
           <div className="events_today_list">
             {tdy.length !== 0 ? (
-              <EventCard data={tdy} count={tdy.length} />
+              <EventCard data={tdy} count={tdy.length} setsidebarfunc={setsidebarfunc} setEventInfoData={setEventInfoData}/>
             ) : (
               <>
                 <div className="events_today_">
@@ -347,6 +349,8 @@ function AthleteCalendar() {
                 dates={selectedevents}
                 data={events}
                 count={tdy.length}
+                setsidebarfunc={setsidebarfunc}
+                setEventInfoData={setEventInfoData}
               />
             ) : (
               <>
@@ -381,7 +385,7 @@ function AthleteCalendar() {
 
           <div className="upcoming_event_">
             {upcomingevents.length !== 0 && (
-              <EventCard data={upcomingevents} count={showevent_count} />
+              <EventCard data={upcomingevents} count={showevent_count} setsidebarfunc={setsidebarfunc} setEventInfoData={setEventInfoData}/>
             )}
           </div>
           <div class="divider"> </div>
@@ -440,6 +444,14 @@ function AthleteCalendar() {
                   <AddGoal setsidebarfunc={setsidebarfunc}/>
                 </div>
                  : null}  
+
+              
+            {sideBar == "eventInfo" ? 
+                <div>
+                  <p style={{fontWeight:"bold",fontSize:18}}>Event Info</p>
+                  <EventInfo data={eventInfoData} />
+                </div>
+                 : null} 
 
 
             </div>

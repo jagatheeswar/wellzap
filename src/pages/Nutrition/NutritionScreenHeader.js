@@ -22,6 +22,23 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
       </div>
 
       {name === "Nutrition" && (
+      <>
+        <div
+          className="addNutrition__button"
+          onClick={() =>
+            history.push({
+              pathname: "/long-term-nutrition",
+              state: {
+                entireFood: entireFood,
+                todaysFoodId: todaysFoodId,
+              },
+            })
+          }
+        >
+          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
+          <h5>ADD LONG TERM MEAL</h5>
+        </div>
+
         <div
           className="addNutrition__button"
           onClick={() =>
@@ -37,6 +54,7 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
           <h5>ADD MEAL</h5>
         </div>
+        </>
       )}
     </div>
   );

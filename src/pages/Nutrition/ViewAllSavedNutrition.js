@@ -5,7 +5,7 @@ import { db } from "../../utils/firebase";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import NutritionScreenHeader from "./NutritionScreenHeader";
 
-function ViewAllSavedNutrition() {
+function ViewAllSavedNutrition(props) {
   const userData = useSelector(selectUserData);
   const [nutrition, setNutrition] = React.useState([]);
 
@@ -60,6 +60,12 @@ function ViewAllSavedNutrition() {
                 idx={idx}
                 navigation={"ViewAllNutrition"}
                 type={true}
+                isLongTerm={props?.isLongTerm}
+                handleCloseNutrition={props?.handleCloseNutrition}
+                setWeeks={props?.setWeeks}
+                weeks={props?.weeks}
+                selectedWeekNum={props?.selectedWeekNum}
+                selectedDay={props?.selectedDay}
               />
             ))
           ) : (
