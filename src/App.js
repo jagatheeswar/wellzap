@@ -59,6 +59,7 @@ import AthleteMeasurements_coach from "./pages/AllAthletes/AthleteMeasurements";
 import AthleteTrainingAssessment_coach from "./pages/AllAthletes/AthleteTrainingAssessment";
 import ViewNutrition from "./pages/Nutrition/ViewNutrition";
 import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
+import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutritionPlan";
 
 function App() {
   const user = useSelector(selectUser);
@@ -334,6 +335,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<CreateNutrition />}
                 CoachComp={<CreateNutrition />}
+              />
+            </Route>
+            <Route path="/long-term-nutrition">
+              <RoutesComp 
+                AthleteComp={<NotFound />}
+                CoachComp={<CreateLongTermNutritionPlan />}
               />
             </Route>
             <Route path="/payments">
