@@ -115,7 +115,7 @@
 }
 
 .coachDashboard__leftContainer {
-  flex: 0.4;
+  flex: 0.5;
 }
 
 .coachDashboard__container {
@@ -127,7 +127,7 @@
 .coachDashboard__rightContainer {
   flex: 0.5;
   padding-left: 40px;
-  margin-top: 45px;
+  margin-top: 15px;
 }
 
 .messaging {
