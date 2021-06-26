@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CoachAddMeal() {
+function CoachAddMeal(props) {
   const classes = useStyles();
   const userType = useSelector(selectUserType);
   const userData = useSelector(selectUserData);
@@ -50,6 +50,33 @@ function CoachAddMeal() {
   // }, [route.params?.nutrition]);
 
   console.log({ plan });
+
+  const AddLongTermMeal = () =>{
+    /*
+    db.collection("Food")
+    .add({
+      from_id: userData?.id,
+      assignedTo_id: "",
+      nutrition: {
+        nutritionName: nutritionName,
+        plan,
+      },
+    })*/
+    var weeks = props.weeks;
+    var selectedWeekNum = props.selectedWeekNum;
+    var selectedDay = props.selectedDay;
+    weeks[selectedWeekNum - 1].days[selectedDay] = {
+      from_id: userData?.id,
+      assignedTo_id: "",
+      nutrition: {
+        nutritionName: nutritionName,
+        plan,
+      },
+    };
+    props.setWeeks(weeks)
+    props.handleCloseNutrition()
+  }
+
 
   return (
     <div className="coachAddMeal">
@@ -128,7 +155,11 @@ function CoachAddMeal() {
             <div
               className="coachFoodCard__submitMealButton"
               onClick={() => {
-                setModal(true);
+                if(props.isLongTerm){
+                  AddLongTermMeal();
+                }else{
+                  setModal(true);
+                }
               }}
             >
               <h3>Add Plan</h3>

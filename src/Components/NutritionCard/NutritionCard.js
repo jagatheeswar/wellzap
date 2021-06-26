@@ -5,7 +5,7 @@ import { selectUserType } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import "./NutritionCard.css";
 
-function NutritionCard({ nutrition, food, idx, type, navigation }) {
+function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,handleCloseNutrition,setWeeks,weeks,selectedWeekNum,selectedDay}) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
   console.log("fd", food);
@@ -16,6 +16,14 @@ function NutritionCard({ nutrition, food, idx, type, navigation }) {
         className="nutritionCard__info"
         onClick={
           () => {
+            if(isLongTerm){
+              var lweeks = weeks;
+              var lselectedWeekNum = selectedWeekNum;
+              var lselectedDay = selectedDay;
+              lweeks[lselectedWeekNum - 1].days[lselectedDay] = food.data;
+              setWeeks(lweeks)
+              handleCloseNutrition()
+            }else{
             if (userType === "coach") {
               if (type === "view") {
                 history.push({
@@ -43,6 +51,7 @@ function NutritionCard({ nutrition, food, idx, type, navigation }) {
                 },
               });
             }
+          }
           }
           //console.log(food);
           // history.push({
