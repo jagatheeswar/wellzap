@@ -63,6 +63,9 @@ import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutriti
 
 import dateContext from "../src/features/context";
 import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
+
+import {Grid} from '@material-ui/core'
+
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
@@ -162,16 +165,20 @@ function App() {
       console.log({ userType });
       return (
         <div className="home__container">
+          <Grid container>
+          <Grid item xs={2}>
           <Sidebar />
-          <div className="home__main">
+          </Grid>
+          <Grid item xs={7} style={{marginLeft: 13}} className="home__main">
             {userType === "coach" ? CoachComp : AthleteComp}
-          </div>
-          <div className="home__rightContainer">
+          </Grid>
+          <Grid item xs={3} className="home__rightContainer">
             <RightContainer
               toggle_date={toggle_date}
               selectedDate={selectedDate}
             />
-          </div>
+          </Grid>
+          </Grid>
         </div>
       );
     } else {

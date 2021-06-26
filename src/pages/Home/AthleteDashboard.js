@@ -270,6 +270,7 @@ function AthleteDashboard(props) {
             onClick={() => {
               history.push("/nutrition");
             }}
+            style={{marginLeft: 10}}
           >
             See all
           </p>

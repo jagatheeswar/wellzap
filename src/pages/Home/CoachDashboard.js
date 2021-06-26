@@ -296,17 +296,18 @@ function CoachDashboard(props) {
             View more
           </p>
         ) : (
-          <p
-            onClick={() => {
-              if (nutrition.length < 3) {
-                setnutirtion_show(nutrition.length);
-              } else {
-                setnutirtion_show(3);
-              }
-            }}
-          >
-            Hide all
-          </p>
+          <></>
+          // <p
+          //   onClick={() => {
+          //     if (nutrition.length < 3) {
+          //       setnutirtion_show(nutrition.length);
+          //     } else {
+          //       setnutirtion_show(3);
+          //     }
+          //   }}
+          // >
+          //   Hide all
+          // </p>
         )}
       </div>
       <div className="coachDashboard__rightContainer">
