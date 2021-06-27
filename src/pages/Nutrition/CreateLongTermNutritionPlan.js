@@ -159,10 +159,22 @@ const CreateLongTermNutritionPlan = () => {
   ]);
 
   const [checkBox, setCheckBox] = React.useState([
-    {name: 'week2', checked: true},
-    {name: 'week3', checked: true},
-    {name: 'week4', checked: true},
-    {name: 'week5', checked: true},
+    {name: 'week2', checked: false},
+    {name: 'week3', checked: false},
+    {name: 'week4', checked: false},
+    {name: 'week5', checked: false},
+    {name: 'week6', checked: false},
+    {name: 'week7', checked: false},
+    {name: 'week8', checked: false},
+    {name: 'week9', checked: false},
+    {name: 'week10', checked: false},
+    {name: 'week11', checked: false},
+    {name: 'week12', checked: false},
+    {name: 'week13', checked: false},
+    {name: 'week14', checked: false},
+    {name: 'week15', checked: false},
+    {name: 'week16', checked: false},
+
   ])
 
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -302,8 +314,13 @@ const CreateLongTermNutritionPlan = () => {
 
 
   const handleChange = (event) => {
-    setCheckBox({ ...checkBox, [event.target.name]: event.target.checked });
+    //console.log(event.target.name)
+   setCheckBox([ ...checkBox, {name:event.target.name,checked:event.target.checked }]);
   };
+
+  useEffect(()=>{
+    console.log(checkBox)
+  },[checkBox])
 
   const saveLongTermMeal = () =>{
     setModal(true)
@@ -369,16 +386,11 @@ const CreateLongTermNutritionPlan = () => {
               <div style={{backgroundColor: '#fff', borderRadius: 15, padding: 1}}>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
                   <p style={{marginLeft: 20}}>Nutrition Plan</p>
-                  {/*
                   <p onClick={()=>{
-                   //alert(idx)
-                   setWeekIndex(0)
-                    var lweeks =[...weeks];
-                    lweeks.splice(idx,1)
-                    setWeeks(lweeks)
-                  }} style={{marginRight:20,cursor:"pointer"}}>x</p>*/}
+                    handleClickOpenDialogCopy()
+                  }} style={{marginRight:20,cursor:"pointer"}}>Copy</p>
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{alignSelf:"center",alignItems:"center",height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.monday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"monday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>MONDAY</p></div>
                   :
@@ -551,7 +563,7 @@ const CreateLongTermNutritionPlan = () => {
           ))}
           {weeks.length <= 1 || weeks.length == weekIndex + 1 ?
           <div style={{flexDirection: 'column',width:"48%",padding:10,marginLeft:20}}>
-            <p style={{cursor:"pointer"}} onClick={handleClickOpenDialogCopy}>Copy</p>
+            {/*<p style={{cursor:"pointer"}} onClick={handleClickOpenDialogCopy}>Copy</p>*/}
             <div onClick={()=>{setWeeks([...weeks,{ weeknum: weeks.length + 1, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''}}])}} style={{ borderRadius: 15, margin: 15, cursor:"pointer",border: "1px dashed #727272",height: 100, width: 350, justifyContent: 'center', display: 'flex', alignItems: 'center' }}>
             <img style={{objectFit: 'contain'}} src="/assets/plus_thin.png" alt="" width="25px" height="25px" />{" "}
             </div>
@@ -595,6 +607,10 @@ const CreateLongTermNutritionPlan = () => {
             </Grid>
             <Divider orientation="vertical" />
             <Grid item xs={6}>
+            <FormControl
+              component="fieldset"
+              onChange={handleChange}
+            >
               {checkBox.map((index) => (
                 <div  style={{flexDirection: 'column', marginLeft: 20}}>
                 <FormControlLabel
@@ -603,6 +619,7 @@ const CreateLongTermNutritionPlan = () => {
                 />
                 </div>
               ))}
+            </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
