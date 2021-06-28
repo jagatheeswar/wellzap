@@ -63,7 +63,7 @@ import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutriti
 
 import dateContext from "../src/features/context";
 import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
-
+import "./fonts/Open_Sans/OpenSans-Regular.ttf";
 import {Grid} from '@material-ui/core'
 
 function App() {

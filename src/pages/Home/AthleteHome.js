@@ -14,6 +14,7 @@ import AthleteHomeReports from "./AthleteHomeReports";
 import "./Home.css";
 import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
+import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
 
 function AthleteHome(props) {
   const user = useSelector(selectUser);
@@ -60,8 +61,8 @@ function AthleteHome(props) {
         <div className="home__leftContainer">
           <div className="home__header">
             <div className="home__headerFirst">
-              <h1>Hello, {userData?.data?.name}</h1>
-              <h2>Here’s your progress summary.</h2>
+              <h1 style={{fontFamily: 'Open_Sans'}}>Hello, {userData?.data?.name}</h1>
+              <h2 style={{fontFamily: 'Open_Sans'}}>Here’s your progress summary.</h2>
             </div>
             <div className="fab__icon" onClick={() => openModal()}>
               <img src="/assets/fab.png" alt="" width="26px" height="26px" />

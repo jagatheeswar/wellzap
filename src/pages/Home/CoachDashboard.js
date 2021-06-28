@@ -9,6 +9,7 @@ import { formatDate } from "../../functions/formatDate";
 import CoachCreateWorkout from "../Workouts/CoachCreateWorkout";
 import CoachWorkouts from "../Workouts/CoachWorkouts";
 import "./Home.css";
+import { Grid } from "@material-ui/core"
 
 function CoachDashboard(props) {
   const userData = useSelector(selectUserData);
@@ -160,13 +161,14 @@ function CoachDashboard(props) {
   }, [nutrition]);
 
   return (
-    <div className="coachDashboard__container">
-      <div className="coachDashboard__leftContainer">
+    <Grid container spacing={2} className="coachDashboard__container">
+      <Grid item xs={6} className="coachDashboard__leftContainer">
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width: '90%'
           }}
         >
           {" "}
@@ -199,6 +201,7 @@ function CoachDashboard(props) {
             See all
           </p>
         </div>
+        <div style={{width: '90%'}}>
         {savedWorkouts.length > 1
           ? savedWorkouts
               .slice(0, 1)
@@ -220,12 +223,43 @@ function CoachDashboard(props) {
                 type="non-editable"
               />
             ))}
-
+            </div>
+        </Grid>
+        <Grid item xs={6} className="coachDashboard__rightContainer">
+          <div style={{flexDirection: 'column'}}>
+          <h2 style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              padding: "15px 0px"
+            }}>Messaging</h2>
+          <div className="messaging">
+            <div
+              className="messaging__component"
+              onClick={() => {
+                history.push("/messaging");
+              }}
+            >
+              Open Messages
+            </div>
+            <div
+              className="messaging__component"
+              onClick={() => {
+                history.push("/calendar");
+              }}
+            >
+              Schedule Video Call
+            </div>
+          </div>
+          </div>
+        </Grid>
+        <Grid item xs={6}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "90%"
           }}
         >
           {" "}
@@ -258,6 +292,7 @@ function CoachDashboard(props) {
             See all
           </p>
         </div>
+        <div style={{width: "90%"}}>
         {nutrition.length > 0 ? (
           nutrition.map((food, idx) => (
             <NutritionCard
@@ -270,19 +305,21 @@ function CoachDashboard(props) {
             />
           ))
         ) : (
-          <h5
+          <div
             style={{
-              fontSize: "12px",
               backgroundColor: "#fff",
               width: "100%",
-              paddingTop: "10px",
-              paddingRight: "10px",
-              textAlign: "center",
+              height: 90,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: "center",
               borderRadius: "5px",
             }}
           >
-            There are no nutrition for now
-          </h5>
+            <h5 style={{
+              fontSize: "12px",
+            }}>There are no nutrition for now</h5>
+          </div>
         )}
 
         {nutrition.length > nutritoin_show ? (
@@ -309,43 +346,30 @@ function CoachDashboard(props) {
           //   Hide all
           // </p>
         )}
-      </div>
-      <div className="coachDashboard__rightContainer">
-        <h2>Messaging</h2>
-        <div className="messaging">
-          <div
-            className="messaging__component"
-            onClick={() => {
-              history.push("/messaging");
-            }}
-          >
-            Open Messages
-          </div>
-          <div
-            className="messaging__component"
-            onClick={() => {
-              history.push("/calendar");
-            }}
-          >
-            Schedule Video Call
-          </div>
         </div>
-
-        <h2 style={{ float: "left" }}>Athletes</h2>
+        </Grid>
+      {/* </div> */}
+      <Grid item xs={6}>
+        <div style={{width: "90%", marginTop: 18}}>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <h2 style={{
+          float: "left", 
+          fontSize: 19,
+          fontWeight: "500",
+        }}>Athletes</h2>
         <p
           style={{
-            position: "absolute",
+            position: "relative",
           }}
           className="see_more_home"
           onClick={() => {
             history.push("/all-athletes");
           }}
-          style={{ textAlign: "right" }}
         >
           {" "}
           See all
         </p>
-
+        </div>
         {athletes.length > 0 &&
           athletes.slice(0, display_count).map((item) => (
             <div className="athletes__card" style={{ marginTop: 10 }}>
@@ -398,8 +422,10 @@ function CoachDashboard(props) {
             Hide all
           </p>
         )} */}
-      </div>
-    </div>
+        </div>
+        </Grid>
+      {/* </div> */}
+    </Grid>
   );
 }
 

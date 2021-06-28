@@ -260,7 +260,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{today.length} - Due Today</p>
+                  <p>
+                    {/* {today.length} -  */}
+                    Due Today</p>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -276,7 +278,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{pending.length} - Pending</p>
+                  <p>
+                    {/* {pending.length} -  */}
+                    Pending</p>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -292,7 +296,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{upcoming.length} - Due Soon</p>
+                  <p>
+                    {/* {upcoming.length} -  */}
+                    Due Soon</p>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -308,7 +314,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{completed.length} - Completed</p>
+                  <p>
+                    {/* {completed.length} -  */}
+                    Completed</p>
                 </div>
               </div>
             </div>
