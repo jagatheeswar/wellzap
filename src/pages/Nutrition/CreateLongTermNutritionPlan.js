@@ -402,8 +402,25 @@ const CreateLongTermNutritionPlan = () => {
         <div onClick={()=>weekIndex >= 1 ? setWeekIndex(weekIndex - 1) : null} style={{marginLeft: 20,cursor:"pointer"}}>
           <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
         </div>
-        <div style={{width: 200, marginTop: -22, justifyContent: 'center', display: 'flex', alignItems: 'baseline'}}>
-          <p>Week</p> {weeks.map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)}
+        <div style={{width: 300, marginTop: -22, justifyContent: 'center', display: 'flex', alignItems: 'baseline'}}>
+          <p>Week</p> {
+          weeks.length <= 6 ? weeks.map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)
+          :
+          ( weekIndex <=1 ?
+            weeks.slice(0,7).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)
+            : (
+              weekIndex >= weeks.length - 2 ?
+              weeks.slice(weeks.length - 6, weeks.length).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)
+              : (
+               [weeks.slice(0, 2).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>),
+               <p onClick={()=>setWeekIndex(weekIndex - 1)} style={{padding: 5,cursor:"pointer",fontWeight:"100"}}>{weekIndex}</p>,
+              <p onClick={()=>setWeekIndex(weekIndex)} style={{padding: 5,cursor:"pointer",fontWeight: "bold"}}>{weekIndex + 1}</p>,
+              <p onClick={()=>setWeekIndex(weekIndex + 1)} style={{padding: 5,cursor:"pointer",fontWeight:"100"}}>{weekIndex + 2}</p>,
+                weeks.slice(weeks.length - 2,weeks.length).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)]
+              )
+            )
+          )
+          }
         </div>
         <div style={{cursor:"pointer"}} onClick={()=>weeks.length == weekIndex + 1 ? null:setWeekIndex(weekIndex + 1)}>
           <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />{" "}
