@@ -160,7 +160,7 @@ const Listbox = styled("ul")`
   }
 `;
 
-function CreateNutrition() {
+function CreateNutrition(props) {
   const classes = useStyles();
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -256,6 +256,15 @@ function CreateNutrition() {
     }
   }, [location]);
 
+  useEffect(()=>{
+    if(props.isLongTerm){
+      setNutritionName(props.selectedDayData.nutrition.nutritionName);
+      setEntireFood(props.selectedDayData.nutrition.entireFood);
+      setAddFood(props.selectedDayData.nutrition.entireFood[0]?.addFood)
+      console.log(props.selectedDayData)
+    }
+  },[props.isLongTerm])
+
   useEffect(() => {
     fetch("https://rongoeirnet.herokuapp.com/getFood")
       .then((response) => response.json())
@@ -339,6 +348,7 @@ function CreateNutrition() {
         />
       </div>
 
+      {props.isLongTerm ? null :
       <div>
         <div {...getRootProps()}>
           <Label {...getInputLabelProps()}>Search for Athletes</Label>
@@ -360,7 +370,7 @@ function CreateNutrition() {
             ))}
           </Listbox>
         ) : null}
-      </div>
+      </div>}
 
       <div>
         {selectedAthletes?.map((athlete, index) => (
@@ -663,6 +673,7 @@ function CreateNutrition() {
                 />
               );
             })}
+            {props.isLongTerm ? null :
               <div
                 className="foodCard__addfoodButton"
                 onClick={() => {
@@ -682,7 +693,7 @@ function CreateNutrition() {
                 }}
               >
                 <h3>Add Food</h3>
-              </div>
+              </div>}
             </div>
               :
               <div className="coachAddMeal__textArea">
@@ -702,7 +713,7 @@ function CreateNutrition() {
             </div>
           ))}
 
-          {userType !== "athlete" && (
+          {userType !== "athlete" && !props.isLongTerm && (
             <div
               className="coachFoodCard__addmealButton"
               onClick={() => {
@@ -718,7 +729,7 @@ function CreateNutrition() {
               <h3>Add Meal</h3>
             </div>
           )}
-          {userType !== "athlete" && (
+          {userType !== "athlete" && !props.isLongTerm && (
             <div
               className="coachFoodCard__submitMealButton"
               onClick={() => {

@@ -20,7 +20,7 @@ import Select from "@material-ui/core/Select";
 import { Calendar,utils  } from "react-modern-calendar-datepicker";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import 'date-fns';
-
+import CreateNutrition from "./ViewNutrition"
 
 import moment from "moment"
 const InputWrapper = styled("div")`
@@ -174,16 +174,17 @@ const CreateLongTermNutritionPlan = () => {
     {name: 'week14', checked: false},
     {name: 'week15', checked: false},
     {name: 'week16', checked: false},
-
   ])
 
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogCopy, setOpenDialogCopy] = React.useState(false);
   const [openCreateNutrition, setOpenCreateNutrition] = React.useState(false);
   const [openSavedNutrition, setOpenSavedNutrition] = React.useState(false);
-  const [openAssignNutrition, setOpenAssignNutrition] = React.useState(true);
+  const [openAssignNutrition, setOpenAssignNutrition] = React.useState(false);
+  const [showNutrition, setShowNutrition] = React.useState(false);
   const [selectedWeekNum, setSelectedWeekNum] = React.useState(1);
   const [selectedDay, setSelectedDay] = React.useState("monday");
+  const [selectedDayData, setSelectedDayData] = React.useState(null);
   const [modal, setModal] = React.useState(false);
   const [modal1, setModal1] = React.useState(false);
   const [selectedAthletes, setSelectedAthletes] = React.useState([]);
@@ -254,7 +255,6 @@ const CreateLongTermNutritionPlan = () => {
       month: now.get("month") + 1,
       day: now.get("day"),
     };
-    console.log(today_date)
 
     setSelectedDate(today_date);
     var temp = [];
@@ -265,7 +265,6 @@ const CreateLongTermNutritionPlan = () => {
           month:moment(new Date()).add(i + 1,"days").get("month") + 1,
           day:moment(new Date()).add(i + 1,"days").get("date")
         })
-        //console.log(moment(new Date()).add(i + 1,"days").get("day"))
       }
     }
     setDisabledDays(temp)
@@ -312,15 +311,51 @@ const CreateLongTermNutritionPlan = () => {
     setOpenSavedNutrition(false)
   }
 
+  const handleWeeksCopy = () =>{
+    console.log(checkBox)
+    var temp = weeks;
+    var index = 0;
+    for(var i=checkBox.length - 1;i>0;i--){
+      if(checkBox[i].checked){
+        index = i;
+        break;
+      }
+    }
+    //alert("index " + index)
+    var len = weeks.length;
+    if(index !=0 && weeks.length < index + 2){
+      for(var j=0;j<index + 2 - len;j++){
+        temp.push(
+          { weeknum: len + 1 + j, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''}}
+        )
+      }
+      setWeekIndex(0)
+      for(var k = 0;k<index + 1;k++){
+        if(checkBox[k].checked){
+          temp[k+1].days = weeks[weekIndex - 1].days
+          console.log(k+2)
+        }
+      }
+      console.log("temp " + temp)
+      setWeeks(temp)
+    }
+
+    setOpenDialogCopy(false)
+    //alert(index)
+  }
+
 
   const handleChange = (event) => {
-    //console.log(event.target.name)
-   setCheckBox([ ...checkBox, {name:event.target.name,checked:event.target.checked }]);
+    console.log(event.target.name)
+    var temp = checkBox;
+    console.log(event.target.name.split("week"))
+    temp[event.target.name.split("week")[1] - 2].checked = event.target.checked
+    //console.log(temp)
+   setCheckBox([ ...temp]);
   };
 
-  useEffect(()=>{
-    console.log(checkBox)
-  },[checkBox])
+
+
 
   const saveLongTermMeal = () =>{
     setModal(true)
@@ -368,7 +403,7 @@ const CreateLongTermNutritionPlan = () => {
           <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
         </div>
         <div style={{width: 200, marginTop: -22, justifyContent: 'center', display: 'flex', alignItems: 'baseline'}}>
-          <p>Week</p> {weeks.map((i) => <p style={{padding: 5}}>{i.weeknum}</p>)}
+          <p>Week</p> {weeks.map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)}
         </div>
         <div style={{cursor:"pointer"}} onClick={()=>weeks.length == weekIndex + 1 ? null:setWeekIndex(weekIndex + 1)}>
           <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />{" "}
@@ -379,24 +414,38 @@ const CreateLongTermNutritionPlan = () => {
         </div>
       </div>
       <div className="weeksContainer" style={{overflow: 'auto', width: '115vh', marginLeft: 20}}>
+
         <div className="eachWeek" style={{display: 'flex', flexDirection: 'row',justifyContent:"space-between"}}>
+          {weeks.length > 1 ?
+        <div onClick={()=>weekIndex >= 1 ? setWeekIndex(weekIndex - 1) : null} style={{cursor:"pointer",marginTop:"40%"}}>
+          <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
+        </div>:null}
           {selectedWeeks.map((index,idx) => (
-            <div style={{flexDirection: 'column',width:"48%",marginLeft:20}}>
+            <div style={{flexDirection: 'column',width:"45%",marginLeft:20}}>
               <p>Week {index.weeknum}</p>
               <div style={{backgroundColor: '#fff', borderRadius: 15, padding: 1}}>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
                   <p style={{marginLeft: 20}}>Nutrition Plan</p>
                   <p onClick={()=>{
-                    handleClickOpenDialogCopy()
+                    setWeekIndex(index.weeknum);
+                    handleClickOpenDialogCopy();
                   }} style={{marginRight:20,cursor:"pointer"}}>Copy</p>
                 </div>
-                <div  style={{alignSelf:"center",alignItems:"center",height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{alignSelf:"center",alignItems:"center",height: 130,cursor:"pointer",width: 350, marginLeft: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.monday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"monday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>MONDAY</p></div>
                   :
                   <>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>MONDAY</p>
-                  <Grid container>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
+                    <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>MONDAY</p>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.monday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.monday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -407,20 +456,29 @@ const CreateLongTermNutritionPlan = () => {
                   </Grid>
                   <Grid item xs={6}>
                     <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.monday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.monday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.monday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.monday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.monday?.proteins}</p>
                   </Grid>
                   </Grid>
                   </>}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.tuesday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"tuesday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>TUESDAY</p></div>
                   :
                   <>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>TUESDAY</p>
-                  <Grid container>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
+                    <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>TUESDAY</p>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.tuesday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.tuesday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -430,21 +488,30 @@ const CreateLongTermNutritionPlan = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.tuesday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.tuesday.nutrition.nutritionName}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.tuesday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.tuesday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.tuesday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.tuesday?.proteins}</p>
                   </Grid>
                   </Grid>
                   </>}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.wednesday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"wednesday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>WEDNESDAY</p></div>
                   :
                   <>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
                   <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>WEDNESDAY</p>
-                  <Grid container>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.wednesday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.wednesday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -454,21 +521,32 @@ const CreateLongTermNutritionPlan = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.wednesday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+
+                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.wednesday.nutrition.nutritionName}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.wednesday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.wednesday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.wednesday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.wednesday?.proteins}</p>
+
                   </Grid>
                   </Grid>
                   </>}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.thursday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"thursday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>THURSDAY</p></div>
                   :
                   <>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
                   <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>THURSDAY</p>
-                  <Grid container>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.thursday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.thursday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -478,21 +556,31 @@ const CreateLongTermNutritionPlan = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.thursday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+
+                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.thursday.nutrition.nutritionName}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.thursday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.thursday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.thursday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.thursday?.proteins}</p>
                   </Grid>
                   </Grid>
                   </>}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.friday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"friday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>FRIDAY</p></div>
                   :
                   <>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>FRIDAY</p>
-                  <Grid container>
+                    <div style={{display:"flex",justifyContent:"space-between"}}>
+                    <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>FRIDAY</p>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.friday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.friday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -502,21 +590,33 @@ const CreateLongTermNutritionPlan = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.friday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+
+                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.friday.nutrition.nutritionName}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.friday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.friday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.friday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.friday?.proteins}</p>
+
+
                   </Grid>
                   </Grid>
                   </>}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.saturday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"saturday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>SATURDAY</p></div>
                   :
                   <>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>SATURDAY</p>
-                  <Grid container>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
+                      <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>SATURDAY</p>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.saturday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.saturday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -526,21 +626,31 @@ const CreateLongTermNutritionPlan = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.saturday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.saturday.nutrition.nutritionName}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.saturday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.saturday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.saturday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.saturday?.proteins}</p>
+
                   </Grid>
                   </Grid>
                   </>}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 15, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
+                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
                   {index.days.sunday == "" ? 
                   <div onClick={()=>handleClickOpenDialog(index.weeknum,"sunday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>SUNDAY</p></div>
                   :
                   <>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
                   <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>SUNDAY</p>
-                  <Grid container>
+                    <p onClick={()=>{
+                      var temp = weeks;
+                      temp[index.weeknum - 1].days.sunday = "";
+                      setWeekIndex(index.weeknum);
+                      setWeeks(temp);
+                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
+                  </div>
+                  <Grid onClick={()=>{setSelectedDayData(index.days.sunday); setShowNutrition(true)}} container>
                   <Grid item xs={4}>
                     <img
                       src="/assets/illustration.jpeg"
@@ -550,10 +660,13 @@ const CreateLongTermNutritionPlan = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.sunday.nutrition.nutritionName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration</p>
+
+                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.sunday.nutrition.nutritionName}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.sunday?.calories}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Carbs: {index.days.sunday?.carbs}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Fats: {index.days.sunday?.fat}</p>
+                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Protein: {index.days.sunday?.proteins}</p>
+
                   </Grid>
                   </Grid>
                   </>}
@@ -562,12 +675,15 @@ const CreateLongTermNutritionPlan = () => {
             </div>
           ))}
           {weeks.length <= 1 || weeks.length == weekIndex + 1 ?
-          <div style={{flexDirection: 'column',width:"48%",padding:10,marginLeft:20}}>
+          <div style={{flexDirection: 'column',width:"45%",padding:10,marginLeft:20}}>
             {/*<p style={{cursor:"pointer"}} onClick={handleClickOpenDialogCopy}>Copy</p>*/}
             <div onClick={()=>{setWeeks([...weeks,{ weeknum: weeks.length + 1, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''}}])}} style={{ borderRadius: 15, margin: 15, cursor:"pointer",border: "1px dashed #727272",height: 100, width: 350, justifyContent: 'center', display: 'flex', alignItems: 'center' }}>
             <img style={{objectFit: 'contain'}} src="/assets/plus_thin.png" alt="" width="25px" height="25px" />{" "}
             </div>
           </div>:null}
+          <div style={{cursor:"pointer",marginTop:"40%"}} onClick={()=>weeks.length == weekIndex + 1 ? null:setWeekIndex(weekIndex + 1)}>
+          <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />{" "}
+        </div>
         </div>
       </div>
       <Dialog
@@ -624,7 +740,7 @@ const CreateLongTermNutritionPlan = () => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <button style={{backgroundColor: '#fcd13f', border: 'none', outline: 'none', padding: "10px 30px", borderRadius: 25, fontSize: 16, fontWeight: '600'}}>Confirm</button>
+          <button onClick={handleWeeksCopy} style={{backgroundColor: '#fcd13f', border: 'none', outline: 'none', padding: "10px 30px", borderRadius: 25, fontSize: 16, fontWeight: '600',cursor:"pointer"}}>Confirm</button>
         </DialogActions>
       </Dialog>
       <Dialog
@@ -647,6 +763,17 @@ const CreateLongTermNutritionPlan = () => {
       >
         <DialogContent>
           <ViewAllSavedNutrition isLongTerm={true} handleCloseNutrition={handleCloseNutrition} setWeeks={setWeeks} weeks={weeks} selectedWeekNum={selectedWeekNum} selectedDay={selectedDay}  />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={showNutrition}
+        onClose={()=>setShowNutrition(false)}
+        maxWidth="lg"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <CreateNutrition selectedDayData={selectedDayData} isLongTerm={true} handleCloseNutrition={handleCloseNutrition} setWeeks={setWeeks} weeks={weeks} selectedWeekNum={selectedWeekNum} selectedDay={selectedDay}  />
         </DialogContent>
       </Dialog>
       <Modal
@@ -759,28 +886,6 @@ const CreateLongTermNutritionPlan = () => {
             ))}
           </Listbox>
         ) : null}
-              {/*
-              <FormControl style={{width:"60%",marginTop:40,marginLeft:25}}>
-                <p style={{marginBottom:10}}>
-                  Select the Meal start date
-                </p>
-                <Select
-                  labelId="meal-select-label"
-                  id="meal-select-label"
-                  value={"gagan"}
-                  onChange={(e) => {
-                    //temp[idx].meal = e.target.value;
-                    //setPlan(temp);
-                  }}
-                >
-                  <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-                  <MenuItem value={"Lunch"}>Lunch</MenuItem>
-                  <MenuItem value={"Snack"}>Snack</MenuItem>
-                  <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
-                  <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
-                  <MenuItem value={"Dinner"}>Dinner</MenuItem>
-                </Select>
-                </FormControl>*/}
                 <div style={{marginLeft:25}}>
                 <p>Select Start Date</p>
                 <Calendar

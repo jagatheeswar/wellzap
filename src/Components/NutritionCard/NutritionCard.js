@@ -21,6 +21,24 @@ function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,hand
               var lselectedWeekNum = selectedWeekNum;
               var lselectedDay = selectedDay;
               lweeks[lselectedWeekNum - 1].days[lselectedDay] = food.data;
+              var ent = food.data?.nutrition?.entireFood;
+              var calories =0;
+              var proteins = 0;
+              var carbs =0;
+              var fat =0;
+              ent.forEach((id)=>{
+                var dat = id.food;
+                dat.forEach((id2)=>{
+                  calories += id2.calories;
+                  fat += id2.fat;
+                  carbs += id2.carbs;
+                  proteins +=id2.proteins;
+                })
+              })
+              lweeks[lselectedWeekNum - 1].days[lselectedDay].calories = calories;
+              lweeks[lselectedWeekNum - 1].days[lselectedDay].proteins = proteins;
+              lweeks[lselectedWeekNum - 1].days[lselectedDay].fat = fat;
+              lweeks[lselectedWeekNum - 1].days[lselectedDay].carbs = carbs;
               setWeeks(lweeks)
               handleCloseNutrition()
             }else{
