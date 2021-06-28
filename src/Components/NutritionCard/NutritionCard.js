@@ -11,6 +11,7 @@ function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,hand
   console.log("fd", food);
   return (
     <div className="nutritionCard">
+      <div className="nutritionCard_main">
       <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />
       <div
         className="nutritionCard__info"
@@ -84,6 +85,7 @@ function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,hand
         <div className="nutritionCard__macroNutrients">
           <h3>{formatDate()}</h3>
         </div>
+      </div>
       </div>
       <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
     </div>
