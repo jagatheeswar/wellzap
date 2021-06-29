@@ -222,6 +222,7 @@ const CreateLongTermNutritionPlan = () => {
   });
 
   useEffect(() => {
+    //console.log("3")
     if (userData?.id) {
       const data = [];
       db.collection("athletes")
@@ -241,13 +242,20 @@ const CreateLongTermNutritionPlan = () => {
   }, [userData?.id]);
 
   useEffect(() => {
+    //console.log("4")
     value.map((v) => {
       v.selectedDays = [];
     });
     setSelectedAthletes(value);
   }, [value]);
+
+  useEffect(()=>{
+      console.log("weeks ")
+      console.log(JSON.stringify(weeks))
+  },[weeks])
  
   useEffect(()=>{
+    //console.log("5")
     let now = moment();
   
     let today_date = {
@@ -279,19 +287,22 @@ const CreateLongTermNutritionPlan = () => {
   },[])
 
   useEffect(()=>{
+    console.log("2")
+    console.log(JSON.stringify(weeks))
     if(weeks.length <= 1){
       setSelectedWeeks(weeks)
     }else{
       if(weeks.length >= weekIndex + 1){
         setSelectedWeeks(weeks.slice(weekIndex,weekIndex + 2))
+        //console.log(weeks.slice(weekIndex,weekIndex + 2))
       }
     }
   },[weekIndex,weeks])
 
   const handleClickOpenDialog = (week,day) => {
-    setOpenDialog(true);
     setSelectedWeekNum(week);
-    setSelectedDay(day)
+    setSelectedDay(day);
+    setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
@@ -312,7 +323,7 @@ const CreateLongTermNutritionPlan = () => {
   }
 
   const handleWeeksCopy = () =>{
-    console.log(checkBox)
+    //console.log(checkBox)
     var temp = weeks;
     var index = 0;
     for(var i=checkBox.length - 1;i>0;i--){
@@ -329,26 +340,61 @@ const CreateLongTermNutritionPlan = () => {
           { weeknum: len + 1 + j, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''}}
         )
       }
-      setWeekIndex(0)
       for(var k = 0;k<index + 1;k++){
         if(checkBox[k].checked){
           temp[k+1].days = weeks[weekIndex - 1].days
-          console.log(k+2)
+          //console.log(k+2)
         }
       }
       console.log("temp " + temp)
+      console.log(JSON.stringify(temp))
       setWeeks(temp)
+      setWeekIndex(0)
     }
 
     setOpenDialogCopy(false)
     //alert(index)
   }
 
+  const AssignMealPlan = () =>{
+    //console.log(selectedDate)
+    //console.log(selectedAthletes)
+    var dat = weeks;
+    var athlete = selectedAthletes;
+   var local_date = selectedDate.year + "-" + (selectedDate.month <= 9 ? "0" + String(selectedDate.month) : selectedDate.month) + "-" + (selectedDate.day <= 9 ? "0" + selectedDate.day : selectedDate.day)
+    console.log("date : "+ local_date)
+
+    dat.forEach((id)=>{
+      var dat2 = id.days;
+      var keys = Object.keys(dat2);
+      keys.forEach((id2)=>{
+        if(dat2[id2] != ""){
+          athlete.forEach((ath)=>{
+            db.collection("Food").add({
+              from_id: userData?.id,
+              assignedTo_id: ath,
+              selectedDays: [local_date],
+              nutrition: {
+                nutritionName: dat2[id2].nutrition.nutritionName,
+                entireFood : dat2[id2].nutrition,
+              },
+              saved: false,
+              selectedAthletes:[ath],
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+          })
+        }
+      })
+      
+    })
+    
+  }
+
 
   const handleChange = (event) => {
-    console.log(event.target.name)
+    //console.log(event.target.name)
     var temp = checkBox;
-    console.log(event.target.name.split("week"))
+    //console.log(event.target.name.split("week"))
     temp[event.target.name.split("week")[1] - 2].checked = event.target.checked
     //console.log(temp)
    setCheckBox([ ...temp]);
@@ -458,10 +504,12 @@ const CreateLongTermNutritionPlan = () => {
                   <div style={{display:"flex",justifyContent:"space-between"}}>
                     <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>MONDAY</p>
                     <p onClick={()=>{
-                      var temp = weeks;
+                      var temp = [...weeks];
                       temp[index.weeknum - 1].days.monday = "";
-                      setWeekIndex(index.weeknum);
+                      console.log("delete temp")
+                      console.log(JSON.stringify(temp))
                       setWeeks(temp);
+                      setWeekIndex(index.weeknum - 1);
                     }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
                   </div>
                   <Grid onClick={()=>{setSelectedDayData(index.days.monday); setShowNutrition(true)}} container>
@@ -922,6 +970,9 @@ const CreateLongTermNutritionPlan = () => {
       </div>
 
         </DialogContent>
+        <DialogActions>
+          <button onClick={AssignMealPlan} style={{backgroundColor: '#fcd13f', border: 'none', outline: 'none', padding: "10px 30px", borderRadius: 25, fontSize: 16, fontWeight: '600',cursor:"pointer",marginRight:20}}>Assign Meal Plan</button>
+        </DialogActions>
       </Dialog>
     </div>
   )
