@@ -30,6 +30,7 @@ function Sidebar() {
         <Link
           className="view-link"
           to={userType === "athlete" ? "/profile" : "/coach"}
+          style={{fontFamily: 'Montserrat'}}
         >
           {" "}
           View Profile

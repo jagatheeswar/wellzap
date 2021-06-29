@@ -54,7 +54,7 @@ function CoachWorkouts() {
         <Grid container spacing={2} className="workouts__homeContainer">
           <Grid item xs={6} className="workouts__homeLeftContainer">
             <div style={{width: '90%', paddingLeft: 10, display: 'flex', alignItems: 'center'}} className="workoutHeading__row">
-              <h1>Upcoming Workouts</h1>
+              <h1>Assigned Workouts</h1>
               <p style={{cursor: 'pointer'}} onClick={() => history.push("/view-all-workouts")}>
                 View All
               </p>

@@ -211,10 +211,10 @@ function CoachHomeReports() {
                 backgroundColor: "white",
                 justifyContent: "space-between",
                 alignItems: "center",
-                height: "330px",
+                height: "340px",
                 borderRadius: 10,
                 display: "flex",
-                width: 400,
+                width: 420,
               }}
             >
               <div>
@@ -247,7 +247,7 @@ function CoachHomeReports() {
               </div>
 
               <div>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", marginRight: 20 }}>
                   <div
                     style={{
                       height: 10,
