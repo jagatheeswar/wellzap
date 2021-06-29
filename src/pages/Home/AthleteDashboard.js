@@ -77,8 +77,9 @@ function AthleteDashboard(props) {
     let temp = [];
 
     if (userData?.id) {
-      db.collection("Food")
-        .where("user_id", "==", userData?.id)
+      db.collection("AthleteNutrition")
+        .doc(userData?.id)
+        .collection("nutrition")
         .limit(3)
         .get()
         .then((querySnapshot) => {

@@ -15,6 +15,8 @@ import "./Home.css";
 import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
 import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
+import {Dialog, DialogContent, Grid, Divider, DialogActions, FormControlLabel, Checkbox} from '@material-ui/core';
+
 
 function AthleteHome(props) {
   const user = useSelector(selectUser);
@@ -66,14 +68,14 @@ function AthleteHome(props) {
             </div>
             <div className="fab__icon" onClick={() => openModal()}>
               <img src="/assets/fab.png" alt="" width="26px" height="26px" />
-              <Modal
-                visible={visible}
-                width="80%"
-                height="300"
-                effect="fadeInUp"
-                onClickaway={() => closeModal()}
-              >
-                <div className="modal__athleteComponents">
+              <Dialog
+        open={visible}
+        onClose={closeModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+        <div className="modal__athleteComponents">
                   <div className="modal__addWorkout">
                     <div className="modal__addWorkoutImg">
                       {" "}
@@ -125,7 +127,8 @@ function AthleteHome(props) {
                   {" "}
                   <CloseIcon />
                 </div>
-              </Modal>
+        </DialogContent>
+      </Dialog>
             </div>
           </div>
           <AthleteHomeReports />

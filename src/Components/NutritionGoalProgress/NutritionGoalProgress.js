@@ -52,9 +52,10 @@ function NutritionGoalProgress() {
       let tempDate;
       tempDate = formatDate();
 
-      db.collection("Food")
-        .where("user_id", "==", userData?.id)
-        .where("date", "==", tempDate)
+      db.collection("AthleteNutrition")
+        .doc(userData?.id)
+        .collection("nutrition")
+        .doc(tempDate)
         .onSnapshot((querySnapshot) => {
           tempCal = 0;
           tempCarbs = 0;
