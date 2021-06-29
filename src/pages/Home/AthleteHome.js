@@ -16,6 +16,7 @@ import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
 import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
 import {Dialog, DialogContent, Grid, Divider, DialogActions, FormControlLabel, Checkbox} from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 
 
 function AthleteHome(props) {
@@ -25,6 +26,8 @@ function AthleteHome(props) {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [visible, setVisible] = useState(false);
+  const history = useHistory();
+
 
   const openModal = () => {
     setVisible(true);
@@ -81,67 +84,6 @@ function AthleteHome(props) {
             onClick={handleClickOpenDialog}
             >
               <img src="/assets/fab.png" alt="" width="26px" height="26px" />
-              <Dialog
-        open={visible}
-        onClose={closeModal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-        <div className="modal__athleteComponents">
-                  <div className="modal__addWorkout">
-                    <div className="modal__addWorkoutImg">
-                      {" "}
-                      <img
-                        src="/assets/Icon material-fitness-center.png"
-                        alt=""
-                      />
-                    </div>
-                    <h3>Add Workout</h3>
-                  </div>
-                  <div className="modal__addGoal">
-                    <div className="modal__addGoalImg">
-                      {" "}
-                      <img src="/assets/Icon ionic-ios-star.png" alt="" />
-                    </div>
-                    <h3>Add Goal</h3>
-                  </div>
-                  <div className="modal__addMeal">
-                    <div className="modal__addMealImg">
-                      <img
-                        src="/assets/Icon awesome-hamburger.png"
-                        alt=""
-                        height="20px"
-                        width="20px"
-                      />
-                    </div>
-                    <h3>Add Meal</h3>
-                  </div>
-                  <div className="modal__logWeight">
-                    <div className="modal__logWeightImg">
-                      <img src="/assets/Icon awesome-weight.png" alt="" />
-                    </div>
-
-                    <h3>Log Weight</h3>
-                  </div>
-                  <div className="modal__viewReport">
-                    <div className="modal__viewReportImg">
-                      {" "}
-                      <img src="/assets/Icon material-event.png" alt="" />
-                    </div>
-
-                    <h3>View Report</h3>
-                  </div>
-                </div>
-                <div
-                  className="modal__closeButton"
-                  onClick={() => closeModal()}
-                >
-                  {" "}
-                  <CloseIcon />
-                </div>
-        </DialogContent>
-      </Dialog>
             </div>
           </div>
           <AthleteHomeReports />
@@ -154,7 +96,7 @@ function AthleteHome(props) {
         maxWidth="md"
       >
         <div className="modal__athleteComponents">
-          <div className="modal__addWorkout">
+          <div onClick={() => history.push("/workouts") } style={{cursor:"pointer"}} className="modal__addWorkout">
             <div className="modal__addWorkoutImg">
               {" "}
               <img
@@ -164,14 +106,14 @@ function AthleteHome(props) {
             </div>
             <h3>Add Workout</h3>
           </div>
-          <div className="modal__addGoal">
+          <div onClick={() => history.push("/calendar") } style={{cursor:"pointer"}} className="modal__addGoal">
             <div className="modal__addGoalImg">
               {" "}
               <img src="/assets/Icon ionic-ios-star.png" alt="" />
             </div>
             <h3>Add Goal</h3>
           </div>
-          <div className="modal__addMeal">
+          <div onClick={() => history.push("/add-meal") } style={{cursor:"pointer"}} className="modal__addMeal">
             <div className="modal__addMealImg">
               <img
                 src="/assets/Icon awesome-hamburger.png"
@@ -182,14 +124,14 @@ function AthleteHome(props) {
             </div>
             <h3>Add Meal</h3>
           </div>
-          <div className="modal__logWeight">
+          <div onClick={() => history.push("/log-weight") } style={{cursor:"pointer"}} className="modal__logWeight">
             <div className="modal__logWeightImg">
               <img src="/assets/Icon awesome-weight.png" alt="" />
             </div>
 
             <h3>Log Weight</h3>
           </div>
-          <div className="modal__viewReport">
+          <div style={{cursor:"pointer"}} className="modal__viewReport">
             <div className="modal__viewReportImg">
               {" "}
               <img src="/assets/Icon material-event.png" alt="" />

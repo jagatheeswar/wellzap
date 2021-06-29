@@ -54,7 +54,7 @@ import AthleteStats from "./pages/AllAthletes/AthleteStats";
 import AthleteProfile_coach from "./pages/AllAthletes/AthleteProfile_Coach";
 import AthleteMedicalAssessment_coach from "./pages/AllAthletes/AthleteMedicalAssessment";
 import AthleteFoodAndLifestyleAssessment_coach from "./pages/AllAthletes/AthleteFoodAndLifestyleAssessment";
-
+import LogWeight from "./pages/LogWeight/LogWeight";
 import AthleteMeasurements_coach from "./pages/AllAthletes/AthleteMeasurements";
 import AthleteTrainingAssessment_coach from "./pages/AllAthletes/AthleteTrainingAssessment";
 import ViewNutrition from "./pages/Nutrition/ViewNutrition";
@@ -260,6 +260,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<AthleteMeasurements_coach />}
+              ></RoutesComp>
+            </Route>
+            <Route path="/log-weight">
+              <RoutesComp
+                AthleteComp={<LogWeight />}
+                CoachComp={<NotFound />}
               ></RoutesComp>
             </Route>
             <Route path="/Athlete/medical-assessment/:AthleteId">
