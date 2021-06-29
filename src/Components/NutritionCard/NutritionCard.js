@@ -8,7 +8,6 @@ import "./NutritionCard.css";
 function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,handleCloseNutrition,setWeeks,weeks,selectedWeekNum,selectedDay}) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
-  console.log("fd", food);
   return (
     <div className="nutritionCard">
       <div className="nutritionCard_main">
@@ -19,6 +18,8 @@ function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,hand
           () => {
             if(isLongTerm){
               var lweeks = weeks;
+              //console.log("before")
+              //console.log(lweeks)
               var lselectedWeekNum = selectedWeekNum;
               var lselectedDay = selectedDay;
               lweeks[lselectedWeekNum - 1].days[lselectedDay] = food.data;
@@ -40,6 +41,8 @@ function NutritionCard({ nutrition, food, idx, type, navigation ,isLongTerm,hand
               lweeks[lselectedWeekNum - 1].days[lselectedDay].proteins = proteins;
               lweeks[lselectedWeekNum - 1].days[lselectedDay].fat = fat;
               lweeks[lselectedWeekNum - 1].days[lselectedDay].carbs = carbs;
+              //console.log("nutri card")
+              //console.log(lweeks)
               setWeeks(lweeks)
               handleCloseNutrition()
             }else{
