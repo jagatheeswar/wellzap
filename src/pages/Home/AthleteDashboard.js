@@ -190,7 +190,7 @@ function AthleteDashboard(props) {
               width="40px"
               height="40px"
             />
-            <h4>{userData?.data.name}</h4>
+            <h4 style={{fontFamily: 'Montserrat'}}>{userData?.data.name}</h4>
           </div>
 
           <img src="/assets/message.png" alt="" width="15px" height="15px" />
@@ -238,18 +238,37 @@ function AthleteDashboard(props) {
             onClick={() => {
               history.push("/workouts");
             }}
+            style={{fontFamily: 'Montserrat'}}
           >
             See all
           </p>
         </div>
-        {workouts?.map((workout, i) => (
+        {workouts.length > 0 ? (
+          workouts?.map((workout, i) => (
           <WorkoutCard
             key={workout.id}
             workouts={workout}
             item={workout}
             idx={i}
           />
-        ))}
+        ))) : (
+          <div
+            style={{
+              backgroundColor: "#fff",
+              width: "100%",
+              height: 90,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: "center",
+              borderRadius: "5px",
+            }}
+          >
+            <h5 style={{
+              fontSize: "12px",
+            }}>There are no Workouts for now</h5>
+          </div>
+        ) 
+        }
       </Grid>
       <Grid item xs={6}>
         <div
@@ -286,7 +305,7 @@ function AthleteDashboard(props) {
             onClick={() => {
               history.push("/nutrition");
             }}
-            style={{marginLeft: 10}}
+            style={{marginLeft: 10, fontFamily: 'Montserrat'}}
           >
             See all
           </p>

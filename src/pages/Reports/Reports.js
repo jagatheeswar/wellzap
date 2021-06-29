@@ -16,7 +16,7 @@ import { Chart } from "chart.js";
 import Graph3_ from "./Graph3";
 import { useParams } from "react-router";
 import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
-
+import {Grid} from '@material-ui/core'
 const Reports = (props) => {
   const [chart_data, setchart_data] = useState({});
   const [chart_data2, setchart_data2] = useState({});
@@ -362,8 +362,14 @@ const Reports = (props) => {
     },
   ];
   return (
-    <div className="reports__container">
-      <div className="chart_container">
+    <Grid container spacing={2} className="reports__container">
+      <Grid item xs={6}>
+        <h1 style={{fontSize: 19, fontWeight: "600"}}>Compliance</h1>
+        {<Compliance_report Id={Id} height={200} />}
+      </Grid>
+      <Grid item xs={6} className="chart_container">
+        <div>
+        <h1 style={{fontSize: 19, fontWeight: "600", marginBottom: 20}}>Stats</h1>
         <div className="chart_">
           {iscompliancedata_empty && (
             <div
@@ -389,7 +395,7 @@ const Reports = (props) => {
             }}
           >
             Weekly Report
-            <div className="dropdown_" style={{ fontSize: 20 }}>
+            <div className="dropdown_" style={{ fontSize: 20, fontFamily: 'Montserrat' }}>
               <Dropdown_
                 change_graph={changeGraph_option}
                 options={dropdown_options}
@@ -449,13 +455,13 @@ const Reports = (props) => {
             {Weekly_report()}
           </div>
         </div>
-      </div>
-      {<Compliance_report Id={Id} height={200} />}
-      {<Graph3_ Id={Id} />}
+        </div>
+      </Grid>
+      {/* {<Graph3_ Id={Id} />}
       <div className="chart_container" style={{ alignItems: "center" }}>
         <NutritionGoalProgress />
-      </div>
-    </div>
+      </div> */}
+    </Grid>
   );
 };
 

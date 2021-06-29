@@ -64,6 +64,7 @@ import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutriti
 import dateContext from "../src/features/context";
 import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
 import "./fonts/Open_Sans/OpenSans-Regular.ttf";
+import "./fonts/Montserrat/Montserrat-Regular.ttf";
 import {Grid} from '@material-ui/core'
 
 function App() {
@@ -229,6 +230,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthleteMeasurements />}
                 CoachComp={<AthleteMeasurements />}
+              />
+            </Route>
+            <Route path="/invite-athlete">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<InviteAthlete />}
               />
             </Route>
             <Route path="/nutrition/coach-add-meal">

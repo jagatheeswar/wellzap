@@ -9,6 +9,7 @@ import { formatDate } from "../../functions/formatDate";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300 + theme.spacing(3) * 2,
+    marginLeft: 15
   },
   margin: {
     height: theme.spacing(1),
@@ -73,7 +74,8 @@ function Sleep({ sleep, setSleep }) {
           aria-label="pretto slider"
           defaultValue={0}
           min={0}
-          max={24}
+          max={12}
+          step={0.25}
           value={sleep}
           onChange={handleChange}
         />
@@ -83,7 +85,7 @@ function Sleep({ sleep, setSleep }) {
       </div>
 
       <div className="soreness">
-        <h4>How Sore do you feel?</h4>
+        <h4 style={{fontFamily: 'Montserrat'}}>How Sore do you feel?</h4>
         <div className="emoji__container">
           <div className="emoji__div">
             <Emoji symbol=" 😖 " />
