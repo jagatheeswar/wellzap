@@ -15,12 +15,8 @@ import "./Home.css";
 import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
 import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
-<<<<<<< HEAD
 import {Dialog, DialogContent, Grid, Divider, DialogActions, FormControlLabel, Checkbox} from '@material-ui/core';
 
-=======
-import { Dialog, Grid } from '@material-ui/core'
->>>>>>> 47f03187ff0ceb4708b62044241650dbd85efafd
 
 function AthleteHome(props) {
   const user = useSelector(selectUser);
