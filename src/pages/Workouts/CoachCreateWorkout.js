@@ -20,6 +20,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -52,11 +53,18 @@ function CoachCreateWorkout() {
   const [listOfTargetedMuscles, setListOfTargetedMuscles] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [objs, setObjs] = useState(null);
+  const [cardio, setCardio] = useState(false);
+  const [cardioSelect, setCardioSelect] = useState("Run");
+  const [cardioExercise, setCardioExercise] = useState([
+    {name:"Run"},
+    {name:"Walk"},
+    {name:"Elliptical"},
+    {name:"Bike"},
+    {name:"Row"}
+  ]);
+  
   const history = useHistory();
 
-  console.log({
-    workoutDescription,
-  });
 
   var ID = function () {
     // Math.random should be unique because of its seeding algorithm.
@@ -122,9 +130,9 @@ function CoachCreateWorkout() {
           width="90%"
         />
       </div>
-      <div className="coachCreateWorkout__selectDropdown">
+      <div style={{paddingLeft:20}} className="coachCreateWorkout__selectDropdown">
         <h3 className="createWorkout__subHeading">Workout Details</h3>
-        <div className="createWorkout__row">
+        <div style={{width:"50%"}} className="createWorkout__row">
           <SearchableDropdown
             name="Equipments Needed"
             list={listOfEquipments}
@@ -139,7 +147,7 @@ function CoachCreateWorkout() {
           />
         </div>
       </div>
-      <div className="createWorkout__inputTime">
+      <div style={{paddingLeft:20}} className="createWorkout__inputTime">
         <h3 className="createWorkout__inputLabel">Workout Duration</h3>
         <input
           className="createWorkout__input"
@@ -148,7 +156,7 @@ function CoachCreateWorkout() {
           onChange={(e) => setWorkoutDuration(e.target.value)}
         />
       </div>
-      <div className="createWorkout__calorieBurn">
+      <div style={{paddingLeft:20}} className="createWorkout__calorieBurn">
         <h3 className="createWorkout__inputLabel">Calories Burn Estimate</h3>
         <input
           className="createWorkout__input"
@@ -159,17 +167,15 @@ function CoachCreateWorkout() {
           onChange={(e) => setCaloriesBurnEstimate(e.target.value)}
         />
       </div>
-      <div className="createWorkout__workoutDifficulty">
+      <div style={{paddingLeft:20}} className="createWorkout__workoutDifficulty">
         <h3 className="createWorkout__inputLabel">Workout Difficulty</h3>
         <FormControl className={classes.formControl}>
-          <InputLabel id="meal-select-label">
-            Select the Workout difficulty
-          </InputLabel>
           <Select
             labelId="meal-select-label"
             id="meal-select-label"
             value={workoutDifficulty}
             onChange={(e) => setWorkoutDifficulty(e.target.value)}
+            style={{width:"50%"}}
           >
             <MenuItem value={"Easy"}>Easy</MenuItem>
             <MenuItem value={"Moderate"}>Moderate</MenuItem>
@@ -177,16 +183,31 @@ function CoachCreateWorkout() {
           </Select>
         </FormControl>
       </div>
-      <div className="createWorkout__exercises">
+      <div style={{paddingLeft:20}} className="createWorkout__exercises">
+      <div style={{display:"flex",justifyContent:"space-between",marginRight:20}}>
         <h3 className="createWorkout__inputLabel">Exercises</h3>
+          <div style={{display:"flex",alignItems:"center"}}>
+            <p style={{margin:0}}>Weights</p>
+            <Switch
+            checked={cardio}
+            onChange={(event)=>{
+              setCardio(!cardio)
+            }}
+            value={cardio}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+            <p style={{margin:0}}>Cardio</p>
+          </div>
+        </div>
         <div>
           <div>
             <div style={{ width: "95%" }}>
               <SearchableDropdown
                 name="Search for Exercise"
-                list={exercises}
+                list={cardio ?cardioExercise : exercises}
                 state={selectedExercises}
                 setState={setSelectedExercises}
+                cardio={cardio}
               />
             </div>
             {selectedExercises?.map((workout, idx1) => (
@@ -259,6 +280,7 @@ function CoachCreateWorkout() {
                         <CloseIcon />
                       </div>
                     </div>
+                    {workout.cardio ? null :
                     <div
                       style={{
                         display: "flex",
@@ -288,7 +310,8 @@ function CoachCreateWorkout() {
                           {i < workout.sets.length - 1 ? " - " : null}
                         </h5>
                       ))}
-                    </div>
+                    </div>}
+                    {workout.cardio ? null :
                     <div
                       style={{
                         display: "flex",
@@ -352,7 +375,7 @@ function CoachCreateWorkout() {
                           />
                         )}
                       </div>
-                    </div>
+                    </div>}
                     <div
                       style={{
                         display: "flex",
@@ -367,7 +390,7 @@ function CoachCreateWorkout() {
                           fontWeight: "400",
                         }}
                       >
-                        Rest(secs)
+                        {workout.cardio ? "Time(secs)" : "Rest(secs)"}
                       </h5>
                       {workout.sets.map((s, i) => (
                         <h5
@@ -383,6 +406,7 @@ function CoachCreateWorkout() {
                 </div>
                 {selectedWorkoutEdit === idx1 && (
                   <div>
+                    {workout.cardio ? null :
                     <div
                       style={{
                         borderWidth: "1px",
@@ -421,7 +445,7 @@ function CoachCreateWorkout() {
                       >
                         Add New Set
                       </h5>
-                    </div>
+                    </div>}
                     {workout.sets?.map((set, idx2) => (
                       <div
                         key={idx2}
@@ -433,6 +457,7 @@ function CoachCreateWorkout() {
                           marginBottom: "10px",
                         }}
                       >
+                        {workout.cardio ? null :
                         <div
                           style={{
                             marginLeft: "-15px",
@@ -445,7 +470,8 @@ function CoachCreateWorkout() {
                           }}
                         >
                           <CloseIcon />
-                        </div>
+                        </div>}
+                        {workout.cardio ? null :
                         <h5
                           style={{
                             marginTop: "18px",
@@ -453,7 +479,8 @@ function CoachCreateWorkout() {
                           }}
                         >
                           Set {idx2 + 1}
-                        </h5>
+                        </h5>}
+                        {workout.cardio ? null :
                         <div
                           style={{
                             marginLeft: "5px",
@@ -491,7 +518,8 @@ function CoachCreateWorkout() {
                               setSelectedExercises(temp);
                             }}
                           />
-                        </div>
+                        </div>}
+                        {workout.cardio ? null :
                         <div
                           style={{
                             marginLeft: "5px",
@@ -529,7 +557,7 @@ function CoachCreateWorkout() {
                               setSelectedExercises(temp);
                             }}
                           />
-                        </div>
+                        </div>}
                         <div
                           style={{
                             marginLeft: "5px",
@@ -546,7 +574,7 @@ function CoachCreateWorkout() {
                               marginRight: "10px",
                             }}
                           >
-                            Rest
+                            {workout.cardio ? "Time" : "Rest"}
                           </h5>
                           <input
                             style={{
@@ -595,7 +623,7 @@ function CoachCreateWorkout() {
           </div>
         </div>
       </div>
-      <div className="createWorkout__description">
+      <div style={{paddingLeft:20}} className="createWorkout__description">
         <h3 className="createWorkout__inputLabel">Workout Description</h3>
         <textarea
           placeholder="Enter Workout Description"
