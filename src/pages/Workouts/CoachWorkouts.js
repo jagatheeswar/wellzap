@@ -6,7 +6,7 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import { db } from "../../utils/firebase";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
-
+import { Grid } from "@material-ui/core"
 function CoachWorkouts() {
   const userData = useSelector(selectUserData);
   const [workouts, setWorkouts] = useState([]);
@@ -47,18 +47,19 @@ function CoachWorkouts() {
   console.log({ workouts });
 
   return (
-    <div className="workouts__home">
+    <div style={{minHeight: '99vh'}} className="workouts__home">
       <div className="coachDashboard__leftContainer">
         <WorkoutScreenHeader name="Workouts" />
 
-        <div className="workouts__homeContainer">
-          <div className="workouts__homeLeftContainer">
-            <div className="workoutHeading__row">
-              <h1>Upcoming Workouts</h1>
-              <div onClick={() => history.push("/view-all-workouts")}>
+        <Grid container spacing={2} className="workouts__homeContainer">
+          <Grid item xs={6} className="workouts__homeLeftContainer">
+            <div style={{width: '90%', paddingLeft: 10, display: 'flex', alignItems: 'center'}} className="workoutHeading__row">
+              <h1>Assigned Workouts</h1>
+              <p style={{cursor: 'pointer'}} onClick={() => history.push("/view-all-workouts")}>
                 View All
-              </div>
+              </p>
             </div>
+            <div style={{width: '90%'}} >
             {workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
@@ -67,15 +68,18 @@ function CoachWorkouts() {
                 idx={i}
                 type="non-editable"
               />
+             
             ))}
-          </div>
-          <div className="workouts__homeRightContainer">
-            <div className="workoutHeading__row">
-              <h1>Saved Templates</h1>
-              <div onClick={() => history.push("/view-all-saved-workouts")}>
-                View All
-              </div>
             </div>
+          </Grid>
+          <Grid item xs={6} className="workouts__homeRightContainer">
+            <div style={{width: '90%', display: 'flex', alignItems: 'center'}} className="workoutHeading__row">
+              <h1>Saved Templates</h1>
+              <p style={{cursor: 'pointer'}} onClick={() => history.push("/view-all-saved-workouts")}>
+                View All
+              </p>
+            </div>
+            <div style={{width: '90%'}} >
             {savedWorkouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
@@ -84,8 +88,9 @@ function CoachWorkouts() {
                 idx={i}
               />
             ))}
-          </div>
-        </div>
+            </div>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

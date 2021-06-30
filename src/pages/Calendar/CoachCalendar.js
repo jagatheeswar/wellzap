@@ -6,6 +6,7 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from "react-modern-calendar-datepicker";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
+import EventInfo from "./EventInfo";
 import {
   selectUser,
   selectUserData,
@@ -27,6 +28,7 @@ function CoachCalendar() {
     const [events, setEvents] = useState({});
     const [addedEvent, setAddedEvent] = useState(false);
     const [sideBar, setSideBar] = useState("CreateEvent");
+    const [eventInfoData, setEventInfoData] = useState(null);
     const [eventHistory, setEventHistory] = useState([]);
     const [eventHistoryOpen, setEventHistoryOpen] = useState(false);
     const [selectedevents, setselectedevents] = useState([]);
@@ -145,7 +147,7 @@ function CoachCalendar() {
                 upcoming_temp.push(<div key={id} id={id} data={data} />);
               }else{
                 localEventsHistory.push(
-                    <div onClick={()=>{setSideBar("CreateEvent"); setTempEvent({id:id,data:data,athletes:data[id].athletes})}} style={{width:"92%",marginTop:10,cursor:"pointer"}}>
+                    <div style={{width:"92%",marginTop:10,cursor:"pointer"}}>
                     <div
                       style={{
                         display: "flex",
@@ -153,6 +155,11 @@ function CoachCalendar() {
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginTop: 20,
+                      }}
+                      onClick={()=>{
+                        setEventInfoData(data[id]);
+                        setsidebarfunc("events");
+                        setTimeout(function(){ setsidebarfunc("eventInfo"); }, 500);
                       }}
                     >
                       <div style={{display: "flex", alignItems: "center",}}>
@@ -205,9 +212,18 @@ function CoachCalendar() {
 
     }, [userData?.id,addedEvent]);
 
-    const setsidebarfunc = () =>{
+    const setAddedEventFunc = () =>{
       setAddedEvent(true)
     }
+
+    const setsidebarfunc = (type) =>{
+      setSideBar(type)
+    }
+
+    const setTempEventFunc = (data)=>{
+    setTempEvent(data)
+    }
+
 
 
   return (
@@ -220,7 +236,7 @@ function CoachCalendar() {
           <span onClick={()=>setSideBar("eventsHistory")} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"auto"}}>
             Events History
           </span>
-        <button onClick={()=>setSideBar("CreateEvent")} style={{backgroundColor:"#fcd54a",fontSize:25,fontWeight:"bold",cursor:"pointer",padding:5,paddingLeft:12,paddingRight:12,border:"none",borderRadius:5,marginLeft:15}}>
+        <button onClick={()=>{setTempEvent(null); setTimeout(function(){ setSideBar("CreateEvent"); }, 500);}} style={{backgroundColor:"#fcd54a",fontSize:25,fontWeight:"bold",cursor:"pointer",padding:5,paddingLeft:12,paddingRight:12,border:"none",borderRadius:5,marginLeft:15}}>
            +
         </button>
       </div>
@@ -238,7 +254,7 @@ function CoachCalendar() {
           <div style={{ fontWeight: 100, color: "grey" }}></div>
           <div className="events_today_list" >
             {tdy.length !== 0 ? (
-              <EventCard data={tdy}  count={tdy.length} />
+              <EventCard data={tdy}   count={tdy.length} setsidebarfunc={setsidebarfunc} setEventInfoData={setEventInfoData}/>
             ) : (
               <>
                 <div className="events_today_">
@@ -250,11 +266,13 @@ function CoachCalendar() {
           </div>
           <div className="events_today_list">
             {selectedevents.length !== 0 ? (
-              <div onClick={()=>alert("gagan")} style={{cursor:"pointer"}}>
+              <div style={{cursor:"pointer",width:"100%"}}>
               <SelectedEvents
                 dates={selectedevents}
                 data={events}
                 count={tdy.length}
+                setsidebarfunc={setsidebarfunc}
+                setEventInfoData={setEventInfoData}
               />
               </div>
             ) : (
@@ -288,7 +306,7 @@ function CoachCalendar() {
 
           <div className="upcoming_event_">
             {upcomingevents.length !== 0 && (
-              <EventCard data={upcomingevents} count={showevent_count} />
+              <EventCard data={upcomingevents} count={showevent_count} setsidebarfunc={setsidebarfunc} setEventInfoData={setEventInfoData}/>
             )}
           </div>
           <div class="divider"> </div>
@@ -323,11 +341,16 @@ function CoachCalendar() {
                  : null}
 
               {sideBar == "CreateEvent" ? 
-                <CreateEvent setsidebarfunc={setsidebarfunc} id={tempEvent?.id} data={tempEvent?.data} athletes={tempEvent?.athletes}/> 
+                <CreateEvent setsidebarfunc={setsidebarfunc} setAddedEventFunc={setAddedEventFunc} id={tempEvent?.id} data={tempEvent?.data} athletes={tempEvent?.athletes}/> 
                  : null}
+
+              {sideBar == "eventInfo" ? 
+                <div>
+                  <p style={{fontWeight:"bold",fontSize:18}}>Event Info</p>
+                  <EventInfo setTempEventFunc={setTempEventFunc} data={eventInfoData} setAddedEventFunc={setAddedEventFunc} setsidebarfunc={setsidebarfunc}/>
+                </div>
+                 : null} 
  
-
-
             </div>
           </div>
         </div>

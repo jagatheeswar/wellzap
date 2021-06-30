@@ -139,8 +139,9 @@ function AthleteProfileForm() {
     let temp = [];
 
     if (temperoryId) {
-      db.collection("Food")
-        .where("user_id", "==", temperoryId)
+      db.collection("AthleteNutrition")
+        .doc(temperoryId)
+        .collection("nutrition")
         .limit(1)
         .get()
         .then((querySnapshot) => {

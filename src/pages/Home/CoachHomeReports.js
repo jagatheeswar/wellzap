@@ -211,10 +211,10 @@ function CoachHomeReports() {
                 backgroundColor: "white",
                 justifyContent: "space-between",
                 alignItems: "center",
-                height: "330px",
+                height: "340px",
                 borderRadius: 10,
                 display: "flex",
-                width: 400,
+                width: 420,
               }}
             >
               <div>
@@ -247,7 +247,7 @@ function CoachHomeReports() {
               </div>
 
               <div>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", marginRight: 20 }}>
                   <div
                     style={{
                       height: 10,
@@ -260,7 +260,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{today.length} - Due Today</p>
+                  <p>
+                    {/* {today.length} -  */}
+                    Due Today</p>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -276,7 +278,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{pending.length} - Pending</p>
+                  <p>
+                    {/* {pending.length} -  */}
+                    Pending</p>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -292,7 +296,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{upcoming.length} - Due Soon</p>
+                  <p>
+                    {/* {upcoming.length} -  */}
+                    Due Soon</p>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -308,7 +314,9 @@ function CoachHomeReports() {
                       marginTop: 5,
                     }}
                   ></div>
-                  <p>{completed.length} - Completed</p>
+                  <p>
+                    {/* {completed.length} -  */}
+                    Completed</p>
                 </div>
               </div>
             </div>

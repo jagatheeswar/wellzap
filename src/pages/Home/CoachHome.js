@@ -19,6 +19,8 @@ import { useHistory } from "react-router";
 import CloseIcon from "@material-ui/icons/Close";
 import dateContext from "../../features/context";
 import moment from "moment";
+import { Dialog, Grid } from '@material-ui/core'
+
 function Home(props) {
   const history = useHistory();
   const user = useSelector(selectUser);
@@ -36,6 +38,16 @@ function Home(props) {
 
   const closeModal = () => {
     setVisible(false);
+  };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   useEffect(() => {
@@ -90,9 +102,10 @@ function Home(props) {
                 alt=""
                 width="26px"
                 height="26px"
-                onClick={() => openModal()}
+                // onClick={() => openModal()}
+                onClick={handleClickOpenDialog}
               />
-              <Modal
+              {/* <Modal
                 visible={visible}
                 width="80%"
                 height="300"
@@ -153,13 +166,73 @@ function Home(props) {
                   {" "}
                   <CloseIcon />
                 </div>
-              </Modal>
+              </Modal> */}
             </div>
           </div>
           <CoachHomeReports />
           <CoachDashboard selectedDate={props.selectedDate} />
         </div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="md"
+      >
+        <div className="modal__coachComponents">
+          <div
+            className="modal__addAthelete"
+            onClick={() => history.push("/all-athletes")}
+          >
+            <div className="modal__addAthleteImg">
+              {" "}
+              <img src="/assets/Icon material-person-add.png" alt="" />
+            </div>
+            <h3>Add Athlete</h3>
+          </div>
+          <div
+            className="modal__createNutritionPlans"
+            onClick={() => history.push("/add-meal")}
+          >
+            <div className="modal__createNutritionPlansImg">
+              <img
+                src="/assets/Icon awesome-hamburger.png"
+                alt=""
+                height="20px"
+                width="20px"
+              />
+            </div>
+            <h3>Create Nutrition Plans</h3>
+          </div>
+          <div
+            className="modal__createWorkout"
+            onClick={() => history.push("/create-workout")}
+          >
+            <div className="modal__createWorkoutImg">
+              <img
+                src="/assets/Icon material-fitness-center.png"
+                alt=""
+              />
+            </div>
+
+            <h3>Create Workout</h3>
+          </div>
+          <div className="modal__createEvent">
+            <div className="modal__createEventImg">
+              {" "}
+              <img src="/assets/Icon material-event.png" alt="" />
+            </div>
+
+            <h3>Create Event</h3>
+          </div>
+        </div>
+        <div
+          className="modal__closeButton"
+          onClick={handleCloseDialog}
+        >
+          {" "}
+          <CloseIcon />
+        </div>
+      </Dialog>
     </div>
   );
 }

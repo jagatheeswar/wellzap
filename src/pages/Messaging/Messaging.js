@@ -224,7 +224,7 @@ function Messaging({ route, navigation }) {
         </div>
       </div>
 
-      <div style={{ marginBottom: "140px", marginTop: "50px" }}>
+      <div style={{ height: "82vh", overflowY: 'auto' }}>
         {allMessages?.map((msg) => (
           <div key={msg.id}>
             {type === "coach" ? (
@@ -442,7 +442,7 @@ function Messaging({ route, navigation }) {
           paddingTop: "5px",
           paddingBottom: "5px",
           // position: "relative",
-          bottom: "30px", 
+          // bottom: "30px", 
           position: 'absolute',
           bottom: 10
         }}

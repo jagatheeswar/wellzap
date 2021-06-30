@@ -14,6 +14,12 @@ import { useSelector } from "react-redux";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { db } from "../../utils/firebase";
+import firebase from "firebase"
+import Switch from '@material-ui/core/Switch';
+import styled from "styled-components";
+import useAutocomplete from "@material-ui/lab/useAutocomplete";
+import CloseIcon from "@material-ui/icons/Close";
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -25,15 +31,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CoachAddMeal() {
+function CoachAddMeal(props) {
   const classes = useStyles();
   const userType = useSelector(selectUserType);
   const userData = useSelector(selectUserData);
   const [nutritionName, setNutritionName] = useState("");
-  const [plan, setPlan] = useState([
+  const [addFood, setAddFood] = useState(false);
+  const [serverData, setServerData] = useState([]);
+  const [entireFood, setEntireFood] = useState([
     {
       meal: "",
       description: "",
+      food: [
+        {
+          foodName: "",
+          proteins: 0,
+          carbs: 0,
+          fat: 0,
+          calories: 0,
+          quantity: 1,
+        },
+      ],
+      addFood:false,
     },
   ]);
   const [foodId, setFoodId] = useState("");
@@ -42,6 +61,21 @@ function CoachAddMeal() {
   const [modal1, setModal1] = useState(false);
   const history = useHistory();
 
+
+
+  useEffect(() => {
+    fetch("https://rongoeirnet.herokuapp.com/getFood")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //Successful response from the API Call
+        setServerData(responseJson.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+
   // useEffect(() => {
   //   if (route.params?.nutrition) {
   //     setPlan(route.params?.nutrition.data.nutrition.plan);
@@ -49,7 +83,33 @@ function CoachAddMeal() {
   //   }
   // }, [route.params?.nutrition]);
 
-  console.log({ plan });
+
+  const AddLongTermMeal = () =>{
+    /*
+    db.collection("Food")
+    .add({
+      from_id: userData?.id,
+      assignedTo_id: "",
+      nutrition: {
+        nutritionName: nutritionName,
+        plan,
+      },
+    })*/
+    var weeks = props.weeks;
+    var selectedWeekNum = props.selectedWeekNum;
+    var selectedDay = props.selectedDay;
+    weeks[selectedWeekNum - 1].days[selectedDay] = {
+      from_id: userData?.id,
+      assignedTo_id: "",
+      nutrition: {
+        nutritionName: nutritionName,
+        entireFood,
+      },
+    };
+    props.setWeeks(weeks)
+    props.handleCloseNutrition()
+  }
+
 
   return (
     <div className="coachAddMeal">
@@ -58,7 +118,26 @@ function CoachAddMeal() {
         <img src="/assets/nutrition.jpeg" alt="" />
       </div>
       <div className="coachAddMeal__input">
+        <div style={{display:"flex",justifyContent:"space-between"}}>
         <h4>Nutrition Plan Name</h4>
+        {userType !== "athlete" && (
+        <div style={{display:"flex",alignItems:"center"}}>
+          <p style={{margin:0,marginRight:10}}>Add Food</p>
+        <Switch
+            checked={addFood}
+            onChange={(event)=>{
+              let tempMeal = [...entireFood];
+              tempMeal[0].addFood = !addFood;
+              setEntireFood(tempMeal);
+              setAddFood(!addFood)
+            }}
+            name="Add Food"
+            value={addFood}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+        </div>)}
+
+        </div>
         <input
           type="text"
           placeholder="Enter Nutrition Plan Name"
@@ -66,23 +145,23 @@ function CoachAddMeal() {
           onChange={(e) => setNutritionName(e.target.value)}
         />
       </div>
+
       <div className="coachAddMeal__form">
         <div className="athleteAddMeal__typeOfMeal">
-          {plan?.map((item, idx) => (
+          {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
               <FormControl className={classes.formControl}>
-                <InputLabel id="meal-select-label">
-                  Select the type of meal
-                </InputLabel>
+                  <b style={{marginBottom:10}}>Select the type of meal</b>
                 <Select
                   labelId="meal-select-label"
                   id="meal-select-label"
                   value={item.meal}
                   onChange={(e) => {
-                    let temp = [...plan];
+                    let temp = [...entireFood];
                     temp[idx].meal = e.target.value;
-                    setPlan(temp);
+                    setEntireFood(temp);
                   }}
+                  style={{width:"97%"}}
                 >
                   <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
                   <MenuItem value={"Lunch"}>Lunch</MenuItem>
@@ -92,19 +171,58 @@ function CoachAddMeal() {
                   <MenuItem value={"Dinner"}>Dinner</MenuItem>
                 </Select>
               </FormControl>
+              {addFood ? 
+              <div>
+            {item.food?.map((item2, idx2) => {
+              return (
+                <AddFoodCard
+                  type={type}
+                  item={item2}
+                  idx={idx2}
+                  key={idx2}
+                  ent={item}
+                  entireFood={entireFood}
+                  index={idx}
+                  serverData={serverData}
+                  setEntireFood={setEntireFood}
+                />
+              );
+            })}
+              <div
+                className="foodCard__addfoodButton"
+                onClick={() => {
+                  let foodData = [...entireFood];
+                  let temp = [...item.food];
+                  temp.push({
+                    foodName: "",
+                    proteins: 0,
+                    carbs: 0,
+                    fat: 0,
+                    calories: 0,
+                    quantity: 1,
+                  });
+                  foodData[idx].food = temp;
+
+                  setEntireFood(foodData);
+                }}
+              >
+                <h3>Add Food</h3>
+              </div>
+            </div>
+              :
               <div className="coachAddMeal__textArea">
-                <h4>Description</h4>
+                <h4 style={{margin:0,marginBottom:10}}>Description</h4>
                 <textarea
                   type="text"
                   placeholder="Enter Meal Description"
                   value={item.description}
                   onChange={(e) => {
-                    let temp = [...plan];
+                    let temp = [...entireFood];
                     temp[idx].description = e.target.value;
-                    setPlan(temp);
+                    setEntireFood(temp);
                   }}
                 />
-              </div>
+              </div>}
             </div>
           ))}
 
@@ -112,11 +230,22 @@ function CoachAddMeal() {
             <div
               className="coachFoodCard__addmealButton"
               onClick={() => {
-                setPlan([
-                  ...plan,
+                setEntireFood([
+                  ...entireFood,
                   {
                     meal: "",
                     description: "",
+                    food: [
+                      {
+                        foodName: "",
+                        proteins: 0,
+                        carbs: 0,
+                        fat: 0,
+                        calories: 0,
+                        quantity: 1,
+                      },
+                    ],
+                    addFood:false,
                   },
                 ]);
               }}
@@ -128,7 +257,11 @@ function CoachAddMeal() {
             <div
               className="coachFoodCard__submitMealButton"
               onClick={() => {
-                setModal(true);
+                if(props.isLongTerm){
+                  AddLongTermMeal();
+                }else{
+                  setModal(true);
+                }
               }}
             >
               <h3>Add Plan</h3>
@@ -164,7 +297,8 @@ function CoachAddMeal() {
                     assignedTo_id: "",
                     nutrition: {
                       nutritionName: nutritionName,
-                      plan,
+                      entireFood,
+                      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     },
                   })
                   .then(() => {
@@ -217,7 +351,7 @@ function CoachAddMeal() {
                   state: {
                     nutrition: {
                       nutritionName: nutritionName,
-                      plan,
+                      entireFood,
                     },
                     type: "add",
                   },

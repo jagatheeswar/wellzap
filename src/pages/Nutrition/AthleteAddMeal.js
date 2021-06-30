@@ -49,17 +49,17 @@ function AthleteAddMeal() {
   }, [userData?.id]);
 
   const getInitialData = async () => {
-    db.collection("Food")
-      .where("user_id", "==", userData?.id)
-      .where("date", "==", formatDate())
+    db.collection("AthleteNutrition")
+      .doc(userData?.id)
+      .collection("nutrition")
+      .doc(formatDate())
       .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          if (doc.data().entireFood) {
-            setEntireFood(doc.data().entireFood);
+      .then((doc) => {
+          if (doc.data()?.entireFood) {
+            setEntireFood(doc.data()?.entireFood);
             setTodaysFoodId(doc.id);
           }
-        });
+      
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
@@ -110,16 +110,18 @@ function AthleteAddMeal() {
             if (!save) {
               alert("Please select a meal");
             } else {
-              db.collection("Food")
-                .where("user_id", "==", userData?.id)
-                .where("date", "==", formatDate())
+              db.collection("AthleteNutrition")
+              .doc(userData?.id)
+              .collection("nutrition")
+              .doc(formatDate())
                 .get()
                 .then((snap) => {
                   if (snap.empty) {
-                    db.collection("Food")
-                      .add({
-                        user_id: userData?.id,
-                        date: formatDate(),
+                    db.collection("AthleteNutrition")
+                      .doc(userData?.id)
+                      .collection("nutrition")
+                      .doc(formatDate())
+                      .set({
                         entireFood,
                       })
                       .then((docRef) => {
@@ -127,19 +129,13 @@ function AthleteAddMeal() {
                         history.push("/nutrition");
                       })
                       .catch((error) => {
-                        // The document probably doesn't exist.
                         console.error("Error updating document: ", error);
                       });
                   } else {
-                    db.collection("Food")
-                      .where("user_id", "==", userData?.id)
-                      .where("date", "==", formatDate())
-                      .get()
-                      .then((snap) => {
-                        console.log(snap, snap.data());
-                        setFoodId(snap.docid);
-                        db.collection("food")
-                          .doc(foodId)
+                    db.collection("AthleteNutrition")
+                      .doc(userData?.id)
+                      .collection("nutrition")
+                      .doc(formatDate())
                           .update({
                             entireFood,
                           })
@@ -147,10 +143,7 @@ function AthleteAddMeal() {
                           .catch((err) => {
                             console.log(err);
                           });
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+  
                   }
                 });
             }

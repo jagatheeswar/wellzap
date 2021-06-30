@@ -1288,45 +1288,9 @@ export default function PostWorkoutDetails() {
                 compliance: complianceMessage,
               })
               .then(() => {
-                db.collection("CoachNotifications")
-                  .where("coach_id", "==", userData.data.listOfCoaches[0])
-                  .get()
-                  .then((snap) => {
-                    if (!snap.empty) {
-                      db.collection("CoachNotifications")
-                        .where("coach_id", "==", userData.data.listOfCoaches[0])
-                        .get()
-                        .then((querySnapshot) => {
-                          querySnapshot.forEach((doc) => {
-                            // doc.data() is never undefined for query doc snapshots
-                            console.log(doc.id, " => ", doc.data());
-
-                            db.collection("CoachNotifications")
-                              .doc(doc.id)
-                              .collection("notifications")
-                              .add({
-                                message: `${
-                                  userData?.data?.name
-                                } has completed Workout ${
-                                  workout?.data?.preWorkout?.workoutName
-                                } on ${postWorkout.date || formatDate()} `,
-                                seen: false,
-                                timestamp:
-                                  firebase.firestore.FieldValue.serverTimestamp(),
-                                athlete_id: userData.id,
-                              });
-                          });
-                        });
-                    } else {
-                      db.collection("CoachNotifications")
-                        .add({
-                          coach_id: userData.data.listOfCoaches[0],
-                        })
-                        .then((docRef) => {
-                          console.log("Document written with ID: ", docRef.id);
-
+                          
                           db.collection("CoachNotifications")
-                            .doc(docRef.id)
+                            .doc(userData.data.listOfCoaches[0])
                             .collection("notifications")
                             .add({
                               message: `${
@@ -1338,13 +1302,7 @@ export default function PostWorkoutDetails() {
                               timestamp:
                                 firebase.firestore.FieldValue.serverTimestamp(),
                               athlete_id: userData.id,
-                            });
-                        })
-                        .catch((error) => {
-                          console.error("Error adding document: ", error);
-                        });
-                    }
-                  });
+                            });       
 
                 db.collection("athletes")
                   .doc(userData.id)

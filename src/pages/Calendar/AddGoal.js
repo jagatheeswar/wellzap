@@ -101,7 +101,7 @@ export default function AddGoal({route,setsidebarfunc}){
         data: { ...userData.data, goals: array },
       })
     );
-    setsidebarfunc();
+    setsidebarfunc("goals");
     }else{
         alert("Please Enter all fields")
     }

@@ -6,6 +6,7 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { useHistory } from "react-router";
+import { Grid } from '@material-ui/core';
 
 function AthleteWorkouts() {
   const userData = useSelector(selectUserData);
@@ -72,14 +73,15 @@ function AthleteWorkouts() {
       <div className="coachDashboard__leftContainer">
         <WorkoutScreenHeader name="Workouts" />
 
-        <div className="workouts__homeContainer">
-          <div className="workouts__homeLeftContainer">
-            <div className="workoutHeading__row">
+        <Grid container spacing={2} className="workouts__homeContainer">
+          <Grid item xs={6} className="workouts__homeLeftContainer">
+            <div style={{width: "90%", paddingLeft: 20}} className="workoutHeading__row">
               <h1>Upcoming Workouts</h1>
               <div onClick={() => history.push("/view-all-workouts")}>
                 View All
               </div>
             </div>
+            <div style={{width: "90%", paddingLeft: 20}}>
             {workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
@@ -89,10 +91,11 @@ function AthleteWorkouts() {
                 type={"non-editable"}
               />
             ))}
-          </div>
-          <div className="workouts__homeRightContainer">
+            </div>
+          </Grid>
+          <Grid item xs={6} className="workouts__homeRightContainer">
             <h1>Workout History</h1>
-            <div className="workoutRecord">
+            <div style={{width: "90%"}} className="workoutRecord">
               <div className="workoutRecord__info">
                 <h5>{completedWorkouts}</h5>
                 <h6>Completed Workouts</h6>
@@ -106,12 +109,13 @@ function AthleteWorkouts() {
                 <h6>Goals Met</h6>
               </div>
             </div>
-            <div className="workoutHeading__row">
+            <div style={{width: "90%"}} className="workoutHeading__row">
               <h1>Past Workouts</h1>
               <div onClick={() => history.push("/view-all-saved-workouts")}>
                 View All
               </div>
             </div>
+            <div style={{width: "90%"}}>
             {pastWorkouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
@@ -122,8 +126,9 @@ function AthleteWorkouts() {
                 completed={true}
               />
             ))}
-          </div>
-        </div>
+            </div>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

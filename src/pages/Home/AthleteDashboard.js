@@ -11,6 +11,8 @@ import formatSpecificDate from "../../functions/formatSpecificDate";
 import AthleteGoals from "./AthleteGoals";
 import "./Home.css";
 import { useHistory } from "react-router-dom";
+import { Grid } from "@material-ui/core"
+import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
 
 function AthleteDashboard(props) {
   const userData = useSelector(selectUserData);
@@ -75,8 +77,9 @@ function AthleteDashboard(props) {
     let temp = [];
 
     if (userData?.id) {
-      db.collection("Food")
-        .where("user_id", "==", userData?.id)
+      db.collection("AthleteNutrition")
+        .doc(userData?.id)
+        .collection("nutrition")
         .limit(3)
         .get()
         .then((querySnapshot) => {
@@ -169,17 +172,45 @@ function AthleteDashboard(props) {
 
   return (
     <div className="coachDashboard__container">
-      <div className="coachDashboard__leftContainer">
-        <h1>Dashboard</h1>
-        <h2>Goals</h2>
+        <h1 style={{fontSize: 23, fontFamily: 'Open_Sans'}}>Dashboard</h1>
+    <Grid container spacing={2}>
+      <Grid item xs={6} className="coachDashboard__leftContainer">
+        <div style={{width: "90%"}}>
+        <h2 style={{fontSize: 19, fontWeight: '500'}}>Goals</h2>
         <AthleteGoals />
-        <h2>Sleep</h2>
+        </div>
+      </Grid>
+      <Grid item xs={6} className="coachDashboard__rightContainer">
+        <div style={{width: "90%"}}>
+        <h2 style={{fontSize: 19, fontWeight: '500'}}>Coach</h2>
+        <div className="athletes__card">
+          <div className="athletes__cardInfo">
+            <img
+              src={userData?.data.imageUrl}
+              alt=""
+              width="40px"
+              height="40px"
+            />
+            <h4 style={{fontFamily: 'Montserrat'}}>{userData?.data.name}</h4>
+          </div>
+
+          <img src="/assets/message.png" alt="" width="15px" height="15px" />
+        </div>
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div style={{width: "90%"}}>
+        <h2 style={{fontSize: 19, fontWeight: '500'}}>Sleep</h2>
         <Sleep sleep={sleep} setSleep={setSleep} />
+        </div>
+      </Grid>
+      <Grid item xs={6}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "90%"
           }}
         >
           {" "}
@@ -208,40 +239,45 @@ function AthleteDashboard(props) {
             onClick={() => {
               history.push("/workouts");
             }}
+            style={{fontFamily: 'Montserrat'}}
           >
             See all
           </p>
         </div>
-        {workouts?.map((workout, i) => (
+        {workouts.length > 0 ? (
+          workouts?.map((workout, i) => (
           <WorkoutCard
             key={workout.id}
             workouts={workout}
             item={workout}
             idx={i}
           />
-        ))}
-      </div>
-      <div className="coachDashboard__rightContainer">
-        <h2>Coach</h2>
-        <div className="athletes__card">
-          <div className="athletes__cardInfo">
-            <img
-              src={userData?.data.imageUrl}
-              alt=""
-              width="40px"
-              height="40px"
-            />
-            <h4>{userData?.data.name}</h4>
+        ))) : (
+          <div
+            style={{
+              backgroundColor: "#fff",
+              width: "100%",
+              height: 90,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: "center",
+              borderRadius: "5px",
+            }}
+          >
+            <h5 style={{
+              fontSize: "12px",
+            }}>There are no Workouts for now</h5>
           </div>
-
-          <img src="/assets/message.png" alt="" width="15px" height="15px" />
-        </div>
-
+        ) 
+        }
+      </Grid>
+      <Grid item xs={6}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "90%"
           }}
         >
           {" "}
@@ -270,11 +306,13 @@ function AthleteDashboard(props) {
             onClick={() => {
               history.push("/nutrition");
             }}
+            style={{marginLeft: 10, fontFamily: 'Montserrat'}}
           >
             See all
           </p>
         </div>
         {console.log(nutrition)}
+        <div style={{width: "90%"}}>
         {upcomingMealHistory.length > 0 ? (
           upcomingMealHistory?.map((food, idx) => (
             <NutritionCard
@@ -288,21 +326,25 @@ function AthleteDashboard(props) {
             />
           ))
         ) : (
-          <h5
+          <div
             style={{
-              fontSize: "12px",
               backgroundColor: "#fff",
               width: "100%",
-              paddingTop: "10px",
-              paddingRight: "10px",
-              textAlign: "center",
+              height: 90,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: "center",
               borderRadius: "5px",
             }}
           >
-            There are no nutrition for now
-          </h5>
+            <h5 style={{
+              fontSize: "12px",
+            }}>There are no nutrition for now</h5>
+          </div>
         )}
-      </div>
+        </div>
+      </Grid>
+      </Grid>
     </div>
   );
 }

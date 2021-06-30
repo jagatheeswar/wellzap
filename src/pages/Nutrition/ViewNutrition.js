@@ -22,6 +22,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import { useHistory, useLocation } from "react-router";
 import firebase from "firebase";
+import AddFoodCard from "./AddFoodCard";
 import "./CoachNutrition.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -159,13 +160,13 @@ const Listbox = styled("ul")`
   }
 `;
 
-function CreateNutrition() {
+function CreateNutrition(props) {
   const classes = useStyles();
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [nutritionId, setNutritionId] = useState("");
   const [nutritionName, setNutritionName] = useState("");
-  const [plan, setPlan] = useState([]);
+  const [entireFood, setEntireFood] = useState([]);
   const [nutrition, setNutrition] = useState(null);
   const [athletes, setAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
@@ -173,6 +174,8 @@ function CreateNutrition() {
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
   const [show_data, setshow_data] = useState([]);
   const [options, setoptions] = useState(null);
+  const [addFood, setAddFood] = useState(false);
+  const [serverData, setServerData] = useState([]);
   const [daysList, setDaysList] = useState([
     "Sun",
     "Mon",
@@ -219,8 +222,11 @@ function CreateNutrition() {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
         setNutritionId(location.state.nutrition.id);
-        if (location.state.nutrition.data?.nutrition?.plan) {
-          setPlan(location.state.nutrition.data?.nutrition?.plan);
+        if (location.state.nutrition.data?.nutrition?.entireFood) {
+          setEntireFood(location.state.nutrition.data?.nutrition?.entireFood);
+          setAddFood(
+            location.state.nutrition.data?.nutrition?.entireFood[0]?.addFood
+          );
         }
 
         setNutritionName(
@@ -231,7 +237,10 @@ function CreateNutrition() {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
         setNutritionId(location.state.nutrition.id);
-        setPlan(location.state.nutrition.data.nutrition.plan);
+        setEntireFood(location.state.nutrition.data.nutrition.entireFood);
+        setAddFood(
+          location.state.nutrition.data?.nutrition?.entireFood[0]?.addFood
+        );
         setNutritionName(
           location?.state?.nutrition?.data?.nutrition?.nutritionName
         );
@@ -239,17 +248,44 @@ function CreateNutrition() {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
         setNutritionId(location.state.nutrition.id);
-        setPlan(location.state.nutrition.data.nutrition.plan);
+        setEntireFood(location.state.nutrition.data.nutrition.entireFood);
+        setAddFood(
+          location.state.nutrition.data?.nutrition?.entireFood[0]?.addFood
+        );
         setNutritionName(
           location?.state?.nutrition?.data?.nutrition?.nutritionName
         );
         setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
       } else {
         setNutritionName(location.state.nutrition.nutritionName);
-        setPlan(location.state.nutrition.plan);
+        setEntireFood(location.state.nutrition.entireFood);
+        setAddFood(
+          location.state.nutrition.data?.nutrition?.entireFood[0]?.addFood
+        );
       }
     }
   }, [location]);
+
+  useEffect(() => {
+    if (props.isLongTerm) {
+      setNutritionName(props.selectedDayData.nutrition.nutritionName);
+      setEntireFood(props.selectedDayData.nutrition.entireFood);
+      setAddFood(props.selectedDayData.nutrition.entireFood[0]?.addFood);
+      console.log(props.selectedDayData);
+    }
+  }, [props.isLongTerm]);
+
+  useEffect(() => {
+    fetch("https://rongoeirnet.herokuapp.com/getFood")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //Successful response from the API Call
+        setServerData(responseJson.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     let temp = [];
@@ -958,7 +994,7 @@ function CreateNutrition() {
       </div> */}
       <div className="coachAddMeal__form">
         <div className="athleteAddMeal__typeOfMeal">
-          {plan?.map((item, idx) => (
+          {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
               <FormControl className={classes.formControl}>
                 <InputLabel id="meal-select-label">
@@ -969,9 +1005,9 @@ function CreateNutrition() {
                   id="meal-select-label"
                   value={item.meal}
                   onChange={(e) => {
-                    let temp = [...plan];
+                    let temp = [...entireFood];
                     temp[idx].meal = e.target.value;
-                    setPlan(temp);
+                    setEntireFood(temp);
                   }}
                 >
                   <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
@@ -982,29 +1018,71 @@ function CreateNutrition() {
                   <MenuItem value={"Dinner"}>Dinner</MenuItem>
                 </Select>
               </FormControl>
-              <div className="coachAddMeal__textArea">
-                <h4>Description</h4>
-                <textarea
-                  type="text"
-                  placeholder="Enter Meal Description"
-                  value={item.description}
-                  onChange={(e) => {
-                    let temp = [...plan];
-                    temp[idx].description = e.target.value;
-                    setPlan(temp);
-                  }}
-                />
-              </div>
+
+              {addFood ? (
+                <div>
+                  {item.food?.map((item2, idx2) => {
+                    return (
+                      <AddFoodCard
+                        type={type}
+                        item={item2}
+                        idx={idx2}
+                        key={idx2}
+                        ent={item}
+                        entireFood={entireFood}
+                        index={idx}
+                        serverData={serverData}
+                        setEntireFood={setEntireFood}
+                      />
+                    );
+                  })}
+                  {props.isLongTerm ? null : (
+                    <div
+                      className="foodCard__addfoodButton"
+                      onClick={() => {
+                        let foodData = [...entireFood];
+                        let temp = [...item.food];
+                        temp.push({
+                          foodName: "",
+                          proteins: 0,
+                          carbs: 0,
+                          fat: 0,
+                          calories: 0,
+                          quantity: 1,
+                        });
+                        foodData[idx].food = temp;
+
+                        setEntireFood(foodData);
+                      }}
+                    >
+                      <h3>Add Food</h3>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="coachAddMeal__textArea">
+                  <h4 style={{ margin: 0, marginBottom: 10 }}>Description</h4>
+                  <textarea
+                    type="text"
+                    placeholder="Enter Meal Description"
+                    value={item.description}
+                    onChange={(e) => {
+                      let temp = [...entireFood];
+                      temp[idx].description = e.target.value;
+                      setEntireFood(temp);
+                    }}
+                  />
+                </div>
+              )}
             </div>
           ))}
 
-          {userType !== "athlete" && (
+          {userType !== "athlete" && !props.isLongTerm && (
             <div
               className="coachFoodCard__addmealButton"
               onClick={() => {
-                console.log(plan);
-                setPlan([
-                  ...plan,
+                setEntireFood([
+                  ...entireFood,
                   {
                     meal: "",
                     description: "",
@@ -1015,7 +1093,7 @@ function CreateNutrition() {
               <h3>Add Meal</h3>
             </div>
           )}
-          {userType !== "athlete" && (
+          {userType !== "athlete" && !props.isLongTerm && (
             <div
               className="coachFoodCard__submitMealButton"
               onClick={() => {
@@ -1028,7 +1106,7 @@ function CreateNutrition() {
                       .update({
                         nutrition: {
                           nutritionName: nutritionName,
-                          plan,
+                          entireFood,
                         },
                         saved: false,
                       });
@@ -1058,7 +1136,7 @@ function CreateNutrition() {
                           selectedDays: athlete.selectedDays,
                           nutrition: {
                             nutritionName: nutritionName,
-                            plan,
+                            entireFood,
                           },
                           saved: false,
                           selectedAthletes,

@@ -1,0 +1,12 @@
+.rightContainer {
+  position: fixed;
+  right: 0px;
+  width: min-content;
+  height: 100%;
+  top: 0px;
+  overflow-y: auto;
+}
+
+.rightContainer::-webkit-scrollbar {
+  display: none;
+}

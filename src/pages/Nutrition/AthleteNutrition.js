@@ -55,8 +55,9 @@ function AthleteNutrition() {
     let temp = [];
 
     if (userData?.id) {
-      db.collection("Food")
-        .where("user_id", "==", userData?.id)
+      db.collection("AthleteNutrition")
+        .doc(userData?.id)
+        .collection("nutrition")
         .limit(3)
         .get()
         .then((querySnapshot) => {
@@ -115,7 +116,9 @@ function AthleteNutrition() {
             <h1>Today’s Stats and Goals</h1>
           </div>
           <NutritionGoalProgress />
+          <div style={{width: "95%"}}>
           <WaterCard date={formatDate()} water={water} setWater={setWater} />
+          </div>
           <div className="athleteNutritionHeading__row">
             <h1>Upcoming Meals</h1>
           </div>

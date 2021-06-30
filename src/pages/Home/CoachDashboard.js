@@ -9,6 +9,7 @@ import { formatDate } from "../../functions/formatDate";
 import CoachCreateWorkout from "../Workouts/CoachCreateWorkout";
 import CoachWorkouts from "../Workouts/CoachWorkouts";
 import "./Home.css";
+import { Grid } from "@material-ui/core";
 
 function CoachDashboard(props) {
   const userData = useSelector(selectUserData);
@@ -160,13 +161,14 @@ function CoachDashboard(props) {
   }, [nutrition]);
 
   return (
-    <div className="coachDashboard__container">
-      <div className="coachDashboard__leftContainer">
+    <Grid container spacing={2} className="coachDashboard__container">
+      <Grid item xs={6} className="coachDashboard__leftContainer">
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "90%",
           }}
         >
           {" "}
@@ -199,10 +201,20 @@ function CoachDashboard(props) {
             See all
           </p>
         </div>
-        {savedWorkouts.length > 1
-          ? savedWorkouts
-              .slice(0, 1)
-              .map((work, i) => (
+        <div style={{ width: "90%" }}>
+          {savedWorkouts.length > 1
+            ? savedWorkouts
+                .slice(0, 1)
+                .map((work, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={savedWorkouts}
+                    item={work}
+                    idx={i}
+                    type="non-editable"
+                  />
+                ))
+            : savedWorkouts.map((work, i) => (
                 <WorkoutCard
                   key={workout.id}
                   workouts={savedWorkouts}
@@ -210,22 +222,48 @@ function CoachDashboard(props) {
                   idx={i}
                   type="non-editable"
                 />
-              ))
-          : savedWorkouts.map((work, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={savedWorkouts}
-                item={work}
-                idx={i}
-                type="non-editable"
-              />
-            ))}
-
+              ))}
+        </div>
+      </Grid>
+      <Grid item xs={6} className="coachDashboard__rightContainer">
+        <div style={{ flexDirection: "column" }}>
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              padding: "15px 0px",
+            }}
+          >
+            Messaging
+          </h2>
+          <div className="messaging">
+            <div
+              className="messaging__component"
+              onClick={() => {
+                history.push("/messaging");
+              }}
+            >
+              Open Messages
+            </div>
+            <div
+              className="messaging__component"
+              onClick={() => {
+                history.push("/calendar");
+              }}
+            >
+              Schedule Video Call
+            </div>
+          </div>
+        </div>
+      </Grid>
+      <Grid item xs={6}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "90%",
           }}
         >
           {" "}
@@ -258,122 +296,127 @@ function CoachDashboard(props) {
             See all
           </p>
         </div>
-        {nutrition.length > 0 && props?.selectedDate ? (
-          nutrition.map((food, idx) => (
-            <NutritionCard
-              key={idx}
-              nutrition={nutrition}
-              food={food}
-              idx={idx}
-              navigation={"ViewAllNutrition"}
-              type="view"
-              date={formatDate1(props?.selectedDate)}
-            />
-          ))
-        ) : (
-          <h5
-            style={{
-              fontSize: "12px",
-              backgroundColor: "#fff",
-              width: "100%",
-              paddingTop: "10px",
-              paddingRight: "10px",
-              textAlign: "center",
-              borderRadius: "5px",
-            }}
-          >
-            There are no nutrition for now
-          </h5>
-        )}
-
-        {nutrition.length > nutritoin_show ? (
-          <p
-            onClick={() => {
-              setnutirtion_show(nutritoin_show + 3);
-            }}
-            style={{ textAlign: "center" }}
-          >
-            {" "}
-            View more
-          </p>
-        ) : (
-          <p
-            onClick={() => {
-              if (nutrition.length < 3) {
-                setnutirtion_show(nutrition.length);
-              } else {
-                setnutirtion_show(3);
-              }
-            }}
-          >
-            Hide all
-          </p>
-        )}
-      </div>
-      <div className="coachDashboard__rightContainer">
-        <h2>Messaging</h2>
-        <div className="messaging">
-          <div
-            className="messaging__component"
-            onClick={() => {
-              history.push("/messaging");
-            }}
-          >
-            Open Messages
-          </div>
-          <div
-            className="messaging__component"
-            onClick={() => {
-              history.push("/calendar");
-            }}
-          >
-            Schedule Video Call
-          </div>
-        </div>
-
-        <h2 style={{ float: "left" }}>Athletes</h2>
-        <p
-          style={{
-            position: "absolute",
-          }}
-          className="see_more_home"
-          onClick={() => {
-            history.push("/all-athletes");
-          }}
-          style={{ textAlign: "right" }}
-        >
-          {" "}
-          See all
-        </p>
-
-        {athletes.length > 0 &&
-          athletes.slice(0, display_count).map((item) => (
-            <div className="athletes__card" style={{ marginTop: 10 }}>
-              <div className="athletes__cardInfo">
-                <img
-                  src={item.imageUrl}
-                  alt={item.name}
-                  width="40px"
-                  height="40px"
-                />
-                <h4
-                  onClick={() => {
-                    history.push("/Athlete/profile/" + `${item.id}`);
-                  }}
-                >
-                  {item.name}
-                </h4>
-              </div>
-
-              <img
-                src="/assets/message.png"
-                alt=""
-                width="15px"
-                height="15px"
+        <div style={{ width: "90%" }}>
+          {nutrition.length > 0 ? (
+            nutrition.map((food, idx) => (
+              <NutritionCard
+                key={idx}
+                nutrition={nutrition}
+                food={food}
+                idx={idx}
+                navigation={"ViewAllNutrition"}
+                type="view"
+                date={formatDate1(props?.selectedDate)}
               />
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "100%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5
+                style={{
+                  fontSize: "12px",
+                }}
+              >
+                There are no nutrition for now
+              </h5>
             </div>
-          ))}
-        {/* {display_count < athletes.length ? (
+          )}
+
+          {nutrition.length > nutritoin_show ? (
+            <p
+              onClick={() => {
+                setnutirtion_show(nutritoin_show + 3);
+              }}
+              style={{ textAlign: "center" }}
+            >
+              {" "}
+              View more
+            </p>
+          ) : (
+            <></>
+            // <p
+            //   onClick={() => {
+            //     if (nutrition.length < 3) {
+            //       setnutirtion_show(nutrition.length);
+            //     } else {
+            //       setnutirtion_show(3);
+            //     }
+            //   }}
+            // >
+            //   Hide all
+            // </p>
+          )}
+        </div>
+      </Grid>
+      {/* </div> */}
+      <Grid item xs={6}>
+        <div style={{ width: "90%", marginTop: 18 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h2
+              style={{
+                float: "left",
+                fontSize: 19,
+                fontWeight: "500",
+              }}
+            >
+              Athletes
+            </h2>
+            <p
+              style={{
+                position: "relative",
+              }}
+              className="see_more_home"
+              onClick={() => {
+                history.push("/all-athletes");
+              }}
+            >
+              {" "}
+              See all
+            </p>
+          </div>
+          {athletes.length > 0 &&
+            athletes.slice(0, display_count).map((item) => (
+              <div className="athletes__card" style={{ marginTop: 10 }}>
+                <div className="athletes__cardInfo">
+                  <img
+                    src={item.imageUrl}
+                    alt={item.name}
+                    width="40px"
+                    height="40px"
+                  />
+                  <h4
+                    onClick={() => {
+                      history.push("/Athlete/profile/" + `${item.id}`);
+                    }}
+                  >
+                    {item.name}
+                  </h4>
+                </div>
+
+                <img
+                  src="/assets/message.png"
+                  alt=""
+                  width="15px"
+                  height="15px"
+                />
+              </div>
+            ))}
+          {/* {display_count < athletes.length ? (
           <p
             className="see_more_home"
             onClick={() => {
@@ -398,8 +441,10 @@ function CoachDashboard(props) {
             Hide all
           </p>
         )} */}
-      </div>
-    </div>
+        </div>
+      </Grid>
+      {/* </div> */}
+    </Grid>
   );
 }
 

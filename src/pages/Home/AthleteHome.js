@@ -14,6 +14,10 @@ import AthleteHomeReports from "./AthleteHomeReports";
 import "./Home.css";
 import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
+import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
+import {Dialog, DialogContent, Grid, Divider, DialogActions, FormControlLabel, Checkbox} from '@material-ui/core';
+import { useHistory } from "react-router-dom";
+
 
 function AthleteHome(props) {
   const user = useSelector(selectUser);
@@ -22,6 +26,8 @@ function AthleteHome(props) {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [visible, setVisible] = useState(false);
+  const history = useHistory();
+
 
   const openModal = () => {
     setVisible(true);
@@ -29,6 +35,16 @@ function AthleteHome(props) {
 
   const closeModal = () => {
     setVisible(false);
+  };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   useEffect(() => {
@@ -60,77 +76,78 @@ function AthleteHome(props) {
         <div className="home__leftContainer">
           <div className="home__header">
             <div className="home__headerFirst">
-              <h1>Hello, {userData?.data?.name}</h1>
-              <h2>Here’s your progress summary.</h2>
+              <h1 style={{fontFamily: 'Open_Sans'}}>Hello, {userData?.data?.name}</h1>
+              <h2 style={{fontFamily: 'Open_Sans'}}>Here’s your progress summary.</h2>
             </div>
-            <div className="fab__icon" onClick={() => openModal()}>
+            <div className="fab__icon" 
+            // onClick={() => openModal()}
+            onClick={handleClickOpenDialog}
+            >
               <img src="/assets/fab.png" alt="" width="26px" height="26px" />
-              <Modal
-                visible={visible}
-                width="80%"
-                height="300"
-                effect="fadeInUp"
-                onClickaway={() => closeModal()}
-              >
-                <div className="modal__athleteComponents">
-                  <div className="modal__addWorkout">
-                    <div className="modal__addWorkoutImg">
-                      {" "}
-                      <img
-                        src="/assets/Icon material-fitness-center.png"
-                        alt=""
-                      />
-                    </div>
-                    <h3>Add Workout</h3>
-                  </div>
-                  <div className="modal__addGoal">
-                    <div className="modal__addGoalImg">
-                      {" "}
-                      <img src="/assets/Icon ionic-ios-star.png" alt="" />
-                    </div>
-                    <h3>Add Goal</h3>
-                  </div>
-                  <div className="modal__addMeal">
-                    <div className="modal__addMealImg">
-                      <img
-                        src="/assets/Icon awesome-hamburger.png"
-                        alt=""
-                        height="20px"
-                        width="20px"
-                      />
-                    </div>
-                    <h3>Add Meal</h3>
-                  </div>
-                  <div className="modal__logWeight">
-                    <div className="modal__logWeightImg">
-                      <img src="/assets/Icon awesome-weight.png" alt="" />
-                    </div>
-
-                    <h3>Log Weight</h3>
-                  </div>
-                  <div className="modal__viewReport">
-                    <div className="modal__viewReportImg">
-                      {" "}
-                      <img src="/assets/Icon material-event.png" alt="" />
-                    </div>
-
-                    <h3>View Report</h3>
-                  </div>
-                </div>
-                <div
-                  className="modal__closeButton"
-                  onClick={() => closeModal()}
-                >
-                  {" "}
-                  <CloseIcon />
-                </div>
-              </Modal>
             </div>
           </div>
           <AthleteHomeReports />
           <AthleteDashboard selectedDate={props.selectedDate} />
         </div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="md"
+      >
+        <div className="modal__athleteComponents">
+          <div onClick={() => history.push("/workouts") } style={{cursor:"pointer"}} className="modal__addWorkout">
+            <div className="modal__addWorkoutImg">
+              {" "}
+              <img
+                src="/assets/Icon material-fitness-center.png"
+                alt=""
+              />
+            </div>
+            <h3>Add Workout</h3>
+          </div>
+          <div onClick={() => history.push("/calendar") } style={{cursor:"pointer"}} className="modal__addGoal">
+            <div className="modal__addGoalImg">
+              {" "}
+              <img src="/assets/Icon ionic-ios-star.png" alt="" />
+            </div>
+            <h3>Add Goal</h3>
+          </div>
+          <div onClick={() => history.push("/add-meal") } style={{cursor:"pointer"}} className="modal__addMeal">
+            <div className="modal__addMealImg">
+              <img
+                src="/assets/Icon awesome-hamburger.png"
+                alt=""
+                height="20px"
+                width="20px"
+              />
+            </div>
+            <h3>Add Meal</h3>
+          </div>
+          <div onClick={() => history.push("/log-weight") } style={{cursor:"pointer"}} className="modal__logWeight">
+            <div className="modal__logWeightImg">
+              <img src="/assets/Icon awesome-weight.png" alt="" />
+            </div>
+
+            <h3>Log Weight</h3>
+          </div>
+          <div style={{cursor:"pointer"}} className="modal__viewReport">
+            <div className="modal__viewReportImg">
+              {" "}
+              <img src="/assets/Icon material-event.png" alt="" />
+            </div>
+
+            <h3>View Report</h3>
+          </div>
+        </div>
+        <div
+          className="modal__closeButton"
+          onClick={() => closeModal()}
+        >
+          {" "}
+          <CloseIcon />
+        </div>
+      </Dialog>
     </div>
   );
 }
