@@ -139,13 +139,14 @@
   border: 1px solid #777;
   padding: 10px;
   display: flex;
-  width: 96%;
+  width: 100%;
   outline: gray;
   height: 80px;
 }
 
 .coachAddMeal__textArea {
-  padding-left: 15px;
+  margin: 8px;
+  width: 100%;
   padding-bottom: 30px;
 }
 

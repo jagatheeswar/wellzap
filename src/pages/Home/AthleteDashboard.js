@@ -284,6 +284,7 @@ function AthleteDashboard(props) {
               idx={idx}
               navigation={"ViewAllNutrition"}
               type="view"
+              date={formatDate1(props?.selectedDate)}
             />
           ))
         ) : (

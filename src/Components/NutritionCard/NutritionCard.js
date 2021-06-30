@@ -5,10 +5,22 @@ import { selectUserType } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import "./NutritionCard.css";
 
-function NutritionCard({ nutrition, food, idx, type, navigation }) {
+export function formatDate1(date) {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+}
+
+function NutritionCard({ nutrition, food, idx, type, navigation, date }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
-  console.log("fd", food);
+  console.log("fd", date);
   return (
     <div className="nutritionCard">
       <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />
@@ -55,7 +67,8 @@ function NutritionCard({ nutrition, food, idx, type, navigation }) {
           <h1> {food?.data?.nutrition?.nutritionName}</h1>
         </div>
         <div className="nutritionCard__macroNutrients">
-          <h3>{formatDate()}</h3>
+          {console.log("dni")}
+          <h3>{date ? date : formatDate()}</h3>
         </div>
       </div>
       <img className="right__arrow" src="/assets/right__arrow.png" alt="" />

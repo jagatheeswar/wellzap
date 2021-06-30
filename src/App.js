@@ -61,6 +61,7 @@ import ViewNutrition from "./pages/Nutrition/ViewNutrition";
 import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 
 import dateContext from "../src/features/context";
+import CoachAddWorkout from "./pages/Workouts/CoachAddWorkout";
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
@@ -299,7 +300,7 @@ function App() {
             <Route path="/create-workout">
               <RoutesComp
                 AthleteComp={<CoachCreateWorkout />}
-                CoachComp={<CoachCreateWorkout />}
+                CoachComp={<CoachAddWorkout />}
               />
             </Route>
             <Route path="/assign-workout">

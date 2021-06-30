@@ -70,18 +70,15 @@ function AssignWorkout() {
 
   useEffect(() => {
     let temp = [];
-    if (selectedAthletes[0]) {
-      let temp = [];
-      temp.push(selectedAthletes[0]);
-      setshow_data(temp);
+    if (selectedAthletes?.length > 0) {
+      selectedAthletes.forEach((item) => {
+        item.value = item["id"];
+        temp.push(item);
+        if (temp.length == selectedAthletes.length) {
+          setoptions(temp);
+        }
+      });
     }
-    selectedAthletes.forEach((item) => {
-      item.value = item["id"];
-      temp.push(item);
-      if (temp.length == selectedAthletes.length) {
-        setoptions(temp);
-      }
-    });
   }, [selectedAthletes]);
 
   useEffect(() => {
@@ -452,52 +449,66 @@ function AssignWorkout() {
             </div>
           </div>
         </div>
-        <div className="assignWorkout__athletesList"
-        
-        >
+        <div className="assignWorkout__athletesList">
           <h4>Selected Athletes</h4>
-          <input 
-          style={{
-            width:'100%',
-            padding:12,
-            marginBottom:10,
-            boxSizing:'border-box',
-            border:'none'
-
-          }}
-          value={show_data.length>0 ? show_data[0]?.name : ''} 
-          />
-          <div className="selectedAthletes_list" style={{
-            height: `${selectedAthletes.length }` >4 ? 260:`${selectedAthletes.length }`*65 ,
-            overflow:'scroll',
-            backgroundColor:'white'
-          }}>
-          {selectedAthletes?.map((athlete,idx)=>(
-            <div 
-            onClick={() => {
-              let temp = [];
-              if(show_data[0]?.id == athlete.id){
-                setshow_data([])
-              }
-              else{
-              temp.push(athlete);
-              setshow_data(temp);
-              console.log(athlete.name, show_data)
-              }
-            }}
+          <input
             style={{
-              backgroundColor:athlete?.id == show_data[0]?.id ? '#fcd13f':'white'
+              width: "100%",
+              padding: 12,
+              marginBottom: 10,
+              boxSizing: "border-box",
+              border: "none",
             }}
-            className="selectedAthletes_item">
-              <div style={{display:'flex', alignItems:'center', padding:10}}>
-                <img style={{borderRadius:18}} src={athlete.imageUrl} alt="" width='36' height='36' /> 
-                <span style={{marginLeft:15}}>{athlete.name}</span>
+            value={
+              show_data.length > 0 ? show_data[0]?.name : "No Athletes selected"
+            }
+          />
+          <div
+            className="selectedAthletes_list"
+            style={{
+              height:
+                `${selectedAthletes.length}` > 4
+                  ? 260
+                  : `${selectedAthletes.length}` * 65,
+              overflow: "scroll",
+              overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
+              overflowX: "hidden",
+              backgroundColor: "white",
+            }}
+          >
+            {selectedAthletes?.map((athlete, idx) => (
+              <div
+                onClick={() => {
+                  let temp = [];
+                  if (show_data[0]?.id == athlete.id) {
+                    setshow_data([]);
+                  } else {
+                    temp.push(athlete);
+                    setshow_data(temp);
+                    console.log(athlete.name, show_data);
+                  }
+                }}
+                style={{
+                  backgroundColor:
+                    athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
+                }}
+                className="selectedAthletes_item"
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", padding: 10 }}
+                >
+                  <img
+                    style={{ borderRadius: 18 }}
+                    src={athlete.imageUrl}
+                    alt=""
+                    width="36"
+                    height="36"
+                  />
+                  <span style={{ marginLeft: 15 }}>{athlete.name}</span>
                 </div>
-              
               </div>
-          ))}
+            ))}
           </div>
-        
 
           <div>
             {show_data?.map((athlete, index) => (
@@ -510,7 +521,7 @@ function AssignWorkout() {
                   justifyContent: "center",
                   flexDirection: "column",
                   alignItems: "center",
-               
+
                   backgroundColor: "white",
                   borderRadius: 10,
                   boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
@@ -546,17 +557,19 @@ function AssignWorkout() {
                     {athlete.name}
                   </h2>
                 </div>
-               { type != 'view' && type != 'non-editable' && ( <h2
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    marginTop: "10px",
-                    lineHeight: "28px",
-                    marginLeft: "1%",
-                  }}
-                >
-                  Select days
-                </h2>)}
+                {type != "view" && type != "non-editable" && (
+                  <h2
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      marginTop: "10px",
+                      lineHeight: "28px",
+                      marginLeft: "1%",
+                    }}
+                  >
+                    Select days
+                  </h2>
+                )}
                 <div
                   style={{
                     display: "flex",

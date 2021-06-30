@@ -258,7 +258,7 @@ function CoachDashboard(props) {
             See all
           </p>
         </div>
-        {nutrition.length > 0 ? (
+        {nutrition.length > 0 && props?.selectedDate ? (
           nutrition.map((food, idx) => (
             <NutritionCard
               key={idx}
@@ -267,6 +267,7 @@ function CoachDashboard(props) {
               idx={idx}
               navigation={"ViewAllNutrition"}
               type="view"
+              date={formatDate1(props?.selectedDate)}
             />
           ))
         ) : (
