@@ -16,8 +16,10 @@ import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
 import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
 import { Dialog, Grid } from '@material-ui/core'
+import { useHistory } from "react-router";
 
 function AthleteHome(props) {
+  const history = useHistory();
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -79,7 +81,7 @@ function AthleteHome(props) {
             // onClick={() => openModal()}
             onClick={handleClickOpenDialog}
             >
-              <img src="/assets/fab.png" alt="" width="26px" height="26px" />
+              <img src="/assets/fab.png" alt="" width="32px" height="32px" />
               {/* <Modal
                 visible={visible}
                 width="80%"
@@ -163,7 +165,13 @@ function AthleteHome(props) {
             <h3>Add Workout</h3>
           </div>
           <div className="modal__addGoal">
-            <div className="modal__addGoalImg">
+            <div className="modal__addGoalImg"
+              onClick={() => {
+                history.push({
+                  pathname:"/calendar"
+                })
+              }}
+            >
               {" "}
               <img src="/assets/Icon ionic-ios-star.png" alt="" />
             </div>
@@ -198,7 +206,7 @@ function AthleteHome(props) {
         </div>
         <div
           className="modal__closeButton"
-          onClick={() => closeModal()}
+          onClick={handleCloseDialog}
         >
           {" "}
           <CloseIcon />

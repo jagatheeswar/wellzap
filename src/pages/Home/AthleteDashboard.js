@@ -13,6 +13,8 @@ import "./Home.css";
 import { useHistory } from "react-router-dom";
 import { Grid } from "@material-ui/core"
 import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
+import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
+import WaterCard from "../../Components/WaterCard/WaterCard";
 
 function AthleteDashboard(props) {
   const userData = useSelector(selectUserData);
@@ -200,7 +202,16 @@ function AthleteDashboard(props) {
       <Grid item xs={6}>
         <div style={{width: "90%"}}>
         <h2 style={{fontSize: 19, fontWeight: '500'}}>Sleep</h2>
-        <Sleep sleep={sleep} setSleep={setSleep} />
+        <Sleep date={formatDate1(props?.selectedDate)} />
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div style={{width: "93%"}}>
+          <h2 style={{fontSize: 19, fontWeight: '500'}}>Nutrition</h2>
+          <NutritionGoalProgress />
+        </div>
+        <div style={{width: "93%"}}>
+          <WaterCard date={formatDate()} water={water} setWater={setWater} />
         </div>
       </Grid>
       <Grid item xs={6}>
@@ -255,7 +266,7 @@ function AthleteDashboard(props) {
           <div
             style={{
               backgroundColor: "#fff",
-              width: "100%",
+              width: "90%",
               height: 90,
               display: 'flex',
               alignItems: 'center',
@@ -265,6 +276,7 @@ function AthleteDashboard(props) {
           >
             <h5 style={{
               fontSize: "12px",
+              fontWeight: 'normal'
             }}>There are no Workouts for now</h5>
           </div>
         ) 
@@ -276,7 +288,7 @@ function AthleteDashboard(props) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            width: "90%"
+            width: "93%"
           }}
         >
           {" "}
@@ -311,7 +323,7 @@ function AthleteDashboard(props) {
           </p>
         </div>
         {console.log(nutrition)}
-        <div style={{width: "90%"}}>
+        <div style={{width: "93%"}}>
         {upcomingMealHistory.length > 0 ? (
           upcomingMealHistory?.map((food, idx) => (
             <NutritionCard

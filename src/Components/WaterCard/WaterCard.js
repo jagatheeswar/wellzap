@@ -11,7 +11,7 @@ function WaterCard({ date, water, setWater }) {
   return (
     <div className="waterCard">
       <div className="waterCard__container">
-        <h4>Water</h4>
+        <h4 style={{marginLeft: 15}}>Water</h4>
         <div className="waterCard__buttons">
           <button
             className="waterCard__button"
@@ -70,7 +70,7 @@ function WaterCard({ date, water, setWater }) {
           progressColor="#FFE66D"
         />
       </div>
-      <h4>{water}/10 glasses</h4>
+      <h4 style={{marginLeft: 15}}>{water}/10 glasses</h4>
     </div>
   );
 }

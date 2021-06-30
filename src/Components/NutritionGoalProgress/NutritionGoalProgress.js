@@ -108,7 +108,7 @@ function NutritionGoalProgress() {
               {carbs} Carbs of {userCarbs}g
             </h2>
             <ProgressBarComponent
-              containerWidth={140}
+              containerWidth={180}
               progress={(carbs / userCarbs) * 100}
               progressColor={
                 (carbs < (90 / 100) * userCarbs && "#FFE66D") ||
@@ -124,7 +124,7 @@ function NutritionGoalProgress() {
               {fat} Fat of {userFat}g
             </h2>
             <ProgressBarComponent
-              containerWidth={140}
+              containerWidth={180}
               progress={(fat / userFat) * 100}
               progressColor={
                 (fat < (90 / 100) * userFat && "#FFE66D") ||
@@ -140,7 +140,7 @@ function NutritionGoalProgress() {
               {protein} Protiens of {userProtein}g
             </h2>
             <ProgressBarComponent
-              containerWidth={140}
+              containerWidth={180}
               progress={(protein / userProtein) * 100}
               progressColor={
                 (protein < (90 / 100) * userProtein && "#FFE66D") ||

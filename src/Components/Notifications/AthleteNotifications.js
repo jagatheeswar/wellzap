@@ -8,6 +8,7 @@ import {
   setUserData,
 } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
+import { ChevronRightRounded } from '@material-ui/icons'
 
 function AthleteNotifications({ route }) {
   const userData = useSelector(selectUserData);
@@ -84,25 +85,27 @@ function AthleteNotifications({ route }) {
           justifyContent: "space-between",
         }}
       >
-        <h3
+        <div
           style={{
             display: "flex",
             alignItems: "center",
           }}
         >
-          <span>
-            <div
-              onClick={() => {
-                setshow(!show);
-              }}
-              style={{
-                transform: show ? "rotate(90deg)" : "rotate(0deg)",
-              }}
-              class="arrow-right"
-            ></div>
-          </span>
-          Notifications
-        </h3>
+          <div
+            onClick={() => {
+              setshow(!show);
+            }}
+            style={{
+              transform: show ? "rotate(90deg)" : "rotate(0deg)",
+              transition: "transform 0.2s",
+              marginTop: 5
+            }}
+            // class="arrow-right"
+          >
+            <ChevronRightRounded style={{height: 30, width: 30}} />
+          </div>
+          <h3>Notifications</h3>
+        </div>
         {switchScreen === false && (
           <div
             style={{
