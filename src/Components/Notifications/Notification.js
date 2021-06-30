@@ -24,32 +24,14 @@ function Notification({ route }) {
     }
   }, [route?.params?.docId]);
 
-  React.useEffect(() => {
-    if (userData?.id) {
-      db.collection("CoachNotifications")
-        .where("coach_id", "==", userData.id)
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            setDocId(doc.id);
-          });
-        });
-      if (docId) {
-        db.collection("CoachNotifications")
-          .doc(docId)
-          .collection("notifications")
-          .where("seen", "==", false)
-          .onSnapshot((snapshot) => {});
-      }
-    }
-  }, [userData?.id]);
+
 
   React.useEffect(() => {
     if (docId) {
       let temp1 = [];
       let temp2 = [];
       db.collection("CoachNotifications")
-        .doc(docId)
+        .doc(userData?.id)
         .collection("notifications")
         .where("seen", "==", false)
         .onSnapshot((snapshot) => {
@@ -62,7 +44,7 @@ function Notification({ route }) {
         });
       console.log(docId);
       db.collection("CoachNotifications")
-        .doc(docId)
+        .doc(userData?.id)
         .collection("notifications")
         .where("seen", "==", true)
         .onSnapshot((snapshot) => {
@@ -81,7 +63,7 @@ function Notification({ route }) {
       let temp1 = [];
       let temp2 = [];
       db.collection("CoachNotifications")
-        .doc(docId)
+        .doc(userData?.id)
         .collection("notifications")
         .where("seen", "==", false)
         .onSnapshot((snapshot) => {
@@ -94,7 +76,7 @@ function Notification({ route }) {
         });
       console.log(docId);
       db.collection("CoachNotifications")
-        .doc(docId)
+        .doc(userData?.id)
         .collection("notifications")
         .where("seen", "==", true)
         .onSnapshot((snapshot) => {
@@ -148,7 +130,7 @@ function Notification({ route }) {
             }}
             onClick={() => {
               db.collection("CoachNotifications")
-                .doc(docId)
+                .doc(userData?.id)
                 .collection("notifications")
                 .get()
                 .then(function (querySnapshot) {

@@ -52,19 +52,19 @@ function NutritionGoalProgress() {
       let tempDate;
       tempDate = formatDate();
 
-      db.collection("Food")
-        .where("user_id", "==", userData?.id)
-        .where("date", "==", tempDate)
-        .onSnapshot((querySnapshot) => {
+      db.collection("AthleteNutrition")
+        .doc(userData?.id)
+        .collection("nutrition")
+        .doc(tempDate)
+        .onSnapshot((doc) => {
           tempCal = 0;
           tempCarbs = 0;
           tempFat = 0;
           tempProtein = 0;
-          querySnapshot.forEach((doc) => {
-            if (doc.data().entireFood) {
-              setEntireFood(doc.data().entireFood);
+            if (doc.data()?.entireFood) {
+              setEntireFood(doc.data()?.entireFood);
               setTodaysFoodId(doc.id);
-              doc.data().entireFood.map((foodContainer) => {
+              doc.data()?.entireFood.map((foodContainer) => {
                 foodContainer.food.map((f) => {
                   tempCal = tempCal + f.calories;
                   tempCarbs = tempCarbs + f.carbs;
@@ -73,7 +73,7 @@ function NutritionGoalProgress() {
                 });
               });
             }
-          });
+          
           console.log(tempCal);
           setCalories(tempCal.toFixed(2));
           setCarbs(tempCarbs.toFixed(2));

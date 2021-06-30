@@ -35,3 +35,7 @@
   font-size: 14px;
   font-weight: 600;
 }
+.coachAddMeal__textArea {
+  margin: 8px;
+  width: 100%;
+}

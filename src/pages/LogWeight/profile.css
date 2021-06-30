@@ -1,0 +1,428 @@
+.profile {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.profile__container {
+  width: 100%;
+  height: 100%;
+  flex: 0.65;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #f3f3f3;
+}
+
+.profile__main {
+  flex: 0.65;
+  width: 100%;
+  height: 100%;
+}
+.athleteAssessment {
+  cursor: pointer;
+}
+
+.coachProfile__container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.coachProfile__leftContainer {
+  flex: 0.75;
+  border: 1px solid #d3d3d3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.coachProfile__rightContainer {
+  flex: 0.25;
+  border: 1px solid #d3d3d3;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.coachProfile__header {
+  display: flex;
+  align-items: center;
+  background-color: #fcd13f;
+  width: 100%;
+}
+
+.leftarrow {
+  padding: 50px 15px;
+}
+
+.image {
+  border-radius: 100px !important;
+  background-color: grey;
+  object-fit: cover;
+  margin: 15px 30px;
+}
+
+.coachProfile__content > h1 {
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.coachProfile__content > h3 {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.coachProfile__info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.coachProfile__heading > h2 {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 32px;
+  padding-right: 590px;
+}
+
+.coachProfile__editButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  padding-right: 20px;
+  background-color: #fcd13f;
+  height: 30px;
+  width: 150px;
+  margin: 10px 0;
+  border-radius: 18px;
+  font-size: 14px;
+}
+
+.coachProfileForm {
+  width: 97%;
+}
+
+.coachProfileForm > form > h4 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.coachProfileForm > form > input {
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  border: none;
+  outline: gray;
+  background-color: white;
+}
+
+.coachProfileForm > form > textarea,
+.athleteMedicalAssessment__form > textarea,
+.athleteFoodAndLifestyleAssessment__textarea {
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  border: none;
+  outline: gray;
+  height: 80px;
+  width: 97%;
+}
+
+.coachProfileForm__Button,
+.editProfileButton,
+.saveProfileButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  padding-right: 20px;
+  background-color: #fcd13f;
+  height: 30px;
+  width: 150px;
+  margin: 10px 0;
+  border-radius: 18px;
+  font-size: 14px;
+}
+
+.editProfileButton:hover,
+.saveProfileButton:hover,
+.coachProfileForm__Button:hover,
+.athleteMeasurements__Button:hover,
+.editMeasurementFormButton:hover {
+  cursor: pointer;
+}
+
+.coachAssessment > h2,
+.coachMedicalAssessment > h2,
+.athleteProfile__leftContainer > h2,
+.athleteTrainingAssessment > h2,
+.athleteFoodAndLifestyleAssessment__container > h2 {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.athleteMeasurements {
+  width: 97%;
+}
+
+.athleteMeasurements__container > form > h4,
+.athleteFoodAndLifestyleAssessment__container > h4,
+.athleteFoodAndLifestyleAssessment__smokeContent > h4,
+.athleteFoodAndLifestyleAssessment__alcoholContent > h4,
+.athleteFoodAndLifestyleAssessment__eatingContent > h4,
+.athleteFoodAndLifestyleAssessment__foodContent > h4 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.athleteMeasurements__container > form > input,
+.athleteFoodAndLifestyleAssessment__foodContent > input {
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  border: none;
+  outline: gray;
+}
+
+.athleteMeasurements__container > form > h6 {
+  color: gray;
+}
+
+.athleteMeasurements__Button,
+.athleteMedicalAssessment__Button,
+.athleteFoodAndLifestyleAssessment__completeForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  padding-right: 14px;
+  background-color: #fcd13f;
+  height: 30px;
+  width: 150px;
+  margin: 10px 0;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.athleteProfile__container {
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.athleteProfile__leftContainer {
+  flex: 0.65;
+  border: 1px solid #d3d3d3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.athleteProfile__rightContainer {
+  flex: 0.35;
+  border: 1px solid #d3d3d3;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.athleteAssessment:hover {
+  cursor: pointer;
+}
+
+.athleteAssessment {
+  width: 97%;
+}
+
+.athleteAssessments {
+  width: 100vh;
+}
+
+.athleteAssessment__features {
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  border: none;
+  outline: gray;
+  background-color: white;
+  margin-bottom: 13px;
+  border-radius: 15px;
+  justify-content: space-between;
+}
+
+.athleteAssessment__features > img {
+  height: 24px;
+  width: 24px;
+}
+
+.athleteAssessment__button {
+  font-size: 14px;
+}
+
+.editProfileButton > h3,
+.saveProfileButton > h3,
+.athleteTrainingAssessment__editProfileButton > h3,
+.athleteTrainingAssessment__saveProfileButton > h3 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  margin-left: 8px;
+}
+
+.viewReport {
+  padding: 10px;
+  display: flex;
+  width: 97%;
+  border: none;
+  outline: gray;
+  background-color: #4b4b4b;
+  margin-bottom: 13px;
+  border-radius: 15px;
+  justify-content: space-between;
+  color: white;
+  align-items: center;
+}
+
+.viewReport__button {
+  font-size: 14px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.viewReport > img {
+  height: 12px;
+  margin-right: 5px;
+}
+
+.athleteMedicalAssessment__form > p,
+.athleteMedicalAssessment__form > h4 {
+  font-size: 15px;
+  font-weight: 500;
+  color: gray;
+}
+
+.MuiRadio-root > label {
+  width: 40px;
+  height: 40px;
+  font-size: 13px;
+}
+
+.athleteMedicalAssessment__checkbox1 {
+  display: flex;
+  padding-bottom: 20px;
+}
+
+.athleteMedicalAssessment__checkbox2 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-bottom: 20px;
+}
+
+.athleteTrainingAssessment > h2 {
+  padding-left: 20px;
+}
+
+.athleteTrainingAssessment > h4 {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 30px;
+  padding-left: 20px;
+}
+
+.athleteTrainingAssessment > h5 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+  padding-left: 20px;
+}
+
+.athleteTrainingAssessment__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.athleteFoodAndLifestyleSelectdays__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.athleteTrainingAssessment__checkBox {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.athleteTrainingAssessment__Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  padding-right: 14px;
+  background-color: #fcd13f;
+  height: 30px;
+  width: 40%;
+  margin: 10px 0;
+  border-radius: 15px;
+  font-size: 14px;
+  margin-left: 15%;
+  margin-top: 5%;
+}
+
+.smokeContentFrequency,
+.alcoholConsumptionFrequency,
+.eatingFrequency {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.athleteFoodAndLifestyleAssessment__completeForm {
+  margin-top: 50px;
+}
+
+.athleteTrainingAssessment__editProfileButton,
+.athleteTrainingAssessment__saveProfileButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  padding-right: 20px;
+  background-color: #fcd13f;
+  height: 30px;
+  width: 150px;
+  margin: 10px 0;
+  border-radius: 18px;
+  font-size: 14px;
+  margin-top: 50px;
+  cursor: pointer;
+}

@@ -16,7 +16,6 @@ function ViewAllNutrition() {
     if (userData) {
       if (userType === "athlete") {
         db.collection("Food")
-
           .where("assignedTo_id", "==", userData)
           .where("saved", "==", false)
           .onSnapshot((snapshot) => {

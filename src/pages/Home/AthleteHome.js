@@ -27,6 +27,7 @@ function AthleteHome(props) {
   const [userDetails, setUserDetails] = useState(null);
   const [visible, setVisible] = useState(false);
 
+
   const openModal = () => {
     setVisible(true);
   };
@@ -154,7 +155,7 @@ function AthleteHome(props) {
         maxWidth="md"
       >
         <div className="modal__athleteComponents">
-          <div className="modal__addWorkout">
+          <div onClick={() => history.push("/workouts") } style={{cursor:"pointer"}} className="modal__addWorkout">
             <div className="modal__addWorkoutImg">
               {" "}
               <img
@@ -177,7 +178,7 @@ function AthleteHome(props) {
             </div>
             <h3>Add Goal</h3>
           </div>
-          <div className="modal__addMeal">
+          <div onClick={() => history.push("/add-meal") } style={{cursor:"pointer"}} className="modal__addMeal">
             <div className="modal__addMealImg">
               <img
                 src="/assets/Icon awesome-hamburger.png"
@@ -188,14 +189,14 @@ function AthleteHome(props) {
             </div>
             <h3>Add Meal</h3>
           </div>
-          <div className="modal__logWeight">
+          <div onClick={() => history.push("/log-weight") } style={{cursor:"pointer"}} className="modal__logWeight">
             <div className="modal__logWeightImg">
               <img src="/assets/Icon awesome-weight.png" alt="" />
             </div>
 
             <h3>Log Weight</h3>
           </div>
-          <div className="modal__viewReport">
+          <div style={{cursor:"pointer"}} className="modal__viewReport">
             <div className="modal__viewReportImg">
               {" "}
               <img src="/assets/Icon material-event.png" alt="" />

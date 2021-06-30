@@ -136,7 +136,7 @@ const Listbox = styled("ul")`
     }
   }
 `;
-function EquipmentsDropdown({ name, idx, list, state, setState }) {
+function EquipmentsDropdown({ name, idx, list, state, setState,cardio }) {
   const classes = useStyles();
   const {
     getRootProps,
@@ -160,24 +160,34 @@ function EquipmentsDropdown({ name, idx, list, state, setState }) {
     if (name === "Search for Exercise") {
       let len = value.length;
       if (len !== 0) {
-        value[len - 1].sets = [
-          {
-            reps: 12,
-            rest: 15,
-            weights: 0,
-          },
-          {
-            reps: 12,
-            rest: 15,
-            weights: 0,
-          },
-          {
-            reps: 12,
-            rest: 15,
-            weights: 0,
-          },
-        ];
-
+        if(cardio){
+          value[len - 1].sets = [
+            {
+              reps: 12,
+              rest: 15,
+              weights: 0,
+            },
+          ];
+        }else{
+          value[len - 1].sets = [
+            {
+              reps: 12,
+              rest: 15,
+              weights: 0,
+            },
+            {
+              reps: 12,
+              rest: 15,
+              weights: 0,
+            },
+            {
+              reps: 12,
+              rest: 15,
+              weights: 0,
+            },
+          ];
+        }
+        value[len - 1].cardio = cardio;
         setState(value);
       }
     } else if (name === "Search for Athletes") {
