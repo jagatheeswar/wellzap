@@ -1,0 +1,47 @@
+.workouts_header {
+  width: 100%;
+}
+.workouts_header div {
+  width: 100%;
+  display: flex;
+}
+
+.workouts_header {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.header_item {
+  background-color: black;
+  width: 30px;
+  color: white;
+  height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+hr {
+  height: 1px;
+}
+.coachCreateWorkout {
+  margin: 40px;
+}
+
+.workouts_body {
+  width: 100%;
+}
+.workouts_body div input {
+  width: 100%;
+}
+.Dotted_line {
+  width: 90%;
+  box-sizing: border-box;
+  margin-right: 20px;
+  margin-top: 25px;
+  border-color: rgba(0, 0, 0, 0.575);
+  border-top-style: dashed;
+}

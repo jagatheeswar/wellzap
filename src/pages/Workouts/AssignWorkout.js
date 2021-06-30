@@ -213,18 +213,15 @@ function AssignWorkout() {
 
   useEffect(() => {
     let temp = [];
-    if (selectedAthletes[0]) {
-      let temp = [];
-      temp.push(selectedAthletes[0]);
-      setshow_data(temp);
+    if (selectedAthletes?.length > 0) {
+      selectedAthletes.forEach((item) => {
+        item.value = item["id"];
+        temp.push(item);
+        if (temp.length == selectedAthletes.length) {
+          setoptions(temp);
+        }
+      });
     }
-    selectedAthletes.forEach((item) => {
-      item.value = item["id"];
-      temp.push(item);
-      if (temp.length == selectedAthletes.length) {
-        setoptions(temp);
-      }
-    });
   }, [selectedAthletes]);
 
   useEffect(() => {
@@ -685,20 +682,28 @@ function AssignWorkout() {
               setshow_data(temp);
               console.log(athlete.name, show_data)
               }
-            }}
-            style={{
-              backgroundColor:athlete?.id == show_data[0]?.id ? '#fcd13f':'white'
-            }}
-            className="selectedAthletes_item">
-              <div style={{display:'flex', alignItems:'center', padding:10}}>
-                <img style={{borderRadius:18}} src={athlete.imageUrl} alt="" width='36' height='36' /> 
-                <span style={{marginLeft:15}}>{athlete.name}</span>
+                }}
+                style={{
+                  backgroundColor:
+                    athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
+                }}
+                className="selectedAthletes_item"
+              >
+                <div
+                  style={{ display: "flex", alignItems: "center", padding: 10 }}
+                >
+                  <img
+                    style={{ borderRadius: 18 }}
+                    src={athlete.imageUrl}
+                    alt=""
+                    width="36"
+                    height="36"
+                  />
+                  <span style={{ marginLeft: 15 }}>{athlete.name}</span>
                 </div>
-              
               </div>
-          ))}
+            ))}
           </div>
-        
 
           <div>
             {show_data?.map((athlete, index) => (
@@ -711,7 +716,7 @@ function AssignWorkout() {
                   justifyContent: "center",
                   flexDirection: "column",
                   alignItems: "center",
-               
+
                   backgroundColor: "white",
                   borderRadius: 10,
                   boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
@@ -747,17 +752,19 @@ function AssignWorkout() {
                     {athlete.name}
                   </h2>
                 </div>
-               { type != 'view' && type != 'non-editable' && ( <h2
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    marginTop: "10px",
-                    lineHeight: "28px",
-                    marginLeft: "1%",
-                  }}
-                >
-                  Select days
-                </h2>)}
+                {type != "view" && type != "non-editable" && (
+                  <h2
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      marginTop: "10px",
+                      lineHeight: "28px",
+                      marginLeft: "1%",
+                    }}
+                  >
+                    Select days
+                  </h2>
+                )}
                 <div
                   style={{
                     display: "flex",

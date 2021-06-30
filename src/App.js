@@ -62,10 +62,11 @@ import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutritionPlan";
 
 import dateContext from "../src/features/context";
+import CoachAddWorkout from "./pages/Workouts/CoachAddWorkout";
 import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
 import "./fonts/Open_Sans/OpenSans-Regular.ttf";
 import "./fonts/Montserrat/Montserrat-Regular.ttf";
-import {Grid} from '@material-ui/core'
+import { Grid } from "@material-ui/core";
 
 function App() {
   const user = useSelector(selectUser);
@@ -167,18 +168,18 @@ function App() {
       return (
         <div className="home__container">
           <Grid container>
-          <Grid item xs={2}>
-          <Sidebar />
-          </Grid>
-          <Grid item xs={7} style={{marginLeft: 13}} className="home__main">
-            {userType === "coach" ? CoachComp : AthleteComp}
-          </Grid>
-          <Grid item xs={3} className="home__rightContainer">
-            <RightContainer
-              toggle_date={toggle_date}
-              selectedDate={selectedDate}
-            />
-          </Grid>
+            <Grid item xs={2}>
+              <Sidebar />
+            </Grid>
+            <Grid item xs={7} style={{ marginLeft: 13 }} className="home__main">
+              {userType === "coach" ? CoachComp : AthleteComp}
+            </Grid>
+            <Grid item xs={3} className="home__rightContainer">
+              <RightContainer
+                toggle_date={toggle_date}
+                selectedDate={selectedDate}
+              />
+            </Grid>
           </Grid>
         </div>
       );
@@ -321,7 +322,7 @@ function App() {
             <Route path="/create-workout">
               <RoutesComp
                 AthleteComp={<CoachCreateWorkout />}
-                CoachComp={<CoachCreateWorkout />}
+                CoachComp={<CoachAddWorkout />}
               />
             </Route>
             <Route path="/assign-workout">
@@ -374,13 +375,13 @@ function App() {
               />
             </Route>
             <Route path="/long-term-nutrition">
-              <RoutesComp 
+              <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<CreateLongTermNutritionPlan />}
               />
             </Route>
             <Route path="/long-term-training">
-              <RoutesComp 
+              <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<CreateLongTermTrainingPlan />}
               />

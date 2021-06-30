@@ -14,11 +14,10 @@ import { useLocation } from "react-router";
 import { DriveEtaOutlined } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-          
-import MoodBadIcon from '@material-ui/icons/MoodBad';
-import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 
+import MoodBadIcon from "@material-ui/icons/MoodBad";
+import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 
 export default function PostWorkoutDetails() {
   const userData = useSelector(selectUserData);
@@ -113,7 +112,7 @@ export default function PostWorkoutDetails() {
         <h3>Post Workout details</h3>
       </div>
       <div className="Postworkout__body">
-        <h4 > Title</h4>
+        <h4> Title</h4>
         <input
           style={{
             borderWidth: 1,
@@ -121,14 +120,14 @@ export default function PostWorkoutDetails() {
             borderwidth: 1,
             height: 25,
             color: "black",
-            textAlign:'left',
-            backgroundColor:'white',
-
-            textAlign: "center",
+            textAlign: "left",
+            backgroundColor: "white",
+            padding: "10px 10px",
           }}
           // value={postWorkout?.workoutDuration}
           placeholder="Title"
-          disabled={completed}
+          disabled={true}
+          value={location?.state?.workoutName}
         />
         <h4 style={{ borderTop: 20 }}>Date</h4>
         <div className="Datepicker__container">
@@ -184,7 +183,7 @@ export default function PostWorkoutDetails() {
                 borderwidth: 1,
                 height: 25,
                 color: "black",
-                backgroundColor:'white',
+                backgroundColor: "white",
                 borderRadius: 8,
                 padding: 7,
 
@@ -226,10 +225,12 @@ export default function PostWorkoutDetails() {
           />
         </div>
 
-        <div className="excercise__container" 
-        style={{
-          marginTop: 20,
-        }}>
+        <div
+          className="excercise__container"
+          style={{
+            marginTop: 20,
+          }}
+        >
           <div className="yellow"></div>
           <div
             style={{
@@ -269,493 +270,507 @@ export default function PostWorkoutDetails() {
               </div>
             </div>
 
-          
+            <div className="excercises">
+              {group?.map((grp, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    marginBottom: 20,
+                    borderBottomWidth: 1,
+                    borderColor: "#d3d3d3",
 
-
-        <div className="excercises">
-          {group?.map((grp, idx) => (
-            <div
-              key={idx}
-              style={{
-                marginBottom: 20,
-                borderBottomWidth: 1,
-                borderColor: "#d3d3d3",
-               
-                width: "100%",
-              }}
-            >
-             
-
-              <div style={{ marginLeft: 10 }}>
-                {grp.exercises?.map((workout, idx1) =>
-                  workout.cardio ? (
-                    <div key={idx1}
-                    style={{
-                      border:'1px solid rgb(0,0,0,0.2)'
-                    }}
-                    >
-                      <button
-                        style={{
-                          marginRight: 30,
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginVertical: 10,
-                        }}
-                        onClick={() => {
-                          console.log(1);
-                          if (selectedWorkoutEdit === "") {
-                            setSelectedWorkoutEdit(idx1);
-                          } else {
-                            setSelectedWorkoutEdit("");
-                          }
-                        }}
-                      >
-
+                    width: "100%",
+                  }}
+                >
+                  <div style={{ marginLeft: 10 }}>
+                    {grp.exercises?.map((workout, idx1) =>
+                      workout.cardio ? (
                         <div
-                        style={{
-                          margin:5
-                        }}
-                        >
-                        <input
-                          type="checkbox"
-                          disabled={completed ? true : false}
-                          checked={workout?.completed}
-                          tintColors={{ true: "#fcd54a", false: "#fcd54a" }}
-                          onValueChange={(newValue) => {
-                            let temp = [...group];
-                            let tmp = group[idx].exercises[idx1];
-                            tmp.completed = newValue.target.value;
-                            if (newValue.target.value === true) {
-                              tmp.sets.map((s) => {
-                                s.actualReps = s.reps;
-                              });
-                              console.log("checked value ", tmp.sets);
-                            } else {
-                              tmp.sets.map((s) => {
-                                s.actualReps = "";
-                              });
-                            }
-
-                            temp[idx].exercises[idx1] = tmp;
-
-                            setGroup(temp);
-                          }}
-                        />
-
-                        
-
-                        
-                        <img
+                          key={idx1}
                           style={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: 8,
-                            backgroundColor: "#d3d3d3",
+                            border: "1px solid rgb(0,0,0,0.2)",
                           }}
-                          src={
-                            workout.thumbnail_url
-                              ? `${workout.thumbnail_url}`
-                              : "../assets/illustration.jpeg"
-                          }
-                        />
-
-                        <div style={{ marginHorizontal: 10 }}>
-                          <h3>{workout.name}</h3>
-                          <div
+                        >
+                          <button
                             style={{
+                              marginRight: 30,
                               display: "flex",
                               flexDirection: "row",
                               alignItems: "center",
+                              marginVertical: 10,
+                            }}
+                            onClick={() => {
+                              console.log(1);
+                              if (selectedWorkoutEdit === "") {
+                                setSelectedWorkoutEdit(idx1);
+                              } else {
+                                setSelectedWorkoutEdit("");
+                              }
                             }}
                           >
-                            <h3
+                            <div
                               style={{
-                                width: 100,
-                                fontSize: 12,
+                                margin: 5,
                               }}
                             >
-                              Coach
-                            </h3>
-                            {workout.sets.map((s, i) => (
-                              <h3 key={i} style={{ fontSize: 12 }}>
-                                {s.reps ? s.reps : 0}
-                                {i < workout.sets.length - 1 ? " - " : null}
-                              </h3>
-                            ))}
-                          </div>
+                              <input
+                                type="checkbox"
+                                disabled={completed ? true : false}
+                                checked={workout?.completed}
+                                tintColors={{
+                                  true: "#fcd54a",
+                                  false: "#fcd54a",
+                                }}
+                                onValueChange={(newValue) => {
+                                  let temp = [...group];
+                                  let tmp = group[idx].exercises[idx1];
+                                  tmp.completed = newValue.target.value;
+                                  if (newValue.target.value === true) {
+                                    tmp.sets.map((s) => {
+                                      s.actualReps = s.reps;
+                                    });
+                                    console.log("checked value ", tmp.sets);
+                                  } else {
+                                    tmp.sets.map((s) => {
+                                      s.actualReps = "";
+                                    });
+                                  }
 
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              width: "100%",
-                            }}
-                          >
-                            <h3
-                              style={{
-                                width: 100,
-                                fontSize: 12,
-                              }}
-                            >
-                              Time
-                            </h3>
-                            {workout.sets.map((s, i) => (
-                              <h3 key={i} style={{ fontSize: 12 }}>
-                                {s.rest ? s.rest : 0}
-                                {i < workout.sets.length - 1 ? " - " : null}
-                              </h3>
-                            ))}
-                          </div>
-                        </div>
+                                  temp[idx].exercises[idx1] = tmp;
 
+                                  setGroup(temp);
+                                }}
+                              />
 
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <div>
-                            <div style={{ alignItems: "center" }}>
-                              <h3 style={{ fontSize: 11 }}>Edit</h3>
-                              <div>
-                                {selectedWorkoutEdit === idx1 ? (
-                                  <img
+                              <img
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: 8,
+                                  backgroundColor: "#d3d3d3",
+                                }}
+                                src={
+                                  workout.thumbnail_url
+                                    ? `${workout.thumbnail_url}`
+                                    : "../assets/illustration.jpeg"
+                                }
+                              />
+
+                              <div style={{ marginHorizontal: 10 }}>
+                                <h3>{workout.name}</h3>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h3
                                     style={{
-                                      width: 20,
-                                      height: 20,
-                                      marginRight: 5,
+                                      width: 100,
+                                      fontSize: 12,
                                     }}
-                                    src="../assets/up.png"
-                                  />
-                                ) : (
-                                  <img
+                                  >
+                                    Coach
+                                  </h3>
+                                  {workout.sets.map((s, i) => (
+                                    <h3 key={i} style={{ fontSize: 12 }}>
+                                      {s.reps ? s.reps : 0}
+                                      {i < workout.sets.length - 1
+                                        ? " - "
+                                        : null}
+                                    </h3>
+                                  ))}
+                                </div>
+
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <h3
                                     style={{
-                                      width: 20,
-                                      height: 20,
-                                      marginRight: 5,
+                                      width: 100,
+                                      fontSize: 12,
                                     }}
-                                    src="../assets/down.png"
-                                  />
-                                )}
+                                  >
+                                    Time
+                                  </h3>
+                                  {workout.sets.map((s, i) => (
+                                    <h3 key={i} style={{ fontSize: 12 }}>
+                                      {s.rest ? s.rest : 0}
+                                      {i < workout.sets.length - 1
+                                        ? " - "
+                                        : null}
+                                    </h3>
+                                  ))}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </button>
-                      {selectedWorkoutEdit === idx1 && (
-                        <div
-                        style={{
-                          backgroundColor:'white',
-                          padding:20,
-                          boxSizing:'border-box',
-                          
-                        }}>
-                          {workout.sets?.map((set, idx2) => (
                             <div
-                              key={idx2}
                               style={{
-                                width: "100%",
                                 display: "flex",
                                 flexDirection: "row",
                                 alignItems: "center",
-                                marginVertical: 10,
-                                justifyContent: "space-between",
                               }}
                             >
-                              <div
-                              style={{
-                                margin:5
-                              }}
-                              >
-                                <h3
-                                  style={{
-                                    marginTop: 10,
-
-                                    fontSize: 12,
-                                  }}
-                                >
-                                  Time
-                                </h3>
-                              </div>
-                              <div
-                                style={{
-                                  marginHorizontal: 5,
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <h3
-                                  style={{
-                                    fontSize: 12,
-                                    marginBottom: 5,
-                                  }}
-                                >
-                                  Coach
-                                </h3>
-                                <input
-                                  style={{
-                                    width: 50,
-                                    height: 20,
-                                    borderWidth: 1,
-                                    borderColor: "#DBE2EA",
-                                    backgroundColor: "#fcd54a",
-                                    padding: 7,
-                                    borderRadius: 8,
-                                    textAlign: "center",
-                                    color: "black",
-                                  }}
-                                  disabled={completed}
-                                  value={String(set.rest)}
-                                  onChange={(newVal) => {
-                                    let temp = [...group];
-                                    let tmp = group[idx].exercises[idx1].sets;
-                                    tmp[idx2].rest = newVal.target.value;
-
-                                    temp[idx].exercises[idx1].sets = tmp;
-
-                                    setGroup(temp);
-                                  }}
-                                  keyboardType={"number-pad"}
-                                  editable={false}
-                                />
-                              </div>
-                              <div
-                                style={{
-                                  marginHorizontal: 5,
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <h3
-                                  style={{
-                                    fontSize: 12,
-                                    marginBottom: 5,
-                                  }}
-                                >
-                                  Actual
-                                </h3>
-                                <input
-                                  style={{
-                                    width: 50,
-                                    height: 20,
-                                    borderWidth: 1,
-                                    borderColor: "#DBE2EA",
-                                    backgroundColor: "#f3f3f3",
-                                    padding: 7,
-                                    borderRadius: 8,
-                                    textAlign: "center",
-                                  }}
-                                  disabled={completed}
-                                  value={String(
-                                    set.actualReps ? set.actualReps : ""
-                                  )}
-                                  onChange={(newVal) => {
-                                    let temp = [...group];
-                                    let tmp = group[idx].exercises[idx1].sets;
-                                    tmp[idx2].actualReps = newVal.target.value;
-
-                                    temp[idx].exercises[idx1].sets = tmp;
-
-                                    setGroup(temp);
-                                  }}
-                                  keyboardType={"number-pad"}
-                                  editable={completed ? false : true}
-                                />
+                              <div>
+                                <div style={{ alignItems: "center" }}>
+                                  <h3 style={{ fontSize: 11 }}>Edit</h3>
+                                  <div>
+                                    {selectedWorkoutEdit === idx1 ? (
+                                      <img
+                                        style={{
+                                          width: 20,
+                                          height: 20,
+                                          marginRight: 5,
+                                        }}
+                                        src="../assets/up.png"
+                                      />
+                                    ) : (
+                                      <img
+                                        style={{
+                                          width: 20,
+                                          height: 20,
+                                          marginRight: 5,
+                                        }}
+                                        src="../assets/down.png"
+                                      />
+                                    )}
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          ))}
-                          <button
-                            onClick={() => {
-                              console.log(2);
-                              console.log(selectedWorkoutEdit);
-                              setSelectedWorkoutEdit("");
-                            }}
-                            style={{
-                              borderWidth: 1,
-                              borderRadius: 5,
-                              borderColor: "#DBE2EA",
-                              alignSelf: "flex-end",
-                              padding: 5,
-                              paddingHorizontal: 7,
-                            }}
-                          >
-                            <Icon
-                              name="check"
-                              size={20}
-                              style={{ alignSelf: "flex-end" }}
-                              color="black"
-                              type="font-awesome-5"
-                            />
                           </button>
+                          {selectedWorkoutEdit === idx1 && (
+                            <div
+                              style={{
+                                backgroundColor: "white",
+                                padding: 20,
+                                boxSizing: "border-box",
+                              }}
+                            >
+                              {workout.sets?.map((set, idx2) => (
+                                <div
+                                  key={idx2}
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    marginVertical: 10,
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      margin: 5,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginTop: 10,
+
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Time
+                                    </h3>
+                                  </div>
+                                  <div
+                                    style={{
+                                      marginHorizontal: 5,
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        fontSize: 12,
+                                        marginBottom: 5,
+                                      }}
+                                    >
+                                      Coach
+                                    </h3>
+                                    <input
+                                      style={{
+                                        width: 50,
+                                        height: 20,
+                                        borderWidth: 1,
+                                        borderColor: "#DBE2EA",
+                                        backgroundColor: "#fcd54a",
+                                        padding: 7,
+                                        borderRadius: 8,
+                                        textAlign: "center",
+                                        color: "black",
+                                      }}
+                                      disabled={completed}
+                                      value={String(set.rest)}
+                                      onChange={(newVal) => {
+                                        let temp = [...group];
+                                        let tmp =
+                                          group[idx].exercises[idx1].sets;
+                                        tmp[idx2].rest = newVal.target.value;
+
+                                        temp[idx].exercises[idx1].sets = tmp;
+
+                                        setGroup(temp);
+                                      }}
+                                      keyboardType={"number-pad"}
+                                      editable={false}
+                                    />
+                                  </div>
+                                  <div
+                                    style={{
+                                      marginHorizontal: 5,
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        fontSize: 12,
+                                        marginBottom: 5,
+                                      }}
+                                    >
+                                      Actual
+                                    </h3>
+                                    <input
+                                      style={{
+                                        width: 50,
+                                        height: 20,
+                                        borderWidth: 1,
+                                        borderColor: "#DBE2EA",
+                                        backgroundColor: "#f3f3f3",
+                                        padding: 7,
+                                        borderRadius: 8,
+                                        textAlign: "center",
+                                      }}
+                                      disabled={completed}
+                                      value={String(
+                                        set.actualReps ? set.actualReps : ""
+                                      )}
+                                      onChange={(newVal) => {
+                                        let temp = [...group];
+                                        let tmp =
+                                          group[idx].exercises[idx1].sets;
+                                        tmp[idx2].actualReps =
+                                          newVal.target.value;
+
+                                        temp[idx].exercises[idx1].sets = tmp;
+
+                                        setGroup(temp);
+                                      }}
+                                      keyboardType={"number-pad"}
+                                      editable={completed ? false : true}
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                              <button
+                                onClick={() => {
+                                  console.log(2);
+                                  console.log(selectedWorkoutEdit);
+                                  setSelectedWorkoutEdit("");
+                                }}
+                                style={{
+                                  borderWidth: 1,
+                                  borderRadius: 5,
+                                  borderColor: "#DBE2EA",
+                                  alignSelf: "flex-end",
+                                  padding: 5,
+                                  paddingHorizontal: 7,
+                                }}
+                              >
+                                <Icon
+                                  name="check"
+                                  size={20}
+                                  style={{ alignSelf: "flex-end" }}
+                                  color="black"
+                                  type="font-awesome-5"
+                                />
+                              </button>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div key={idx1} 
-                    style={{
-                      borderBottom:'1px solid rgb(0,0,0,0.2)'
-                    }}
-                    >
-                      <button
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          width: "100%",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginVertical: 10,
-                          backgroundColor:'white',
-                          border:'none',
-                          marginTop:20,
-                        
-                        }}
-                        onClick={() => {
-                          console.log(3);
-                          if (selectedWorkoutEdit === "") {
-                            setSelectedWorkoutEdit(idx1);
-                            console.log(selectedWorkoutEdit);
-                          } else {
-                            setSelectedWorkoutEdit("");
-                          }
-                        }}
-                      >
+                      ) : (
                         <div
-                        style={{
-                          display: "flex",
-                          flexDirection:'row',
-                          alignItems:'center'
-                        }}
-                        >
-                        <input
-                          type="checkbox"
-                          disabled={completed}
-                          checked={workout?.completed}
-                          tintColors={{ true: "#fcd54a", false: "#fcd54a" }}
-                          onChange={(newValue) => {
-                            let temp = [...group];
-                            let tmp = group[idx].exercises[idx1];
-                            tmp.completed = newValue.target.value;
-                            if (newValue.target.value === true) {
-                              tmp.sets.map((s) => {
-                                s.actualReps = s.rest;
-                              });
-                              console.log("checked value ", tmp.sets);
-                            } else {
-                              tmp.sets.map((s) => {
-                                s.actualReps = "";
-                              });
-                            }
-
-                            temp[idx].exercises[idx1] = tmp;
-
-                            setGroup(temp);
-                          }}
-                        />
-                        <div>
-                          <img
-                            style={{
-                              width: 100,
-                              height: 100,
-                              borderRadius: 8,
-                              backgroundColor: "#d3d3d3",
-                            }}
-                            src={
-                              workout.thumbnail_url
-                                ? ` ${workout.thumbnail_url}`
-                                : "../assets/illustration.jpeg"
-                            }
-                          />
-                        </div>
-                        <div  style={{ marginHorizontal: 10, marginLeft:20, textAlign:'left' }}>
-                          <h3>{workout.name}</h3>
-                          <div
+                          key={idx1}
                           style={{
-                            display:'flex',
-                            flexDirection:'row'
+                            borderBottom: "1px solid rgb(0,0,0,0.2)",
                           }}
-                          >
-                          <div
+                        >
+                          <button
                             style={{
                               display: "flex",
                               flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between",
                               alignItems: "center",
-                              width: 100,
-                             
+                              marginVertical: 10,
+                              backgroundColor: "white",
+                              border: "none",
+                              marginTop: 20,
+                            }}
+                            onClick={() => {
+                              console.log(3);
+                              if (selectedWorkoutEdit === "") {
+                                setSelectedWorkoutEdit(idx1);
+                                console.log(selectedWorkoutEdit);
+                              } else {
+                                setSelectedWorkoutEdit("");
+                              }
                             }}
                           >
-                            <h3
+                            <div
                               style={{
-                                marginRight:10,
-                                fontSize: 12,
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
                               }}
                             >
-                              Coach
-                            </h3>
-                            {workout.sets.map((s, i) => (
-                              <h3 key={i} style={{ fontSize: 12 }}>
-                                {s.reps ? s.reps : 0}
-                                {i < workout.sets.length - 1 ? "-" : null}
-                              </h3>
-                            ))}
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              width: 100,
-                              marginLeft:30
-                            }}
-                          >
-                            <h3
-                              style={{
-                                marginRight:10,
-                                fontSize: 12,
-                              }}
-                            >
-                              Weights
-                            </h3>
-                            {workout.sets.map((s, i) => (
-                              <h3 style={{ fontSize: 12 }}>
-                                {s.weights ? s.weights : 0}
-                                {i < workout.sets.length - 1 ? "-" : null}
-                              </h3>
-                            ))}
-                          </div>
+                              <input
+                                type="checkbox"
+                                disabled={completed}
+                                checked={workout?.completed}
+                                tintColors={{
+                                  true: "#fcd54a",
+                                  false: "#fcd54a",
+                                }}
+                                onChange={(newValue) => {
+                                  let temp = [...group];
+                                  let tmp = group[idx].exercises[idx1];
+                                  tmp.completed = newValue.target.value;
+                                  if (newValue.target.value === true) {
+                                    tmp.sets.map((s) => {
+                                      s.actualReps = s.rest;
+                                    });
+                                    console.log("checked value ", tmp.sets);
+                                  } else {
+                                    tmp.sets.map((s) => {
+                                      s.actualReps = "";
+                                    });
+                                  }
 
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                            
-                              width: 100,
-                              marginLeft:30
-                            }}
-                          >
-                            <h3
-                              style={{
-                                marginRight:10,
-                                fontSize: 12,
-                              }}
-                            >
-                              Rest
-                            </h3>
-                            {workout.sets.map((s, i) => (
-                              <h3 key={i} style={{ fontSize: 12 }}>
-                                {s.rest ? s.rest : 0}
-                                {i < workout.sets.length - 1 ? "-" : null}
-                              </h3>
-                            ))}
-                          </div>
-                          </div>
-                        </div>
-                        {/* <h3
+                                  temp[idx].exercises[idx1] = tmp;
+
+                                  setGroup(temp);
+                                }}
+                              />
+                              <div>
+                                <img
+                                  style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 8,
+                                    backgroundColor: "#d3d3d3",
+                                  }}
+                                  src={
+                                    workout.thumbnail_url
+                                      ? ` ${workout.thumbnail_url}`
+                                      : "../assets/illustration.jpeg"
+                                  }
+                                />
+                              </div>
+                              <div
+                                style={{
+                                  marginHorizontal: 10,
+                                  marginLeft: 20,
+                                  textAlign: "left",
+                                }}
+                              >
+                                <h3>{workout.name}</h3>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      width: 100,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginRight: 10,
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Coach
+                                    </h3>
+                                    {workout.sets.map((s, i) => (
+                                      <h3 key={i} style={{ fontSize: 12 }}>
+                                        {s.reps ? s.reps : 0}
+                                        {i < workout.sets.length - 1
+                                          ? "-"
+                                          : null}
+                                      </h3>
+                                    ))}
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      width: 100,
+                                      marginLeft: 30,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginRight: 10,
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Weights
+                                    </h3>
+                                    {workout.sets.map((s, i) => (
+                                      <h3 style={{ fontSize: 12 }}>
+                                        {s.weights ? s.weights : 0}
+                                        {i < workout.sets.length - 1
+                                          ? "-"
+                                          : null}
+                                      </h3>
+                                    ))}
+                                  </div>
+
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+
+                                      width: 100,
+                                      marginLeft: 30,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginRight: 10,
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Rest
+                                    </h3>
+                                    {workout.sets.map((s, i) => (
+                                      <h3 key={i} style={{ fontSize: 12 }}>
+                                        {s.rest ? s.rest : 0}
+                                        {i < workout.sets.length - 1
+                                          ? "-"
+                                          : null}
+                                      </h3>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                              {/* <h3
                               style={{
                                 fontSize: 10,
                                 marginLeft: -25,
@@ -766,261 +781,263 @@ export default function PostWorkoutDetails() {
                               
                               v
                             </h3> */}
-                        </div>
-                        <div style={{ marginLeft: 30 }}>
-                          <div style={{ alignItems: "center" }}>
-                            <h3 style={{ fontSize: 11 }}>Edit</h3>
-                            <div>
-                              {selectedWorkoutEdit === idx1 ? (
-                                <img
-                                  style={{
-                                    width: 20,
-                                    height: 20,
-                                    marginRight: 5,
-                                  }}
-                                  src="../assets/up.png"
-                                />
-                              ) : (
-                                <img
-                                  style={{
-                                    width: 20,
-                                    height: 20,
-                                    marginRight: 5,
-                                  }}
-                                  src="../assets/down.png"
-                                />
-                              )}
                             </div>
-                          </div>
-                        </div>
-                      </button>
-                      {selectedWorkoutEdit === idx1 && (
-                        <div
-                        style={{
-                          backgroundColor:'white',
-                          padding:20,
-                          boxSizing:'border-box',
-                          
-                        }}
-                        >
-                          <div
-                          style={{
-                            width:'50%',
-                            marginLeft:120,
-                          }}
-                          >
-                          {workout.sets?.map((set, idx2) => (
+                            <div style={{ marginLeft: 30 }}>
+                              <div style={{ alignItems: "center" }}>
+                                <h3 style={{ fontSize: 11 }}>Edit</h3>
+                                <div>
+                                  {selectedWorkoutEdit === idx1 ? (
+                                    <img
+                                      style={{
+                                        width: 20,
+                                        height: 20,
+                                        marginRight: 5,
+                                      }}
+                                      src="../assets/up.png"
+                                    />
+                                  ) : (
+                                    <img
+                                      style={{
+                                        width: 20,
+                                        height: 20,
+                                        marginRight: 5,
+                                      }}
+                                      src="../assets/down.png"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                          {selectedWorkoutEdit === idx1 && (
                             <div
-                              key={idx2}
                               style={{
-                                width: "100%",
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                marginVertical: 10,
+                                backgroundColor: "white",
+                                padding: 20,
+                                boxSizing: "border-box",
                               }}
                             >
-                              
-                              <div>
-                                <h3
-                                  style={{
-                                    marginTop: 8,
-
-                                    fontSize: 12,
-                                    fontWeight: "700",
-                                  }}
-                                >
-                                  Set {idx2 + 1}
-                                </h3>
-                                <h3
-                                  style={{
-                                    marginTop: 10,
-
-                                    fontSize: 12,
-                                  }}
-                                >
-                                  Reps
-                                </h3>
-                              </div>
                               <div
                                 style={{
-                                  marginHorizontal: 5,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  flexDirection: 'column',
+                                  width: "50%",
+                                  marginLeft: 120,
                                 }}
                               >
-                                <h3
-                                  style={{
-                                    fontSize: 12,
-                                    marginBottom: 5,
-                                  }}
-                                >
-                                  Coach
-                                </h3>
-                                <input
-                                  style={{
-                                    width: 50,
-                                    height: 20,
-                                    borderWidth: 1,
-                                    borderColor: "black",
-                                    backgroundColor: "black",
-                                    padding: 7,
-                                    borderRadius: 8,
-                                    textAlign: "center",
-                                    color: "white",
-                                  }}
-                                  value={String(set.reps)}
-                                  onChange={(newVal) => {
-                                    let temp = [...group];
-                                    let tmp = group[idx].exercises[idx1].sets;
-                                    tmp[idx2].reps = newVal.target.value;
+                                {workout.sets?.map((set, idx2) => (
+                                  <div
+                                    key={idx2}
+                                    style={{
+                                      width: "100%",
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "space-between",
+                                      marginVertical: 10,
+                                    }}
+                                  >
+                                    <div>
+                                      <h3
+                                        style={{
+                                          marginTop: 8,
 
-                                    temp[idx].exercises[idx1].sets = tmp;
+                                          fontSize: 12,
+                                          fontWeight: "700",
+                                        }}
+                                      >
+                                        Set {idx2 + 1}
+                                      </h3>
+                                      <h3
+                                        style={{
+                                          marginTop: 10,
 
-                                    setGroup(temp);
-                                  }}
-                                  keyboardType={"number-pad"}
-                                  selectedworkouteditable={false}
-                                />
+                                          fontSize: 12,
+                                        }}
+                                      >
+                                        Reps
+                                      </h3>
+                                    </div>
+                                    <div
+                                      style={{
+                                        marginHorizontal: 5,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      <h3
+                                        style={{
+                                          fontSize: 12,
+                                          marginBottom: 5,
+                                        }}
+                                      >
+                                        Coach
+                                      </h3>
+                                      <input
+                                        style={{
+                                          width: 50,
+                                          height: 20,
+                                          borderWidth: 1,
+                                          borderColor: "black",
+                                          backgroundColor: "black",
+                                          padding: 7,
+                                          borderRadius: 8,
+                                          textAlign: "center",
+                                          color: "white",
+                                        }}
+                                        value={String(set.reps)}
+                                        onChange={(newVal) => {
+                                          let temp = [...group];
+                                          let tmp =
+                                            group[idx].exercises[idx1].sets;
+                                          tmp[idx2].reps = newVal.target.value;
+
+                                          temp[idx].exercises[idx1].sets = tmp;
+
+                                          setGroup(temp);
+                                        }}
+                                        keyboardType={"number-pad"}
+                                        selectedworkouteditable={false}
+                                      />
+                                    </div>
+                                    <div
+                                      style={{
+                                        marginHorizontal: 5,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      <h3
+                                        style={{
+                                          fontSize: 12,
+                                          marginBottom: 5,
+                                        }}
+                                      >
+                                        Actual
+                                      </h3>
+                                      <input
+                                        style={{
+                                          width: 50,
+                                          height: 20,
+                                          borderWidth: 1,
+
+                                          backgroundColor: "white",
+                                          padding: 7,
+                                          borderRadius: 8,
+                                          borderWidth: 1,
+                                          borderColor: "rgba(0,0,0,0.8)",
+                                          textAlign: "center",
+                                        }}
+                                        disabled={completed}
+                                        value={String(
+                                          set.actualReps ? set.actualReps : ""
+                                        )}
+                                        onChange={(newVal) => {
+                                          let temp = [...group];
+                                          let tmp =
+                                            group[idx].exercises[idx1].sets;
+                                          tmp[idx2].actualReps =
+                                            newVal.target.value;
+
+                                          temp[idx].exercises[idx1].sets = tmp;
+
+                                          setGroup(temp);
+                                        }}
+                                        keyboardType={"number-pad"}
+                                        selectedworkouteditable={
+                                          completed ? false : true
+                                        }
+                                      />
+                                    </div>
+                                    <div
+                                      style={{
+                                        marginHorizontal: 5,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      <h3
+                                        style={{
+                                          fontSize: 12,
+                                          marginBottom: 5,
+                                        }}
+                                      >
+                                        Weights
+                                      </h3>
+                                      <input
+                                        style={{
+                                          width: 50,
+                                          height: 20,
+                                          borderWidth: 1,
+                                          borderColor: "black",
+                                          backgroundColor: "white",
+                                          padding: 7,
+                                          borderRadius: 8,
+                                          textAlign: "center",
+                                        }}
+                                        disabled={completed}
+                                        value={String(set.weights)}
+                                        onChange={(newVal) => {
+                                          let temp = [...group];
+                                          let tmp =
+                                            group[idx].exercises[idx1].sets;
+                                          tmp[idx2].weights =
+                                            newVal.target.value;
+
+                                          temp[idx].exercises[idx1].sets = tmp;
+
+                                          setGroup(temp);
+                                        }}
+                                        keyboardType={"number-pad"}
+                                        selectedworkouteditable={
+                                          completed ? false : true
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
-                              <div
+                              <button
+                                onClick={() => {
+                                  console.log(4);
+                                  console.log(selectedWorkoutEdit);
+                                  setSelectedWorkoutEdit("");
+                                }}
                                 style={{
-                                  marginHorizontal: 5,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  flexDirection: 'column',
+                                  borderWidth: 1,
+                                  borderRadius: 5,
+                                  borderColor: "#DBE2EA",
+                                  alignSelf: "flex-end",
+                                  padding: 5,
+                                  paddingHorizontal: 7,
                                 }}
                               >
-                                <h3
-                                  style={{
-                                    fontSize: 12,
-                                    marginBottom: 5,
-                                  }}
-                                >
-                                  Actual
-                                </h3>
-                                <input
-                                  style={{
-                                    width: 50,
-                                    height: 20,
-                                    borderWidth: 1,
-                                    
-                                    backgroundColor: "white",
-                                    padding: 7,
-                                    borderRadius: 8,
-                                    borderWidth:1,
-                                    borderColor:'rgba(0,0,0,0.8)',
-                                    textAlign: "center",
-                                  }}
-                                  disabled={completed}
-                                  value={String(
-                                    set.actualReps ? set.actualReps : ""
-                                  )}
-                                  onChange={(newVal) => {
-                                    let temp = [...group];
-                                    let tmp = group[idx].exercises[idx1].sets;
-                                    tmp[idx2].actualReps = newVal.target.value;
-
-                                    temp[idx].exercises[idx1].sets = tmp;
-
-                                    setGroup(temp);
-                                  }}
-                                  keyboardType={"number-pad"}
-                                  selectedworkouteditable={
-                                    completed ? false : true
-                                  }
+                                <Icon
+                                  name="check"
+                                  size={20}
+                                  style={{ alignSelf: "flex-end" }}
+                                  color="black"
+                                  type="font-awesome-5"
                                 />
-                              </div>
-                              <div
-                                style={{
-                                  marginHorizontal: 5,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  flexDirection: 'column',
-                                }}
-                              >
-                                <h3
-                                  style={{
-                                    fontSize: 12,
-                                    marginBottom: 5,
-                                  }}
-                                >
-                                  Weights
-                                </h3>
-                                <input
-                                  style={{
-                                    width: 50,
-                                    height: 20,
-                                    borderWidth: 1,
-                                    borderColor: "black",
-                                    backgroundColor: "white",
-                                    padding: 7,
-                                    borderRadius: 8,
-                                    textAlign: "center",
-                                  }}
-                                  disabled={completed}
-                                  value={String(set.weights)}
-                                  onChange={(newVal) => {
-                                    let temp = [...group];
-                                    let tmp = group[idx].exercises[idx1].sets;
-                                    tmp[idx2].weights = newVal.target.value;
-
-                                    temp[idx].exercises[idx1].sets = tmp;
-
-                                    setGroup(temp);
-                                  }}
-                                  keyboardType={"number-pad"}
-                                  selectedworkouteditable={
-                                    completed ? false : true
-                                  }
-                                />
-                              </div>
+                              </button>
                             </div>
-                          ))}
-                          </div>
-                          <button
-                            onClick={() => {
-                              console.log(4);
-                              console.log(selectedWorkoutEdit);
-                              setSelectedWorkoutEdit("");
-                            }}
-                            style={{
-                              borderWidth: 1,
-                              borderRadius: 5,
-                              borderColor: "#DBE2EA",
-                              alignSelf: "flex-end",
-                              padding: 5,
-                              paddingHorizontal: 7,
-                            }}
-                          >
-                            <Icon
-                              name="check"
-                              size={20}
-                              style={{ alignSelf: "flex-end" }}
-                              color="black"
-                              type="font-awesome-5"
-                            />
-                          </button>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  )
-                )}
-              </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-          
           </div>
-        </div>
         </div>
       </div>
 
-      <div 
-      style={{
-        width:'100%'
-      }}
+      <div
+        style={{
+          width: "100%",
+        }}
       >
         <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
         <input
@@ -1028,7 +1045,7 @@ export default function PostWorkoutDetails() {
             borderWidth: 1,
             borderColor: "#DBE2EA",
             backgroundColor: "#fff",
-            width: '100%',
+            width: "100%",
             borderRadius: 8,
             textAlignVertical: "top",
             padding: 10,
@@ -1055,8 +1072,8 @@ export default function PostWorkoutDetails() {
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "flex-start",
-          flexDirection:'column',
-          alignSelf:'flex-start',
+          flexDirection: "column",
+          alignSelf: "flex-start",
           width: 400,
         }}
       >
@@ -1080,9 +1097,9 @@ export default function PostWorkoutDetails() {
             }}
           >
             <button
-            style={{
-              border:'none'
-            }}
+              style={{
+                border: "none",
+              }}
               onClick={() => {
                 if (!completed) {
                   let temp = { ...postWorkout };
@@ -1091,17 +1108,16 @@ export default function PostWorkoutDetails() {
                 }
               }}
             >
-          
               <SentimentVeryDissatisfiedIcon
-              style={{
-                fill:`${postWorkout?.fatigue === "very-sore" ? "red" : "black"}`,
-                height:70,
-                width:70
-              }}
+                style={{
+                  fill: `${
+                    postWorkout?.fatigue === "very-sore" ? "red" : "black"
+                  }`,
+                  height: 70,
+                  width: 70,
+                }}
               />
-             
-           
-                </button>
+            </button>
           </div>
           <div
             style={{
@@ -1112,9 +1128,9 @@ export default function PostWorkoutDetails() {
             }}
           >
             <button
-            style={{
-              border:'none'
-            }}
+              style={{
+                border: "none",
+              }}
               onClick={() => {
                 if (!completed) {
                   let temp = { ...postWorkout };
@@ -1123,11 +1139,12 @@ export default function PostWorkoutDetails() {
                 }
               }}
             >
-          
-               <MoodBadIcon style={{
-                  height:70,
-                  width:70
-               }} />
+              <MoodBadIcon
+                style={{
+                  height: 70,
+                  width: 70,
+                }}
+              />
             </button>
           </div>
           <div
@@ -1139,9 +1156,9 @@ export default function PostWorkoutDetails() {
             }}
           >
             <button
-            style={{
-              border:'none'
-            }}
+              style={{
+                border: "none",
+              }}
               onClick={() => {
                 if (!completed) {
                   let temp = { ...postWorkout };
@@ -1150,13 +1167,14 @@ export default function PostWorkoutDetails() {
                 }
               }}
             >
-              
               <InsertEmoticonIcon
-              style={{
-                fill:`${postWorkout?.fatigue === "not-sore" ? "green" : "black"}`,
-                height:70,
-                width:70
-              }}
+                style={{
+                  fill: `${
+                    postWorkout?.fatigue === "not-sore" ? "green" : "black"
+                  }`,
+                  height: 70,
+                  width: 70,
+                }}
               />
             </button>
           </div>
