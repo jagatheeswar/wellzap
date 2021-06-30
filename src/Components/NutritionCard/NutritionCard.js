@@ -17,7 +17,7 @@ export function formatDate1(date) {
   return [year, month, day].join("-");
 }
 
-function NutritionCard({ nutrition, food, idx, type, navigation, date }) {
+function NutritionCard({ nutrition, food, idx, type, navigation, date,selectedWeekNum,isLongTerm,weeks,handleCloseNutrition,setWeeks,selectedDay }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
   console.log("fd", date);
