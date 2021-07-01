@@ -97,7 +97,12 @@ function ChatHomeScreen({ navigation }) {
   }, [userData?.id]);
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        height: window.innerHeight,
+      }}
+    >
       <div>
         <div
           style={{

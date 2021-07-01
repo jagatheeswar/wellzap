@@ -20,6 +20,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
+import SelectSearch from "react-select-search";
 
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
@@ -40,7 +41,11 @@ function CoachAddWorkout() {
   const [workoutDuration, setWorkoutDuration] = useState("");
   const [caloriesBurnEstimate, setCaloriesBurnEstimate] = useState("");
   const [workoutDifficulty, setWorkoutDifficulty] = useState("");
-  const [selectedExercises, setSelectedExercises] = useState([]);
+  const [selectedExercises, setSelectedExercises] = useState([
+    {
+      value: null,
+    },
+  ]);
   const [selectedWorkoutEdit, setSelectedWorkoutEdit] = useState(null);
   const [sectionId, setsectionId] = useState(1);
   const [modal, setModal] = useState(false);
@@ -53,6 +58,18 @@ function CoachAddWorkout() {
   const [listOfTargetedMuscles, setListOfTargetedMuscles] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [objs, setObjs] = useState(null);
+  const [additionalnotes, setadditionalnotes] = useState("");
+  const [selectedExercises_list, setselectedExercises_list] = useState([
+    {
+      temp: null,
+    },
+  ]);
+  const [tempexercises, settempexercises] = useState([
+    {
+      name: "",
+      data: null,
+    },
+  ]);
   const history = useHistory();
 
   console.log({
@@ -97,336 +114,54 @@ function CoachAddWorkout() {
   useEffect(() => {
     objs?.map((item, idx) => {
       item.name = item.workoutName;
+      item.value = item._id;
+      //item.data = item;
     });
-    console.log(objs);
+    //   console.log(objs);
     setExercises(objs);
+    console.log(objs);
   }, [objs]);
 
-  const Select_exercises_section = () => {
-    return (
-      <div>
-        <div
-          style={{
-            marginTop: 20,
-          }}
-        >
-          <label>Select Exercise</label>
-          <br />
-          <input
-            style={{
-              width: "100%",
-              padding: "10px",
-              boxSizing: "border-box",
-              border: "none",
-              boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
-              borderRadius: 5,
-              marginTop: 10,
-            }}
-            placeholder="Search For any Excercise"
-          />
-        </div>
-        <div
-          style={{
-            marginTop: 20,
-          }}
-        >
-          <div>
-            <SearchableDropdown
-              name="Search for Exercise"
-              list={exercises}
-              state={selectedExercises}
-              setState={setSelectedExercises}
-            />
-          </div>
-        </div>
+  useEffect(() => {
+    setSelectedWorkoutEdit("");
+    let temp = selectedExercises;
+    if (sectionId == 3) {
+      selectedExercises.map((val, idx) => {
+        !val.value && temp.splice(idx, 1);
+        setSelectedExercises(temp);
+      });
+      // if (!selectedExercises[selectedExercises.length - 1].value) {
+      //   temp.pop();
+      //   setSelectedExercises(temp);
+      // }
+    }
+  }, [sectionId]);
+  // useEffect(() => {
+  //   if (selectedExercises.length > 0) {
+  //     let temp = tempexercises;
 
-        {selectedExercises?.map((workout, idx1) => (
-          <div
-            key={idx1}
-            style={{
-              width: "95%",
+  //     temp[temp.length - 1].name =
+  //       selectedExercises[selectedExercises.length - 1].workoutName;
+  //     temp[temp.length - 1].date =
+  //       selectedExercises[selectedExercises.length - 1];
 
-              boxSizing: "border-box",
-              width: 350,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "white",
-                borderRadius: 10,
-                cursor: "pointer",
-                padding: 20,
-              }}
-              onClick={() => {
-                if (selectedWorkoutEdit === "") {
-                  setSelectedWorkoutEdit(idx1);
-                } else {
-                  setSelectedWorkoutEdit("");
-                }
-              }}
-            >
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  setWorkoutVideoUrl(workout.videoUrl);
-                  setModal2(true);
-                  setVideoLoading(true);
-                }}
-              >
-                <img
-                  style={{
-                    width: "70px",
-                    height: "70px",
-                    borderRadius: "8px",
-                    backgroundColor: "#d3d3d3",
-                    objectFit: "cover",
-                    marginRight: "15px",
-                  }}
-                  src={
-                    workout.thumbnail_url
-                      ? workout.thumbnail_url
-                      : "/assets/illustration.jpeg"
-                  }
-                />
-              </div>
-              <div style={{ marginLeft: "10px", width: "60%" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <h4
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "600",
-                      height: "20px",
-                    }}
-                  >
-                    {workout.name}
-                  </h4>
-                </div>
-              </div>
-            </div>
-            {selectedWorkoutEdit === idx1 && (
-              <div>
-                <div
-                  style={{
-                    borderWidth: "1px",
-                    borderColor: "#fcd13c",
-                    borderStyle: "solid",
-                    padding: "5px",
-                    borderRadius: "50px",
-                    width: "120px",
-                    height: "20px",
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  onClick={() => {
-                    // navigation.navigate("AddWorkout");
-                    let temp = [...selectedExercises];
-                    temp[idx1].sets.push({
-                      reps: "",
-                      weights: "",
-                      rest: "",
-                    });
+  //     settempexercises(temp);
+  //   }
 
-                    setSelectedExercises(temp);
-                  }}
-                >
-                  <h5
-                    style={{
-                      color: "black",
-                      textAlign: "center",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Add New Set
-                  </h5>
-                </div>
-                {workout.sets?.map((set, idx2) => (
-                  <div
-                    key={idx2}
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      marginTop: "10px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        marginLeft: "-15px",
-                        marginRight: "5px",
-                      }}
-                      onClick={() => {
-                        let temp = [...selectedExercises];
-                        temp.splice(idx2, 1);
-                        setSelectedExercises(temp);
-                      }}
-                    >
-                      <CloseIcon />
-                    </div>
-                    <h5
-                      style={{
-                        marginTop: "18px",
-                        marginRight: "15px",
-                      }}
-                    >
-                      Set {idx2 + 1}
-                    </h5>
-                    <div
-                      style={{
-                        marginLeft: "5px",
-                        marginRight: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          textAlign: "center",
-                          marginRight: "10px",
-                        }}
-                      >
-                        Reps
-                      </h5>
-                      <input
-                        style={{
-                          width: "50px",
-                          height: "20px",
-                          borderWidth: "1px",
-                          borderColor: "#DBE2EA",
-                          backgroundColor: "#fff",
-                          padding: "7px",
-                          borderRadius: "8px",
-                          textAlign: "center",
-                        }}
-                        value={String(set.reps)}
-                        placeholder={"12"}
-                        onChange={(e) => {
-                          let temp = [...selectedExercises];
-                          temp[idx1].sets[idx2].reps = e.target.value;
-                          setSelectedExercises(temp);
-                        }}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        marginLeft: "5px",
-                        marginRight: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          textAlign: "center",
-                          marginRight: "10px",
-                        }}
-                      >
-                        Weights
-                      </h5>
-                      <input
-                        style={{
-                          width: "50px",
-                          height: "20px",
-                          borderWidth: "1px",
-                          borderColor: "#DBE2EA",
-                          backgroundColor: "#fff",
-                          padding: "7px",
-                          borderRadius: "8px",
-                          textAlign: "center",
-                        }}
-                        value={String(set.weights)}
-                        placeholder={"12"}
-                        onChange={(e) => {
-                          let temp = [...selectedExercises];
-                          temp[idx1].sets[idx2].weights = e.target.value;
-                          setSelectedExercises(temp);
-                        }}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        marginLeft: "5px",
-                        marginRight: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <h5
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          textAlign: "center",
-                          marginRight: "10px",
-                        }}
-                      >
-                        Rest
-                      </h5>
-                      <input
-                        style={{
-                          width: "50px",
-                          height: "20px",
-                          borderWidth: "1px",
-                          borderColor: "#DBE2EA",
-                          backgroundColor: "#fff",
-                          padding: "7px",
-                          borderRadius: "8px",
-                          textAlign: "center",
-                        }}
-                        value={String(set.rest)}
-                        placeholder={"12"}
-                        onChange={(e) => {
-                          let temp = [...selectedExercises];
-                          temp[idx1].sets[idx2].rest = e.target.value;
-                          setSelectedExercises(temp);
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-                <div
-                  onClick={() => setSelectedWorkoutEdit("")}
-                  style={{
-                    position: "relative",
-                    left: "70%",
-                    borderWidth: "1px",
-                    borderRadius: "5px",
-                    borderColor: "#DBE2EA",
-                    display: "flex",
-                    alignSelf: "flex-end",
-                    padding: "5px",
-                    paddingLeft: "7px",
-                    paddingRight: "7px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <CheckBoxIcon fontSize="large" />
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  //   console.log("cg", selectedExercises);
+  //   console.log("cg", tempexercises);
+  //   let data = selectedExercises_list;
+  //   data.push(selectedExercises[selectedExercises.length - 1]);
+  //   setselectedExercises_list(data);
+  // }, [selectedExercises]);
+
   return (
-    <div className="coachCreateWorkout">
+    <div
+      className="coachCreateWorkout"
+      style={{
+        height: window.innerHeight,
+      }}
+    >
       <div
         className="workout_goBack"
         style={{
@@ -446,7 +181,6 @@ function CoachAddWorkout() {
             }}
           >
             <div>
-              {console.log(sectionId)}
               <span
                 className="header_item"
                 style={{
@@ -514,6 +248,10 @@ function CoachAddWorkout() {
                   marginTop: 10,
                 }}
                 placeholder="Workout Name"
+                value={workoutName}
+                onChange={(val) => {
+                  setWorkoutName(val.target.value);
+                }}
               />
             </div>
             <div
@@ -523,7 +261,7 @@ function CoachAddWorkout() {
             >
               <label>Equipment Needed</label>
               <br />
-              {console.log(exercises)}
+
               <SearchableDropdown
                 name=""
                 list={listOfEquipments}
@@ -543,12 +281,13 @@ function CoachAddWorkout() {
                 placeholder="Search for any equipment"
               /> */}
             </div>
+
             <div
               style={{
                 marginTop: 20,
               }}
             >
-              <label>Workout Name</label>
+              <label>Workout Duration</label>
               <br />
               <input
                 style={{
@@ -560,7 +299,11 @@ function CoachAddWorkout() {
                   borderRadius: 5,
                   marginTop: 10,
                 }}
-                placeholder="Workout Name"
+                placeholder="Workout Duration"
+                value={workoutDuration}
+                onChange={(val) => {
+                  setWorkoutDuration(val.target.value);
+                }}
               />
             </div>
             <div
@@ -579,6 +322,10 @@ function CoachAddWorkout() {
                   boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
                   borderRadius: 5,
                   marginTop: 10,
+                }}
+                value={caloriesBurnEstimate}
+                onChange={(val) => {
+                  setCaloriesBurnEstimate(val.target.value);
                 }}
                 placeholder="Calorie Burn Estimate"
               />
@@ -599,6 +346,10 @@ function CoachAddWorkout() {
                   boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
                   borderRadius: 5,
                   marginTop: 10,
+                }}
+                value={workoutDifficulty}
+                onChange={(val) => {
+                  setWorkoutDifficulty(val.target.value);
                 }}
                 placeholder="Workout Difficulty"
               />
@@ -654,329 +405,437 @@ function CoachAddWorkout() {
             <div className="Workouts_body">
               <h3>Add Exercises</h3>
 
-              <div>
-                <div
-                  style={{
-                    marginTop: 20,
-                  }}
-                >
-                  <label>Select Exercise</label>
-                  <br />
-                  <input
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      boxSizing: "border-box",
-                      border: "none",
-                      boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
-                      borderRadius: 5,
-                      marginTop: 10,
-                    }}
-                    placeholder="Search For any Excercise"
-                  />
-                </div>
-                <div
-                  style={{
-                    marginTop: 20,
-                  }}
-                >
-                  <div>
-                    <SearchableDropdown
-                      name="Search for Exercise"
-                      list={exercises}
-                      state={selectedExercises}
-                      setState={setSelectedExercises}
-                    />
-                  </div>
-                </div>
-
-                {selectedExercises?.map((workout, idx1) => (
+              {selectedExercises.map((data, idx1) => (
+                <div key={idx1}>
                   <div
-                    key={idx1}
                     style={{
-                      width: "95%",
-
-                      boxSizing: "border-box",
-                      width: 350,
+                      marginTop: 20,
                     }}
                   >
-                    {console.log("se", selectedExercises)}
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        backgroundColor: "white",
-                        borderRadius: 10,
-                        cursor: "pointer",
-                        padding: 20,
-                      }}
-                      onClick={() => {
-                        if (selectedWorkoutEdit === "") {
-                          setSelectedWorkoutEdit(idx1);
-                        } else {
-                          setSelectedWorkoutEdit("");
-                        }
-                      }}
-                    >
-                      <div
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          setWorkoutVideoUrl(workout.videoUrl);
-                          setModal2(true);
-                          setVideoLoading(true);
-                        }}
-                      >
-                        <img
-                          style={{
-                            width: "70px",
-                            height: "70px",
-                            borderRadius: "8px",
-                            backgroundColor: "#d3d3d3",
-                            objectFit: "cover",
-                            marginRight: "15px",
-                          }}
-                          src={
-                            workout.thumbnail_url
-                              ? workout.thumbnail_url
-                              : "/assets/illustration.jpeg"
-                          }
-                        />
-                      </div>
-                      <div style={{ marginLeft: "10px", width: "60%" }}>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <h4
-                            style={{
-                              fontSize: "15px",
-                              fontWeight: "600",
-                              height: "20px",
-                            }}
-                          >
-                            {workout.name}
-                          </h4>
-                        </div>
-                      </div>
-                    </div>
-                    {selectedWorkoutEdit === idx1 && (
-                      <div>
-                        <div
-                          style={{
-                            borderWidth: "1px",
-                            borderColor: "#fcd13c",
-                            borderStyle: "solid",
-                            padding: "5px",
-                            borderRadius: "50px",
-                            width: "120px",
-                            height: "20px",
-                            marginTop: "10px",
-                            marginBottom: "10px",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                          onClick={() => {
-                            // navigation.navigate("AddWorkout");
-                            let temp = [...selectedExercises];
+                    <div>
+                      {exercises?.length > 0 && (
+                        <SelectSearch
+                          options={exercises}
+                          onChange={(d, f) => {
+                            let temp = selectedExercises;
+                            temp[idx1] = f;
+                            temp[idx1].sets = [];
+
                             temp[idx1].sets.push({
                               reps: "",
                               weights: "",
+                              sets: "",
                               rest: "",
                             });
 
                             setSelectedExercises(temp);
+                            console.log(f);
+
+                            let temp1 = tempexercises;
+                            settempexercises(temp1);
+
+                            // navigation.navigate("AddWorkout");
+                          }}
+                          value="sv"
+                          name="language"
+                          placeholder="Choose your language"
+                        />
+                      )}
+                      <SelectSearch
+                        options={[
+                          {
+                            name: "reps/weight/sets/rest",
+                            value: 1,
+                          },
+                          {
+                            name: "Reps",
+                            value: 2,
+                          },
+                          {
+                            name: "Time",
+                            value: 3,
+                          },
+                        ]}
+                        onChange={(val, dat) => {
+                          let temp = selectedExercises;
+                          temp[idx1].sets = [];
+                          console.log(val);
+                          if (val == 1) {
+                            temp[idx1].sets.push({
+                              reps: "",
+                              weights: "",
+                              sets: "",
+                              rest: "",
+                            });
+                          }
+                          if (val == 2) {
+                            temp[idx1].sets.push({
+                              Reps: "",
+                            });
+                          }
+                          if (val == 3) {
+                            temp[idx1].sets.push({
+                              Time: "",
+                            });
+                          }
+
+                          setSelectedExercises(temp);
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {data?.value &&
+                    selectedExercises
+                      .slice(idx1, idx1 + 1)
+                      .map((workout, idx2) => (
+                        <div
+                          key={idx2}
+                          style={{
+                            marginTop: 20,
+                            boxSizing: "border-box",
+                            width: "100%",
                           }}
                         >
-                          <h5
-                            style={{
-                              color: "black",
-                              textAlign: "center",
-                              fontSize: "14px",
-                              fontWeight: "500",
-                            }}
-                          >
-                            Add New Set
-                          </h5>
-                        </div>
-                        {workout.sets?.map((set, idx2) => (
                           <div
-                            key={idx2}
                             style={{
-                              width: "100%",
                               display: "flex",
                               alignItems: "center",
-                              marginTop: "10px",
-                              marginBottom: "10px",
+                              backgroundColor: "white",
+                              borderRadius: 10,
+                              cursor: "pointer",
+                              padding: 20,
+                              backgroundColor: "white",
+                            }}
+                            onClick={() => {
+                              if (selectedWorkoutEdit === "") {
+                                setSelectedWorkoutEdit(idx1);
+                              } else {
+                                setSelectedWorkoutEdit("");
+                              }
                             }}
                           >
                             <div
-                              style={{
-                                marginLeft: "-15px",
-                                marginRight: "5px",
-                              }}
+                              style={{ cursor: "pointer" }}
                               onClick={() => {
-                                let temp = [...selectedExercises];
-                                temp.splice(idx2, 1);
-                                setSelectedExercises(temp);
+                                setWorkoutVideoUrl(workout.videoUrl);
+                                setModal2(true);
+                                setVideoLoading(true);
                               }}
                             >
-                              <CloseIcon />
-                            </div>
-                            <h5
-                              style={{
-                                marginTop: "18px",
-                                marginRight: "15px",
-                              }}
-                            >
-                              Set {idx2 + 1}
-                            </h5>
-                            <div
-                              style={{
-                                marginLeft: "5px",
-                                marginRight: "5px",
-                                display: "flex",
-                                alignItems: "center",
-                              }}
-                            >
-                              <h5
+                              <img
                                 style={{
-                                  fontSize: "14px",
-                                  fontWeight: "500",
-                                  textAlign: "center",
-                                  marginRight: "10px",
-                                }}
-                              >
-                                Reps
-                              </h5>
-                              <input
-                                style={{
-                                  width: "50px",
-                                  height: "20px",
-                                  borderWidth: "1px",
-                                  borderColor: "#DBE2EA",
-                                  backgroundColor: "#fff",
-                                  padding: "7px",
+                                  width: "70px",
+                                  height: "70px",
                                   borderRadius: "8px",
-                                  textAlign: "center",
+                                  backgroundColor: "#d3d3d3",
+                                  objectFit: "cover",
+                                  marginRight: "15px",
                                 }}
-                                value={String(set.reps)}
-                                placeholder={"12"}
-                                onChange={(e) => {
-                                  let temp = [...selectedExercises];
-                                  temp[idx1].sets[idx2].reps = e.target.value;
-                                  setSelectedExercises(temp);
-                                }}
+                                src={
+                                  workout.thumbnail_url
+                                    ? workout.thumbnail_url
+                                    : "/assets/illustration.jpeg"
+                                }
                               />
                             </div>
-                            <div
-                              style={{
-                                marginLeft: "5px",
-                                marginRight: "5px",
-                                display: "flex",
-                                alignItems: "center",
-                              }}
-                            >
-                              <h5
+                            <div style={{ marginLeft: "10px", width: "60%" }}>
+                              <div
                                 style={{
-                                  fontSize: "14px",
-                                  fontWeight: "500",
-                                  textAlign: "center",
-                                  marginRight: "10px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
                                 }}
                               >
-                                Weights
-                              </h5>
-                              <input
-                                style={{
-                                  width: "50px",
-                                  height: "20px",
-                                  borderWidth: "1px",
-                                  borderColor: "#DBE2EA",
-                                  backgroundColor: "#fff",
-                                  padding: "7px",
-                                  borderRadius: "8px",
-                                  textAlign: "center",
-                                }}
-                                value={String(set.weights)}
-                                placeholder={"12"}
-                                onChange={(e) => {
-                                  let temp = [...selectedExercises];
-                                  temp[idx1].sets[idx2].weights =
-                                    e.target.value;
-                                  setSelectedExercises(temp);
-                                }}
-                              />
-                            </div>
-                            <div
-                              style={{
-                                marginLeft: "5px",
-                                marginRight: "5px",
-                                display: "flex",
-                                alignItems: "center",
-                              }}
-                            >
-                              <h5
-                                style={{
-                                  fontSize: "14px",
-                                  fontWeight: "500",
-                                  textAlign: "center",
-                                  marginRight: "10px",
-                                }}
-                              >
-                                Rest
-                              </h5>
-                              <input
-                                style={{
-                                  width: "50px",
-                                  height: "20px",
-                                  borderWidth: "1px",
-                                  borderColor: "#DBE2EA",
-                                  backgroundColor: "#fff",
-                                  padding: "7px",
-                                  borderRadius: "8px",
-                                  textAlign: "center",
-                                }}
-                                value={String(set.rest)}
-                                placeholder={"12"}
-                                onChange={(e) => {
-                                  let temp = [...selectedExercises];
-                                  temp[idx1].sets[idx2].rest = e.target.value;
-                                  setSelectedExercises(temp);
-                                }}
-                              />
+                                <h4
+                                  style={{
+                                    fontSize: "15px",
+                                    fontWeight: "600",
+                                    height: "20px",
+                                  }}
+                                >
+                                  {workout?.name}
+                                </h4>
+                              </div>
                             </div>
                           </div>
-                        ))}
-                        <div
-                          onClick={() => setSelectedWorkoutEdit("")}
-                          style={{
-                            position: "relative",
-                            left: "70%",
-                            borderWidth: "1px",
-                            borderRadius: "5px",
-                            borderColor: "#DBE2EA",
-                            display: "flex",
-                            alignSelf: "flex-end",
-                            padding: "5px",
-                            paddingLeft: "7px",
-                            paddingRight: "7px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <CheckBoxIcon fontSize="large" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+                          {selectedWorkoutEdit === idx1 && (
+                            <div
+                              style={{
+                                backgroundColor: "white",
+                                padding: 20,
+                                boxSizing: "border-box",
+                                marginTop: 20,
+                              }}
+                            >
+                              {workout.sets?.map((set, idx2) => (
+                                <div
+                                  key={idx2}
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginTop: "10px",
+                                    marginBottom: "10px",
+                                    backgroundColor: "white",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      marginLeft: "-15px",
+                                      marginRight: "5px",
+                                    }}
+                                    onClick={() => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets.splice(idx2, 1);
+                                      setSelectedExercises(temp);
+                                    }}
+                                  >
+                                    <CloseIcon />
+                                  </div>
+                                  <h5
+                                    style={{
+                                      marginTop: "18px",
+                                      marginRight: "15px",
+                                    }}
+                                  >
+                                    Set {idx2 + 1}
+                                  </h5>
 
+                                  {Object.keys(set).map((set_, idx5) => (
+                                    <div
+                                      key={idx5}
+                                      style={{
+                                        marginLeft: "10px",
+                                        marginRight: "10px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      {console.log("st", set)}
+                                      <div
+                                        style={{
+                                          margin: 5,
+                                          fontSize: "14px",
+                                          fontWeight: "500",
+                                          textAlign: "center",
+                                          marginRight: "10px",
+                                        }}
+                                      >
+                                        {set_}
+                                      </div>
+                                      <input
+                                        style={{
+                                          width: "50px",
+                                          height: "20px",
+                                          borderWidth: "1px",
+                                          borderColor: "#DBE2EA",
+                                          backgroundColor: "#fff",
+                                          padding: "7px",
+                                          borderRadius: "8px",
+                                          textAlign: "center",
+                                        }}
+                                        value={String(set[set_])}
+                                        placeholder={"12"}
+                                        onChange={(e) => {
+                                          let temp = [...selectedExercises];
+                                          console.log(temp[idx1].sets);
+
+                                          temp[idx1].sets[idx2][set_] =
+                                            e.target.value;
+                                          setSelectedExercises(temp);
+                                        }}
+                                      />
+                                    </div>
+                                  ))}
+                                  {/* <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Reps
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.reps)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].reps =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Weights
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.weights)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].weights =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Rest
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.rest)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].rest =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div> */}
+                                </div>
+                              ))}
+                              <div
+                                style={{
+                                  borderWidth: "1px",
+                                  borderColor: "#fcd13c",
+                                  borderStyle: "solid",
+                                  padding: "5px",
+                                  borderRadius: "50px",
+                                  width: "120px",
+                                  height: "20px",
+                                  marginTop: "10px",
+                                  marginBottom: "10px",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  backgroundColor: "white",
+                                }}
+                                onClick={() => {
+                                  // navigation.navigate("AddWorkout");
+                                  let temp = [...selectedExercises];
+
+                                  temp[idx1].sets.push(temp[idx1].sets[0]);
+
+                                  setSelectedExercises(temp);
+                                }}
+                              >
+                                <h5
+                                  style={{
+                                    color: "black",
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                  }}
+                                >
+                                  Add New Set
+                                </h5>
+                              </div>
+                              <div
+                                onClick={() => setSelectedWorkoutEdit("")}
+                                style={{
+                                  position: "relative",
+                                  left: "70%",
+                                  borderWidth: "1px",
+                                  borderRadius: "5px",
+                                  borderColor: "#DBE2EA",
+                                  display: "flex",
+                                  alignSelf: "flex-end",
+                                  padding: "5px",
+                                  paddingLeft: "7px",
+                                  paddingRight: "7px",
+                                  cursor: "pointer",
+                                  backgroundColor: "white",
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  <div
+                    style={{
+                      display:
+                        selectedExercises.length - 1 == idx1 ? "none" : "block",
+                    }}
+                    className="Dotted_line"
+                  ></div>
+                </div>
+              ))}
+            </div>
             <div
               style={{
                 display: "flex",
@@ -1003,7 +862,12 @@ function CoachAddWorkout() {
                   }}
                   disabled={!(sectionId < 3)}
                   onClick={() => {
-                    sectionId < 3 && setsectionId(sectionId + 1);
+                    let temp = [...selectedExercises];
+
+                    temp.push({
+                      value: null,
+                    });
+                    setSelectedExercises(temp);
                   }}
                 >
                   Add Excercise
@@ -1075,6 +939,10 @@ function CoachAddWorkout() {
                     borderRadius: 5,
                     marginTop: 10,
                   }}
+                  value={workoutName}
+                  onChange={(val) => {
+                    setWorkoutName(val.target.value);
+                  }}
                   placeholder="Enter Workout Name"
                 />
               </div>
@@ -1098,6 +966,937 @@ function CoachAddWorkout() {
                   }}
                   placeholder="Workout Name"
                 />
+              </div>
+
+              <div className="excercises">
+                <div
+                  style={{
+                    marginBottom: 20,
+                    borderBottomWidth: 1,
+                    borderColor: "#d3d3d3",
+
+                    width: "100%",
+                  }}
+                >
+                  <div style={{ marginLeft: 10 }}>
+                    {selectedExercises?.map((workout, idx1) =>
+                      workout.cardio ? (
+                        <div
+                          key={idx1}
+                          style={{
+                            border: "1px solid rgb(0,0,0,0.2)",
+                            display: workout.value ? "block" : "none",
+                          }}
+                        >
+                          <button
+                            style={{
+                              marginRight: 30,
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              marginVertical: 10,
+                            }}
+                            onClick={() => {
+                              console.log(1);
+                              if (selectedWorkoutEdit === "") {
+                                setSelectedWorkoutEdit(idx1);
+                              } else {
+                                setSelectedWorkoutEdit("");
+                              }
+                            }}
+                          >
+                            <div
+                              style={{
+                                margin: 5,
+                              }}
+                            >
+                              <input
+                                type="checkbox"
+                                //disabled={completed ? true : false}
+                                //checked={workout?.completed}
+                                tintColors={{
+                                  true: "#fcd54a",
+                                  false: "#fcd54a",
+                                }}
+                                // onValueChange={(newValue) => {
+                                //   let temp = [...selectedExercises];
+                                //   let tmp =
+                                //     selectedExercises[idx].exercises[idx1];
+                                //   tmp.completed = newValue.target.value;
+                                //   if (newValue.target.value === true) {
+                                //     tmp.sets.map((s) => {
+                                //       s.actualReps = s.reps;
+                                //     });
+                                //     console.log("checked value ", tmp.sets);
+                                //   } else {
+                                //     tmp.sets.map((s) => {
+                                //       s.actualReps = "";
+                                //     });
+                                //   }
+
+                                //   temp[idx].exercises[idx1] = tmp;
+
+                                //   setSelectedExercises(temp);
+                                // }}
+                              />
+
+                              <img
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: 8,
+                                  backgroundColor: "#d3d3d3",
+                                }}
+                                src={
+                                  workout.thumbnail_url
+                                    ? `${workout.thumbnail_url}`
+                                    : "../assets/illustration.jpeg"
+                                }
+                              />
+
+                              <div style={{ marginHorizontal: 10 }}>
+                                <h3>{workout.name}</h3>
+                                {workout.sets.map((set, idx2) =>
+                                  Object.keys(set).map((set_, idx5) => (
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <h3
+                                        style={{
+                                          width: 100,
+                                          fontSize: 12,
+                                        }}
+                                      >
+                                        Coach
+                                      </h3>
+                                      {workout.sets.map((s, i) => (
+                                        <h3 key={i} style={{ fontSize: 12 }}>
+                                          {s.reps ? s.reps : 0}
+                                          {i < workout.sets.length - 1
+                                            ? " - "
+                                            : null}
+                                        </h3>
+                                      ))}
+                                    </div>
+                                  ))
+                                )}
+
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <h3
+                                    style={{
+                                      width: 100,
+                                      fontSize: 12,
+                                    }}
+                                  >
+                                    Time
+                                  </h3>
+                                  {workout.sets.map((s, i) => (
+                                    <h3 key={i} style={{ fontSize: 12 }}>
+                                      {s.rest ? s.rest : 0}
+                                      {i < workout.sets.length - 1
+                                        ? " - "
+                                        : null}
+                                    </h3>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <div>
+                                <div style={{ alignItems: "center" }}>
+                                  <h3 style={{ fontSize: 11 }}>Edit</h3>
+                                  <div>
+                                    {selectedWorkoutEdit === idx1 ? (
+                                      <img
+                                        style={{
+                                          width: 20,
+                                          height: 20,
+                                          marginRight: 5,
+                                        }}
+                                        src="../assets/up.png"
+                                      />
+                                    ) : (
+                                      <img
+                                        style={{
+                                          width: 20,
+                                          height: 20,
+                                          marginRight: 5,
+                                        }}
+                                        src="../assets/down.png"
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                          {selectedWorkoutEdit === idx1 && (
+                            <div
+                              style={{
+                                backgroundColor: "white",
+                                padding: 20,
+                                boxSizing: "border-box",
+                                marginTop: 20,
+                              }}
+                            >
+                              {workout.sets?.map((set, idx2) => (
+                                <div
+                                  key={idx2}
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginTop: "10px",
+                                    marginBottom: "10px",
+                                    backgroundColor: "white",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      marginLeft: "-15px",
+                                      marginRight: "5px",
+                                    }}
+                                    onClick={() => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets.splice(idx2, 1);
+                                      setSelectedExercises(temp);
+                                    }}
+                                  >
+                                    <CloseIcon />
+                                  </div>
+                                  <h5
+                                    style={{
+                                      marginTop: "18px",
+                                      marginRight: "15px",
+                                    }}
+                                  >
+                                    Set {idx2 + 1}
+                                  </h5>
+
+                                  {Object.keys(set).map((set_, idx5) => (
+                                    <div
+                                      key={idx5}
+                                      style={{
+                                        marginLeft: "10px",
+                                        marginRight: "10px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      {console.log("st", set)}
+                                      <div
+                                        style={{
+                                          margin: 5,
+                                          fontSize: "14px",
+                                          fontWeight: "500",
+                                          textAlign: "center",
+                                          marginRight: "10px",
+                                        }}
+                                      >
+                                        {set_}
+                                      </div>
+                                      <input
+                                        style={{
+                                          width: "50px",
+                                          height: "20px",
+                                          borderWidth: "1px",
+                                          borderColor: "#DBE2EA",
+                                          backgroundColor: "#fff",
+                                          padding: "7px",
+                                          borderRadius: "8px",
+                                          textAlign: "center",
+                                        }}
+                                        value={String(set[set_])}
+                                        placeholder={"12"}
+                                        onChange={(e) => {
+                                          let temp = [...selectedExercises];
+                                          console.log(temp[idx1].sets);
+
+                                          temp[idx1].sets[idx2][set_] =
+                                            e.target.value;
+                                          setSelectedExercises(temp);
+                                        }}
+                                      />
+                                    </div>
+                                  ))}
+                                  {/* <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Reps
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.reps)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].reps =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Weights
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.weights)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].weights =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Rest
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.rest)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].rest =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div> */}
+                                </div>
+                              ))}
+                              <div
+                                style={{
+                                  borderWidth: "1px",
+                                  borderColor: "#fcd13c",
+                                  borderStyle: "solid",
+                                  padding: "5px",
+                                  borderRadius: "50px",
+                                  width: "120px",
+                                  height: "20px",
+                                  marginTop: "10px",
+                                  marginBottom: "10px",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  backgroundColor: "white",
+                                }}
+                                onClick={() => {
+                                  // navigation.navigate("AddWorkout");
+                                  let temp = [...selectedExercises];
+
+                                  temp[idx1].sets.push(temp[idx1].sets[0]);
+
+                                  setSelectedExercises(temp);
+                                }}
+                              >
+                                <h5
+                                  style={{
+                                    color: "black",
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                  }}
+                                >
+                                  Add New Set
+                                </h5>
+                              </div>
+                              <div
+                                onClick={() => setSelectedWorkoutEdit("")}
+                                style={{
+                                  position: "relative",
+                                  left: "70%",
+                                  borderWidth: "1px",
+                                  borderRadius: "5px",
+                                  borderColor: "#DBE2EA",
+                                  display: "flex",
+                                  alignSelf: "flex-end",
+                                  padding: "5px",
+                                  paddingLeft: "7px",
+                                  paddingRight: "7px",
+                                  cursor: "pointer",
+                                  backgroundColor: "white",
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div
+                          key={idx1}
+                          style={{
+                            borderBottom: "1px solid rgb(0,0,0,0.2)",
+                            display: workout.value ? "block" : "none",
+                          }}
+                        >
+                          <button
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              width: "100%",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginVertical: 10,
+                              backgroundColor: "white",
+                              border: "none",
+                              marginTop: 20,
+                            }}
+                            onClick={() => {
+                              //console.log(3);
+                              if (selectedWorkoutEdit === "") {
+                                setSelectedWorkoutEdit(idx1);
+                                console.log(selectedWorkoutEdit);
+                              } else {
+                                setSelectedWorkoutEdit("");
+                              }
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <input
+                                type="checkbox"
+                                //disabled={completed}
+                                //checked={workout?.completed}
+                                tintColors={{
+                                  true: "#fcd54a",
+                                  false: "#fcd54a",
+                                }}
+                                // onChange={(newValue) => {
+                                //   let temp = [...selectedExercises];
+                                //   let tmp =
+                                //     selectedExercises[idx].exercises[idx1];
+                                //   tmp.completed = newValue.target.value;
+                                //   if (newValue.target.value === true) {
+                                //     tmp.sets.map((s) => {
+                                //       s.actualReps = s.rest;
+                                //     });
+                                //   } else {
+                                //     tmp.sets.map((s) => {
+                                //       s.actualReps = "";
+                                //     });
+                                //   }
+
+                                //   temp[idx].exercises[idx1] = tmp;
+
+                                //   setSelectedExercises(temp);
+                                // }}
+                              />
+                              <div>
+                                <img
+                                  style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: 8,
+                                    backgroundColor: "#d3d3d3",
+                                  }}
+                                  src={
+                                    workout.thumbnail_url
+                                      ? ` ${workout.thumbnail_url}`
+                                      : "../assets/illustration.jpeg"
+                                  }
+                                />
+                              </div>
+                              <div
+                                style={{
+                                  marginHorizontal: 10,
+                                  marginLeft: 20,
+                                  textAlign: "left",
+                                }}
+                              >
+                                <h3>{workout.name}</h3>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      width: 100,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginRight: 10,
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Coach
+                                    </h3>
+                                    {workout?.sets?.map((s, i) => (
+                                      <h3 key={i} style={{ fontSize: 12 }}>
+                                        {s.reps ? s.reps : 12}
+                                        {i < workout.sets.length - 1
+                                          ? "-"
+                                          : null}
+                                      </h3>
+                                    ))}
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      width: 100,
+                                      marginLeft: 30,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginRight: 10,
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Weights
+                                    </h3>
+                                    {workout?.sets?.map((s, i) => (
+                                      <h3 style={{ fontSize: 12 }}>
+                                        {s.weights ? s.weights : 0}
+                                        {i < workout.sets.length - 1
+                                          ? "-"
+                                          : null}
+                                      </h3>
+                                    ))}
+                                  </div>
+
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+
+                                      width: 100,
+                                      marginLeft: 30,
+                                    }}
+                                  >
+                                    <h3
+                                      style={{
+                                        marginRight: 10,
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      Rest
+                                    </h3>
+                                    {workout?.sets?.map((s, i) => (
+                                      <h3 key={i} style={{ fontSize: 12 }}>
+                                        {s.rest ? s.rest : 0}
+                                        {i < workout.sets.length - 1
+                                          ? "-"
+                                          : null}
+                                      </h3>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                              {/* <h3
+                              style={{
+                                fontSize: 10,
+                                marginLeft: -25,
+                                width: 70,
+                              }}
+                            >
+                              Tap to di
+                              
+                              v
+                            </h3> */}
+                            </div>
+                            <div style={{ marginLeft: 30 }}>
+                              <div style={{ alignItems: "center" }}>
+                                <h3 style={{ fontSize: 11 }}>Edit</h3>
+                                <div>
+                                  {selectedWorkoutEdit === idx1 ? (
+                                    <img
+                                      style={{
+                                        width: 20,
+                                        height: 20,
+                                        marginRight: 5,
+                                      }}
+                                      src="../assets/up.png"
+                                    />
+                                  ) : (
+                                    <img
+                                      style={{
+                                        width: 20,
+                                        height: 20,
+                                        marginRight: 5,
+                                      }}
+                                      src="../assets/down.png"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                          {selectedWorkoutEdit === idx1 && (
+                            <div
+                              style={{
+                                backgroundColor: "white",
+                                padding: 20,
+                                boxSizing: "border-box",
+                                marginTop: 20,
+                              }}
+                            >
+                              {workout.sets?.map((set, idx2) => (
+                                <div
+                                  key={idx2}
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginTop: "10px",
+                                    marginBottom: "10px",
+                                    backgroundColor: "white",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      marginLeft: "-15px",
+                                      marginRight: "5px",
+                                    }}
+                                    onClick={() => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets.splice(idx2, 1);
+                                      setSelectedExercises(temp);
+                                    }}
+                                  >
+                                    <CloseIcon />
+                                  </div>
+                                  <h5
+                                    style={{
+                                      marginTop: "18px",
+                                      marginRight: "15px",
+                                    }}
+                                  >
+                                    Set {idx2 + 1}
+                                  </h5>
+
+                                  {Object.keys(set).map((set_, idx5) => (
+                                    <div
+                                      key={idx5}
+                                      style={{
+                                        marginLeft: "10px",
+                                        marginRight: "10px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      {console.log("st", set)}
+                                      <div
+                                        style={{
+                                          margin: 5,
+                                          fontSize: "14px",
+                                          fontWeight: "500",
+                                          textAlign: "center",
+                                          marginRight: "10px",
+                                        }}
+                                      >
+                                        {set_}
+                                      </div>
+                                      <input
+                                        style={{
+                                          width: "50px",
+                                          height: "20px",
+                                          borderWidth: "1px",
+                                          borderColor: "#DBE2EA",
+                                          backgroundColor: "#fff",
+                                          padding: "7px",
+                                          borderRadius: "8px",
+                                          textAlign: "center",
+                                        }}
+                                        value={String(set[set_])}
+                                        placeholder={"12"}
+                                        onChange={(e) => {
+                                          let temp = [...selectedExercises];
+                                          console.log(temp[idx1].sets);
+
+                                          temp[idx1].sets[idx2][set_] =
+                                            e.target.value;
+                                          setSelectedExercises(temp);
+                                        }}
+                                      />
+                                    </div>
+                                  ))}
+                                  {/* <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Reps
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.reps)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].reps =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Weights
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.weights)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].weights =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  style={{
+                                    marginLeft: "5px",
+                                    marginRight: "5px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                      textAlign: "center",
+                                      marginRight: "10px",
+                                    }}
+                                  >
+                                    Rest
+                                  </h5>
+                                  <input
+                                    style={{
+                                      width: "50px",
+                                      height: "20px",
+                                      borderWidth: "1px",
+                                      borderColor: "#DBE2EA",
+                                      backgroundColor: "#fff",
+                                      padding: "7px",
+                                      borderRadius: "8px",
+                                      textAlign: "center",
+                                    }}
+                                    value={String(set.rest)}
+                                    placeholder={"12"}
+                                    onChange={(e) => {
+                                      let temp = [...selectedExercises];
+                                      temp[idx1].sets[idx2].rest =
+                                        e.target.value;
+                                      setSelectedExercises(temp);
+                                    }}
+                                  />
+                                </div> */}
+                                </div>
+                              ))}
+                              <div
+                                style={{
+                                  borderWidth: "1px",
+                                  borderColor: "#fcd13c",
+                                  borderStyle: "solid",
+                                  padding: "5px",
+                                  borderRadius: "50px",
+                                  width: "120px",
+                                  height: "20px",
+                                  marginTop: "10px",
+                                  marginBottom: "10px",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  backgroundColor: "white",
+                                }}
+                                onClick={() => {
+                                  // navigation.navigate("AddWorkout");
+                                  let temp = [...selectedExercises];
+
+                                  temp[idx1].sets.push(temp[idx1].sets[0]);
+
+                                  setSelectedExercises(temp);
+                                }}
+                              >
+                                <h5
+                                  style={{
+                                    color: "black",
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                  }}
+                                >
+                                  Add New Set
+                                </h5>
+                              </div>
+                              <div
+                                onClick={() => setSelectedWorkoutEdit("")}
+                                style={{
+                                  position: "relative",
+                                  left: "70%",
+                                  borderWidth: "1px",
+                                  borderRadius: "5px",
+                                  borderColor: "#DBE2EA",
+                                  display: "flex",
+                                  alignSelf: "flex-end",
+                                  padding: "5px",
+                                  paddingLeft: "7px",
+                                  paddingRight: "7px",
+                                  cursor: "pointer",
+                                  backgroundColor: "white",
+                                }}
+                              ></div>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1130,6 +1929,10 @@ function CoachAddWorkout() {
                   boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
                   borderRadius: 5,
                   marginTop: 10,
+                }}
+                value={additionalnotes}
+                onChange={(val) => {
+                  setadditionalnotes(val.target.value);
                 }}
                 placeholder="Additional Notes"
               />
@@ -1168,6 +1971,28 @@ function CoachAddWorkout() {
                 }}
                 onClick={() => {
                   sectionId < 3 && setsectionId(sectionId + 1);
+
+                  db.collection("CoachWorkouts")
+                    .add({
+                      assignedById: userData?.id,
+                      assignedToId: "",
+                      date: formatDate(),
+                      preWorkout: {
+                        workoutName,
+                        additionalnotes,
+                        workoutDescription,
+                        equipmentsNeeded,
+                        targetedMuscleGroup,
+                        workoutDuration,
+                        caloriesBurnEstimate,
+                        workoutDifficulty,
+                        selectedExercises,
+                      },
+                    })
+                    .then(() => {
+                      alert("done");
+                    })
+                    .catch((e) => console.error("err", e));
                 }}
               >
                 Confirm Workout

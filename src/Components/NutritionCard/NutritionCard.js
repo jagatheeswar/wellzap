@@ -21,6 +21,7 @@ function NutritionCard({ nutrition, food, idx, type, navigation, date }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
   console.log("fd", date);
+  const isLongTerm = false;
   return (
     <div className="nutritionCard">
       <div className="nutritionCard_main">
@@ -30,36 +31,36 @@ function NutritionCard({ nutrition, food, idx, type, navigation, date }) {
           onClick={
             () => {
               if (isLongTerm) {
-                var lweeks = weeks;
-                //console.log("before")
-                //console.log(lweeks)
-                var lselectedWeekNum = selectedWeekNum;
-                var lselectedDay = selectedDay;
-                lweeks[lselectedWeekNum - 1].days[lselectedDay] = food.data;
-                var ent = food.data?.nutrition?.entireFood;
-                var calories = 0;
-                var proteins = 0;
-                var carbs = 0;
-                var fat = 0;
-                ent.forEach((id) => {
-                  var dat = id.food;
-                  dat.forEach((id2) => {
-                    calories += id2.calories;
-                    fat += id2.fat;
-                    carbs += id2.carbs;
-                    proteins += id2.proteins;
-                  });
-                });
-                lweeks[lselectedWeekNum - 1].days[lselectedDay].calories =
-                  calories;
-                lweeks[lselectedWeekNum - 1].days[lselectedDay].proteins =
-                  proteins;
-                lweeks[lselectedWeekNum - 1].days[lselectedDay].fat = fat;
-                lweeks[lselectedWeekNum - 1].days[lselectedDay].carbs = carbs;
-                //console.log("nutri card")
-                //console.log(lweeks)
-                setWeeks(lweeks);
-                handleCloseNutrition();
+                // var lweeks = weeks;
+                // //console.log("before")
+                // //console.log(lweeks)
+                // var lselectedWeekNum = selectedWeekNum;
+                // var lselectedDay = selectedDay;
+                // lweeks[lselectedWeekNum - 1].days[lselectedDay] = food.data;
+                // var ent = food.data?.nutrition?.entireFood;
+                // var calories = 0;
+                // var proteins = 0;
+                // var carbs = 0;
+                // var fat = 0;
+                // ent.forEach((id) => {
+                //   var dat = id.food;
+                //   dat.forEach((id2) => {
+                //     calories += id2.calories;
+                //     fat += id2.fat;
+                //     carbs += id2.carbs;
+                //     proteins += id2.proteins;
+                //   });
+                // });
+                // lweeks[lselectedWeekNum - 1].days[lselectedDay].calories =
+                //   calories;
+                // lweeks[lselectedWeekNum - 1].days[lselectedDay].proteins =
+                //   proteins;
+                // lweeks[lselectedWeekNum - 1].days[lselectedDay].fat = fat;
+                // lweeks[lselectedWeekNum - 1].days[lselectedDay].carbs = carbs;
+                // //console.log("nutri card")
+                // //console.log(lweeks)
+                // setWeeks(lweeks);
+                // handleCloseNutrition();
               } else {
                 if (userType === "coach") {
                   if (type === "view") {

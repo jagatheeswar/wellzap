@@ -626,7 +626,7 @@ function CoachCreateWorkout() {
                 setModal1(true);
               }}
             >
-               DON'T SAVE
+              DON'T SAVE
             </div>
             <div
               className="createWorkout__modalButton"
