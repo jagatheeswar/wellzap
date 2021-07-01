@@ -6,6 +6,7 @@ import formatSpecificDate from "../../functions/formatSpecificDate";
 import incr_date from "../../functions/incr_date";
 import Axios from "axios";
 import { db } from "../../utils/firebase";
+import firebase from "firebase"
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import "./workouts.css";
 import formatSpecificDate1 from "../../functions/formatSpecificDate1";
@@ -19,7 +20,140 @@ import CloseIcon from "@material-ui/icons/Close";
 import Modal from "react-awesome-modal";
 import { getType } from "@reduxjs/toolkit";
 import SelectSearch from "react-select-search";
+import Switch from '@material-ui/core/Switch';
 import "./dropdown.css";
+import useAutocomplete from "@material-ui/lab/useAutocomplete";
+import styled from "styled-components";
+import CheckIcon from "@material-ui/icons/Check";
+
+
+
+const InputWrapper = styled("div")`
+  width: 350px;
+  border: 1px solid #d9d9d9;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 4%;
+
+  &:hover {
+    border-color: #40a9ff;
+  }
+
+  &.focused {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+
+  & input {
+    font-size: 14px;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 4px 6px;
+    width: 0;
+    min-width: 30px;
+    flex-grow: 1;
+    border: 0;
+    margin: 0;
+    outline: 0;
+  }
+`;
+
+const Listbox = styled("ul")`
+  width: 350px;
+  margin: 2px 0 0;
+  margin-left: 2.1%;
+  padding: 0;
+  position: absolute;
+  list-style: none;
+  background-color: #fff;
+  overflow: auto;
+  max-height: 150px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+
+  & li {
+    padding: 5px 12px;
+    display: flex;
+
+    & span {
+      flex-grow: 1;
+    }
+
+    & svg {
+      color: transparent;
+    }
+  }
+
+  & li[aria-selected="true"] {
+    background-color: #fafafa;
+    font-weight: 600;
+
+    & svg {
+      color: #1890ff;
+    }
+  }
+
+  & li[data-focus="true"] {
+    background-color: #e6f7ff;
+    cursor: pointer;
+
+    & svg {
+      color: #000;
+    }
+  }
+`;
+
+const Tag = styled(({ label, onDelete, ...props }) => (
+  <div {...props}>
+    <span>{label}</span>
+    <CloseIcon onClick={onDelete} />
+  </div>
+))`
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin: 2px;
+
+  line-height: 22px;
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  box-sizing: content-box;
+  padding: 0 4px 0 10px;
+  outline: 0;
+  overflow: hidden;
+
+  &:focus {
+    border-color: #40a9ff;
+    background-color: #e6f7ff;
+  }
+
+  & span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  & svg {
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px;
+  }
+`;
+
+const Label = styled("label")`
+  padding: 0 0 4px;
+  line-height: 1.5;
+  display: block;
+  margin-left: 4%;
+  margin-top: 20px;
+`;
+
+
 function AssignWorkout() {
   const location = useLocation();
   const userData = useSelector(selectUserData);
@@ -58,6 +192,15 @@ function AssignWorkout() {
   const [modal2, setModal2] = useState(false);
   const [options, setoptions] = useState(null);
   const [show_data, setshow_data] = useState([]);
+  const [cardio, setCardio] = useState(false);
+  const [cardioSelect, setCardioSelect] = useState("Run");
+  const [cardioExercise, setCardioExercise] = useState([
+    {name:"Run"},
+    {name:"Walk"},
+    {name:"Elliptical"},
+    {name:"Bike"},
+    {name:"Row"}
+  ]);
   const history = useHistory();
 
   useEffect(() => {
@@ -111,7 +254,7 @@ function AssignWorkout() {
           (x) => x.id === location.state?.athlete_id
         );
       tmp.push(selectedAthlete);
-      setSelectedAthletes(tmp);
+      //setSelectedAthletes(tmp);
     }
   }, [location.state?.athlete_id]);
 
@@ -139,9 +282,9 @@ function AssignWorkout() {
       );
 
       if (
-        location.state?.workout?.data?.selectedAthletes &&
-        !location.state?.athlete_id
-      ) {
+        location.state?.workout?.data?.selectedAthletes  ) {
+          //console.log("gagna")
+          //console.log(location.state?.workout?.data?.selectedAthletes)
         setSelectedAthletes(location.state?.workout?.data?.selectedAthletes);
       }
     }
@@ -233,6 +376,37 @@ function AssignWorkout() {
         });
     }
   }, [userData?.id]);
+
+  useEffect(()=>{
+    console.log("selectedAthletes")
+    console.log(selectedAthletes)
+  },[selectedAthletes])
+
+  const {
+    getRootProps,
+    getInputLabelProps,
+    getInputProps,
+    getTagProps,
+    getListboxProps,
+    getOptionProps,
+    groupedOptions,
+    value,
+    focused,
+    setAnchorEl,
+  } = useAutocomplete({
+    id: "customized-hook-demo",
+    multiple: true,
+    options: listOfAthletes,
+    getOptionLabel: (option) => option.name,
+  });
+
+  useEffect(() => {
+    //console.log("4")
+    value.map((v) => {
+      v.selectedDays = [];
+    });
+    //setSelectedAthletes(value);
+  }, [value]);
 
   return (
     <div className="assignWorkout">
@@ -374,6 +548,7 @@ function AssignWorkout() {
                         preWorkout: workout.data?.preWorkout,
                         saved: false,
                         selectedAthletes,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                       })
                       .then(() => {
                         history.goBack();
@@ -395,6 +570,7 @@ function AssignWorkout() {
                           saved: false,
                           selectedAthletes: selectedAthletes,
                           selectedDates: tempDate1,
+                          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         })
                         .then((docRef) => {
                           console.log("Coach Workout ID", docRef);
@@ -417,6 +593,7 @@ function AssignWorkout() {
                                   saved: false,
                                   selectedAthletes,
                                   coachWorkoutId: docRef.id,
+                                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                                 })
                                 .then((docRef1) => {
                                   console.log({ docRef1 });
@@ -449,44 +626,62 @@ function AssignWorkout() {
             </div>
           </div>
         </div>
-        <div className="assignWorkout__athletesList">
+        <div style={{marginBottom:20}} className="assignWorkout__athletesList">
+
+        {userType == "athlete" || type == "non-editable" ? null :
+          <div style={{marginBottom:20}} {...getRootProps()}>
+          <Label {...getInputLabelProps()}>Search for Athletes</Label>
+          <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
+            {value.map((option, index) => (
+              <Tag label={option.name} {...getTagProps({ index })} />
+            ))}
+
+            <input {...getInputProps()} />
+          </InputWrapper>
+        </div>}
+        {groupedOptions.length > 0 ? (
+          <Listbox {...getListboxProps()}>
+            {groupedOptions.map((option, index) => (
+              <li {...getOptionProps({ option, index })}>
+                <span>{option.name}</span>
+                <CheckIcon fontSize="small" />
+              </li>
+            ))}
+          </Listbox>
+        ) : null}
+
+          {/*
           <h4>Selected Athletes</h4>
-          <input
-            style={{
-              width: "100%",
-              padding: 12,
-              marginBottom: 10,
-              boxSizing: "border-box",
-              border: "none",
-            }}
-            value={
-              show_data.length > 0 ? show_data[0]?.name : "No Athletes selected"
-            }
-          />
-          <div
-            className="selectedAthletes_list"
-            style={{
-              height:
-                `${selectedAthletes.length}` > 4
-                  ? 260
-                  : `${selectedAthletes.length}` * 65,
-              overflow: "scroll",
-              overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
-              overflowX: "hidden",
-              backgroundColor: "white",
-            }}
-          >
-            {selectedAthletes?.map((athlete, idx) => (
-              <div
-                onClick={() => {
-                  let temp = [];
-                  if (show_data[0]?.id == athlete.id) {
-                    setshow_data([]);
-                  } else {
-                    temp.push(athlete);
-                    setshow_data(temp);
-                    console.log(athlete.name, show_data);
-                  }
+          <input 
+          style={{
+            width:'100%',
+            padding:12,
+            marginBottom:10,
+            boxSizing:'border-box',
+            border:'none'
+
+          }}
+          value={show_data.length>0 ? show_data[0]?.name : ''} 
+        />*/}
+
+          <div className="selectedAthletes_list" style={{
+            height: `${selectedAthletes.length }` >4 ? 260:`${selectedAthletes.length }`*65 ,
+            overflow:'scroll',
+            backgroundColor:'white'
+          }}>
+
+          {selectedAthletes?.map((athlete,idx)=>(
+            <div 
+            onClick={() => {
+              let temp = [];
+              if(show_data[0]?.id == athlete.id){
+                setshow_data([])
+              }
+              else{
+              temp.push(athlete);
+              setshow_data(temp);
+              console.log(athlete.name, show_data)
+              }
                 }}
                 style={{
                   backgroundColor:
@@ -777,17 +972,34 @@ function AssignWorkout() {
         </div>
 
         <div className="createWorkout__exercises">
-          <h3 className="createWorkout__inputLabel">Exercises</h3>
+        {userType == "athlete" || type == "non-editable" ? null :
+        <div style={{display:"flex",justifyContent:"space-between",marginRight:20}}>
+        <h3 className="createWorkout__inputLabel">Exercises</h3>
+          <div style={{display:"flex",alignItems:"center"}}>
+            <p style={{margin:0}}>Weights</p>
+            <Switch
+            checked={cardio}
+            onChange={(event)=>{
+              setCardio(!cardio)
+            }}
+            value={cardio}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+            <p style={{margin:0}}>Cardio</p>
+          </div>
+        </div>}
           <div>
             <div>
+            {userType == "athlete" || type == "non-editable" ? null :
               <div style={{ width: "100%" }}>
-                <SearchableDropdown
-                  name="Search for Exercise"
-                  list={exercises}
-                  state={selectedExercises}
-                  setState={setSelectedExercises}
-                />
-              </div>
+              <SearchableDropdown
+                name="Search for Exercise"
+                list={cardio ?cardioExercise : exercises}
+                state={selectedExercises}
+                setState={setSelectedExercises}
+                cardio={cardio}
+              />
+              </div>}
 
               <div className="excercise__container">
                 <div className="yellow"></div>
@@ -800,8 +1012,7 @@ function AssignWorkout() {
                 >
                   <div className="excercise__header">
                     <div>
-                      Warm-Up
-                      <div> 5 minutes</div>
+                      Exercise
                     </div>
                     <div>
                       {" "}
@@ -880,8 +1091,9 @@ function AssignWorkout() {
                               alignItems: "flex-start",
                             }}
                           >
-                            <div>lungs</div>
+                            <div>{workout.name}</div>
                             <div class="sub_name_exercise">
+                              {workout.cardio ? null :
                               <span style={{ display: "flex" }}>
                                 Reps{" "}
                                 {workout.sets.map((s, i) => (
@@ -890,7 +1102,8 @@ function AssignWorkout() {
                                     {i < workout.sets.length - 1 ? " - " : null}
                                   </span>
                                 ))}
-                              </span>
+                              </span>}
+                              {workout.cardio ? null :
                               <span style={{ display: "flex", marginLeft: 30 }}>
                                 Weights{" "}
                                 {workout.sets.map((s, i) => (
@@ -899,9 +1112,9 @@ function AssignWorkout() {
                                     {i < workout.sets.length - 1 ? " - " : null}
                                   </span>
                                 ))}
-                              </span>
-                              <span style={{ display: "flex", marginLeft: 30 }}>
-                                Rest(secs){" "}
+                              </span>}
+                              <span style={{ display: "flex", marginLeft: workout.cardio ? 0 : 30 }}>
+                                {workout.cardio ? "Time(secs)" : "Rest(secs)"}
                                 {workout.sets.map((s, i) => (
                                   <span>
                                     {s.weights ? s.weights : "12"}
@@ -935,6 +1148,7 @@ function AssignWorkout() {
                               alignItems: "center",
                             }}
                           >
+                            {type=="non-editable" || workout.cardio ? null :
                             <div
                               style={{
                                 borderWidth: "1px",
@@ -973,7 +1187,7 @@ function AssignWorkout() {
                               >
                                 Add New Set
                               </h5>
-                            </div>
+                            </div>}
                             {workout.sets?.map((set, idx2) => (
                               <div
                                 key={idx2}
@@ -984,6 +1198,7 @@ function AssignWorkout() {
                                   marginBottom: "10px",
                                 }}
                               >
+                                {workout.cardio ? null :
                                 <h5
                                   style={{
                                     marginTop: "18px",
@@ -991,7 +1206,8 @@ function AssignWorkout() {
                                   }}
                                 >
                                   Set {idx2 + 1}
-                                </h5>
+                                </h5>}
+                                {workout.cardio ? null :
                                 <div
                                   style={{
                                     marginLeft: "5px",
@@ -1033,7 +1249,8 @@ function AssignWorkout() {
                                       setSelectedExercises(temp);
                                     }}
                                   />
-                                </div>
+                                </div>}
+                                {workout.cardio ? null :
                                 <div
                                   style={{
                                     marginLeft: "5px",
@@ -1075,7 +1292,7 @@ function AssignWorkout() {
                                       type == "non-editable" || type == "view"
                                     }
                                   />
-                                </div>
+                                </div>}
                                 <div
                                   style={{
                                     marginLeft: "5px",
@@ -1092,7 +1309,7 @@ function AssignWorkout() {
                                       marginRight: "10px",
                                     }}
                                   >
-                                    Rest
+                                    {workout.cardio ? "Time" : "Rest"}
                                   </h5>
                                   <input
                                     style={{

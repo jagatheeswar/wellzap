@@ -115,7 +115,9 @@ function AthleteNutrition() {
           <div className="athleteNutritionHeading__row">
             <h1>Today’s Stats and Goals</h1>
           </div>
+          <div style={{width: "95%"}}>
           <NutritionGoalProgress />
+          </div>
           <div style={{width: "95%"}}>
           <WaterCard date={formatDate()} water={water} setWater={setWater} />
           </div>

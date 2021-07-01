@@ -248,6 +248,7 @@ const Reports = (props) => {
           data: graph2Data,
           backgroundColor: "#fcd549",
           padding: 30,
+          borderRadius: 5,
         },
       ],
     };
@@ -425,7 +426,7 @@ const Reports = (props) => {
             />
             <div
               className="chart_legend"
-              style={{ color: "#808080", fontSize: 17 }}
+              style={{ color: "#808080", fontSize: 14 }}
             >
               {formatDate2(currentStartWeek2)} - {formatDate2(currentEndWeek2)}
             </div>

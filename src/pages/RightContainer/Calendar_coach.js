@@ -15,6 +15,8 @@ import Event_card from "./Event_card";
 import Selected_events from "./SelectedEvents";
 import dateContext from "../../features/context";
 import { useHistory } from "react-router-dom";
+// import {Dialog, DialogTitle, DialogContent} from '@material-ui/core'
+
 const Calendar_coach = (props) => {
   let contextType = React.useContext(dateContext);
 
@@ -71,7 +73,16 @@ const Calendar_coach = (props) => {
       el[0].setAttribute("week", weekname);
     }
   });
+  // const [eventHistory, setEventHistory] = useState([]);
+  // const [eventHistoryOpen, setEventHistoryOpen] = useState(false);
+  // const [dialogOpen, setDialogOpen] = React.useState(false);
 
+  // const handleDialogOpen = () => {
+  //   setDialogOpen(true);
+  // }
+  // const handleDialogClose = () => {
+  //   setDialogOpen(false);
+  // }
   React.useEffect(() => {
     if (selectedDay) {
       let date = selectedDay;
@@ -233,14 +244,29 @@ const Calendar_coach = (props) => {
             class="fa fa-search"
             style={{ fontSize: "17px", fontWeight: 100 }}
           ></i>
-          <button
+          {/* <button
             onClick={() => {
-              history.push("/calendar");
+              history.push({
+                pathname:"/calendar", 
+                state:{
+                  page: "CreateEvent"
+                }
+              });
             }}
             className="add_event"
           >
             +
-          </button>
+          </button> */}
+          <span onClick={() => {
+              history.push({
+                pathname:"/calendar", 
+                // state:{
+                //   page: "eventsHistory"
+                // }
+              });
+            }} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"15px"}}>
+            Events History
+          </span>
         </span>
       </div>
       {selectedDay && (
@@ -348,6 +374,13 @@ const Calendar_coach = (props) => {
           </div>
         )}
       </div>
+      {/* <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+      >
+        <DialogTitle>Events History</DialogTitle>
+        <DialogContent></DialogContent>
+      </Dialog> */}
     </div>
   );
 };

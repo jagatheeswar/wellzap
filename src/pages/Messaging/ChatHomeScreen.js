@@ -97,12 +97,7 @@ function ChatHomeScreen({ navigation }) {
   }, [userData?.id]);
 
   return (
-    <div
-      className="container"
-      style={{
-        height: window.innerHeight,
-      }}
-    >
+    <div style={{ minHeight: "99.5vh" }} className="container">
       <div>
         <div
           style={{

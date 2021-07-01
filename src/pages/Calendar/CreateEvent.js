@@ -280,7 +280,7 @@ export default function CreateEvent(props){
           >
             <p
               style={{
-                fontSize: 18,
+                fontSize: 14,
                 color: "black",
                 textAlign:"center",
                 margin:0,

@@ -100,8 +100,8 @@ function Home(props) {
               <img
                 src="/assets/fab.png"
                 alt=""
-                width="26px"
-                height="26px"
+                width="32px"
+                height="32px"
                 // onClick={() => openModal()}
                 onClick={handleClickOpenDialog}
               />
@@ -181,7 +181,7 @@ function Home(props) {
         <div className="modal__coachComponents">
           <div
             className="modal__addAthelete"
-            onClick={() => history.push("/all-athletes")}
+            onClick={() => history.push("/invite-athlete")}
           >
             <div className="modal__addAthleteImg">
               {" "}
@@ -217,7 +217,17 @@ function Home(props) {
             <h3>Create Workout</h3>
           </div>
           <div className="modal__createEvent">
-            <div className="modal__createEventImg">
+            <div 
+              className="modal__createEventImg"
+              onClick={() => {
+                history.push({
+                  pathname:"/calendar", 
+                  // state:{
+                  //   page: "CreateEvent"
+                  // }
+                });
+              }}
+            >
               {" "}
               <img src="/assets/Icon material-event.png" alt="" />
             </div>
