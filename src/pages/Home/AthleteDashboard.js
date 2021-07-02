@@ -27,6 +27,7 @@ function AthleteDashboard(props) {
   const [upcomingMealHistory, setUpcomingMealHistory] = useState([]);
   const [mealHistory, setMealHistory] = useState([]);
   const [coachMealHistory, setCoachMealHistory] = useState([]);
+  const [coachName, setCoachName] = useState("");
 
   useEffect(() => {
     if (userData?.data?.metrics) {
@@ -170,6 +171,15 @@ function AthleteDashboard(props) {
     }
   }, [userData]);
 
+  useEffect(() => {
+    db.collection("coaches")
+      .doc(userData?.data?.listOfCoaches[0])
+      .get()
+      .then(function(snap) {
+        setCoachName(snap.data()?.name)
+      })
+  }, [])
+
   console.log({ workouts, nutrition, userData });
 
   return (
@@ -193,10 +203,10 @@ function AthleteDashboard(props) {
               width="40px"
               height="40px"
             />
-            <h4 style={{fontFamily: 'Montserrat'}}>{userData?.data.name}</h4>
+            <h4 style={{fontFamily: 'Montserrat'}}>{coachName}</h4>
           </div>
 
-          <img src="/assets/message.png" alt="" width="15px" height="15px" />
+          <img onClick={() => history.push('/messaging')} src="/assets/message.png" alt="" width="15px" height="15px" />
         </div>
         </div>
       </Grid>

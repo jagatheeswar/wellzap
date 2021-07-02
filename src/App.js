@@ -67,6 +67,7 @@ import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingP
 import "./fonts/Open_Sans/OpenSans-Regular.ttf";
 import "./fonts/Montserrat/Montserrat-Regular.ttf";
 import { Grid } from "@material-ui/core";
+import CoachProfile from "./pages/Profile/CoachProfile";
 
 function App() {
   const user = useSelector(selectUser);
@@ -220,7 +221,9 @@ function App() {
             <Route path="/profile">
               <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
             </Route>
-
+            <Route path="/coachProfile">
+              <RoutesComp AthleteComp={<CoachProfile />} CoachComp={<NotFound />} />
+            </Route>
             <Route path="/reports">
               <RoutesComp
                 AthleteComp={<Reports />}

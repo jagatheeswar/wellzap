@@ -5,10 +5,10 @@ import Notification from '../../Components/Notifications/Notification';
 import { selectUser, selectUserData, selectUserType, setUserData } from '../../features/userSlice'
 import { db } from '../../utils/firebase';
 import CoachAssessment from './AthleteAssessment';
-import CoachProfileForm from './AthleteProfileForm';
+import CoachProfileForm from './CoachProfileForm';
 import Header from '../../Components/Header/Header'
 import './Profile.css'
-import CoachMedicalAssessment from './AthleteMedicalAssessment';
+// import CoachMedicalAssessment from './AthleteMedicalAssessment';
 
 function CoachProfile() {
 
@@ -60,10 +60,11 @@ function CoachProfile() {
             <div className="coachProfile__container">
                     <div className="coachProfile__leftContainer">
                           <Header />
-                          <CoachMedicalAssessment />
+                          {/* <CoachMedicalAssessment /> */}
+                          <CoachProfileForm />
                     </div>
                     <div className="coachProfile__rightContainer">
-                        <Notification />
+                        {/* <Notification /> */}
                     </div>
             
 
