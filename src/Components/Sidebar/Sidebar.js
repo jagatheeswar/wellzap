@@ -29,7 +29,8 @@ function Sidebar() {
         {userType === "coach" && <h3>Strength and Conditioning Coach</h3>}
         <Link
           className="view-link"
-          to={userType === "athlete" ? "/profile" : "/coach"}
+          to="/profile"
+          // to={userType === "athlete" ? "/profile" : "/profile"}
           style={{fontFamily: 'Montserrat'}}
         >
           {" "}
@@ -60,7 +61,7 @@ function Sidebar() {
               name="Nutrition"
               path="nutrition"
             />
-            <SidebarComponent logo="user" name="Coaches" />
+            <SidebarComponent logo="user" name="Coaches" path="coachProfile" />
             <SidebarComponent logo="rupee" name="Payments" path="payments"/>
             {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar"/> */}
             <SidebarComponent

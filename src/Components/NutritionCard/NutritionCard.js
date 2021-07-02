@@ -34,7 +34,7 @@ function NutritionCard({
   const userType = useSelector(selectUserType);
   const history = useHistory();
   console.log("fd", date);
-  //const isLongTerm = false;
+  // const isLongTerm = false;
   return (
     <div className="nutritionCard">
       <div className="nutritionCard_main">
