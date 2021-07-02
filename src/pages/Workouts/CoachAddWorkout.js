@@ -469,7 +469,7 @@ function CoachAddWorkout() {
 
                             // navigation.navigate("AddWorkout");
                           }}
-                          value="sv"
+                          value={selectedExercises[idx1].value}
                           name="language"
                           placeholder="Choose Workout"
                         />
@@ -619,9 +619,13 @@ function CoachAddWorkout() {
                                       marginRight: "5px",
                                     }}
                                     onClick={() => {
-                                      let temp = [...selectedExercises];
-                                      temp[idx1].sets.splice(idx2, 1);
-                                      setSelectedExercises(temp);
+                                      {
+                                        let temp = [...selectedExercises];
+                                        if (temp[idx1].sets.length > 1) {
+                                          temp[idx1].sets.splice(idx2, 1);
+                                          setSelectedExercises(temp);
+                                        }
+                                      }
                                     }}
                                   >
                                     <CloseIcon />
@@ -1208,8 +1212,10 @@ function CoachAddWorkout() {
                                     }}
                                     onClick={() => {
                                       let temp = [...selectedExercises];
-                                      temp[idx1].sets.splice(idx2, 1);
-                                      setSelectedExercises(temp);
+                                      if (temp[idx1].sets.length > 1) {
+                                        temp[idx1].sets.splice(idx2, 1);
+                                        setSelectedExercises(temp);
+                                      }
                                     }}
                                   >
                                     <CloseIcon />
@@ -1540,85 +1546,41 @@ function CoachAddWorkout() {
                                     flexDirection: "row",
                                   }}
                                 >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                      width: 100,
-                                    }}
-                                  >
-                                    <h3
+                                  {workout?.sets?.map((s, i) => (
+                                    <div
                                       style={{
-                                        marginRight: 10,
-                                        fontSize: 12,
+                                        display: i == 0 ? "flex" : "none",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        width: 100,
                                       }}
                                     >
-                                      Coach
-                                    </h3>
-                                    {workout?.sets?.map((s, i) => (
-                                      <h3 key={i} style={{ fontSize: 12 }}>
-                                        {s.reps ? s.reps : 12}
-                                        {i < workout.sets.length - 1
-                                          ? "-"
-                                          : null}
-                                      </h3>
-                                    ))}
-                                  </div>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                      width: 100,
-                                      marginLeft: 30,
-                                    }}
-                                  >
-                                    <h3
-                                      style={{
-                                        marginRight: 10,
-                                        fontSize: 12,
-                                      }}
-                                    >
-                                      Weights
-                                    </h3>
-                                    {workout?.sets?.map((s, i) => (
-                                      <h3 style={{ fontSize: 12 }}>
-                                        {s.weights ? s.weights : 0}
-                                        {i < workout.sets.length - 1
-                                          ? "-"
-                                          : null}
-                                      </h3>
-                                    ))}
-                                  </div>
-
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      alignItems: "center",
-
-                                      width: 100,
-                                      marginLeft: 30,
-                                    }}
-                                  >
-                                    <h3
-                                      style={{
-                                        marginRight: 10,
-                                        fontSize: 12,
-                                      }}
-                                    >
-                                      Rest
-                                    </h3>
-                                    {workout?.sets?.map((s, i) => (
-                                      <h3 key={i} style={{ fontSize: 12 }}>
-                                        {s.rest ? s.rest : 0}
-                                        {i < workout.sets.length - 1
-                                          ? "-"
-                                          : null}
-                                      </h3>
-                                    ))}
-                                  </div>
+                                      {Object.keys(s).map((set_, i) => (
+                                        <>
+                                          <h3
+                                            style={{
+                                              marginRight: 10,
+                                              marginLeft: i != 0 && 20,
+                                              fontSize: 12,
+                                            }}
+                                          >
+                                            {set_}
+                                          </h3>
+                                          {workout?.sets?.map((s, i) => (
+                                            <h3
+                                              key={i}
+                                              style={{ fontSize: 12 }}
+                                            >
+                                              {s[set_] ? s[set_] : 12}
+                                              {i < workout.sets.length - 1
+                                                ? "-"
+                                                : null}
+                                            </h3>
+                                          ))}
+                                        </>
+                                      ))}
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
                               {/* <h3
@@ -1688,8 +1650,10 @@ function CoachAddWorkout() {
                                     }}
                                     onClick={() => {
                                       let temp = [...selectedExercises];
-                                      temp[idx1].sets.splice(idx2, 1);
-                                      setSelectedExercises(temp);
+                                      if (temp[idx1].sets.length > 1) {
+                                        temp[idx1].sets.splice(idx2, 1);
+                                        setSelectedExercises(temp);
+                                      }
                                     }}
                                   >
                                     <CloseIcon />
@@ -2024,6 +1988,7 @@ function CoachAddWorkout() {
                     })
                     .then(() => {
                       alert("done");
+                      history.push("/workouts");
                     })
                     .catch((e) => console.error("err", e));
                 }}
