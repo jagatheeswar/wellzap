@@ -316,7 +316,7 @@ function CoachAddWorkout() {
                 marginTop: 20,
               }}
             >
-              <label>Workout Duration</label>
+              <label>Workout Duration (hh:mm:ss)</label>
               <br />
               <input
                 style={{
@@ -328,6 +328,8 @@ function CoachAddWorkout() {
                   borderRadius: 5,
                   marginTop: 10,
                 }}
+                type="time"
+                step="1"
                 placeholder="Workout Duration"
                 value={workoutDuration}
                 onChange={(val) => {
@@ -366,7 +368,7 @@ function CoachAddWorkout() {
             >
               <label>Workout Difficulty</label>
               <br />
-              <input
+              <select
                 style={{
                   width: "100%",
                   padding: "15px",
@@ -380,8 +382,11 @@ function CoachAddWorkout() {
                 onChange={(val) => {
                   setWorkoutDifficulty(val.target.value);
                 }}
-                placeholder="Workout Difficulty"
-              />
+                placeholder="Workout Difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="hard">Hard</option>
+              </select>
             </div>
           </div>
 
@@ -907,7 +912,7 @@ function CoachAddWorkout() {
                     setSelectedExercises(temp);
                   }}
                 >
-                  Add Excercise
+                  Add Exercise
                 </button>
               </div>
             </div>

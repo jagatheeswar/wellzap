@@ -202,7 +202,8 @@ function CoachDashboard(props) {
           </p>
         </div>
         <div style={{ width: "90%" }}>
-          {savedWorkouts.length > 1
+        {savedWorkouts.length > 0 ? (
+          savedWorkouts.length > 1
             ? savedWorkouts
                 .slice(0, 1)
                 .map((work, i) => (
@@ -222,7 +223,26 @@ function CoachDashboard(props) {
                   idx={i}
                   type="non-editable"
                 />
-              ))}
+              ))
+              ) : (
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    width: "90%",
+                    height: 90,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: "center",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <h5 style={{
+                    fontSize: "12px",
+                    fontWeight: 'normal'
+                  }}>There are no Workouts for now</h5>
+                </div>
+              ) 
+              }
         </div>
       </Grid>
       <Grid item xs={6} className="coachDashboard__rightContainer">

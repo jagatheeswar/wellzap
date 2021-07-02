@@ -15,7 +15,7 @@ const ProgressBarComponent = ({ containerWidth, progress, progressColor }) => {
           backgroundColor: progressColor,
           positon: "absolute",
           maxWidth: `${progress}%`,
-          height: 8,
+          height: 10,
           borderRadius: 15,
         }}
       ></div>

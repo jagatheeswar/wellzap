@@ -10,8 +10,9 @@ import { db } from "../../utils/firebase";
 import formatSpecificDate from "../../functions/formatSpecificDate";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import formatDate1 from "../../functions/formatDate1";
-
+import { useHistory } from 'react-router-dom'
 function AthleteNutrition() {
+  const history = useHistory();
   const userData = useSelector(selectUserData);
   const [water, setWater] = useState(0);
   const [upcomingMealHistory, setUpcomingMealHistory] = useState([]);
@@ -113,7 +114,7 @@ function AthleteNutrition() {
       <div className="athleteNutrition__homeContainer">
         <div className="athleteNutrition__homeLeftContainer">
           <div className="athleteNutritionHeading__row">
-            <h1>Today’s Stats and Goals</h1>
+            <h1>Nutrition Tracker</h1>
           </div>
           <div style={{width: "95%"}}>
           <NutritionGoalProgress />
@@ -143,9 +144,9 @@ function AthleteNutrition() {
           </div>
         </div>
         <div className="athleteNutrition__homeRightContainer">
-          <h1>Nutrition Tracker</h1>
           <div className="athleteNutritionHeading__row">
             <h1>Meal History</h1>
+            <div onClick={() => history.push('/view-all-nutrition')}>View All</div>
           </div>
           <div className="nutrition__list">
             {mealHistory.length > 0 ? (
@@ -166,6 +167,7 @@ function AthleteNutrition() {
           </div>
           <div className="athleteNutritionHeading__row">
             <h1>Assigned Meals By Coach</h1>
+            <div onClick={() => history.push('/view-all-nutrition')}>View All</div>
           </div>
           {coachMealHistory.length > 0 ? (
             coachMealHistory?.map((food, idx) => (
