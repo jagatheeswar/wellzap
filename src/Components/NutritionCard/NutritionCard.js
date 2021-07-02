@@ -17,11 +17,24 @@ export function formatDate1(date) {
   return [year, month, day].join("-");
 }
 
-function NutritionCard({ nutrition, food, idx, type, navigation, date,selectedWeekNum,isLongTerm,weeks,handleCloseNutrition,setWeeks,selectedDay }) {
+function NutritionCard({
+  nutrition,
+  food,
+  idx,
+  type,
+  navigation,
+  date,
+  selectedWeekNum,
+  isLongTerm,
+  weeks,
+  handleCloseNutrition,
+  setWeeks,
+  selectedDay,
+}) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
   console.log("fd", date);
-  const isLongTerm = false;
+  //const isLongTerm = false;
   return (
     <div className="nutritionCard">
       <div className="nutritionCard_main">

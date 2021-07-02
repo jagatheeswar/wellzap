@@ -126,10 +126,12 @@ function CoachAddWorkout() {
     setSelectedWorkoutEdit("");
     let temp = selectedExercises;
     if (sectionId == 3) {
-      selectedExercises.map((val, idx) => {
-        !val.value && temp.splice(idx, 1);
-        setSelectedExercises(temp);
-      });
+      if (selectedExercises.length > 1) {
+        selectedExercises.map((val, idx) => {
+          !val.value && temp.splice(idx, 1);
+          setSelectedExercises(temp);
+        });
+      }
       // if (!selectedExercises[selectedExercises.length - 1].value) {
       //   temp.pop();
       //   setSelectedExercises(temp);
@@ -159,7 +161,7 @@ function CoachAddWorkout() {
     <div
       className="coachCreateWorkout"
       style={{
-        height: window.innerHeight,
+        height: sectionId == 2 && "100vh",
       }}
     >
       <div
@@ -267,6 +269,33 @@ function CoachAddWorkout() {
                 list={listOfEquipments}
                 state={equipmentsNeeded}
                 setState={setEquipmentsNeeded}
+              />
+              {/* <input
+                style={{
+                  width: "100%",
+                  padding: "15px",
+                  boxSizing: "border-box",
+                  border: "none",
+                  boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
+                  borderRadius: 5,
+                  marginTop: 10,
+                }}
+                placeholder="Search for any equipment"
+              /> */}
+            </div>
+            <div
+              style={{
+                marginTop: 20,
+              }}
+            >
+              <label>Targeted Muscles</label>
+              <br />
+
+              <SearchableDropdown
+                name=""
+                list={listOfTargetedMuscles}
+                state={targetedMuscleGroup}
+                setState={setTargetedMuscleGroup}
               />
               {/* <input
                 style={{
@@ -400,7 +429,11 @@ function CoachAddWorkout() {
       )}
 
       {sectionId == 2 && (
-        <div>
+        <div
+          style={{
+            height: "100%vh",
+          }}
+        >
           <div>
             <div className="Workouts_body">
               <h3>Add Exercises</h3>
@@ -438,7 +471,7 @@ function CoachAddWorkout() {
                           }}
                           value="sv"
                           name="language"
-                          placeholder="Choose your language"
+                          placeholder="Choose Workout"
                         />
                       )}
                       <SelectSearch
