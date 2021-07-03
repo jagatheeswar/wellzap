@@ -82,11 +82,7 @@ function ViewAllSavedWorkouts() {
   }, [userData?.id]);
 
   return (
-<<<<<<< HEAD
-    <div style={{ height: "100vh" }}>
-=======
-    <div style={{minHeight: "99.6vh"}}>
->>>>>>> 261d87f400125d41f4814aa1afc56f41ae611e27
+    <div style={{ minHeight: "99.6vh" }}>
       <WorkoutScreenHeader name="Saved Templates" />
       <div
         style={{
@@ -131,17 +127,18 @@ function ViewAllSavedWorkouts() {
               </div>
             ))
           ) : (
-            <div 
-            style={{
-              fontSize: "13px",
-              backgroundColor: "#fff",
-              width: "100%",
-              padding: "10px 20px",
-              textAlign: "center",
-              borderRadius: "5px",
-              fontWeight: 'normal',
-            }}>
-            <h5> There are no saved workouts for now </h5>
+            <div
+              style={{
+                fontSize: "13px",
+                backgroundColor: "#fff",
+                width: "100%",
+                padding: "10px 20px",
+                textAlign: "center",
+                borderRadius: "5px",
+                fontWeight: "normal",
+              }}
+            >
+              <h5> There are no saved workouts for now </h5>
             </div>
           )}
         </div>
