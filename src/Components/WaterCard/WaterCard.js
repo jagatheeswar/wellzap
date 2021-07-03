@@ -11,8 +11,10 @@ function WaterCard({ date, water, setWater }) {
   return (
     <div className="waterCard">
       <div className="waterCard__container">
-        <h4 style={{marginLeft: 15}}>Water</h4>
-        <div className="waterCard__buttons">
+        <div style={{ marginLeft: 15, fontSize: 20, fontWeight: 400 }}>
+          Water
+        </div>
+        <div className="waterCard__buttons" style={{ height: 50 }}>
           <button
             className="waterCard__button"
             onClick={() => {
@@ -70,7 +72,7 @@ function WaterCard({ date, water, setWater }) {
           progressColor="#FFE66D"
         />
       </div>
-      <h4 style={{marginLeft: 15}}>{water}/10 glasses</h4>
+      <h4 style={{ marginLeft: 15 }}>{water}/10 glasses</h4>
     </div>
   );
 }

@@ -60,8 +60,6 @@ import AthleteTrainingAssessment_coach from "./pages/AllAthletes/AthleteTraining
 import ViewNutrition from "./pages/Nutrition/ViewNutrition";
 import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutritionPlan";
-
-import dateContext from "../src/features/context";
 import CoachAddWorkout from "./pages/Workouts/CoachAddWorkout";
 import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
 import "./fonts/Open_Sans/OpenSans-Regular.ttf";
@@ -224,7 +222,10 @@ function App() {
               <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
             </Route>
             <Route path="/coachProfile">
-              <RoutesComp AthleteComp={<CoachProfile />} CoachComp={<NotFound />} />
+              <RoutesComp
+                AthleteComp={<CoachProfile />}
+                CoachComp={<NotFound />}
+              />
             </Route>
             <Route path="/reports">
               <RoutesComp

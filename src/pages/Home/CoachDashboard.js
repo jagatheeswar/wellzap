@@ -203,9 +203,9 @@ function CoachDashboard(props) {
           </p>
         </div>
         <div style={{ width: "90%" }}>
-        {savedWorkouts.length > 0 ? (
-          savedWorkouts.length > 1
-            ? savedWorkouts
+          {savedWorkouts.length > 0 ? (
+            savedWorkouts.length > 1 ? (
+              savedWorkouts
                 .slice(0, 1)
                 .map((work, i) => (
                   <WorkoutCard
@@ -213,10 +213,12 @@ function CoachDashboard(props) {
                     workouts={savedWorkouts}
                     item={work}
                     idx={i}
+                    showDate={true}
                     type="non-editable"
                   />
                 ))
-            : savedWorkouts.map((work, i) => (
+            ) : (
+              savedWorkouts.map((work, i) => (
                 <WorkoutCard
                   key={workout.id}
                   workouts={savedWorkouts}
@@ -225,25 +227,29 @@ function CoachDashboard(props) {
                   type="non-editable"
                 />
               ))
-              ) : (
-                <div
-                  style={{
-                    backgroundColor: "#fff",
-                    width: "90%",
-                    height: 90,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: "center",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <h5 style={{
-                    fontSize: "12px",
-                    fontWeight: 'normal'
-                  }}>There are no Workouts for now</h5>
-                </div>
-              ) 
-              }
+            )
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "normal",
+                }}
+              >
+                There are no Workouts for now
+              </h5>
+            </div>
+          )}
         </div>
       </Grid>
       <Grid item xs={6} className="coachDashboard__rightContainer">
@@ -295,6 +301,7 @@ function CoachDashboard(props) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              borderRadius: 10,
             }}
           >
             Nutrition Plans on
@@ -340,7 +347,7 @@ function CoachDashboard(props) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: "5px",
+                borderRadius: "10px",
               }}
             >
               <h5
@@ -411,33 +418,63 @@ function CoachDashboard(props) {
               See all
             </p>
           </div>
-          {athletes.length > 0 &&
-            athletes.slice(0, display_count).map((item) => (
-              <div className="athletes__card" style={{ marginTop: 10 }}>
-                <div className="athletes__cardInfo">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    width="40px"
-                    height="40px"
-                  />
-                  <h4
-                    onClick={() => {
-                      history.push("/Athlete/profile/" + `${item.id}`);
-                    }}
-                  >
-                    {item.name}
-                  </h4>
-                </div>
+          <div
+            className="athlestes__list"
+            style={{
+              height: 200,
+              overflowY: "scroll",
+              overflow: "scroll",
 
-                <img
-                  src="/assets/message.png"
-                  alt=""
-                  width="15px"
-                  height="15px"
-                />
-              </div>
-            ))}
+              backgroundColor: "white",
+              overflowX: "hidden",
+            }}
+          >
+            {athletes.length > 0 &&
+              athletes.map((item) => (
+                <div className="athletes__card" style={{ marginTop: 10 }}>
+                  <div className="athletes__cardInfo">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      width="40px"
+                      height="40px"
+                    />
+                    <h4
+                      onClick={() => {
+                        history.push("/Athlete/profile/" + `${item.id}`);
+                      }}
+                    >
+                      {item.name}
+                    </h4>
+                  </div>
+
+                  <div
+                    className="chatIcon"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/messaging",
+                        state: {
+                          id: null,
+                          from_id: userData?.id,
+                          to_id: item.id,
+                          from_name: userData?.data.name,
+                          to_name: item?.name,
+                          type: "coach",
+                        },
+                      })
+                    }
+                  >
+                    {" "}
+                    <img
+                      src="/assets/message.png"
+                      alt=""
+                      width="15px"
+                      height="15px"
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
           {/* {display_count < athletes.length ? (
           <p
             className="see_more_home"

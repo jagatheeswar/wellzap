@@ -17,9 +17,9 @@ import "./Home.css";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import CloseIcon from "@material-ui/icons/Close";
-import dateContext from "../../features/context";
+
 import moment from "moment";
-import { Dialog, Grid } from '@material-ui/core'
+import { Dialog, Grid } from "@material-ui/core";
 
 function Home(props) {
   const history = useHistory();
@@ -29,7 +29,7 @@ function Home(props) {
   const dispatch = useDispatch();
   const [athleteDetails, setAthleteDetails] = useState([]);
   const [visible, setVisible] = useState(false);
-  let contextType = React.useContext(dateContext);
+
   console.log("coachHome", new Date(props.selectedDate));
 
   const openModal = () => {
@@ -173,11 +173,7 @@ function Home(props) {
           <CoachDashboard selectedDate={props.selectedDate} />
         </div>
       </div>
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        maxWidth="md"
-      >
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md">
         <div className="modal__coachComponents">
           <div
             style={{cursor: "pointer"}} 
@@ -211,10 +207,7 @@ function Home(props) {
             style={{cursor: "pointer"}} 
           >
             <div className="modal__createWorkoutImg">
-              <img
-                src="/assets/Icon material-fitness-center.png"
-                alt=""
-              />
+              <img src="/assets/Icon material-fitness-center.png" alt="" />
             </div>
 
             <h3>Create Workout</h3>
@@ -227,7 +220,7 @@ function Home(props) {
               className="modal__createEventImg"
               onClick={() => {
                 history.push({
-                  pathname:"/calendar", 
+                  pathname: "/calendar",
                   // state:{
                   //   page: "CreateEvent"
                   // }
@@ -241,10 +234,7 @@ function Home(props) {
             <h3>Create Event</h3>
           </div>
         </div>
-        <div
-          className="modal__closeButton"
-          onClick={handleCloseDialog}
-        >
+        <div className="modal__closeButton" onClick={handleCloseDialog}>
           {" "}
           <CloseIcon style={{cursor: "pointer"}} />
         </div>
