@@ -92,7 +92,7 @@ function CoachProfileForm() {
 
   console.log(editable);
   return (
-    <div>
+    <div style={{width: "100%"}}>
       <div className="coachProfileForm">
         <div className="coachProfile__info">
           <div className="coachProfile__heading">
@@ -159,7 +159,7 @@ function CoachProfileForm() {
           }}
           readOnly={!editable}
           type="text"
-          placeholder="Enter certificates"
+          placeholder={userType === "coach" ? "Enter certificates" : "Certificates"}
         />
         <h4>Awards</h4>
         <input
@@ -168,20 +168,30 @@ function CoachProfileForm() {
           }}
           readOnly={!editable}
           type="text"
-          placeholder="Enter Awards"
+          placeholder={userType === "coach" ? "Enter Awards" : "Awards"}
         />
-        <h4>Billing Address</h4>
-        <textarea
-          readOnly={!editable}
-          onChange={(e) => {
-            setaddress(e.target.value);
-          }}
-          value={address}
-          type="text"
-          placeholder="300, Baneerghatta Main Rd, opp to Apollo Hospitals, Sundar Ram Shetty Nagar, Bilekahali, Bengaluru, Karnataka - 560076"
-        />
+        {userType === "coach" ? (
+          <>
+            <h4>Billing Address</h4>
+            <textarea
+              readOnly={!editable}
+              onChange={(e) => {
+                setaddress(e.target.value);
+              }}
+              value={address}
+              type="text"
+              placeholder="300, Baneerghatta Main Rd, opp to Apollo   Hospitals, Sundar Ram Shetty Nagar, Bilekahali, Bengaluru, Karnataka - 560076"
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </form>
+      {userType === "coach" ? (
       <div className="coachProfileForm__Button">Upload File</div>
+      ) : (
+        <></>
+      )}
       </div>
     </div>
   )

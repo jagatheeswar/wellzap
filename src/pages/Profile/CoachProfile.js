@@ -63,9 +63,9 @@ function CoachProfile() {
                           {/* <CoachMedicalAssessment /> */}
                           <CoachProfileForm />
                     </div>
-                    <div className="coachProfile__rightContainer">
-                        {/* <Notification /> */}
-                    </div>
+                   {/* <div className="coachProfile__rightContainer">
+                         <Notification /> 
+                    </div>*/}
             
 
 

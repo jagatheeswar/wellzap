@@ -68,6 +68,8 @@ import "./fonts/Open_Sans/OpenSans-Regular.ttf";
 import "./fonts/Montserrat/Montserrat-Regular.ttf";
 import { Grid } from "@material-ui/core";
 import CoachProfile from "./pages/Profile/CoachProfile";
+import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
+import PastWorkouts from "./pages/Workouts/PastWorkouts";
 
 function App() {
   const user = useSelector(selectUser);
@@ -316,6 +318,12 @@ function App() {
                 CoachComp={<ViewAllSavedWorkouts />}
               />
             </Route>
+            <Route path="/view-all-past-workouts">
+              <RoutesComp
+                AthleteComp={<PastWorkouts />}
+                CoachComp={<NotFound />}
+              />
+            </Route>
             <Route path="/post-workout">
               <RoutesComp
                 AthleteComp={<PostWorkoutDetails />}
@@ -344,6 +352,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthleteNutrition />}
                 CoachComp={<ViewNutrition />}
+              />
+            </Route>
+            <Route path="/view-all-meal-history">
+              <RoutesComp
+                AthleteComp={<AthleteMealHistory />}
+                CoachComp={<NotFound />}
               />
             </Route>
             <Route path="/view-all-nutrition">

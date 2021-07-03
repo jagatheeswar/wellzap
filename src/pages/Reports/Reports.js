@@ -458,10 +458,14 @@ const Reports = (props) => {
         </div>
         </div>
       </Grid>
-      {/* {<Graph3_ Id={Id} />}
+      {props.showOthers === false ? (<></>) : (
+        <>
+      <Graph3_ Id={Id} />
       <div className="chart_container" style={{ alignItems: "center" }}>
         <NutritionGoalProgress />
-      </div> */}
+      </div>
+      </>
+      )}
     </Grid>
   );
 };

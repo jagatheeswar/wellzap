@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import CoachPayments from "../Payments/CoachPayments";
+import {useHistory} from "react-router-dom";
+
 function CoachHomeReports() {
+  const history = useHistory();
   const userData = useSelector(selectUserData);
   const [pending, setPending] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
@@ -195,16 +198,16 @@ function CoachHomeReports() {
 
   return (
     <div className="home__reports">
-      <h1>Reports</h1>
+      <h1 onClick={() => history.push("/reports")}>Reports</h1>
       <div className="home__reportsMainContainer">
         <div className="home__reportsLeftContainer">
-          <h1>Compliance</h1>
+          <h1 style={{cursor: "auto"}}>Compliance</h1>
           <div style={{ width: "100%" }}>
             <Report_coach height={150} />
           </div>
         </div>
         <div className="home__reportsRightContainer">
-          <h1>Payments</h1>
+          <h1 onClick={() => history.push("/payments")}>Payments</h1>
           <div style={{ width: "100%", marginTop: 20 }}>
             <div
               style={{

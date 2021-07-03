@@ -197,6 +197,7 @@ function CoachDashboard(props) {
             onClick={() => {
               history.push("/workouts");
             }}
+            style={{cursor: "pointer"}}
           >
             See all
           </p>
@@ -312,6 +313,7 @@ function CoachDashboard(props) {
             onClick={() => {
               history.push("/nutrition");
             }}
+            style={{cursor: "pointer"}}
           >
             See all
           </p>

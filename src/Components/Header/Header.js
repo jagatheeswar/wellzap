@@ -66,8 +66,11 @@ function Header(props) {
           {userType === "coach" ? 
           <>
           <h1>{name ? name : userData?.data.name}</h1>
-          <h3>Strength and Conditioning Coach</h3></>
-          : <h1>{coachName}</h1>}
+          </>
+          : props.athlete ? 
+          <h1>{props.athlete}</h1>
+          : <h1>{coachName}</h1>
+          }
         </div>
       </div>
     </div>

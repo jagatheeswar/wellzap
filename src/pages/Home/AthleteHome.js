@@ -165,7 +165,10 @@ function AthleteHome(props) {
             </div>
             <h3>Add Workout</h3>
           </div>
-          <div className="modal__addGoal">
+          <div 
+            className="modal__addGoal"
+            style={{cursor:"pointer"}} 
+          >
             <div className="modal__addGoalImg"
               onClick={() => {
                 history.push({
@@ -208,6 +211,7 @@ function AthleteHome(props) {
         <div
           className="modal__closeButton"
           onClick={handleCloseDialog}
+          style={{cursor:"pointer"}} 
         >
           {" "}
           <CloseIcon />

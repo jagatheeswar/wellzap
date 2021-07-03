@@ -109,7 +109,7 @@ function AthleteNutrition() {
   }, [userData]);
 
   return (
-    <div className="athleteNutrition">
+    <div style={{minHeight: "99.7vh"}} className="athleteNutrition">
       <NutritionScreenHeader name="Nutrition" />
       <div className="athleteNutrition__homeContainer">
         <div className="athleteNutrition__homeLeftContainer">
@@ -146,7 +146,7 @@ function AthleteNutrition() {
         <div className="athleteNutrition__homeRightContainer">
           <div className="athleteNutritionHeading__row">
             <h1>Meal History</h1>
-            <div onClick={() => history.push('/view-all-nutrition')}>View All</div>
+            <div onClick={() => history.push('/view-all-meal-history')}>View All</div>
           </div>
           <div className="nutrition__list">
             {mealHistory.length > 0 ? (

@@ -129,7 +129,7 @@ function AthleteWorkouts() {
             </div>
             <div style={{width: "90%"}} className="workoutHeading__row">
               <h1>Past Workouts</h1>
-              <div onClick={() => history.push("/view-all-saved-workouts")}>
+              <div onClick={() => history.push("/view-all-past-workouts")}>
                 View All
               </div>
             </div>

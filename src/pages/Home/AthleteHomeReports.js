@@ -2,13 +2,15 @@ import React from "react";
 import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
 import Compliance_report from "../Reports/Compliance_report";
 import Reports from "../Reports/Reports";
+import {useHistory} from "react-router-dom";
 
 function AthleteHomeReports() {
+  const history = useHistory();
   return (
     <div className="home__reports">
-      <h1 style={{fontFamily: 'Open_Sans'}}>Reports</h1>
+      <h1 onClick={() => history.push("/reports")} style={{fontFamily: 'Open_Sans'}}>Reports</h1>
       <div className="home__reportsMainContainer">
-      <Reports />
+      <Reports showOthers={false} />
       {/*  <div className="home__reportsLeftContainer">
           <h1>Compliance</h1>
           <div style={{ width: "100%" }}>

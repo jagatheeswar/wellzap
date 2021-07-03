@@ -180,6 +180,7 @@ function Home(props) {
       >
         <div className="modal__coachComponents">
           <div
+            style={{cursor: "pointer"}} 
             className="modal__addAthelete"
             onClick={() => history.push("/invite-athlete")}
           >
@@ -192,6 +193,7 @@ function Home(props) {
           <div
             className="modal__createNutritionPlans"
             onClick={() => history.push("/add-meal")}
+            style={{cursor: "pointer"}} 
           >
             <div className="modal__createNutritionPlansImg">
               <img
@@ -206,6 +208,7 @@ function Home(props) {
           <div
             className="modal__createWorkout"
             onClick={() => history.push("/create-workout")}
+            style={{cursor: "pointer"}} 
           >
             <div className="modal__createWorkoutImg">
               <img
@@ -216,7 +219,10 @@ function Home(props) {
 
             <h3>Create Workout</h3>
           </div>
-          <div className="modal__createEvent">
+          <div 
+            style={{cursor: "pointer"}} 
+            className="modal__createEvent"
+          >
             <div 
               className="modal__createEventImg"
               onClick={() => {
@@ -240,7 +246,7 @@ function Home(props) {
           onClick={handleCloseDialog}
         >
           {" "}
-          <CloseIcon />
+          <CloseIcon style={{cursor: "pointer"}} />
         </div>
       </Dialog>
     </div>

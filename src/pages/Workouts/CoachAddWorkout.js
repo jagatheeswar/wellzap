@@ -460,10 +460,10 @@ function CoachAddWorkout() {
                             temp[idx1].sets = [];
 
                             temp[idx1].sets.push({
-                              reps: "",
-                              weights: "",
-                              sets: "",
-                              rest: "",
+                              Reps: "",
+                              Weights: "",
+                              // sets: "",
+                              Rest: "",
                             });
 
                             setSelectedExercises(temp);
@@ -482,7 +482,7 @@ function CoachAddWorkout() {
                       <SelectSearch
                         options={[
                           {
-                            name: "reps/weight/sets/rest",
+                            name: "Reps/Weight/Sets/Rest",
                             value: 1,
                           },
                           {
@@ -500,10 +500,10 @@ function CoachAddWorkout() {
                           console.log(val);
                           if (val == 1) {
                             temp[idx1].sets.push({
-                              reps: "",
-                              weights: "",
-                              sets: "",
-                              rest: "",
+                              Reps: "",
+                              Weights: "",
+                              // sets: "",
+                              Rest: "",
                             });
                           }
                           if (val == 2) {
@@ -523,7 +523,9 @@ function CoachAddWorkout() {
                     </div>
                   </div>
 
-                  {data?.value &&
+                  { 
+                  // selectedExercises.length > 0 ? (
+                  data?.value ? (
                     selectedExercises
                       .slice(idx1, idx1 + 1)
                       .map((workout, idx2) => (
@@ -867,7 +869,9 @@ function CoachAddWorkout() {
                             </div>
                           )}
                         </div>
-                      ))}
+                      ))) : (
+                        <></>
+                      )}
                   <div
                     style={{
                       display:
