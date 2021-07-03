@@ -69,7 +69,7 @@ function AthleteWorkouts() {
   }, [userData?.id]);
 
   return (
-    <div className="workouts__home">
+    <div style={{height: "99.7vh"}} className="workouts__home">
       <div className="coachDashboard__leftContainer">
         <WorkoutScreenHeader name="Workouts" />
 
@@ -82,7 +82,8 @@ function AthleteWorkouts() {
               </div>
             </div>
             <div style={{width: "90%", paddingLeft: 20}}>
-            {workouts?.map((workout, i) => (
+            { workouts.length > 0 ? (
+            workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
                 workouts={workouts}
@@ -90,7 +91,24 @@ function AthleteWorkouts() {
                 idx={i}
                 type={"non-editable"}
               />
-            ))}
+            ))) : (
+                <div
+              style={{
+                backgroundColor: "#fff",
+                width: "100%",
+                height: 90,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5 style={{
+                fontSize: "12px",
+                fontWeight: 'normal'
+              }}>There are no Upcoming Workouts for now</h5>
+            </div>
+            )}
             </div>
           </Grid>
           <Grid item xs={6} className="workouts__homeRightContainer">
@@ -116,7 +134,8 @@ function AthleteWorkouts() {
               </div>
             </div>
             <div style={{width: "90%"}}>
-            {pastWorkouts?.map((workout, i) => (
+            { pastWorkouts.length > 0 ? (
+            pastWorkouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
                 workouts={workouts}
@@ -125,7 +144,24 @@ function AthleteWorkouts() {
                 type={"non-editable"}
                 completed={true}
               />
-            ))}
+            ))) : (
+                  <div
+                style={{
+                  backgroundColor: "#fff",
+                  width: "100%",
+                  height: 90,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: "center",
+                  borderRadius: "5px",
+                }}
+              >
+                <h5 style={{
+                  fontSize: "12px",
+                  fontWeight: 'normal'
+                }}>There are no Past Workouts for now</h5>
+              </div>
+            )}
             </div>
           </Grid>
         </Grid>

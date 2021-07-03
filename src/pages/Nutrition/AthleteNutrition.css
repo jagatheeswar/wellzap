@@ -42,13 +42,23 @@
 .assignByCoach__Card {
   display: flex;
   align-items: center;
+  padding: 20px;
+  width: 90%;
+  height: 60px;
+  justify-content: space-between;
   background-color: white;
-  border-radius: 5px;
-  width: 100%;
-  margin: 8px 0;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.assignByCoach__Card > img {
+  object-fit: contain;
 }
 
 .assignByCoach__CardInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-right: 20px;
 }
 

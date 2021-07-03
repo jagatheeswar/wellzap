@@ -64,7 +64,7 @@ function ViewAllNutrition() {
   }, [userData?.id, athleteId]);
 
   return (
-    <div>
+    <div style={{minHeight: "99.7vh"}}>
       <NutritionScreenHeader name="Assigned Meal Plans" />
       <div
         style={{
@@ -101,19 +101,22 @@ function ViewAllNutrition() {
               />
             ))
           ) : (
-            <h5
+            <div
               style={{
-                fontSize: "12px",
                 backgroundColor: "#fff",
                 width: "100%",
-                paddingTop: "10px",
-                paddingRight: "10px",
-                textAlign: "center",
+                height: 90,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: "center",
                 borderRadius: "5px",
               }}
             >
-              There are no nutrition for now
-            </h5>
+              <h5 style={{
+                fontSize: "12px",
+                fontWeight: 'normal'
+              }}>There are no nutrition for now</h5>
+            </div>
           )}
         </div>
       </div>

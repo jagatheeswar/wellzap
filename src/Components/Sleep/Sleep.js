@@ -119,12 +119,14 @@ function Sleep(props) {
     <div className="sleep">
       <div className={classes.root}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <div style={{display: 'flex'}}>
           <Typography gutterBottom>Add Last Nights Sleep</Typography>
           {updatedSleep && 
           <span onClick={(e) => setEditable(true)}>
             <DoneRounded style={{color: '#41c300'}} />
           </span>
           }
+          </div>
           {editable === false ? 
           <IconButton onClick={(e) => setEditable(true)}>
             <Edit />
@@ -184,12 +186,14 @@ function Sleep(props) {
       </div>
 
       <div className="soreness">
+        <div style={{display: 'flex', alignItems: 'center'}}>
         <span style={{fontFamily: 'Montserrat'}}>How Sore do you feel?</span>
         {updatedSoreness && 
           <span onClick={(e) => setEditable(true)}>
             <DoneRounded style={{color: '#41c300'}} />
           </span>
           }
+        </div>
         <div className="emoji__container">
           <div className="emoji__div">
             {/* <Emoji symbol=" 😖 " /> */}

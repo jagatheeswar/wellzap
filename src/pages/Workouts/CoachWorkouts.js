@@ -60,7 +60,8 @@ function CoachWorkouts() {
               </p>
             </div>
             <div style={{width: '90%'}} >
-            {workouts?.map((workout, i) => (
+            {workouts.length > 0 ? (
+            workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
                 workouts={workouts}
@@ -68,8 +69,22 @@ function CoachWorkouts() {
                 idx={i}
                 type="non-editable"
               />
-             
-            ))}
+            ))
+            ) : (
+              <div 
+              style={{
+                fontSize: "13px",
+                backgroundColor: "#fff",
+                width: "90%",
+                padding: "10px 20px",
+                textAlign: "center",
+                borderRadius: "5px",
+                fontWeight: 'normal',
+                marginLeft: 10, 
+              }}>
+              <h5> There are no assigned workouts for now </h5>
+              </div>
+            )}
             </div>
           </Grid>
           <Grid item xs={6} className="workouts__homeRightContainer">
@@ -80,14 +95,29 @@ function CoachWorkouts() {
               </p>
             </div>
             <div style={{width: '90%'}} >
-            {savedWorkouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={savedWorkouts}
-                item={workout}
-                idx={i}
-              />
-            ))}
+            {workouts.length > 0 ? (
+              savedWorkouts?.map((workout, i) => (
+                <WorkoutCard
+                  key={workout.id}
+                  workouts={savedWorkouts}
+                  item={workout}
+                  idx={i}
+                />
+              ))
+            ) : (
+              <div 
+              style={{
+                fontSize: "13px",
+                backgroundColor: "#fff",
+                width: "90%",
+                padding: "10px 20px",
+                textAlign: "center",
+                borderRadius: "5px",
+                fontWeight: 'normal',
+              }}>
+              <h5> There are no saved workouts for now </h5>
+              </div>
+            )}
             </div>
           </Grid>
         </Grid>
