@@ -332,7 +332,7 @@ function CreateNutrition() {
           </Listbox>
         ) : null}
       </div>
-
+      {console.log(selectedAthletes)}
       <div>
         {selectedAthletes.map((athlete, index) => (
           <div

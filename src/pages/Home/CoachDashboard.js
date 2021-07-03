@@ -211,6 +211,7 @@ function CoachDashboard(props) {
                     workouts={savedWorkouts}
                     item={work}
                     idx={i}
+                    showDate={true}
                     type="non-editable"
                   />
                 ))
@@ -408,12 +409,29 @@ function CoachDashboard(props) {
                   </h4>
                 </div>
 
-                <img
-                  src="/assets/message.png"
-                  alt=""
-                  width="15px"
-                  height="15px"
-                />
+                <div
+                  onClick={() =>
+                    history.push({
+                      pathname: "/messaging",
+                      state: {
+                        id: null,
+                        from_id: userData?.id,
+                        to_id: item.id,
+                        from_name: userData?.data.name,
+                        to_name: item?.name,
+                        type: "coach",
+                      },
+                    })
+                  }
+                >
+                  {" "}
+                  <img
+                    src="/assets/message.png"
+                    alt=""
+                    width="15px"
+                    height="15px"
+                  />
+                </div>
               </div>
             ))}
           {/* {display_count < athletes.length ? (

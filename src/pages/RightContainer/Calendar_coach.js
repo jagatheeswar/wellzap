@@ -13,13 +13,11 @@ import {
 } from "../../features/userSlice";
 import Event_card from "./Event_card";
 import Selected_events from "./SelectedEvents";
-import dateContext from "../../features/context";
+
 import { useHistory } from "react-router-dom";
 // import {Dialog, DialogTitle, DialogContent} from '@material-ui/core'
 
 const Calendar_coach = (props) => {
-  let contextType = React.useContext(dateContext);
-
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
   const dispatch = useDispatch();
@@ -257,14 +255,23 @@ const Calendar_coach = (props) => {
           >
             +
           </button> */}
-          <span onClick={() => {
+          <span
+            onClick={() => {
               history.push({
-                pathname:"/calendar", 
+                pathname: "/calendar",
                 // state:{
                 //   page: "eventsHistory"
                 // }
               });
-            }} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"15px"}}>
+            }}
+            style={{
+              backgroundColor: "#fcd54a",
+              borderRadius: 5,
+              padding: 10,
+              cursor: "pointer",
+              marginLeft: "15px",
+            }}
+          >
             Events History
           </span>
         </span>

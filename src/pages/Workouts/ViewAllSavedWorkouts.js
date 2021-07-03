@@ -82,7 +82,7 @@ function ViewAllSavedWorkouts() {
   }, [userData?.id]);
 
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <WorkoutScreenHeader name="Saved Templates" />
       <div
         style={{

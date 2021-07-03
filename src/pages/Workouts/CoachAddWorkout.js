@@ -182,7 +182,7 @@ function CoachAddWorkout() {
               justifyContent: "center",
             }}
           >
-            <div>
+            <div onClick={() => setsectionId(1)}>
               <span
                 className="header_item"
                 style={{
@@ -195,7 +195,7 @@ function CoachAddWorkout() {
               </span>
               <hr />
             </div>
-            <div>
+            <div onClick={() => setsectionId(2)}>
               <span
                 style={{
                   backgroundColor:
@@ -212,6 +212,7 @@ function CoachAddWorkout() {
               style={{
                 width: "auto",
               }}
+              onClick={() => setsectionId(3)}
             >
               <span
                 style={{
@@ -863,6 +864,25 @@ function CoachAddWorkout() {
                           )}
                         </div>
                       ))}
+
+                  <div
+                    style={{
+                      display: idx1 == 0 ? "none" : "block",
+                      marginTop: 20,
+                      fontSize: 16,
+                      backgroundColor: "rgb(252, 209, 28)",
+                      width: 150,
+                      borderRadius: 10,
+                      padding: 10,
+                      textAlign: "center",
+                    }}
+                    onClick={() => {
+                      selectedExercises.splice(idx1, 1);
+                    }}
+                  >
+                    Delete Workout
+                  </div>
+
                   <div
                     style={{
                       display:
@@ -1968,29 +1988,34 @@ function CoachAddWorkout() {
                 }}
                 onClick={() => {
                   sectionId < 3 && setsectionId(sectionId + 1);
+                  console.log(selectedExercises);
+                  selectedExercises.length > 0 &&
+                  selectedExercises[selectedExercises.length - 1].value
+                    ? setModal(true)
+                    : alert("Please select atleast one Excercise");
 
-                  db.collection("CoachWorkouts")
-                    .add({
-                      assignedById: userData?.id,
-                      assignedToId: "",
-                      date: formatDate(),
-                      preWorkout: {
-                        workoutName,
-                        additionalnotes,
-                        workoutDescription,
-                        equipmentsNeeded,
-                        targetedMuscleGroup,
-                        workoutDuration,
-                        caloriesBurnEstimate,
-                        workoutDifficulty,
-                        selectedExercises,
-                      },
-                    })
-                    .then(() => {
-                      alert("done");
-                      history.push("/workouts");
-                    })
-                    .catch((e) => console.error("err", e));
+                  // db.collection("CoachWorkouts")
+                  //   .add({
+                  //     assignedById: userData?.id,
+                  //     assignedToId: "",
+                  //     date: formatDate(),
+                  //     preWorkout: {
+                  //       workoutName,
+                  //       additionalnotes,
+                  //       workoutDescription,
+                  //       equipmentsNeeded,
+                  //       targetedMuscleGroup,
+                  //       workoutDuration,
+                  //       caloriesBurnEstimate,
+                  //       workoutDifficulty,
+                  //       selectedExercises,
+                  //     },
+                  //   })
+                  //   .then(() => {
+                  //     alert("done");
+                  //     history.push("/workouts");
+                  //   })
+                  //   .catch((e) => console.error("err", e));
                 }}
               >
                 Confirm Workout
@@ -1999,6 +2024,151 @@ function CoachAddWorkout() {
           </div>
         </div>
       )}
+
+      <Modal
+        visible={modal}
+        width="500px"
+        height="300"
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+        effect="fadeInUp"
+        onClickaway={() => setModal(false)}
+      >
+        <div className="createWorkout__modal">
+          <h3>Do you want to save the workout?</h3>
+          <div className="createWorkout__modalButtons">
+            <div
+              className="createWorkout__modalButton"
+              onClick={() => {
+                setModal(false);
+                setModal1(true);
+              }}
+            >
+              DON'T SAVE
+            </div>
+            <div
+              className="createWorkout__modalButton"
+              onClick={() => {
+                db.collection("CoachWorkouts")
+                  .add({
+                    assignedById: userData?.id,
+                    assignedToId: "",
+                    date: formatDate(),
+                    preWorkout: {
+                      workoutName,
+                      workoutDescription,
+                      equipmentsNeeded,
+                      targetedMuscleGroup,
+                      workoutDuration,
+                      caloriesBurnEstimate,
+                      workoutDifficulty,
+                      selectedExercises,
+                    },
+                  })
+                  .then(() => {
+                    setModal(false);
+                    setModal1(true);
+                  })
+                  .catch((e) => console.error(e));
+              }}
+            >
+              SAVE
+            </div>
+          </div>
+          <div
+            className="createWorkout__modalButton"
+            onClick={() => setModal(false)}
+          >
+            RETURN
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        visible={modal1}
+        width="500px"
+        effect="fadeInUp"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+        onClickaway={() => setModal(false)}
+      >
+        <div className="createWorkout__modal">
+          <h3>Would you like to assign this workout to your athletes?</h3>
+          <h4>You can complete this step later from the workout screen</h4>
+          <div className="createWorkout__modalButtons">
+            <div
+              className="createWorkout__modalButton"
+              onClick={() => {
+                setModal1(false);
+              }}
+            >
+              NO
+            </div>
+            <div
+              className="createWorkout__modalButton"
+              onClick={() => {
+                let compliance = 0;
+                selectedExercises.map((ex) => {
+                  ex.sets.map((s) => {
+                    compliance = compliance + s.reps * s.weights;
+                  });
+                });
+                history.push({
+                  pathname: "/assign-workout",
+                  state: {
+                    workout: {
+                      data: {
+                        assignedById: userData?.id,
+                        assignedToId: "",
+                        date: "",
+                        preWorkout: {
+                          workoutName,
+                          workoutDescription,
+                          equipmentsNeeded,
+                          targetedMuscleGroup,
+                          workoutDuration,
+                          caloriesBurnEstimate,
+                          workoutDifficulty,
+                          selectedExercises,
+                          compliance,
+                        },
+                      },
+                    },
+                  },
+                });
+                setModal1(false);
+              }}
+            >
+              YES
+            </div>
+          </div>
+          <div
+            className="createWorkout__modalButton"
+            onClick={() => setModal1(false)}
+          >
+            RETURN
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        visible={modal2}
+        width="80%"
+        height="500"
+        effect="fadeInUp"
+        onClickaway={() => setModal2(false)}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <video width="500" height="500" controls>
+          <source src={workoutVideoUrl} />
+        </video>
+      </Modal>
     </div>
   );
 }
