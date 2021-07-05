@@ -15,10 +15,10 @@ function ViewAllWorkouts() {
 
   React.useEffect(() => {
     if (userData) {
-      if (userType === "athlete") {
+      if (userType !== "coach") {
         db.collection("workouts")
           .where("assignedToId", "==", userData?.id)
-          .where("completed", "==", true)
+          .where("completed", "==", false)
           //.orderBy("date","desc")
           .onSnapshot((snapshot) => {
             setWorkouts(

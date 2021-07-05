@@ -52,7 +52,7 @@ function Header(props) {
             className="leftarrow"
             src="/assets/left_arrow.png"
             alt=""
-            onClick={() => history.push("/profile")}
+            onClick={() => history.push("/")}
           />
           <img
             className="image"
