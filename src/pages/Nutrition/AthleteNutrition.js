@@ -11,6 +11,8 @@ import formatSpecificDate from "../../functions/formatSpecificDate";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import formatDate1 from "../../functions/formatDate1";
 import { useHistory } from 'react-router-dom'
+import {Grid} from "@material-ui/core"
+
 function AthleteNutrition() {
   const history = useHistory();
   const userData = useSelector(selectUserData);
@@ -111,44 +113,24 @@ function AthleteNutrition() {
   return (
     <div style={{minHeight: "99.7vh"}} className="athleteNutrition">
       <NutritionScreenHeader name="Nutrition" />
-      <div className="athleteNutrition__homeContainer">
-        <div className="athleteNutrition__homeLeftContainer">
-          <div className="athleteNutritionHeading__row">
+      <Grid container className="athleteNutrition__homeContainer">
+        <Grid item xs={6}>
+          <div style={{width: "90%", marginLeft: 10}}  className="athleteNutritionHeading__row">
             <h1>Nutrition Tracker</h1>
           </div>
-          <div style={{width: "95%"}}>
+          <div style={{width: "90%", marginTop: 11, marginLeft:10}}>
           <NutritionGoalProgress />
           </div>
-          <div style={{width: "95%"}}>
+          <div style={{width: "90%", marginLeft: 10}}>
           <WaterCard date={formatDate()} water={water} setWater={setWater} />
           </div>
-          <div className="athleteNutritionHeading__row">
-            <h1>Upcoming Meals</h1>
-          </div>
-          <div className="nutrition__list">
-            {upcomingMealHistory.length > 0 ? (
-              upcomingMealHistory?.map((food, idx) => (
-                <NutritionCard
-                  key={idx}
-                  nutrition={upcomingMealHistory}
-                  food={food}
-                  idx={idx}
-                  navigation={"add-meal"}
-                />
-              ))
-            ) : (
-              <h5 className="no-upcoming-food-text">
-                There are no upcoming meals for now
-              </h5>
-            )}
-          </div>
-        </div>
-        <div className="athleteNutrition__homeRightContainer">
-          <div className="athleteNutritionHeading__row">
+        </Grid>
+        <Grid item xs={6}>
+          <div style={{width: "90%"}} className="athleteNutritionHeading__row">
             <h1>Meal History</h1>
             <div onClick={() => history.push('/view-all-meal-history')}>View All</div>
           </div>
-          <div className="nutrition__list">
+          <div style={{width: "90%"}} className="nutrition__list">
             {mealHistory.length > 0 ? (
               mealHistory?.map((food, idx) => (
                 <NutritionCard
@@ -165,10 +147,35 @@ function AthleteNutrition() {
               </h5>
             )}
           </div>
-          <div className="athleteNutritionHeading__row">
+        </Grid>
+        <Grid item xs={6}>
+          <div style={{width: "90%", marginLeft: 20}} className="athleteNutritionHeading__row">
+            <h1>Upcoming Meals</h1>
+          </div>
+          <div style={{width: "90%", marginLeft: 20}} className="nutrition__list">
+            {upcomingMealHistory.length > 0 ? (
+              upcomingMealHistory?.map((food, idx) => (
+                <NutritionCard
+                  key={idx}
+                  nutrition={upcomingMealHistory}
+                  food={food}
+                  idx={idx}
+                  navigation={"add-meal"}
+                />
+              ))
+            ) : (
+              <h5 className="no-upcoming-food-text">
+                There are no upcoming meals for now
+              </h5>
+            )}
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div style={{width: "90%"}} className="athleteNutritionHeading__row">
             <h1>Assigned Meals By Coach</h1>
             <div onClick={() => history.push('/view-all-nutrition')}>View All</div>
           </div>
+          <div style={{width: "90%"}}>
           {coachMealHistory.length > 0 ? (
             coachMealHistory?.map((food, idx) => (
               <div key={idx} className="assignByCoach__Card">
@@ -202,8 +209,9 @@ function AthleteNutrition() {
               There are no assigned meals.
             </h5>
           )}
-        </div>
-      </div>
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }

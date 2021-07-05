@@ -74,4 +74,5 @@
   padding: 5px 20px;
   margin-left: 550px;
   cursor: pointer;
+  align-self: flex-end;
 }

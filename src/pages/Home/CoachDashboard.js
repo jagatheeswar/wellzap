@@ -440,8 +440,9 @@ function CoachDashboard(props) {
                       height="40px"
                     />
                     <h4
+                    style={{cursor: "pointer"}}
                       onClick={() => {
-                        history.push("/Athlete/profile/" + `${item.id}`);
+                        history.push("/Athlete/" + `${item.id}`);
                       }}
                     >
                       {item.name}
