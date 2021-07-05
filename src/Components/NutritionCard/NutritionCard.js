@@ -99,6 +99,7 @@ function NutritionCard({
                     pathname: "/view-nutrition",
                     state: {
                       nutrition: food,
+                      type: "view",
                     },
                   });
                 }

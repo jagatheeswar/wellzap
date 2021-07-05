@@ -217,7 +217,7 @@ function CreateNutrition(props) {
 
   useEffect(() => {
     if (location.state.nutrition) {
-      console.log("ss", location.state);
+      console.log("ss", location.state.nutrition.data.selectedDays);
       console.log(location.state.nutrition.data.selectedAthletes);
       if (location.state.type === "update") {
         setType(location.state.type);
@@ -296,15 +296,26 @@ function CreateNutrition(props) {
       //   temp.push(selectedAthletes[0]);
       //   setshow_data(temp);
       // }
-      selectedAthletes.forEach((item) => {
-        item.value = item["id"];
-        temp.push(item);
-        if (temp.length == selectedAthletes.length) {
-          setoptions(temp);
-        }
-      });
+      if (userType == "athlete") {
+        selectedAthletes.forEach((item) => {
+          if (item.id == userData?.id) {
+            let temp = [];
+            temp.push(item);
+            setshow_data(temp);
+          }
+          console.log(show_data);
+        });
+      } else {
+        selectedAthletes.forEach((item) => {
+          item.value = item["id"];
+          temp.push(item);
+          if (temp.length == selectedAthletes.length) {
+            setoptions(temp);
+          }
+        });
+      }
     }
-  }, [selectedAthletes]);
+  }, [selectedAthletes, userData, userType]);
 
   useEffect(() => {
     if (type === "non-editable") {
@@ -343,7 +354,7 @@ function CreateNutrition(props) {
   }, [currentStartWeek]);
 
   useEffect(() => {
-    if (userData?.id) {
+    if (userData?.id && userType == "coach") {
       const data = [];
       db.collection("athletes")
         .orderBy("name", "asc")
@@ -359,7 +370,7 @@ function CreateNutrition(props) {
           setAthletes(data);
         });
     }
-  }, [userData?.id]);
+  }, [userData?.id, userType]);
 
   return (
     <div className="createNutrition">
@@ -376,7 +387,7 @@ function CreateNutrition(props) {
           }}
         />
       </div>
-      {userType != "athlete" || type != "non-editable" ? (
+      {type != "view" ? (
         <div>
           <div {...getRootProps()}>
             <Label {...getInputLabelProps()}>Search for Athletes</Label>
@@ -689,56 +700,58 @@ function CreateNutrition(props) {
                   : "No athletes selected"
               }
             />
-            <div
-              className="selectedAthletes_list"
-              style={{
-                height:
-                  `${selectedAthletes?.length}` > 4
-                    ? 260
-                    : `${selectedAthletes?.length}` * 65,
-                overflow: "scroll",
-                overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
-                backgroundColor: "white",
-                overflowX: "hidden",
-              }}
-            >
-              {selectedAthletes?.map((athlete, idx) => (
-                <div
-                  onClick={() => {
-                    let temp = [];
-                    if (show_data[0]?.id == athlete.id) {
-                      setshow_data([]);
-                    } else {
-                      temp.push(athlete);
-                      setshow_data(temp);
-                      console.log(athlete.name, show_data);
-                    }
-                  }}
-                  style={{
-                    backgroundColor:
-                      athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
-                  }}
-                  className="selectedAthletes_item"
-                >
+            {userType == "athlete" ? null : (
+              <div
+                className="selectedAthletes_list"
+                style={{
+                  height:
+                    `${selectedAthletes?.length}` > 4
+                      ? 260
+                      : `${selectedAthletes?.length}` * 65,
+                  overflow: "scroll",
+                  overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
+                  backgroundColor: "white",
+                  overflowX: "hidden",
+                }}
+              >
+                {selectedAthletes?.map((athlete, idx) => (
                   <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: 10,
+                    onClick={() => {
+                      let temp = [];
+                      if (show_data[0]?.id == athlete.id) {
+                        setshow_data([]);
+                      } else {
+                        temp.push(athlete);
+                        setshow_data(temp);
+                        console.log(athlete.name, show_data);
+                      }
                     }}
+                    style={{
+                      backgroundColor:
+                        athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
+                    }}
+                    className="selectedAthletes_item"
                   >
-                    <img
-                      style={{ borderRadius: 18 }}
-                      src={athlete.imageUrl}
-                      alt=""
-                      width="36"
-                      height="36"
-                    />
-                    <span style={{ marginLeft: 15 }}>{athlete.name}</span>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: 10,
+                      }}
+                    >
+                      <img
+                        style={{ borderRadius: 18 }}
+                        src={athlete.imageUrl}
+                        alt=""
+                        width="36"
+                        height="36"
+                      />
+                      <span style={{ marginLeft: 15 }}>{athlete.name}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             <div>
               {show_data?.map((athlete, index) => (

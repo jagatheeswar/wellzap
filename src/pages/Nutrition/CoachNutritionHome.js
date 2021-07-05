@@ -6,7 +6,7 @@ import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import { db } from "../../utils/firebase";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
-import { Grid } from '@material-ui/core'
+import { Grid } from "@material-ui/core";
 
 function CoachNutritionHome() {
   const history = useHistory();
@@ -67,17 +67,23 @@ function CoachNutritionHome() {
   }, [userData?.id]);
 
   return (
-    <div style={{minHeight: '99vh'}} className="coachNutritionHome">
+    <div style={{ minHeight: "99vh" }} className="coachNutritionHome">
       <NutritionScreenHeader name="Nutrition" />
       <Grid container spacing={2} className="coachNutrition__homeContainer">
         <Grid item xs={6} className="coachNutrition__homeLeftContainer">
-          <div style={{width: "90%", paddingLeft: 15}} className="coachNutrition__row">
+          <div
+            style={{ width: "90%", paddingLeft: 15 }}
+            className="coachNutrition__row"
+          >
             <h1>Assigned Meal Plans</h1>
             <div onClick={() => history.push("/view-all-nutrition")}>
               View All
             </div>
           </div>
-          <div style={{width: "90%", paddingLeft: 15}} className="coachNutrition__list">
+          <div
+            style={{ width: "90%", paddingLeft: 15 }}
+            className="coachNutrition__list"
+          >
             {nutrition.length > 0 ? (
               nutrition?.map((food, idx) => (
                 <NutritionCard
@@ -96,13 +102,13 @@ function CoachNutritionHome() {
           </div>
         </Grid>
         <Grid item xs={6} className="coachNutrition__homeRightContainer">
-          <div style={{width: "90%"}} className="coachNutrition__row">
+          <div style={{ width: "90%" }} className="coachNutrition__row">
             <h1>Saved Meal Plans</h1>
             <div onClick={() => history.push("/view-all-saved-nutrition")}>
               View All
             </div>
           </div>
-          <div style={{width: "90%"}} className="coachNutrition__list">
+          <div style={{ width: "90%" }} className="coachNutrition__list">
             {savedNutrition.length > 0 ? (
               savedNutrition?.map((food, idx) => (
                 <NutritionCard

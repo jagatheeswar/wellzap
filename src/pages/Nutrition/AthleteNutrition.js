@@ -34,11 +34,7 @@ function AthleteNutrition() {
     if (userData?.id) {
       db.collection("Food")
         .where("assignedTo_id", "==", userData?.id)
-        .where(
-          "selectedDays",
-          "array-contains",
-          formatSpecificDate("2021-05-18")
-        )
+        .where("selectedDays", "array-contains", formatDate())
         .get()
         .then((snapshot) => {
           setUpcomingMealHistory(
@@ -88,6 +84,7 @@ function AthleteNutrition() {
             }
           });
           setMealHistory(temp);
+          console.log(temp);
         });
     }
   }, [userData?.id]);
@@ -111,7 +108,7 @@ function AthleteNutrition() {
   }, [userData]);
 
   return (
-    <div style={{minHeight: "99.7vh"}} className="athleteNutrition">
+    <div style={{ minHeight: "99.7vh" }} className="athleteNutrition">
       <NutritionScreenHeader name="Nutrition" />
       <Grid container className="athleteNutrition__homeContainer">
         <Grid item xs={6}>
@@ -138,6 +135,7 @@ function AthleteNutrition() {
                   nutrition={mealHistory}
                   food={food}
                   idx={idx}
+                  type="view"
                   navigation={"add-meal"}
                 />
               ))
@@ -173,12 +171,26 @@ function AthleteNutrition() {
         <Grid item xs={6}>
           <div style={{width: "90%"}} className="athleteNutritionHeading__row">
             <h1>Assigned Meals By Coach</h1>
-            <div onClick={() => history.push('/view-all-nutrition')}>View All</div>
+            <div onClick={() => history.push("/view-all-nutrition")}>
+              View All
+            </div>
           </div>
           <div style={{width: "90%"}}>
           {coachMealHistory.length > 0 ? (
             coachMealHistory?.map((food, idx) => (
-              <div key={idx} className="assignByCoach__Card">
+              <div
+                onClick={() => {
+                  history.push({
+                    pathname: "/view-nutrition",
+                    state: {
+                      nutrition: food,
+                      type: "view",
+                    },
+                  });
+                }}
+                key={idx}
+                className="assignByCoach__Card"
+              >
                 <img
                   src="/assets/nutrition.jpeg"
                   alt=""

@@ -55,11 +55,10 @@ function AthleteAddMeal() {
       .doc(formatDate())
       .get()
       .then((doc) => {
-          if (doc.data()?.entireFood) {
-            setEntireFood(doc.data()?.entireFood);
-            setTodaysFoodId(doc.id);
-          }
-      
+        if (doc.data()?.entireFood) {
+          setEntireFood(doc.data()?.entireFood);
+          setTodaysFoodId(doc.id);
+        }
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
@@ -111,40 +110,20 @@ function AthleteAddMeal() {
               alert("Please select a meal");
             } else {
               db.collection("AthleteNutrition")
-              .doc(userData?.id)
-              .collection("nutrition")
-              .doc(formatDate())
-                .get()
-                .then((snap) => {
-                  if (snap.empty) {
-                    db.collection("AthleteNutrition")
-                      .doc(userData?.id)
-                      .collection("nutrition")
-                      .doc(formatDate())
-                      .set({
-                        entireFood,
-                      })
-                      .then((docRef) => {
-                        console.log("Document successfully updated!", docRef);
-                        history.push("/nutrition");
-                      })
-                      .catch((error) => {
-                        console.error("Error updating document: ", error);
-                      });
-                  } else {
-                    db.collection("AthleteNutrition")
-                      .doc(userData?.id)
-                      .collection("nutrition")
-                      .doc(formatDate())
-                          .update({
-                            entireFood,
-                          })
-                          .then(() => {})
-                          .catch((err) => {
-                            console.log(err);
-                          });
-  
-                  }
+                .doc(userData?.id)
+                .collection("nutrition")
+                .doc(formatDate())
+                .set(
+                  {
+                    entireFood,
+                  },
+                  { merge: true }
+                )
+                .then(() => {
+                  history.push("/nutrition");
+                })
+                .catch((error) => {
+                  console.error("Error updating document: ", error);
                 });
             }
           }
