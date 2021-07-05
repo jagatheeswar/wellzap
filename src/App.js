@@ -351,7 +351,7 @@ function App() {
             </Route>
             <Route path="/view-nutrition">
               <RoutesComp
-                AthleteComp={<AthleteNutrition />}
+                AthleteComp={<ViewNutrition />}
                 CoachComp={<ViewNutrition />}
               />
             </Route>

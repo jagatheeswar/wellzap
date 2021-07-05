@@ -266,3 +266,7 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+.assignByCoach__Card:hover {
+  cursor: pointer;
+}

@@ -10,7 +10,7 @@ import { db } from "../../utils/firebase";
 import formatSpecificDate from "../../functions/formatSpecificDate";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import formatDate1 from "../../functions/formatDate1";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 function AthleteNutrition() {
   const history = useHistory();
   const userData = useSelector(selectUserData);
@@ -32,11 +32,7 @@ function AthleteNutrition() {
     if (userData?.id) {
       db.collection("Food")
         .where("assignedTo_id", "==", userData?.id)
-        .where(
-          "selectedDays",
-          "array-contains",
-          formatSpecificDate("2021-05-18")
-        )
+        .where("selectedDays", "array-contains", formatDate())
         .get()
         .then((snapshot) => {
           setUpcomingMealHistory(
@@ -86,6 +82,7 @@ function AthleteNutrition() {
             }
           });
           setMealHistory(temp);
+          console.log(temp);
         });
     }
   }, [userData?.id]);
@@ -109,18 +106,18 @@ function AthleteNutrition() {
   }, [userData]);
 
   return (
-    <div style={{minHeight: "99.7vh"}} className="athleteNutrition">
+    <div style={{ minHeight: "99.7vh" }} className="athleteNutrition">
       <NutritionScreenHeader name="Nutrition" />
       <div className="athleteNutrition__homeContainer">
         <div className="athleteNutrition__homeLeftContainer">
           <div className="athleteNutritionHeading__row">
             <h1>Nutrition Tracker</h1>
           </div>
-          <div style={{width: "95%"}}>
-          <NutritionGoalProgress />
+          <div style={{ width: "95%" }}>
+            <NutritionGoalProgress />
           </div>
-          <div style={{width: "95%"}}>
-          <WaterCard date={formatDate()} water={water} setWater={setWater} />
+          <div style={{ width: "95%" }}>
+            <WaterCard date={formatDate()} water={water} setWater={setWater} />
           </div>
           <div className="athleteNutritionHeading__row">
             <h1>Upcoming Meals</h1>
@@ -133,6 +130,7 @@ function AthleteNutrition() {
                   nutrition={upcomingMealHistory}
                   food={food}
                   idx={idx}
+                  type="view"
                   navigation={"add-meal"}
                 />
               ))
@@ -146,7 +144,9 @@ function AthleteNutrition() {
         <div className="athleteNutrition__homeRightContainer">
           <div className="athleteNutritionHeading__row">
             <h1>Meal History</h1>
-            <div onClick={() => history.push('/view-all-meal-history')}>View All</div>
+            <div onClick={() => history.push("/view-all-meal-history")}>
+              View All
+            </div>
           </div>
           <div className="nutrition__list">
             {mealHistory.length > 0 ? (
@@ -167,11 +167,25 @@ function AthleteNutrition() {
           </div>
           <div className="athleteNutritionHeading__row">
             <h1>Assigned Meals By Coach</h1>
-            <div onClick={() => history.push('/view-all-nutrition')}>View All</div>
+            <div onClick={() => history.push("/view-all-nutrition")}>
+              View All
+            </div>
           </div>
           {coachMealHistory.length > 0 ? (
             coachMealHistory?.map((food, idx) => (
-              <div key={idx} className="assignByCoach__Card">
+              <div
+                onClick={() => {
+                  history.push({
+                    pathname: "/view-nutrition",
+                    state: {
+                      nutrition: food,
+                      type: "view",
+                    },
+                  });
+                }}
+                key={idx}
+                className="assignByCoach__Card"
+              >
                 <img
                   src="/assets/nutrition.jpeg"
                   alt=""

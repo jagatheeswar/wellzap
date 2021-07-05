@@ -16,7 +16,7 @@ function ViewAllNutrition() {
     if (userData) {
       if (userType === "athlete") {
         db.collection("Food")
-          .where("assignedTo_id", "==", userData)
+          .where("assignedTo_id", "==", userData?.id)
           .where("saved", "==", false)
           .onSnapshot((snapshot) => {
             if (snapshot) {
@@ -64,7 +64,7 @@ function ViewAllNutrition() {
   }, [userData?.id, athleteId]);
 
   return (
-    <div style={{minHeight: "99.7vh"}}>
+    <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Assigned Meal Plans" />
       <div
         style={{
@@ -106,16 +106,20 @@ function ViewAllNutrition() {
                 backgroundColor: "#fff",
                 width: "100%",
                 height: 90,
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
                 borderRadius: "5px",
               }}
             >
-              <h5 style={{
-                fontSize: "12px",
-                fontWeight: 'normal'
-              }}>There are no nutrition for now</h5>
+              <h5
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "normal",
+                }}
+              >
+                There are no nutrition for now
+              </h5>
             </div>
           )}
         </div>
