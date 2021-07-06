@@ -21,7 +21,7 @@ import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
 import SelectSearch from "react-select-search";
-
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
 //     margin: theme.spacing(1),
@@ -161,7 +161,7 @@ function CoachAddWorkout() {
     <div
       className="coachCreateWorkout"
       style={{
-        height: sectionId == 2 && "100vh",
+        height: sectionId == 2 ? "100vh": "100vh",
       }}
     >
       <div
@@ -582,7 +582,7 @@ function CoachAddWorkout() {
                                 }
                               />
                             </div>
-                            <div style={{ marginLeft: "10px", width: "60%" }}>
+                            <div style={{ marginLeft: "10px", width: "80%" }}>
                               <div
                                 style={{
                                   display: "flex",
@@ -599,6 +599,7 @@ function CoachAddWorkout() {
                                 >
                                   {workout?.name}
                                 </h4>
+                                <ExpandMoreRoundedIcon />
                               </div>
                             </div>
                           </div>
