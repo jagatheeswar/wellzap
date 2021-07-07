@@ -158,8 +158,10 @@ function AssignWorkout() {
   const dispatch = useDispatch();
   const [listOfAthletes, setListOfAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
+  const [selectedAthletes1, setSelectedAthletes1] = useState([]);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
+  const [athlete_selecteddays, setathlete_selecteddays] = useState({});
   const [workoutDuration, setworkoutDuration] = useState(null);
   const [caloriesBurnEstimate, setcaloriesBurnEstimate] = useState(null);
   const [workoutDifficulty, setworkoutDifficulty] = useState(null);
@@ -294,6 +296,23 @@ function AssignWorkout() {
       setWorkout(temp);
     }
   }, [group]);
+
+  useEffect(() => {
+    console.log(selectedExercises);
+  }, [selectedExercises]);
+
+  useEffect(() => {
+    console.log(athlete_selecteddays);
+    let temp = [...selectedAthletes];
+    selectedAthletes.map((athlete, idx) => {
+      if (athlete_selecteddays[athlete.id]) {
+        temp[idx].selectedDays = athlete_selecteddays[athlete.id];
+      }
+      setSelectedAthletes1(temp);
+    });
+
+    console.log(athlete_selecteddays);
+  }, [selectedAthletes]);
 
   useEffect(() => {
     if (location.state?.workout && userType === "athlete") {
@@ -652,7 +671,7 @@ function AssignWorkout() {
                 value={
                   show_data.length > 0
                     ? show_data[0]?.name
-                    : "No athletes selected"
+                    : "Click on Athlete to show selected dates"
                 }
               />
               <div
@@ -734,9 +753,9 @@ function AssignWorkout() {
                     >
                       <img
                         style={{
-                          width: "35px",
-                          height: "35px",
-                          borderRadius: "10px",
+                          width: "36px",
+                          height: "36px",
+                          borderRadius: "18px",
                           marginLeft: "20px",
                           marginRight: "20px",
                         }}
@@ -847,6 +866,11 @@ function AssignWorkout() {
                                         specificDates[idx],
                                       ],
                                     };
+                                    let temp = athlete_selecteddays;
+                                    temp[selectedAthletes[index].id] =
+                                      selectedAthletes[index].selectedDays;
+
+                                    setathlete_selecteddays(temp);
                                     setSelectedAthletes([...selectedAthletes]);
                                   }
                                 }
@@ -1002,7 +1026,7 @@ function AssignWorkout() {
               </Listbox>
             ) : null}
             <div>
-              {selectedAthletes?.map((athlete, index) => (
+              {selectedAthletes1?.map((athlete, index) => (
                 <div
                   key={index}
                   style={{
@@ -1014,7 +1038,6 @@ function AssignWorkout() {
                     alignItems: "flex-start",
                   }}
                 >
-                  {console.log("sl", selectedAthletes)}
                   <div
                     style={{
                       display: "flex",
@@ -1027,9 +1050,9 @@ function AssignWorkout() {
                   >
                     <img
                       style={{
-                        width: "35px",
-                        height: "35px",
-                        borderRadius: "10px",
+                        width: "36px",
+                        height: "36px",
+                        borderRadius: "18px",
                         marginLeft: "20px",
                         marginRight: "20px",
                       }}
@@ -1139,6 +1162,11 @@ function AssignWorkout() {
                                       specificDates[idx],
                                     ],
                                   };
+                                  let temp = athlete_selecteddays;
+                                  temp[selectedAthletes[index].id] =
+                                    selectedAthletes[index].selectedDays;
+
+                                  setathlete_selecteddays(temp);
                                   setSelectedAthletes([...selectedAthletes]);
                                 }
                               }
@@ -1318,6 +1346,7 @@ function AssignWorkout() {
                 >
                   <div className="excercise__header">
                     <div>Exercise</div>
+                    {console.log("ex", selectedExercises)}
                     <div>
                       {" "}
                       {selectedWorkoutEdit ? (
@@ -1372,8 +1401,8 @@ function AssignWorkout() {
                           >
                             <img
                               style={{
-                                width: "70px",
-                                height: "70px",
+                                width: "100px",
+                                height: "56px",
                                 borderRadius: "8px",
                                 backgroundColor: "#d3d3d3",
                                 objectFit: "cover",
@@ -1386,59 +1415,81 @@ function AssignWorkout() {
                               }
                             />
                           </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              marginLeft: 20,
-                              flexDirection: "column",
-                              justifyContent: "flex-start",
-                              alignItems: "flex-start",
-                            }}
-                          >
-                            <div>{workout.name}</div>
-                            <div class="sub_name_exercise">
-                              {workout.cardio ? null : (
-                                <span style={{ display: "flex" }}>
-                                  Reps{" "}
-                                  {workout?.sets?.map((s, i) => (
-                                    <span>
-                                      {s.reps ? s.reps : "12"}
-                                      {i < workout.sets.length - 1
-                                        ? " - "
-                                        : null}
-                                    </span>
-                                  ))}
-                                </span>
-                              )}
-                              {workout.cardio ? null : (
-                                <span
-                                  style={{ display: "flex", marginLeft: 30 }}
-                                >
-                                  Weights{" "}
-                                  {workout?.sets?.map((s, i) => (
-                                    <span>
-                                      {s.weights ? s.weights : "12"}
-                                      {i < workout.sets.length - 1
-                                        ? " - "
-                                        : null}
-                                    </span>
-                                  ))}
-                                </span>
-                              )}
-                              <span
+                          <div>
+                            <div>
+                              <div
                                 style={{
                                   display: "flex",
-                                  marginLeft: workout.cardio ? 0 : 30,
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
                                 }}
                               >
-                                {workout.cardio ? "Time(secs)" : "Rest(secs)"}
+                                <div
+                                  style={{
+                                    fontSize: "15px",
+                                    fontWeight: "600",
+                                    height: "20px",
+                                    marginBottom: 10,
+                                  }}
+                                >
+                                  {workout?.name}
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                }}
+                              >
                                 {workout?.sets?.map((s, i) => (
-                                  <span>
-                                    {s.weights ? s.weights : "12"}
-                                    {i < workout.sets.length - 1 ? " - " : null}
-                                  </span>
+                                  <div
+                                    style={{
+                                      display: i == 0 ? "flex" : "none",
+                                      flexDirection: "column",
+                                    }}
+                                  >
+                                    {Object.keys(s).map((set_, i) => (
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            fontSize: 13,
+                                            fontWeight: 600,
+                                            width: 100,
+                                          }}
+                                        >
+                                          {set_}
+                                        </div>
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            width: "100%",
+                                          }}
+                                        >
+                                          {workout?.sets?.map((s, i) => (
+                                            <div
+                                              key={i}
+                                              style={{
+                                                fontSize: 13,
+                                                fontWeight: 500,
+                                              }}
+                                            >
+                                              {s[set_] ? s[set_] : 12}
+                                              {i < workout.sets.length - 1
+                                                ? "  -  "
+                                                : null}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
                                 ))}
-                              </span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1463,6 +1514,7 @@ function AssignWorkout() {
                               display: "flex",
                               flexDirection: "column",
                               alignItems: "center",
+                              borderBottom: "1px solid black",
                             }}
                           >
                             {type == "non-editable" || workout.cardio ? null : (
@@ -1485,11 +1537,16 @@ function AssignWorkout() {
                                 onClick={() => {
                                   // navigation.navigate("AddWorkout");
                                   let temp = [...selectedExercises];
-                                  temp[idx1].sets.push({
-                                    reps: "",
-                                    weights: "",
-                                    rest: "",
-                                  });
+
+                                  let tmp = {};
+
+                                  Object.keys(temp[idx1].sets[0]).forEach(
+                                    (val) => {
+                                      tmp[val] = "";
+                                    }
+                                  );
+
+                                  temp[idx1].sets.push(tmp);
 
                                   setSelectedExercises(temp);
                                 }}
@@ -1506,6 +1563,7 @@ function AssignWorkout() {
                                 </h5>
                               </div>
                             )}
+
                             {workout.sets?.map((set, idx2) => (
                               <div
                                 key={idx2}
@@ -1516,17 +1574,86 @@ function AssignWorkout() {
                                   marginBottom: "10px",
                                 }}
                               >
-                                {workout.cardio ? null : (
-                                  <h5
+                                <div
+                                  style={{
+                                    marginLeft: "-15px",
+                                    marginRight: "5px",
+                                  }}
+                                  onClick={() => {
+                                    {
+                                      let temp = [...selectedExercises];
+                                      if (temp[idx1].sets.length > 1) {
+                                        temp[idx1].sets.splice(idx2, 1);
+                                        setSelectedExercises(temp);
+                                      }
+                                    }
+                                  }}
+                                >
+                                  <CloseIcon />
+                                </div>
+                                <h5
+                                  style={{
+                                    marginTop: "18px",
+                                    marginRight: "15px",
+                                  }}
+                                >
+                                  Set {idx2 + 1}
+                                </h5>
+
+                                {Object.keys(set).map((set_, idx5) => (
+                                  <div
+                                    key={idx5}
                                     style={{
-                                      marginTop: "18px",
-                                      marginRight: "15px",
+                                      marginLeft: "10px",
+                                      marginRight: "10px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      flexDirection: "column",
                                     }}
                                   >
-                                    Set {idx2 + 1}
-                                  </h5>
-                                )}
-                                {workout.cardio ? null : (
+                                    <div
+                                      style={{
+                                        margin: 5,
+                                        fontSize: "14px",
+                                        fontWeight: "500",
+                                        textAlign: "center",
+                                        marginRight: "10px",
+                                      }}
+                                    >
+                                      {set_}
+                                    </div>
+                                    <input
+                                      style={{
+                                        width: "50px",
+                                        height: "20px",
+                                        borderWidth: "1px",
+                                        borderColor: "#DBE2EA",
+                                        backgroundColor: "#fff",
+                                        padding: "7px",
+                                        borderRadius: "8px",
+                                        textAlign: "center",
+                                      }}
+                                      value={workout.sets[idx2][set_]}
+                                      placeholder={"12"}
+                                      onChange={(e) => {
+                                        let temp = [...selectedExercises];
+                                        let tmp = selectedExercises[idx1].sets;
+                                        tmp[idx2][set_] = e.target.value;
+                                        temp[idx1].sets = tmp;
+
+                                        console.log(idx2, tmp[idx2][set_]);
+
+                                        // temp[idx1].sets[idx4][set_] =
+                                        //   e.target.value;
+
+                                        // temp[idx1].sets[idx4][set_] =
+                                        //   e.target.value;
+                                        setSelectedExercises(temp);
+                                      }}
+                                    />
+                                  </div>
+                                ))}
+                                {/* {workout.cardio ? null : (
                                   <div
                                     style={{
                                       marginLeft: "5px",
@@ -1613,8 +1740,8 @@ function AssignWorkout() {
                                       }
                                     />
                                   </div>
-                                )}
-                                <div
+                                )} */}
+                                {/* <div
                                   style={{
                                     marginLeft: "5px",
                                     marginRight: "5px",
@@ -1655,27 +1782,21 @@ function AssignWorkout() {
                                       setSelectedExercises(temp);
                                     }}
                                   />
-                                </div>
+                                </div> */}
                               </div>
                             ))}
-                            <div
-                              onClick={() => setSelectedWorkoutEdit("")}
+
+                            {/* <div
                               style={{
-                                position: "relative",
-                                left: "70%",
-                                borderWidth: "1px",
-                                borderRadius: "5px",
-                                borderColor: "#DBE2EA",
-                                display: "flex",
-                                alignSelf: "flex-end",
-                                padding: "5px",
-                                paddingLeft: "7px",
-                                paddingRight: "7px",
-                                cursor: "pointer",
+                                borderBottom: "2px solid black",
+
+                                borderColor: "red",
+                                width: 200,
                               }}
+                              className=""
                             >
-                              <CheckBoxIcon fontSize="large" />
-                            </div>
+                              hi
+                            </div> */}
                           </div>
                         )}
                       </div>

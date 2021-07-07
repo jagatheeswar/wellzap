@@ -1,5 +1,5 @@
 .workouts_header {
-  width: 100%;
+  margin: 20px;
 }
 .workouts_header div {
   width: 100%;
@@ -25,14 +25,18 @@
 }
 
 hr {
-  height: 1px;
+  height: 2px;
+  border-top: 1px dotted red;
 }
 .coachCreateWorkout {
-  margin: 40px;
+  margin-left: 0px;
+}
+.header_line {
+  border-top: 1px solid red;
 }
 
-.workouts_body {
-  width: 100%;
+.Workouts_body {
+  margin: 30px;
 }
 .workouts_body div input {
   width: 100%;
@@ -41,7 +45,7 @@ hr {
   width: 90%;
   box-sizing: border-box;
   margin-right: 20px;
-  margin-top: 25px;
+
   border-color: rgba(0, 0, 0, 0.575);
   border-top-style: dashed;
 }
@@ -52,4 +56,9 @@ hr {
 
 .sc-gtsrHT .iYKfNu {
   margin-bottom: 0;
+}
+
+.select-search__select {
+  height: 187px !important;
+  border-radius: 10px;
 }

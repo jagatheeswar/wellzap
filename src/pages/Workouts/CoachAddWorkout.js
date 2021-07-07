@@ -20,8 +20,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
-import SelectSearch from "react-select-search";
-import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import SelectSearch, { fuzzySearch } from "react-select-search";
+
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
 //     margin: theme.spacing(1),
@@ -161,21 +161,11 @@ function CoachAddWorkout() {
     <div
       className="coachCreateWorkout"
       style={{
-        height: sectionId == 2 ? "100vh": "100vh",
+        minHeight: "99vh",
       }}
     >
-      <div
-        className="workout_goBack"
-        style={{
-          fontSize: 20,
-          fontWeight: 500,
-          marginBottom: 20,
-          cursor: "pointer"
-        }}
-        onClick={() => history.goBack()}
-      >
-        <span>&#60;</span>Create Workout
-      </div>
+      <WorkoutScreenHeader name="Create Workouts" />
+
       <div className="Createworkout_header">
         <div className="workouts_header">
           <div
@@ -184,31 +174,57 @@ function CoachAddWorkout() {
               justifyContent: "center",
             }}
           >
-            <div onClick={() => setsectionId(1)}>
-              <span
-                className="header_item"
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              onClick={() => setsectionId(1)}
+            >
+              <div
                 style={{
-                  backgroundColor:
-                    sectionId == 1 ? "#fcd11c" : sectionId > 1 && "green",
-                  color: sectionId == 1 ? "black" : "white",
+                  width: 30,
+                  margin: 5,
                 }}
               >
-                1
-              </span>
-              <hr />
+                <span
+                  className="header_item"
+                  style={{
+                    backgroundColor:
+                      sectionId == 1 ? "#fcd11c" : sectionId > 1 && "green",
+                    color: sectionId == 1 ? "black" : "white",
+                  }}
+                >
+                  1
+                </span>
+              </div>
+              <div className="header_line"></div>
             </div>
-            <div onClick={() => setsectionId(2)}>
-              <span
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              onClick={() => setsectionId(2)}
+            >
+              <div
                 style={{
-                  backgroundColor:
-                    sectionId == 2 ? "#fcd11c" : sectionId > 2 && "green",
-                  color: sectionId == 2 && "black",
+                  width: 30,
+                  margin: 5,
                 }}
-                className="header_item"
               >
-                2
-              </span>
-              <hr />
+                <span
+                  style={{
+                    backgroundColor:
+                      sectionId == 2 ? "#fcd11c" : sectionId > 2 && "green",
+                    color: sectionId == 2 && "black",
+                  }}
+                  className="header_item"
+                >
+                  2
+                </span>
+              </div>
+              <div className="header_line"></div>
             </div>
             <div
               style={{
@@ -216,23 +232,34 @@ function CoachAddWorkout() {
               }}
               onClick={() => setsectionId(3)}
             >
-              <span
+              <div
                 style={{
-                  backgroundColor:
-                    sectionId == 3 ? "#fcd11c" : sectionId > 3 && "green",
-                  color: sectionId == 3 && "black",
+                  width: 30,
+                  margin: 5,
                 }}
-                className="header_item"
               >
-                3
-              </span>
+                <span
+                  style={{
+                    backgroundColor:
+                      sectionId == 3 ? "#fcd11c" : sectionId > 3 && "green",
+                    color: sectionId == 3 && "black",
+                  }}
+                  className="header_item"
+                >
+                  3
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {sectionId == 1 && (
-        <div>
+        <div
+          style={{
+            minHeight: "99vh",
+          }}
+        >
           <div className="Workouts_body">
             <h3>Workout Details</h3>
             <div
@@ -286,11 +313,7 @@ function CoachAddWorkout() {
                 placeholder="Search for any equipment"
               /> */}
             </div>
-            <div
-              style={{
-                marginTop: 20,
-              }}
-            >
+            <div>
               <label>Targeted Muscles</label>
               <br />
 
@@ -314,11 +337,7 @@ function CoachAddWorkout() {
               /> */}
             </div>
 
-            <div
-              style={{
-                marginTop: 20,
-              }}
-            >
+            <div>
               <label>Workout Duration (hh:mm:ss)</label>
               <br />
               <input
@@ -385,10 +404,11 @@ function CoachAddWorkout() {
                 onChange={(val) => {
                   setWorkoutDifficulty(val.target.value);
                 }}
-                placeholder="Workout Difficulty">
-                  <option value="easy">Easy</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="hard">Hard</option>
+                placeholder="Workout Difficulty"
+              >
+                <option value="easy">Easy</option>
+                <option value="moderate">Moderate</option>
+                <option value="hard">Hard</option>
               </select>
             </div>
           </div>
@@ -439,14 +459,14 @@ function CoachAddWorkout() {
       {sectionId == 2 && (
         <div
           style={{
-            height: "100%vh",
+            minHeight: "99vh",
           }}
         >
           <div>
             <div className="Workouts_body">
               <h3>Add Exercises</h3>
 
-              {selectedExercises.map((data, idx1) => (
+              {selectedExercises.map((workout, idx1) => (
                 <div key={idx1}>
                   <div
                     style={{
@@ -479,7 +499,9 @@ function CoachAddWorkout() {
                           }}
                           value={selectedExercises[idx1].value}
                           name="language"
-                          placeholder="Choose Workout"
+                          search
+                          filterOptions={fuzzySearch}
+                          placeholder="Search for a Workout"
                         />
                       )}
                       <SelectSearch
@@ -526,178 +548,276 @@ function CoachAddWorkout() {
                     </div>
                   </div>
 
-                  { 
-                  // selectedExercises.length > 0 ? (
-                  data?.value ? (
-                    selectedExercises
-                      .slice(idx1, idx1 + 1)
-                      .map((workout, idx2) => (
-                        <div
-                          key={idx2}
+                  {/* {
+                    // selectedExercises.length > 0 ? (
+                    data?.value ? (
+                      selectedExercises
+                        .slice(idx1, idx1 + 1)
+                        .map((workout, idx2) => ( */}
+                  <div
+                    key={idx1}
+                    style={{
+                      marginTop: 20,
+                      boxSizing: "border-box",
+                      display: workout.value ? "block" : "none",
+                      width: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        backgroundColor: "white",
+                        borderRadius: 10,
+                        cursor: "pointer",
+                        padding: 20,
+                        backgroundColor: "white",
+                      }}
+                      onClick={() => {
+                        if (selectedWorkoutEdit === "") {
+                          setSelectedWorkoutEdit(idx1);
+                        } else {
+                          setSelectedWorkoutEdit("");
+                        }
+                      }}
+                    >
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setWorkoutVideoUrl(workout.videoUrl);
+                          setModal2(true);
+                          setVideoLoading(true);
+                        }}
+                      >
+                        <img
                           style={{
-                            marginTop: 20,
-                            boxSizing: "border-box",
-                            width: "100%",
+                            width: "150px",
+                            height: "84px",
+                            borderRadius: "8px",
+                            backgroundColor: "#d3d3d3",
+                            objectFit: "cover",
+                            marginRight: "15px",
                           }}
-                        >
+                          src={
+                            workout.thumbnail_url
+                              ? workout.thumbnail_url
+                              : "/assets/illustration.jpeg"
+                          }
+                        />
+                      </div>
+                      <div
+                        style={{
+                          marginLeft: "10px",
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div>
                           <div
                             style={{
                               display: "flex",
                               alignItems: "center",
-                              backgroundColor: "white",
-                              borderRadius: 10,
-                              cursor: "pointer",
-                              padding: 20,
-                              backgroundColor: "white",
-                            }}
-                            onClick={() => {
-                              if (selectedWorkoutEdit === "") {
-                                setSelectedWorkoutEdit(idx1);
-                              } else {
-                                setSelectedWorkoutEdit("");
-                              }
+                              justifyContent: "space-between",
                             }}
                           >
                             <div
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setWorkoutVideoUrl(workout.videoUrl);
-                                setModal2(true);
-                                setVideoLoading(true);
+                              style={{
+                                fontSize: "15px",
+                                fontWeight: "600",
+                                height: "20px",
+                                marginBottom: 10,
                               }}
                             >
-                              <img
-                                style={{
-                                  width: "70px",
-                                  height: "70px",
-                                  borderRadius: "8px",
-                                  backgroundColor: "#d3d3d3",
-                                  objectFit: "cover",
-                                  marginRight: "15px",
-                                }}
-                                src={
-                                  workout.thumbnail_url
-                                    ? workout.thumbnail_url
-                                    : "/assets/illustration.jpeg"
-                                }
-                              />
-                            </div>
-                            <div style={{ marginLeft: "10px", width: "80%" }}>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "space-between",
-                                }}
-                              >
-                                <h4
-                                  style={{
-                                    fontSize: "15px",
-                                    fontWeight: "600",
-                                    height: "20px",
-                                  }}
-                                >
-                                  {workout?.name}
-                                </h4>
-                                <ExpandMoreRoundedIcon />
-                              </div>
+                              {workout?.name}
                             </div>
                           </div>
-                          {selectedWorkoutEdit === idx1 && (
-                            <div
-                              style={{
-                                backgroundColor: "white",
-                                padding: 20,
-                                boxSizing: "border-box",
-                                marginTop: 20,
-                              }}
-                            >
-                              {workout.sets?.map((set, idx2) => (
-                                <div
-                                  key={idx2}
-                                  style={{
-                                    width: "100%",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginTop: "10px",
-                                    marginBottom: "10px",
-                                    backgroundColor: "white",
-                                  }}
-                                >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                            }}
+                          >
+                            {workout?.sets?.map((s, i) => (
+                              <div
+                                style={{
+                                  display: i == 0 ? "flex" : "none",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                {Object.keys(s).map((set_, i) => (
                                   <div
                                     style={{
-                                      marginLeft: "-15px",
-                                      marginRight: "5px",
-                                    }}
-                                    onClick={() => {
-                                      {
-                                        let temp = [...selectedExercises];
-                                        if (temp[idx1].sets.length > 1) {
-                                          temp[idx1].sets.splice(idx2, 1);
-                                          setSelectedExercises(temp);
-                                        }
-                                      }
+                                      display: "flex",
+                                      marginRight: 10,
                                     }}
                                   >
-                                    <CloseIcon />
-                                  </div>
-                                  <h5
-                                    style={{
-                                      marginTop: "18px",
-                                      marginRight: "15px",
-                                    }}
-                                  >
-                                    Set {idx2 + 1}
-                                  </h5>
-
-                                  {Object.keys(set).map((set_, idx5) => (
                                     <div
-                                      key={idx5}
                                       style={{
-                                        marginLeft: "10px",
-                                        marginRight: "10px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "column",
+                                        fontSize: 13,
+                                        fontWeight: 600,
+                                        width: 100,
                                       }}
                                     >
-                                      {console.log("st", set)}
-                                      <div
-                                        style={{
-                                          margin: 5,
-                                          fontSize: "14px",
-                                          fontWeight: "500",
-                                          textAlign: "center",
-                                          marginRight: "10px",
-                                        }}
-                                      >
-                                        {set_}
-                                      </div>
-                                      <input
-                                        style={{
-                                          width: "50px",
-                                          height: "20px",
-                                          borderWidth: "1px",
-                                          borderColor: "#DBE2EA",
-                                          backgroundColor: "#fff",
-                                          padding: "7px",
-                                          borderRadius: "8px",
-                                          textAlign: "center",
-                                        }}
-                                        value={String(set[set_])}
-                                        placeholder={"12"}
-                                        onChange={(e) => {
-                                          let temp = [...selectedExercises];
-                                          console.log(temp[idx1].sets);
-
-                                          temp[idx1].sets[idx2][set_] =
-                                            e.target.value;
-                                          setSelectedExercises(temp);
-                                        }}
-                                      />
+                                      {set_}
                                     </div>
-                                  ))}
-                                  {/* <div
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        width: "100%",
+                                      }}
+                                    >
+                                      {workout?.sets?.map((s, i) => (
+                                        <div
+                                          key={i}
+                                          style={{
+                                            fontSize: 13,
+                                            fontWeight: 500,
+                                          }}
+                                        >
+                                          {s[set_] ? s[set_] : 12}
+                                          {i < workout.sets.length - 1
+                                            ? "  -  "
+                                            : null}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <div>Edit</div>
+                          <div>
+                            {selectedWorkoutEdit === idx1 ? (
+                              <img
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  marginRight: 5,
+                                }}
+                                src="../assets/up.png"
+                              />
+                            ) : (
+                              <img
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  marginRight: 5,
+                                }}
+                                src="../assets/down.png"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {selectedWorkoutEdit === idx1 && (
+                      <div
+                        style={{
+                          backgroundColor: "white",
+                          padding: 20,
+                          boxSizing: "border-box",
+                          display: workout.value ? "block" : "none",
+                          marginTop: 20,
+                          borderRadius: 10,
+                        }}
+                      >
+                        {workout.sets?.map((set, idx2) => (
+                          <div
+                            key={idx2}
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                              marginTop: "10px",
+                              marginBottom: "10px",
+                              backgroundColor: "white",
+                            }}
+                          >
+                            <div
+                              style={{
+                                marginLeft: "-15px",
+                                marginRight: "5px",
+                              }}
+                              onClick={() => {
+                                {
+                                  let temp = [...selectedExercises];
+                                  if (temp[idx1].sets.length > 1) {
+                                    temp[idx1].sets.splice(idx2, 1);
+                                    setSelectedExercises(temp);
+                                  }
+                                }
+                              }}
+                            >
+                              <CloseIcon />
+                            </div>
+                            <h5
+                              style={{
+                                marginTop: "18px",
+                                marginRight: "15px",
+                              }}
+                            >
+                              Set {idx2 + 1}
+                            </h5>
+
+                            {Object.keys(set).map((set_, idx5) => (
+                              <div
+                                key={idx5}
+                                style={{
+                                  marginLeft: "10px",
+                                  marginRight: "10px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    margin: 5,
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    textAlign: "center",
+                                    marginRight: "10px",
+                                  }}
+                                >
+                                  {set_}
+                                </div>
+                                <input
+                                  style={{
+                                    width: "50px",
+                                    height: "20px",
+                                    borderWidth: "1px",
+                                    borderColor: "#DBE2EA",
+                                    backgroundColor: "#fff",
+                                    padding: "7px",
+                                    borderRadius: "8px",
+                                    textAlign: "center",
+                                  }}
+                                  value={workout.sets[idx2][set_]}
+                                  placeholder={"12"}
+                                  onChange={(e) => {
+                                    let temp = [...selectedExercises];
+                                    let tmp = selectedExercises[idx1].sets;
+                                    tmp[idx2][set_] = e.target.value;
+                                    temp[idx1].sets = tmp;
+
+                                    console.log(idx2, tmp[idx2][set_]);
+
+                                    // temp[idx1].sets[idx4][set_] =
+                                    //   e.target.value;
+
+                                    // temp[idx1].sets[idx4][set_] =
+                                    //   e.target.value;
+                                    setSelectedExercises(temp);
+                                  }}
+                                />
+                              </div>
+                            ))}
+                            {/* <div
                                   style={{
                                     marginLeft: "5px",
                                     marginRight: "5px",
@@ -814,66 +934,53 @@ function CoachAddWorkout() {
                                     }}
                                   />
                                 </div> */}
-                                </div>
-                              ))}
-                              <div
-                                style={{
-                                  borderWidth: "1px",
-                                  borderColor: "#fcd13c",
-                                  borderStyle: "solid",
-                                  padding: "5px",
-                                  borderRadius: "50px",
-                                  width: "120px",
-                                  height: "20px",
-                                  marginTop: "10px",
-                                  marginBottom: "10px",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  backgroundColor: "white",
-                                }}
-                                onClick={() => {
-                                  // navigation.navigate("AddWorkout");
-                                  let temp = [...selectedExercises];
+                          </div>
+                        ))}
+                        <div
+                          style={{
+                            borderWidth: "1px",
+                            borderColor: "#fcd13c",
+                            borderStyle: "solid",
+                            padding: "5px",
+                            borderRadius: "50px",
+                            width: "120px",
+                            height: "20px",
+                            marginTop: "10px",
+                            marginBottom: "10px",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "white",
+                          }}
+                          onClick={() => {
+                            // navigation.navigate("AddWorkout");
+                            let temp = [...selectedExercises];
+                            let tmp = {};
 
-                                  temp[idx1].sets.push(temp[idx1].sets[0]);
+                            Object.keys(temp[idx1].sets[0]).forEach((val) => {
+                              tmp[val] = "";
+                            });
 
-                                  setSelectedExercises(temp);
-                                }}
-                              >
-                                <h5
-                                  style={{
-                                    color: "black",
-                                    textAlign: "center",
-                                    fontSize: "14px",
-                                    fontWeight: "500",
-                                  }}
-                                >
-                                  Add New Set
-                                </h5>
-                              </div>
-                              <div
-                                onClick={() => setSelectedWorkoutEdit("")}
-                                style={{
-                                  position: "relative",
-                                  left: "70%",
-                                  borderWidth: "1px",
-                                  borderRadius: "5px",
-                                  borderColor: "#DBE2EA",
-                                  display: "flex",
-                                  alignSelf: "flex-end",
-                                  padding: "5px",
-                                  paddingLeft: "7px",
-                                  paddingRight: "7px",
-                                  cursor: "pointer",
-                                  backgroundColor: "white",
-                                }}
-                              ></div>
-                            </div>
-                          )}
+                            temp[idx1].sets.push(tmp);
+
+                            setSelectedExercises(temp);
+                          }}
+                        >
+                          <h5
+                            style={{
+                              color: "black",
+                              textAlign: "center",
+                              fontSize: "14px",
+                              fontWeight: "500",
+                            }}
+                          >
+                            Add New Set
+                          </h5>
                         </div>
-                      ))) : (<></>)}
+                      </div>
+                    )}
+                  </div>
 
                   <div
                     style={{
@@ -895,6 +1002,8 @@ function CoachAddWorkout() {
 
                   <div
                     style={{
+                      width: "100%",
+                      marginTop: 20,
                       display:
                         selectedExercises.length - 1 == idx1 ? "none" : "block",
                     }}
@@ -907,6 +1016,7 @@ function CoachAddWorkout() {
               style={{
                 display: "flex",
                 alignItems: "center",
+                margin: 20,
               }}
             >
               <div className="Dotted_line"></div>
@@ -914,7 +1024,6 @@ function CoachAddWorkout() {
                 style={{
                   display: "flex",
                   height: 30,
-                  marginTop: 30,
                 }}
               >
                 <button
@@ -935,6 +1044,7 @@ function CoachAddWorkout() {
                       value: null,
                     });
                     setSelectedExercises(temp);
+                    console.log("smk", selectedExercises);
                   }}
                 >
                   Add Exercise
@@ -945,7 +1055,6 @@ function CoachAddWorkout() {
               style={{
                 display: "flex",
                 height: 30,
-                marginTop: 30,
               }}
             >
               <button
@@ -985,7 +1094,11 @@ function CoachAddWorkout() {
       )}
 
       {sectionId == 3 && (
-        <div>
+        <div
+          style={{
+            minHeight: "99vh",
+          }}
+        >
           <div>
             <div className="Workouts_body">
               <h3>Review</h3>
@@ -1045,7 +1158,7 @@ function CoachAddWorkout() {
                     width: "100%",
                   }}
                 >
-                  <div style={{ marginLeft: 10 }}>
+                  <div>
                     {selectedExercises?.map((workout, idx1) =>
                       workout.cardio ? (
                         <div
@@ -1077,7 +1190,7 @@ function CoachAddWorkout() {
                                 margin: 5,
                               }}
                             >
-                              <input
+                              {/* <input
                                 type="checkbox"
                                 //disabled={completed ? true : false}
                                 //checked={workout?.completed}
@@ -1105,12 +1218,12 @@ function CoachAddWorkout() {
 
                                 //   setSelectedExercises(temp);
                                 // }}
-                              />
+                              /> */}
 
                               <img
                                 style={{
-                                  width: 20,
-                                  height: 20,
+                                  width: 100,
+                                  height: 56,
                                   borderRadius: 8,
                                   backgroundColor: "#d3d3d3",
                                 }}
@@ -1223,6 +1336,7 @@ function CoachAddWorkout() {
                                 marginTop: 20,
                               }}
                             >
+                              {console.log("sett", workout.sets)}
                               {workout.sets?.map((set, idx2) => (
                                 <div
                                   key={idx2}
@@ -1270,7 +1384,7 @@ function CoachAddWorkout() {
                                         flexDirection: "column",
                                       }}
                                     >
-                                      {console.log("st", set)}
+                                      {console.log("st1", workout.sets)}
                                       <div
                                         style={{
                                           margin: 5,
@@ -1445,8 +1559,11 @@ function CoachAddWorkout() {
                                 onClick={() => {
                                   // navigation.navigate("AddWorkout");
                                   let temp = [...selectedExercises];
-
-                                  temp[idx1].sets.push(temp[idx1].sets[0]);
+                                  temp[idx1].sets.push({
+                                    reps: "",
+                                    weights: "",
+                                    rest: "",
+                                  });
 
                                   setSelectedExercises(temp);
                                 }}
@@ -1462,23 +1579,6 @@ function CoachAddWorkout() {
                                   Add New Set
                                 </h5>
                               </div>
-                              <div
-                                onClick={() => setSelectedWorkoutEdit("")}
-                                style={{
-                                  position: "relative",
-                                  left: "70%",
-                                  borderWidth: "1px",
-                                  borderRadius: "5px",
-                                  borderColor: "#DBE2EA",
-                                  display: "flex",
-                                  alignSelf: "flex-end",
-                                  padding: "5px",
-                                  paddingLeft: "7px",
-                                  paddingRight: "7px",
-                                  cursor: "pointer",
-                                  backgroundColor: "white",
-                                }}
-                              ></div>
                             </div>
                           )}
                         </div>
@@ -1486,7 +1586,6 @@ function CoachAddWorkout() {
                         <div
                           key={idx1}
                           style={{
-                            borderBottom: "1px solid rgb(0,0,0,0.2)",
                             display: workout.value ? "block" : "none",
                           }}
                         >
@@ -1501,6 +1600,8 @@ function CoachAddWorkout() {
                               backgroundColor: "white",
                               border: "none",
                               marginTop: 20,
+                              padding: 20,
+                              borderRadius: 10,
                             }}
                             onClick={() => {
                               //console.log(3);
@@ -1519,7 +1620,7 @@ function CoachAddWorkout() {
                                 alignItems: "center",
                               }}
                             >
-                              <input
+                              {/* <input
                                 type="checkbox"
                                 //disabled={completed}
                                 //checked={workout?.completed}
@@ -1546,12 +1647,12 @@ function CoachAddWorkout() {
 
                                 //   setSelectedExercises(temp);
                                 // }}
-                              />
+                              /> */}
                               <div>
                                 <img
                                   style={{
-                                    width: 100,
-                                    height: 100,
+                                    width: 180,
+                                    height: 101,
                                     borderRadius: 8,
                                     backgroundColor: "#d3d3d3",
                                   }}
@@ -1569,7 +1670,15 @@ function CoachAddWorkout() {
                                   textAlign: "left",
                                 }}
                               >
-                                <h3>{workout.name}</h3>
+                                <div
+                                  style={{
+                                    fontSize: 17,
+                                    fontWeight: 700,
+                                    marginBottom: 20,
+                                  }}
+                                >
+                                  {workout.name}
+                                </div>
                                 <div
                                   style={{
                                     display: "flex",
@@ -1580,34 +1689,47 @@ function CoachAddWorkout() {
                                     <div
                                       style={{
                                         display: i == 0 ? "flex" : "none",
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        width: 100,
+                                        flexDirection: "column",
                                       }}
                                     >
                                       {Object.keys(s).map((set_, i) => (
-                                        <>
-                                          <h3
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            marginRight: 10,
+                                          }}
+                                        >
+                                          <div
                                             style={{
-                                              marginRight: 10,
-                                              marginLeft: i != 0 && 20,
-                                              fontSize: 12,
+                                              fontSize: 13,
+                                              fontWeight: 600,
+                                              width: 100,
                                             }}
                                           >
                                             {set_}
-                                          </h3>
-                                          {workout?.sets?.map((s, i) => (
-                                            <h3
-                                              key={i}
-                                              style={{ fontSize: 12 }}
-                                            >
-                                              {s[set_] ? s[set_] : 12}
-                                              {i < workout.sets.length - 1
-                                                ? "-"
-                                                : null}
-                                            </h3>
-                                          ))}
-                                        </>
+                                          </div>
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              width: "100%",
+                                            }}
+                                          >
+                                            {workout?.sets?.map((s, i) => (
+                                              <div
+                                                key={i}
+                                                style={{
+                                                  fontSize: 13,
+                                                  fontWeight: 500,
+                                                }}
+                                              >
+                                                {s[set_] ? s[set_] : 12}
+                                                {i < workout.sets.length - 1
+                                                  ? "  -  "
+                                                  : null}
+                                              </div>
+                                            ))}
+                                          </div>
+                                        </div>
                                       ))}
                                     </div>
                                   ))}
@@ -1652,6 +1774,218 @@ function CoachAddWorkout() {
                               </div>
                             </div>
                           </button>
+                          {/* {selectedWorkoutEdit === idx1 && (
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                              }}
+                            >
+                              {1 || workout.cardio ? null : (
+                                <div
+                                  style={{
+                                    borderWidth: "1px",
+                                    borderColor: "#fcd13c",
+                                    borderStyle: "solid",
+                                    padding: "5px",
+                                    borderRadius: "50px",
+                                    width: "120px",
+                                    height: "20px",
+                                    marginTop: "10px",
+                                    marginBottom: "10px",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  }}
+                                  onClick={() => {
+                                    // navigation.navigate("AddWorkout");
+                                    let temp = [...selectedExercises];
+                                    temp[idx1].sets.push({
+                                      reps: "",
+                                      weights: "",
+                                      rest: "",
+                                    });
+
+                                    setSelectedExercises(temp);
+                                  }}
+                                >
+                                  <h5
+                                    style={{
+                                      color: "black",
+                                      textAlign: "center",
+                                      fontSize: "14px",
+                                      fontWeight: "500",
+                                    }}
+                                  >
+                                    Add New Set
+                                  </h5>
+                                </div>
+                              )}
+                              {workout.sets?.map((set, idx19) => (
+                                <div
+                                  key={idx19}
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+
+                                    marginBottom: "10px",
+                                  }}
+                                >
+                                  {workout.cardio ? null : (
+                                    <h5
+                                      style={{
+                                        marginTop: "18px",
+                                        marginRight: "15px",
+                                      }}
+                                    >
+                                      Set {idx19 + 1}
+                                    </h5>
+                                  )}
+                                  {workout.cardio ? null : (
+                                    <div
+                                      style={{
+                                        marginLeft: "5px",
+                                        marginRight: "5px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <h5
+                                        style={{
+                                          fontSize: "14px",
+                                          fontWeight: "500",
+                                          textAlign: "center",
+                                          marginRight: "10px",
+                                        }}
+                                      >
+                                        Reps
+                                      </h5>
+                                      <input
+                                        style={{
+                                          width: "50px",
+                                          height: "20px",
+                                          borderWidth: "1px",
+                                          borderColor: "#DBE2EA",
+                                          backgroundColor: "#fff",
+                                          padding: "7px",
+                                          borderRadius: "8px",
+                                          textAlign: "center",
+                                        }}
+                                        value={String(set.reps)}
+                                        placeholder={"12"}
+                                        onChange={(e) => {
+                                          let temp = [...selectedExercises];
+                                          temp[idx1].sets[idx19].reps =
+                                            e.target.value;
+                                          setSelectedExercises(temp);
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                  {workout.cardio ? null : (
+                                    <div
+                                      style={{
+                                        marginLeft: "5px",
+                                        marginRight: "5px",
+                                        display: "flex",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <h5
+                                        style={{
+                                          fontSize: "14px",
+                                          fontWeight: "500",
+                                          textAlign: "center",
+                                          marginRight: "10px",
+                                        }}
+                                      >
+                                        Weights
+                                      </h5>
+                                      <input
+                                        style={{
+                                          width: "50px",
+                                          height: "20px",
+                                          borderWidth: "1px",
+                                          borderColor: "#DBE2EA",
+                                          backgroundColor: "#fff",
+                                          padding: "7px",
+                                          borderRadius: "8px",
+                                          textAlign: "center",
+                                        }}
+                                        value={String(set.weights)}
+                                        placeholder={"12"}
+                                        onChange={(e) => {
+                                          let temp = [...selectedExercises];
+                                          temp[idx1].sets[idx19].weights =
+                                            e.target.value;
+                                          setSelectedExercises(temp);
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                  <div
+                                    style={{
+                                      marginLeft: "5px",
+                                      marginRight: "5px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <h5
+                                      style={{
+                                        fontSize: "14px",
+                                        fontWeight: "500",
+                                        textAlign: "center",
+                                        marginRight: "10px",
+                                      }}
+                                    >
+                                      {workout.cardio ? "Time" : "Rest"}
+                                    </h5>
+                                    <input
+                                      style={{
+                                        width: "50px",
+                                        height: "20px",
+                                        borderWidth: "1px",
+                                        borderColor: "#DBE2EA",
+                                        backgroundColor: "#fff",
+                                        padding: "7px",
+                                        borderRadius: "8px",
+                                        textAlign: "center",
+                                      }}
+                                      value={String(set.rest)}
+                                      placeholder={"12"}
+                                      onChange={(e) => {
+                                        let temp = [...selectedExercises];
+                                        temp[idx1].sets[idx19].rest =
+                                          e.target.value;
+                                        setSelectedExercises(temp);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                              <div
+                                onClick={() => setSelectedWorkoutEdit("")}
+                                style={{
+                                  position: "relative",
+                                  left: "70%",
+                                  borderWidth: "1px",
+                                  borderRadius: "5px",
+                                  borderColor: "#DBE2EA",
+                                  display: "flex",
+                                  alignSelf: "flex-end",
+                                  padding: "5px",
+                                  paddingLeft: "7px",
+                                  paddingRight: "7px",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <CheckBoxIcon fontSize="large" />
+                              </div>
+                            </div>
+                          )} */}
                           {selectedWorkoutEdit === idx1 && (
                             <div
                               style={{
@@ -1659,6 +1993,7 @@ function CoachAddWorkout() {
                                 padding: 20,
                                 boxSizing: "border-box",
                                 marginTop: 20,
+                                borderRadius: 10,
                               }}
                             >
                               {workout.sets?.map((set, idx2) => (
@@ -1696,7 +2031,7 @@ function CoachAddWorkout() {
                                   >
                                     Set {idx2 + 1}
                                   </h5>
-
+                                  {console.log("st1", workout.sets)}
                                   {Object.keys(set).map((set_, idx5) => (
                                     <div
                                       key={idx5}
@@ -1708,7 +2043,6 @@ function CoachAddWorkout() {
                                         flexDirection: "column",
                                       }}
                                     >
-                                      {console.log("st", set)}
                                       <div
                                         style={{
                                           margin: 5,
@@ -1883,8 +2217,11 @@ function CoachAddWorkout() {
                                 onClick={() => {
                                   // navigation.navigate("AddWorkout");
                                   let temp = [...selectedExercises];
-
-                                  temp[idx1].sets.push(temp[idx1].sets[0]);
+                                  temp[idx1].sets.push({
+                                    reps: "",
+                                    weights: "",
+                                    rest: "",
+                                  });
 
                                   setSelectedExercises(temp);
                                 }}
@@ -1900,23 +2237,6 @@ function CoachAddWorkout() {
                                   Add New Set
                                 </h5>
                               </div>
-                              <div
-                                onClick={() => setSelectedWorkoutEdit("")}
-                                style={{
-                                  position: "relative",
-                                  left: "70%",
-                                  borderWidth: "1px",
-                                  borderRadius: "5px",
-                                  borderColor: "#DBE2EA",
-                                  display: "flex",
-                                  alignSelf: "flex-end",
-                                  padding: "5px",
-                                  paddingLeft: "7px",
-                                  paddingRight: "7px",
-                                  cursor: "pointer",
-                                  backgroundColor: "white",
-                                }}
-                              ></div>
                             </div>
                           )}
                         </div>
@@ -1925,50 +2245,47 @@ function CoachAddWorkout() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
               <div
-                style={{ width: "100%", marginRight: 0 }}
-                className="Dotted_line"
-              ></div>
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ width: "100%" }} className="Dotted_line"></div>
+              </div>
+              <div
+                style={{
+                  marginTop: 20,
+                }}
+              >
+                <label>Additional Notes</label>
+                <br />
+                <textarea
+                  rows={5}
+                  style={{
+                    width: "100%",
+                    padding: "15px",
+                    boxSizing: "border-box",
+                    border: "none",
+                    boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
+                    borderRadius: 5,
+                    marginTop: 10,
+                  }}
+                  value={additionalnotes}
+                  onChange={(val) => {
+                    setadditionalnotes(val.target.value);
+                  }}
+                  placeholder="Additional Notes"
+                />
+              </div>
             </div>
 
-            <div
-              style={{
-                marginTop: 20,
-              }}
-            >
-              <label>Additional Notes</label>
-              <br />
-              <textarea
-                rows={5}
-                style={{
-                  width: "100%",
-                  padding: "15px",
-                  boxSizing: "border-box",
-                  border: "none",
-                  boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
-                  borderRadius: 5,
-                  marginTop: 10,
-                }}
-                value={additionalnotes}
-                onChange={(val) => {
-                  setadditionalnotes(val.target.value);
-                }}
-                placeholder="Additional Notes"
-              />
-            </div>
             <div
               style={{
                 display: "flex",
                 height: 30,
                 marginTop: 30,
+                marginBottom: 30,
               }}
             >
               <button
