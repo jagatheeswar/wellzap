@@ -170,12 +170,14 @@ function CreateNutrition(props) {
   const [nutrition, setNutrition] = useState(null);
   const [athletes, setAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
+  const [selectedAthletes1, setSelectedAthletes1] = useState([]);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
   const [show_data, setshow_data] = useState([]);
   const [options, setoptions] = useState(null);
   const [addFood, setAddFood] = useState(false);
   const [serverData, setServerData] = useState([]);
+  const [athlete_selecteddays, setathlete_selecteddays] = useState({});
   const [daysList, setDaysList] = useState([
     "Sun",
     "Mon",
@@ -217,8 +219,6 @@ function CreateNutrition(props) {
 
   useEffect(() => {
     if (location.state.nutrition) {
-      console.log("ss", location.state.nutrition.data.selectedDays);
-      console.log(location.state.nutrition.data.selectedAthletes);
       if (location.state.type === "update") {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
@@ -272,7 +272,6 @@ function CreateNutrition(props) {
       setNutritionName(props.selectedDayData.nutrition.nutritionName);
       setEntireFood(props.selectedDayData.nutrition.entireFood);
       setAddFood(props.selectedDayData.nutrition.entireFood[0]?.addFood);
-      console.log(props.selectedDayData);
     }
   }, [props.isLongTerm]);
 
@@ -303,7 +302,6 @@ function CreateNutrition(props) {
             temp.push(item);
             setshow_data(temp);
           }
-          console.log(show_data);
         });
       } else {
         selectedAthletes.forEach((item) => {
@@ -316,6 +314,17 @@ function CreateNutrition(props) {
       }
     }
   }, [selectedAthletes, userData, userType]);
+
+  useEffect(() => {
+    console.log(athlete_selecteddays);
+    let temp = [...selectedAthletes];
+    selectedAthletes.map((athlete, idx) => {
+      if (athlete_selecteddays[athlete.id]) {
+        temp[idx].selectedDays = athlete_selecteddays[athlete.id];
+      }
+      setSelectedAthletes1(temp);
+    });
+  }, [selectedAthletes]);
 
   useEffect(() => {
     if (type === "non-editable") {
@@ -413,7 +422,7 @@ function CreateNutrition(props) {
             </Listbox>
           ) : null}
           <div>
-            {selectedAthletes?.map((athlete, index) => (
+            {selectedAthletes1?.map((athlete, index) => (
               <div
                 key={index}
                 style={{
@@ -425,7 +434,6 @@ function CreateNutrition(props) {
                   alignItems: "flex-start",
                 }}
               >
-                {console.log("sl", selectedAthletes)}
                 <div
                   style={{
                     display: "flex",
@@ -517,6 +525,7 @@ function CreateNutrition(props) {
                       <div
                         key={idx}
                         onClick={() => {
+                          console.log(day);
                           if (type !== "view") {
                             if (
                               athlete?.selectedDays?.includes(
@@ -548,6 +557,11 @@ function CreateNutrition(props) {
                                     specificDates[idx],
                                   ],
                                 };
+                                let temp = athlete_selecteddays;
+                                temp[selectedAthletes[index].id] =
+                                  selectedAthletes[index].selectedDays;
+
+                                setathlete_selecteddays(temp);
                                 setSelectedAthletes([...selectedAthletes]);
                               }
                             }
@@ -723,7 +737,6 @@ function CreateNutrition(props) {
                       } else {
                         temp.push(athlete);
                         setshow_data(temp);
-                        console.log(athlete.name, show_data);
                       }
                     }}
                     style={{
@@ -862,6 +875,7 @@ function CreateNutrition(props) {
                           key={idx}
                           onClick={() => {
                             if (type !== "view" && type !== "non-editable") {
+                              console.log(day);
                               if (
                                 athlete?.selectedDays?.includes(
                                   specificDates[idx]
@@ -1427,7 +1441,6 @@ function CreateNutrition(props) {
                       history.push("/post-add-screen");
                     }
                   } else {
-                    console.log("works");
                     let tempDate1 = [];
                     selectedAthletes.map((athlete) => {
                       athlete.selectedDays.map((d) => {
