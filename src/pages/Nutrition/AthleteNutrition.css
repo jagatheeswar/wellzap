@@ -270,3 +270,16 @@
 .assignByCoach__Card:hover {
   cursor: pointer;
 }
+
+.weekGoalMain {
+  display: flex;
+  background-color: #fff;
+  width: 85%;
+  border-radius: 10px;
+  margin-top: 18px;
+  padding: 10px;
+}
+
+.weekGoalContainer {
+
+}

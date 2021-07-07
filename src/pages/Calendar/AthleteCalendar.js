@@ -306,7 +306,7 @@ function AthleteCalendar() {
 
 
   return (
-    <div className="workouts__home">
+    <div style={{minHeight: "99.7vh"}} className="workouts__home">
         <CalendarScreenHeader name="Calendar" />
 
         <div style={{display:"flex",justifyContent:"space-evenly"}}>

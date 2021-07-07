@@ -21,7 +21,7 @@ import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
 import SelectSearch from "react-select-search";
-
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
 //     margin: theme.spacing(1),
@@ -641,6 +641,7 @@ function CoachAddWorkout() {
                             >
                               <CloseIcon />
                             </div>
+<<<<<<< HEAD
                             <h5
                               style={{
                                 marginTop: "18px",
@@ -651,6 +652,9 @@ function CoachAddWorkout() {
                             </h5>
 
                             {Object.keys(set).map((set_, idx5) => (
+=======
+                            <div style={{ marginLeft: "10px", width: "80%" }}>
+>>>>>>> 08a7b92516be44e2ff404e31d427bf04e92da475
                               <div
                                 key={idx5}
                                 style={{
@@ -670,9 +674,30 @@ function CoachAddWorkout() {
                                     marginRight: "10px",
                                   }}
                                 >
+<<<<<<< HEAD
                                   {set_}
                                 </div>
                                 <input
+=======
+                                  {workout?.name}
+                                </h4>
+                                <ExpandMoreRoundedIcon />
+                              </div>
+                            </div>
+                          </div>
+                          {selectedWorkoutEdit === idx1 && (
+                            <div
+                              style={{
+                                backgroundColor: "white",
+                                padding: 20,
+                                boxSizing: "border-box",
+                                marginTop: 20,
+                              }}
+                            >
+                              {workout.sets?.map((set, idx2) => (
+                                <div
+                                  key={idx2}
+>>>>>>> 08a7b92516be44e2ff404e31d427bf04e92da475
                                   style={{
                                     width: "50px",
                                     height: "20px",

@@ -184,7 +184,7 @@ function Messaging({ route, navigation }) {
   };
 
   return (
-    <div>
+    <div style={{minHeight: "99.7vh"}}>
       <div style={{ flex: 9 }}>
         <div>
           <div

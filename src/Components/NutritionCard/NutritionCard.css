@@ -8,6 +8,7 @@
   background-color: white;
   border-radius: 8px;
   margin: 10px 0;
+  cursor: pointer;
 }
 
 .nutritionCard_main {

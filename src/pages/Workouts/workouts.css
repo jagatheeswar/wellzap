@@ -24,6 +24,7 @@
   height: 20px;
   padding: 5px 20px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .addWorkout__button > img {

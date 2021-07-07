@@ -26,7 +26,7 @@ function ViewAllSavedNutrition(props) {
   }, [userData?.id]);
 
   return (
-    <div>
+    <div style={{minHeight: "99.7vh"}}>
       <NutritionScreenHeader name="Saved Meal Plans" />
       <div
         style={{

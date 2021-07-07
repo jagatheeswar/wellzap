@@ -4,6 +4,8 @@ import { useHistory } from "react-router";
 import { selectUserType } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import "./Nutrition.css";
+import {Typography} from "@material-ui/core";
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 
 function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
   const userType = useSelector(selectUserType);
@@ -12,13 +14,10 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
   return (
     <div className="nutritionScreenHeader">
       <div className="nutritionHeader__info">
-        <div
-          className="nutritionHeader__backButton"
-          onClick={() => history.goBack()}
-        >
-          <img src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
+      <div onClick={() => history.goBack()} style={{marginTop: 20, display: "flex", alignItems: 'center'}} >
+          <ArrowBackIosRoundedIcon style={{height: 18, width: 18, padding: 5, cursor: "pointer"}} />
+          <Typography variant="h6" style={{fontSize: 25, marginLeft: 5}}>{name}</Typography>
         </div>
-        <h1>{name}</h1>
       </div>
 
       {name === "Nutrition" && (
