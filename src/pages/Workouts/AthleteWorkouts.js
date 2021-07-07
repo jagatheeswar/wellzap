@@ -22,17 +22,19 @@ function AthleteWorkouts() {
       db.collection("athletes")
         .doc(userData?.id)
         .onSnapshot((doc) => {
-          if (doc.data()?.completedWorkouts) {
-            setCompletedWorkouts(doc.data().completedWorkouts);
-          } else {
-            setCompletedWorkouts(0);
-          }
+          setCompletedWorkouts(doc.data().completedWorkouts ? doc.data().completedWorkouts : 0)
+          setAverageWorkoutTime(doc.data().averageWorkoutTime ? doc.data().averageWorkoutTime?.toFixed(2) : 0)
+          // if (doc.data()?.completedWorkouts) {
+          //   setCompletedWorkouts(doc.data().completedWorkouts);
+          // } else {
+          //   setCompletedWorkouts(0);
+          // }
 
-          if (doc.data()?.averageWorkoutTime) {
-            setAverageWorkoutTime(doc.data().averageWorkoutTime?.toFixed(2));
-          } else {
-            setAverageWorkoutTime(0);
-          }
+          // if (doc.data()?.averageWorkoutTime) {
+          //   setAverageWorkoutTime(doc.data().averageWorkoutTime?.toFixed(2));
+          // } else {
+          //   setAverageWorkoutTime(0);
+          // }
         });
     }
   }, [userData?.id]);

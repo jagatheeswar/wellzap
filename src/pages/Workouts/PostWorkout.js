@@ -13,6 +13,7 @@ import moment from "moment";
 import { useLocation } from "react-router";
 import { DriveEtaOutlined } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 
@@ -108,9 +109,10 @@ export default function PostWorkoutDetails() {
 
   return (
     <div className="Postworkout__container">
-      <div>
+      {/* <div>
         <h3>Post Workout details</h3>
-      </div>
+      </div> */}
+      <WorkoutScreenHeader name="Post Workout details" />
       <div className="Postworkout__body">
         <h4> Title</h4>
         <input
@@ -175,8 +177,9 @@ export default function PostWorkoutDetails() {
             />
           </div>
           <div style={{}}>
-            <div>Completed</div>
+            <div>Completed <span style={{fontSize: 14}}>(HH:MM:SS)</span></div>
             <input
+              type="time"
               style={{
                 borderWidth: 1,
                 borderColor: "#DBE2EA",
@@ -186,9 +189,10 @@ export default function PostWorkoutDetails() {
                 backgroundColor: "white",
                 borderRadius: 8,
                 padding: 7,
-
+                width: "100%",
                 textAlign: "center",
               }}
+              step="1"
               value={postWorkout?.workoutDuration}
               placeholder="HH : MM : SS"
               disabled={completed}
@@ -782,7 +786,7 @@ export default function PostWorkoutDetails() {
                               v
                             </h3> */}
                             </div>
-                            <div style={{ marginLeft: 30 }}>
+                            <div style={{ marginRight: 100 }}>
                               <div style={{ alignItems: "center" }}>
                                 <h3 style={{ fontSize: 11 }}>Edit</h3>
                                 <div>

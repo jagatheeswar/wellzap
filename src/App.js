@@ -67,7 +67,7 @@ import "./fonts/Montserrat/Montserrat-Regular.ttf";
 import { Grid } from "@material-ui/core";
 import CoachProfile from "./pages/Profile/CoachProfile";
 import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
-import PastWorkouts from "./pages/Workouts/PastWorkouts";
+import ViewAllPastWorkouts from "./pages/Workouts/ViewAllPastWorkouts";
 
 function App() {
   const user = useSelector(selectUser);
@@ -321,7 +321,7 @@ function App() {
             </Route>
             <Route path="/view-all-past-workouts">
               <RoutesComp
-                AthleteComp={<PastWorkouts />}
+                AthleteComp={<ViewAllPastWorkouts />}
                 CoachComp={<NotFound />}
               />
             </Route>

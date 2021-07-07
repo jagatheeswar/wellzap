@@ -24,6 +24,8 @@ function Sidebar() {
           alt={userData?.data.name}
           width="100px"
           height="100px"
+          onClick={() => history.push("/profile")}
+          style={{cursor:"pointer"}}
         />
         <h1>{userData?.data.name}</h1>
         {userType === "coach" && <h3>Strength and Conditioning Coach</h3>}

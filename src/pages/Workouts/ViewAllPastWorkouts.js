@@ -16,7 +16,7 @@ function PastWorkouts() {
         .where("assignedToId", "==", userData?.id)
         //.where("date", "==", formatDate())
         .where("completed", "==", false)
-        .limit(4)
+        // .limit(4)
         .onSnapshot((snapshot) => {
           setWorkouts(
             snapshot.docs.map((doc) => ({
@@ -29,7 +29,7 @@ function PastWorkouts() {
       db.collection("workouts")
         .where("assignedToId", "==", userData?.id)
         .where("completed", "==", true)
-        .limit(4)
+        // .limit(4)
         .onSnapshot((snapshot) => {
           setPastWorkouts(
             snapshot.docs.map((doc) => ({
