@@ -10,8 +10,9 @@ import { db } from "../../utils/firebase";
 import formatSpecificDate from "../../functions/formatSpecificDate";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import formatDate1 from "../../functions/formatDate1";
-import { useHistory } from 'react-router-dom'
-import {Grid} from "@material-ui/core"
+import { useHistory } from "react-router-dom";
+import { Grid } from "@material-ui/core";
+import AthleteNutritionCard from "../../Components/NutritionCard/AthleteNutritionCard";
 
 function AthleteNutrition() {
   const history = useHistory();
@@ -112,31 +113,40 @@ function AthleteNutrition() {
       <NutritionScreenHeader name="Nutrition" />
       <Grid container className="athleteNutrition__homeContainer">
         <Grid item xs={6}>
-          <div style={{width: "90%", marginLeft: 10}}  className="athleteNutritionHeading__row">
+          <div
+            style={{ width: "90%", marginLeft: 10 }}
+            className="athleteNutritionHeading__row"
+          >
             <h1>Nutrition Tracker</h1>
           </div>
-          <div style={{width: "90%", marginTop: 11, marginLeft:10}}>
-          <NutritionGoalProgress />
+          <div style={{ width: "90%", marginTop: 11, marginLeft: 10 }}>
+            <NutritionGoalProgress />
           </div>
-          <div style={{width: "90%", marginLeft: 10}}>
-          <WaterCard date={formatDate()} water={water} setWater={setWater} />
+          <div style={{ width: "90%", marginLeft: 10 }}>
+            <WaterCard date={formatDate()} water={water} setWater={setWater} />
           </div>
         </Grid>
         <Grid item xs={6}>
-          <div style={{width: "90%"}} className="athleteNutritionHeading__row">
+          <div
+            style={{ width: "90%" }}
+            className="athleteNutritionHeading__row"
+          >
             <h1>Meal History</h1>
-            <div onClick={() => history.push('/view-all-meal-history')}>View All</div>
+            <div onClick={() => history.push("/view-all-meal-history")}>
+              View All
+            </div>
           </div>
-          <div style={{width: "90%"}} className="nutrition__list">
+          <div style={{ width: "90%" }} className="nutrition__list">
             {mealHistory.length > 0 ? (
               mealHistory?.map((food, idx) => (
-                <NutritionCard
+                <AthleteNutritionCard
                   key={idx}
                   nutrition={mealHistory}
                   food={food}
                   idx={idx}
                   type="view"
                   navigation={"add-meal"}
+                  selecteddate={food.data.date}
                 />
               ))
             ) : (
@@ -147,10 +157,16 @@ function AthleteNutrition() {
           </div>
         </Grid>
         <Grid item xs={6}>
-          <div style={{width: "90%", marginLeft: 20}} className="athleteNutritionHeading__row">
+          <div
+            style={{ width: "90%", marginLeft: 20 }}
+            className="athleteNutritionHeading__row"
+          >
             <h1>Upcoming Meals</h1>
           </div>
-          <div style={{width: "90%", marginLeft: 20}} className="nutrition__list">
+          <div
+            style={{ width: "90%", marginLeft: 20 }}
+            className="nutrition__list"
+          >
             {upcomingMealHistory.length > 0 ? (
               upcomingMealHistory?.map((food, idx) => (
                 <NutritionCard
@@ -169,58 +185,61 @@ function AthleteNutrition() {
           </div>
         </Grid>
         <Grid item xs={6}>
-          <div style={{width: "90%"}} className="athleteNutritionHeading__row">
+          <div
+            style={{ width: "90%" }}
+            className="athleteNutritionHeading__row"
+          >
             <h1>Assigned Meals By Coach</h1>
             <div onClick={() => history.push("/view-all-nutrition")}>
               View All
             </div>
           </div>
-          <div style={{width: "90%"}}>
-          {coachMealHistory.length > 0 ? (
-            coachMealHistory?.map((food, idx) => (
-              <div
-                onClick={() => {
-                  history.push({
-                    pathname: "/view-nutrition",
-                    state: {
-                      nutrition: food,
-                      type: "view",
-                    },
-                  });
-                }}
-                key={idx}
-                className="assignByCoach__Card"
-              >
-                <img
-                  src="/assets/nutrition.jpeg"
-                  alt=""
-                  width="110px"
-                  height="110px"
-                />
+          <div style={{ width: "90%" }}>
+            {coachMealHistory.length > 0 ? (
+              coachMealHistory?.map((food, idx) => (
+                <div
+                  onClick={() => {
+                    history.push({
+                      pathname: "/view-nutrition",
+                      state: {
+                        nutrition: food,
+                        type: "view",
+                      },
+                    });
+                  }}
+                  key={idx}
+                  className="assignByCoach__Card"
+                >
+                  <img
+                    src="/assets/nutrition.jpeg"
+                    alt=""
+                    width="110px"
+                    height="110px"
+                  />
 
-                <div className="assignByCoach__CardInfo">
-                  <h4>{food.data.nutrition.nutritionName}</h4>
-                  <div className="assignByCoach__CardInfoDates">
-                    {food.data.selectedDays.map((day, i) => (
-                      <h4 key={i}>
-                        {formatDate1(day)}
-                        {i < food.data.selectedDays.length - 1 ? "," : null}
-                      </h4>
-                    ))}
+                  <div className="assignByCoach__CardInfo">
+                    <h4>{food.data.nutrition.nutritionName}</h4>
+                    <div className="assignByCoach__CardInfoDates">
+                      {food.data.selectedDays.map((day, i) => (
+                        <h4 key={i}>
+                          {formatDate1(day)}
+                          {i < food.data.selectedDays.length - 1 ? "," : null}
+                        </h4>
+                      ))}
+                    </div>
                   </div>
+                  <img
+                    className="rightArrow"
+                    src="/assets/right__arrow.png"
+                    alt=""
+                  />
                 </div>
-                <img
-                  className="rightArrow"
-                  src="/assets/right__arrow.png"
-                  alt=""
-                />
-              </div>
-            ))
-          ) : (
-            <h5 className="no-upcoming-food-text">
-              There are no assigned meals.
-            </h5>
-          )}
+              ))
+            ) : (
+              <h5 className="no-upcoming-food-text">
+                There are no assigned meals.
+              </h5>
+            )}
           </div>
         </Grid>
       </Grid>

@@ -17,7 +17,7 @@ export function formatDate1(date) {
   return [year, month, day].join("-");
 }
 
-function NutritionCard({
+function AthleteNutritionCard({
   nutrition,
   food,
   idx,
@@ -30,6 +30,7 @@ function NutritionCard({
   handleCloseNutrition,
   setWeeks,
   selectedDay,
+  food_nutrition,
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
@@ -109,21 +110,87 @@ function NutritionCard({
         // });
       }
     >
-      <div className="nutritionCard_main">
+      <div
+        className="nutritionCard_main"
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />
-        <div className="nutritionCard__info">
-          <div className="nutritionCard__macroNutrients">
-            <h1> {food?.data?.nutrition?.nutritionName}</h1>
-          </div>
-          <div className="nutritionCard__macroNutrients">
-            {console.log("dni")}
-            <h3>{date ? date : formatDate()}</h3>
+        <div className="nutritionCard__info" style={{}}>
+          <div
+            className="nutritionCard__macroNutrients"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              fontSize: 13,
+              fontWeight: 400,
+            }}
+          >
+            {food?.data?.nutrition?.nutritionName && (
+              <h1> {food?.data?.nutrition?.nutritionName}</h1>
+            )}
+            {food?.data?.carbs && (
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                <div style={{ width: 70 }}>Carbs :</div>
+                {food.data?.carbs?.toFixed(2)}
+              </div>
+            )}
+            {food?.data?.Calories && (
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                {" "}
+                <div style={{ width: 70 }}>Calories :</div>
+                {food.data?.Calories?.toFixed(2)}
+              </div>
+            )}
+            {food?.data?.Fat && (
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                {" "}
+                <div style={{ width: 70 }}>Fats :</div>{" "}
+                {food.data?.Fat?.toFixed(2)}
+              </div>
+            )}
+            {food?.data?.proteins && (
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                {" "}
+                <div style={{ width: 70 }}>proteins :</div>
+                {food.data?.proteins?.toFixed(2)}
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+      <div
+        style={{
+          height: 10,
+          width: 100,
+        }}
+        className="nutritionCard__macroNutrients"
+      >
+        {console.log("dni")}
+        <h3>{date ? date : formatDate()}</h3>
+        <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+      </div>
     </div>
   );
 }
 
-export default NutritionCard;
+export default AthleteNutritionCard;
