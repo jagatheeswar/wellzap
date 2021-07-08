@@ -68,7 +68,7 @@ import { Grid } from "@material-ui/core";
 import CoachProfile from "./pages/Profile/CoachProfile";
 import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
 import ViewAllPastWorkouts from "./pages/Workouts/ViewAllPastWorkouts";
-
+import AthleteHistory from "./pages/AllAthletes/AthleteHistory"
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
@@ -249,6 +249,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<CoachAddMeal />}
                 CoachComp={<CoachAddMeal />}
+              />
+            </Route>
+            <Route path="/athlete-history">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteHistory selectedDate={selectedDate} />}
               />
             </Route>
             <Route path="/Athlete/training-assessment/:AthleteId">
