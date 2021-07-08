@@ -2,10 +2,17 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import AthleteAssessment from "./AthleteAssessment";
 import "./Profile.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectTemperoryId,
+  selectUser,
+  selectUserType,
+} from "../../features/userSlice"
 
 function AthleteAssessments(props) {
   const history = useHistory();
   const Id = props.Id;
+  const userType = useSelector(selectUserType);
   return (
     <div className="athleteAssessments">
       <h2>Assessments and Measurements</h2>
@@ -29,6 +36,12 @@ function AthleteAssessments(props) {
         path="food-and-lifestyle-assessment"
         Id={Id}
       />
+      {userType === "coach" ? (
+        <div className="viewReport">
+          <div onClick={() => history.push('/athlete-history')} className="viewReport__button">View Athlete History</div>
+          <img src="/assets/white_right.png" alt="" />
+        </div>
+        ) : (<></>)}
       <div className="viewReport">
         <div
           className="viewReport__button"
