@@ -689,28 +689,46 @@ function CoachAddWorkout() {
                             ))}
                           </div>
                         </div>
-                        <div>
-                          <div>Edit</div>
-                          <div>
-                            {selectedWorkoutEdit === idx1 ? (
-                              <img
-                                style={{
-                                  width: 20,
-                                  height: 20,
-                                  marginRight: 5,
-                                }}
-                                src="../assets/up.png"
-                              />
-                            ) : (
-                              <img
-                                style={{
-                                  width: 20,
-                                  height: 20,
-                                  marginRight: 5,
-                                }}
-                                src="../assets/down.png"
-                              />
-                            )}
+                        <div
+                          style={{
+                            display: "flex",
+                          }}
+                        >
+                          <div
+                            style={{
+                              marginRight: 20,
+                            }}
+                          >
+                            <div>Edit</div>
+                            <div>
+                              {selectedWorkoutEdit === idx1 ? (
+                                <img
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 5,
+                                  }}
+                                  src="../assets/up.png"
+                                />
+                              ) : (
+                                <img
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 5,
+                                  }}
+                                  src="../assets/down.png"
+                                />
+                              )}
+                            </div>
+                          </div>
+                          <div
+                            onClick={() => {
+                              selectedExercises.splice(idx1, 1);
+                            }}
+                          >
+                            {" "}
+                            <CloseIcon />
                           </div>
                         </div>
                       </div>
@@ -942,10 +960,10 @@ function CoachAddWorkout() {
                             borderColor: "#fcd13c",
                             borderStyle: "solid",
                             padding: "5px",
-                            borderRadius: "50px",
+                            borderRadius: "10px",
                             width: "120px",
                             height: "20px",
-                            marginTop: "10px",
+                            marginTop: "20px",
                             marginBottom: "10px",
                             cursor: "pointer",
                             display: "flex",
@@ -982,7 +1000,7 @@ function CoachAddWorkout() {
                     )}
                   </div>
 
-                  <div
+                  {/* <div
                     style={{
                       display: idx1 == 0 ? "none" : "block",
                       marginTop: 20,
@@ -998,7 +1016,7 @@ function CoachAddWorkout() {
                     }}
                   >
                     Delete Workout
-                  </div>
+                  </div> */}
 
                   <div
                     style={{
@@ -1301,27 +1319,47 @@ function CoachAddWorkout() {
                             >
                               <div>
                                 <div style={{ alignItems: "center" }}>
-                                  <h3 style={{ fontSize: 11 }}>Edit</h3>
-                                  <div>
-                                    {selectedWorkoutEdit === idx1 ? (
-                                      <img
-                                        style={{
-                                          width: 20,
-                                          height: 20,
-                                          marginRight: 5,
-                                        }}
-                                        src="../assets/up.png"
-                                      />
-                                    ) : (
-                                      <img
-                                        style={{
-                                          width: 20,
-                                          height: 20,
-                                          marginRight: 5,
-                                        }}
-                                        src="../assets/down.png"
-                                      />
-                                    )}
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        marginRight: 20,
+                                      }}
+                                    >
+                                      <div>Edit</div>
+                                      <div>
+                                        {selectedWorkoutEdit === idx1 ? (
+                                          <img
+                                            style={{
+                                              width: 20,
+                                              height: 20,
+                                              marginRight: 5,
+                                            }}
+                                            src="../assets/up.png"
+                                          />
+                                        ) : (
+                                          <img
+                                            style={{
+                                              width: 20,
+                                              height: 20,
+                                              marginRight: 5,
+                                            }}
+                                            src="../assets/down.png"
+                                          />
+                                        )}
+                                      </div>
+                                    </div>
+                                    <div
+                                      onClick={() => {
+                                        selectedExercises.splice(idx1, 1);
+                                      }}
+                                    >
+                                      {" "}
+                                      <CloseIcon />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1559,11 +1597,17 @@ function CoachAddWorkout() {
                                 onClick={() => {
                                   // navigation.navigate("AddWorkout");
                                   let temp = [...selectedExercises];
-                                  temp[idx1].sets.push({
-                                    reps: "",
-                                    weights: "",
-                                    rest: "",
-                                  });
+                                  let tmp = {};
+
+                                  Object.keys(temp[idx1].sets[0]).forEach(
+                                    (val) => {
+                                      tmp[val] = "";
+                                    }
+                                  );
+
+                                  temp[idx1].sets.push(tmp);
+
+                                  setSelectedExercises(temp);
 
                                   setSelectedExercises(temp);
                                 }}
@@ -1749,27 +1793,47 @@ function CoachAddWorkout() {
                             </div>
                             <div style={{ marginLeft: 30 }}>
                               <div style={{ alignItems: "center" }}>
-                                <h3 style={{ fontSize: 11 }}>Edit</h3>
-                                <div>
-                                  {selectedWorkoutEdit === idx1 ? (
-                                    <img
-                                      style={{
-                                        width: 20,
-                                        height: 20,
-                                        marginRight: 5,
-                                      }}
-                                      src="../assets/up.png"
-                                    />
-                                  ) : (
-                                    <img
-                                      style={{
-                                        width: 20,
-                                        height: 20,
-                                        marginRight: 5,
-                                      }}
-                                      src="../assets/down.png"
-                                    />
-                                  )}
+                                <div
+                                  style={{
+                                    display: "flex",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      marginRight: 20,
+                                    }}
+                                  >
+                                    <div>Edit</div>
+                                    <div>
+                                      {selectedWorkoutEdit === idx1 ? (
+                                        <img
+                                          style={{
+                                            width: 20,
+                                            height: 20,
+                                            marginRight: 5,
+                                          }}
+                                          src="../assets/up.png"
+                                        />
+                                      ) : (
+                                        <img
+                                          style={{
+                                            width: 20,
+                                            height: 20,
+                                            marginRight: 5,
+                                          }}
+                                          src="../assets/down.png"
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div
+                                    onClick={() => {
+                                      selectedExercises.splice(idx1, 1);
+                                    }}
+                                  >
+                                    {" "}
+                                    <CloseIcon />
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -2217,11 +2281,15 @@ function CoachAddWorkout() {
                                 onClick={() => {
                                   // navigation.navigate("AddWorkout");
                                   let temp = [...selectedExercises];
-                                  temp[idx1].sets.push({
-                                    reps: "",
-                                    weights: "",
-                                    rest: "",
-                                  });
+                                  let tmp = {};
+
+                                  Object.keys(temp[idx1].sets[0]).forEach(
+                                    (val) => {
+                                      tmp[val] = "";
+                                    }
+                                  );
+
+                                  temp[idx1].sets.push(tmp);
 
                                   setSelectedExercises(temp);
                                 }}
@@ -2354,8 +2422,8 @@ function CoachAddWorkout() {
 
       <Modal
         visible={modal}
-        width="500px"
-        height="300"
+        width="450px"
+        height="250"
         style={{
           display: "flex",
           alignItems: "center",
@@ -2364,57 +2432,77 @@ function CoachAddWorkout() {
         onClickaway={() => setModal(false)}
       >
         <div className="createWorkout__modal">
-          <h3>Do you want to save the workout?</h3>
+          <h2>Save Workout</h2>
+          <h3> Do you want to save the Workout</h3>
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal(false);
-                setModal1(true);
+              onClick={() => setModal(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              DON'T SAVE
+              CANCEL
             </div>
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                db.collection("CoachWorkouts")
-                  .add({
-                    assignedById: userData?.id,
-                    assignedToId: "",
-                    date: formatDate(),
-                    preWorkout: {
-                      workoutName,
-                      workoutDescription,
-                      equipmentsNeeded,
-                      targetedMuscleGroup,
-                      workoutDuration,
-                      caloriesBurnEstimate,
-                      workoutDifficulty,
-                      selectedExercises,
-                    },
-                  })
-                  .then(() => {
-                    setModal(false);
-                    setModal1(true);
-                  })
-                  .catch((e) => console.error(e));
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              SAVE
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal(false);
+                  setModal1(true);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                DON'T SAVE
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+                onClick={() => {
+                  db.collection("CoachWorkouts")
+                    .add({
+                      assignedById: userData?.id,
+                      assignedToId: "",
+                      date: formatDate(),
+                      preWorkout: {
+                        workoutName,
+                        workoutDescription,
+                        equipmentsNeeded,
+                        targetedMuscleGroup,
+                        workoutDuration,
+                        caloriesBurnEstimate,
+                        workoutDifficulty,
+                        selectedExercises,
+                      },
+                    })
+                    .then(() => {
+                      setModal(false);
+                      setModal1(true);
+                    })
+                    .catch((e) => console.error(e));
+                }}
+              >
+                SAVE
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>
       <Modal
         visible={modal1}
-        width="500px"
+        width="450px"
+        height="270px"
         effect="fadeInUp"
         style={{
           display: "flex",
@@ -2423,60 +2511,78 @@ function CoachAddWorkout() {
         onClickaway={() => setModal(false)}
       >
         <div className="createWorkout__modal">
-          <h3>Would you like to assign this workout to your athletes?</h3>
-          <h4>You can complete this step later from the workout screen</h4>
+          <h2>Assign Workout</h2>
+          <h3> Do you want to Assign the Workout</h3>
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal1(false);
+              onClick={() => setModal1(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              NO
+              CANCEL
             </div>
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                let compliance = 0;
-                selectedExercises.map((ex) => {
-                  ex.sets.map((s) => {
-                    compliance = compliance + s.reps * s.weights;
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal1(false);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                NO
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+                onClick={() => {
+                  let compliance = 0;
+                  selectedExercises.map((ex) => {
+                    ex.sets.map((s) => {
+                      compliance = compliance + s.reps * s.weights;
+                    });
                   });
-                });
-                history.push({
-                  pathname: "/assign-workout",
-                  state: {
-                    workout: {
-                      data: {
-                        assignedById: userData?.id,
-                        assignedToId: "",
-                        date: "",
-                        preWorkout: {
-                          workoutName,
-                          workoutDescription,
-                          equipmentsNeeded,
-                          targetedMuscleGroup,
-                          workoutDuration,
-                          caloriesBurnEstimate,
-                          workoutDifficulty,
-                          selectedExercises,
-                          compliance,
+                  history.push({
+                    pathname: "/assign-workout",
+                    state: {
+                      workout: {
+                        data: {
+                          assignedById: userData?.id,
+                          assignedToId: "",
+                          date: "",
+                          preWorkout: {
+                            workoutName,
+                            workoutDescription,
+                            equipmentsNeeded,
+                            targetedMuscleGroup,
+                            workoutDuration,
+                            caloriesBurnEstimate,
+                            workoutDifficulty,
+                            selectedExercises,
+                            compliance,
+                          },
                         },
                       },
                     },
-                  },
-                });
-                setModal1(false);
-              }}
-            >
-              YES
+                  });
+                  setModal1(false);
+                }}
+              >
+                YES
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal1(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>

@@ -295,9 +295,9 @@
 .createWorkout__modal {
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   justify-content: center;
-  margin-top: 10%;
+  margin: 30px;
 }
 
 .createWorkout__modal > h3 {
@@ -314,8 +314,8 @@
 .createWorkout__modalButtons {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: space-between;
+  margin-top: 50px;
   margin-bottom: 20px;
 }
 
@@ -326,7 +326,7 @@
   background-color: #fcd13f;
   border-radius: 20px;
   height: 30px;
-  padding: 5px 20px;
+
   font-weight: 500;
   cursor: pointer;
 }

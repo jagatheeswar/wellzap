@@ -385,7 +385,12 @@ function CreateNutrition(props) {
     <div className="createNutrition">
       <NutritionScreenHeader name="Create Nutrition" />
       <img src="/assets/nutrition.jpeg" alt="" />
-      <div className="createNutrition__input">
+      <div
+        className="createNutrition__input"
+        style={{
+          padding: 20,
+        }}
+      >
         <h4>Nutrition Plan Name</h4>
         <input
           type="text"
