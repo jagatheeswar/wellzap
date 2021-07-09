@@ -21,6 +21,7 @@ import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
 import SelectSearch, { fuzzySearch } from "react-select-search";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Slide, DialogContentText } from "@material-ui/core";
 
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
@@ -31,6 +32,10 @@ import SelectSearch, { fuzzySearch } from "react-select-search";
 //     marginTop: theme.spacing(2),
 //   },
 // }));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function CoachAddWorkout() {
   const userData = useSelector(selectUserData);
@@ -71,6 +76,15 @@ function CoachAddWorkout() {
     },
   ]);
   const history = useHistory();
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   console.log({
     workoutDescription,
@@ -584,8 +598,9 @@ function CoachAddWorkout() {
                       <div
                         style={{ cursor: "pointer" }}
                         onClick={() => {
+                          console.log(workout.videoUrl)
                           setWorkoutVideoUrl(workout.videoUrl);
-                          setModal2(true);
+                          setOpenDialog(true);
                           setVideoLoading(true);
                         }}
                       >
@@ -2586,7 +2601,31 @@ function CoachAddWorkout() {
           </div>
         </div>
       </Modal>
-      <Modal
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        maxWidth="md"
+        // fullWidth
+        onClose={handleCloseDialog}
+      >
+        <DialogContent>
+          {/* <video width="500" height="500" controls>
+            <source src={workoutVideoUrl} type="video/mp4" />
+          </video> */}
+          <div dangerouslySetInnerHTML={{__html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
+                            workoutVideoUrl.lastIndexOf("/") + 1
+                          )}"></iframe>`}} />
+          <div
+          onClick={handleCloseDialog}
+          style={{cursor:"pointer", position: "absolute", right: 0, top: 0, padding: 12}} 
+        >
+          {" "}
+          <CloseIcon />
+        </div>
+        </DialogContent>
+      </Dialog>
+      {/* <Modal
         visible={modal2}
         width="80%"
         height="500"
@@ -2601,7 +2640,7 @@ function CoachAddWorkout() {
         <video width="500" height="500" controls>
           <source src={workoutVideoUrl} />
         </video>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }
