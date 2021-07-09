@@ -14,6 +14,7 @@ import { useLocation } from "react-router";
 import { DriveEtaOutlined } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
+import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 import CloseIcon from "@material-ui/icons/Close";
@@ -81,9 +82,15 @@ export default function PostWorkoutDetails() {
     return [year, month, day].join("-");
   }
   useEffect(() => {
+    console.log(location?.state?.workout);
     if (location.state?.workout) {
-      setGroup(location.state?.workout?.data?.preWorkout?.group);
-      setPostWorkout(location.state?.workout?.data?.postWorkout);
+      setGroup([
+        {
+          exercises:
+            location.state?.workout?.data?.preWorkout?.selectedExercises,
+        },
+      ]);
+      setPostWorkout(location.state?.workout?.data?.preWorkout);
       setPreWorkout(location.state?.workout?.data?.preWorkout);
       setWorkout(location.state?.workout);
       console.log(location.state);
@@ -179,8 +186,8 @@ export default function PostWorkoutDetails() {
               style={{
                 borderWidth: 1,
                 borderColor: "#DBE2EA",
-                backgroundColor: "black",
-                color: "white",
+                backgroundColor: "#fcd11c",
+                color: "black",
 
                 borderRadius: 8,
                 padding: 7,
@@ -228,15 +235,14 @@ export default function PostWorkoutDetails() {
           </div>
         </div>
         <div className="Planned_data">
-          <div style={{ width: 100 }}>Calories</div>
+          <div style={{ width: 120 }}>Calories</div>
           <input
             style={{
-              marginLeft: 20,
               borderWidth: 1,
               borderColor: "#DBE2EA",
-              backgroundColor: "black",
-              color: "white",
-              width: 150,
+              backgroundColor: "#fcd11c",
+              color: "black",
+
               borderRadius: 8,
               padding: 7,
               height: 25,
@@ -248,14 +254,8 @@ export default function PostWorkoutDetails() {
             setselectedworkouteditable={false}
           />
         </div>
-
-        <div
-          className="excercise__container"
-          style={{
-            marginTop: 20,
-          }}
-        >
-          <div className="yellow"></div>
+        <h3 style={{ fontSize: 14, marginTop: 20 }}>Exercises</h3>
+        <div className="excercise__container" style={{ marginTop: 5 }}>
           <div
             style={{
               display: "flex",
@@ -263,13 +263,6 @@ export default function PostWorkoutDetails() {
               width: "100%",
             }}
           >
-            <div className="excercise__header">
-              <div>
-                Warm-Up
-                <div> 5 minutes</div>
-              </div>
-            </div>
-
             <div className="excercises">
               {group?.map((grp, idx) => (
                 <div
@@ -686,7 +679,7 @@ export default function PostWorkoutDetails() {
                                   style={{
                                     fontSize: 17,
                                     fontWeight: 700,
-                                    marginBottom: 20,
+                                    marginBottom: 5,
                                   }}
                                 >
                                   {workout.name}
@@ -713,7 +706,10 @@ export default function PostWorkoutDetails() {
                                         {Object.keys(s).map((set_, i) => (
                                           <div
                                             style={{
-                                              display: "flex",
+                                              display:
+                                                set_ == "actualReps"
+                                                  ? "none"
+                                                  : "flex",
                                               marginRight: 10,
                                             }}
                                           >
@@ -1061,29 +1057,6 @@ export default function PostWorkoutDetails() {
                                   </div>
                                 ))}
                               </div>
-                              <button
-                                onClick={() => {
-                                  console.log(4);
-                                  console.log(selectedWorkoutEdit);
-                                  setSelectedWorkoutEdit("");
-                                }}
-                                style={{
-                                  borderWidth: 1,
-                                  borderRadius: 5,
-                                  borderColor: "#DBE2EA",
-                                  alignSelf: "flex-end",
-                                  padding: 5,
-                                  paddingHorizontal: 7,
-                                }}
-                              >
-                                <Icon
-                                  name="check"
-                                  size={20}
-                                  style={{ alignSelf: "flex-end" }}
-                                  color="black"
-                                  type="font-awesome-5"
-                                />
-                              </button>
                             </div>
                           )}
                         </div>
@@ -1095,6 +1068,7 @@ export default function PostWorkoutDetails() {
             </div>
           </div>
         </div>
+
         <div
           style={{
             width: "100%",
@@ -1200,8 +1174,13 @@ export default function PostWorkoutDetails() {
                   }
                 }}
               >
-                <MoodBadIcon
+                <SentimentSatisfiedIcon
                   style={{
+                    fill: `${
+                      postWorkout?.fatigue === "moderately-sore"
+                        ? "rgb(252, 213, 74)"
+                        : "black"
+                    }`,
                     height: 70,
                     width: 70,
                   }}
@@ -1294,7 +1273,9 @@ export default function PostWorkoutDetails() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
+          border: "none",
         }}
+        className="Submit__button"
         onClick={() => {
           if (completed) {
             history.push("/workouts");
@@ -1336,9 +1317,12 @@ export default function PostWorkoutDetails() {
             } else {
               complianceMessage = "";
             }
-            postWorkout.compliance = compliance;
-            postWorkout.group = group;
-            if (!postWorkout.date) {
+            if (postWorkout?.compliance) {
+              postWorkout.compliance = compliance;
+              postWorkout.group = group;
+            }
+
+            if (!postWorkout?.date) {
               postWorkout.date = formatDate();
             }
             console.log(workoutId, postWorkout);

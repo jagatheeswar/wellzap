@@ -63,6 +63,7 @@ const Calendar_coach = (props) => {
   // console.log(defaultValue, new Date().getDate())
   const [selectedDay, setSelectedDay] = useState(null);
   const [showevent_count, setshowevent_count] = useState(3);
+  const [isLoading, setisLoading] = useState(true);
   React.useEffect(() => {
     var el = document.getElementsByClassName("Calendar__day -selected");
     if (el.length > 0) {
@@ -87,11 +88,10 @@ const Calendar_coach = (props) => {
 
       let temp = new Date(date.year, date.month - 1, date.day);
 
-      console.log(temp, date);
       temp = temp.setHours(0, 0, 0, 0);
-      console.log(props?.selectedDate, temp);
+
       if (props?.selectedDate == temp) {
-        console.log(props?.selectedDate);
+        //console.log(props?.selectedDate);
       } else {
         //temp = temp.setHours(0, 0, 0, 0);
         props?.toggle_date(temp);
@@ -100,12 +100,14 @@ const Calendar_coach = (props) => {
   }, [selectedDate]);
 
   React.useEffect(() => {
+    console.log(selectedDay);
     if (selectedDay) {
       let date = selectedDay;
 
       setSelectedDate(moment([date.year, date.month - 1, date.day]));
-      console.log(1);
     }
+
+    setisLoading(false);
   }, [selectedDay]);
 
   React.useEffect(() => {
@@ -142,15 +144,12 @@ const Calendar_coach = (props) => {
       var d = moment();
     }
 
-    console.log(now);
-    let today_date = {
+    setSelectedDay({
       year: d.year(),
       month: d.month() + 1,
       day: d.date(),
-    };
-    console.log(today_date, "td");
+    });
 
-    setSelectedDay(today_date);
     if (userData) {
       db.collection("events")
         .where("coachID", "==", userData.id)
@@ -276,9 +275,10 @@ const Calendar_coach = (props) => {
           </span>
         </span>
       </div>
-      {selectedDay && (
+      {console.log("ssd", selectedDay)}
+      {selectedDay && selectedDay != null && (
         <Calendar
-          value={selectedDay ? selectedDay : defaultValue}
+          value={selectedDay && selectedDay}
           onChange={setSelectedDay}
           colorPrimary="#fcd54a" // added this
           calendarClassName="custom-calendar" // and this

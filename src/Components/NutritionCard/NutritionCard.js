@@ -30,6 +30,7 @@ function NutritionCard({
   handleCloseNutrition,
   setWeeks,
   selectedDay,
+  selectedDate,
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
@@ -116,8 +117,8 @@ function NutritionCard({
             <h1> {food?.data?.nutrition?.nutritionName}</h1>
           </div>
           <div className="nutritionCard__macroNutrients">
-            {console.log("dni")}
-            <h3>{date ? date : formatDate()}</h3>
+            {console.log("s", selectedDate)}
+            <h3>{selectedDate ? selectedDate : formatDate()}</h3>
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ function ViewAllNutrition() {
   const [nutrition, setNutrition] = React.useState([]);
   const [type, setType] = React.useState("");
   const [athleteId, setAthleteId] = React.useState("");
+  const [assignedMealplans, setassignedMealplans] = React.useState(null);
 
   React.useEffect(() => {
     if (userData) {
@@ -63,6 +64,22 @@ function ViewAllNutrition() {
     }
   }, [userData?.id, athleteId]);
 
+  React.useEffect(async () => {
+    let data = {};
+    var data1 = [];
+    if (nutrition) {
+      nutrition.forEach((item) => {
+        item.data.selectedDays.forEach((val) => {
+          let temp = [];
+          temp = { ...item };
+          temp["currentdate"] = val;
+          data1.push(temp);
+        });
+      });
+    }
+    setassignedMealplans(data1);
+  }, [nutrition]);
+
   return (
     <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Assigned Meal Plans" />
@@ -89,8 +106,9 @@ function ViewAllNutrition() {
             alignItems: "center",
           }}
         >
-          {nutrition.length > 0 ? (
-            nutrition?.map((food, idx) => (
+          {console.log(nutrition)}
+          {assignedMealplans?.length > 0 ? (
+            assignedMealplans?.map((food, idx) => (
               <NutritionCard
                 key={idx}
                 nutrition={nutrition}
@@ -98,6 +116,7 @@ function ViewAllNutrition() {
                 idx={idx}
                 navigation={"ViewAllNutrition"}
                 type="view"
+                selectedDate={food.currentdate}
               />
             ))
           ) : (

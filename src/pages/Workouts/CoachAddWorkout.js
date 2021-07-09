@@ -497,10 +497,10 @@ function CoachAddWorkout() {
                             temp[idx1].sets = [];
 
                             temp[idx1].sets.push({
-                              Reps: "",
-                              Weights: "",
+                              reps: "12",
+                              weights: "12",
                               // sets: "",
-                              Rest: "",
+                              rest: "12",
                             });
 
                             setSelectedExercises(temp);
@@ -539,20 +539,20 @@ function CoachAddWorkout() {
                           console.log(val);
                           if (val == 1) {
                             temp[idx1].sets.push({
-                              Reps: "",
-                              Weights: "",
+                              reps: "12",
+                              weights: "0",
                               // sets: "",
-                              Rest: "",
+                              rest: "30",
                             });
                           }
                           if (val == 2) {
                             temp[idx1].sets.push({
-                              Reps: "",
+                              reps: "12",
                             });
                           }
                           if (val == 3) {
                             temp[idx1].sets.push({
-                              Time: "",
+                              time: "30",
                             });
                           }
 
@@ -992,7 +992,20 @@ function CoachAddWorkout() {
                             let tmp = {};
 
                             Object.keys(temp[idx1].sets[0]).forEach((val) => {
-                              tmp[val] = "";
+                              if (val == "weights") {
+                                tmp[val] = "0";
+                              }
+                              if (val == "reps") {
+                                tmp[val] = "12";
+                              }
+                              if (val == "rest") {
+                                tmp[val] = "30";
+                              }
+                              if (val == "time") {
+                                tmp[val] = "30";
+                              } else {
+                                tmp[val] = "12";
+                              }
                             });
 
                             temp[idx1].sets.push(tmp);
@@ -1177,7 +1190,7 @@ function CoachAddWorkout() {
                     borderRadius: 5,
                     marginTop: 10,
                   }}
-                  placeholder="Workout Name"
+                  placeholder="Describe here"
                 />
               </div>
 
@@ -1616,7 +1629,18 @@ function CoachAddWorkout() {
 
                                   Object.keys(temp[idx1].sets[0]).forEach(
                                     (val) => {
-                                      tmp[val] = "";
+                                      if (val == "weights") {
+                                        tmp[val] = "0";
+                                      }
+                                      if (val == "reps") {
+                                        tmp[val] = "12";
+                                      }
+                                      if (val == "rest") {
+                                        tmp[val] = "30";
+                                      }
+                                      if (val == "time") {
+                                        tmp[val] = "30";
+                                      }
                                     }
                                   );
 
@@ -2300,7 +2324,18 @@ function CoachAddWorkout() {
 
                                   Object.keys(temp[idx1].sets[0]).forEach(
                                     (val) => {
-                                      tmp[val] = "";
+                                      if (val == "weights") {
+                                        tmp[val] = "0";
+                                      }
+                                      if (val == "reps") {
+                                        tmp[val] = "12";
+                                      }
+                                      if (val == "rest") {
+                                        tmp[val] = "30";
+                                      }
+                                      if (val == "time") {
+                                        tmp[val] = "30";
+                                      }
                                     }
                                   );
 

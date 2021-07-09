@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react";
 import { useSelector } from "react-redux";
 import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import NutritionScreenHeader from "./NutritionScreenHeader";
 import "./AthleteNutrition.css";
+import AthleteNutritionCard from "../../Components/NutritionCard/AthleteNutritionCard";
 
 function AthleteMealHistory() {
   const userData = useSelector(selectUserData);
@@ -49,27 +50,28 @@ function AthleteMealHistory() {
   }, [userData?.id]);
 
   return (
-    <div style={{minHeight: "99.7vh"}}>
+    <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Meal History" />
-      <div style={{width: "50%", marginLeft: 20}}>
-      {mealHistory.length > 0 ? (
-        mealHistory?.map((food, idx) => (
-          <NutritionCard
-            key={idx}
-            nutrition={mealHistory}
-            food={food}
-            idx={idx}
-            navigation={"add-meal"}
-          />
-        ))
-      ) : (
-        <h5 className="no-upcoming-food-text">
-          There are no upcoming meals for now
-        </h5>
-      )}
+      <div style={{ width: "50%", marginLeft: 20 }}>
+        {mealHistory.length > 0 ? (
+          mealHistory?.map((food, idx) => (
+            <AthleteNutritionCard
+              key={idx}
+              nutrition={mealHistory}
+              food={food}
+              idx={idx}
+              // coachMealHistory={coachMealHistory[0]}
+              navigation={"add-meal"}
+            />
+          ))
+        ) : (
+          <h5 className="no-upcoming-food-text">
+            There are no upcoming meals for now
+          </h5>
+        )}
       </div>
     </div>
-  )
+  );
 }
 
-export default  AthleteMealHistory;
+export default AthleteMealHistory;

@@ -135,8 +135,12 @@ function CoachDashboard(props) {
         });
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
-        .where("assignedToId", "==", "")
-        // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
+        .where("saved", "==", false)
+        .where(
+          "selectedDates",
+          "array-contains",
+          formatDate1(props?.selectedDate && props?.selectedDate)
+        )
         .limit(5)
         .onSnapshot((snapshot) => {
           setSavedWorkouts(
@@ -197,7 +201,7 @@ function CoachDashboard(props) {
             onClick={() => {
               history.push("/workouts");
             }}
-            style={{cursor: "pointer"}}
+            style={{ cursor: "pointer" }}
           >
             See all
           </p>
@@ -320,7 +324,7 @@ function CoachDashboard(props) {
             onClick={() => {
               history.push("/nutrition");
             }}
-            style={{cursor: "pointer"}}
+            style={{ cursor: "pointer" }}
           >
             See all
           </p>
@@ -440,7 +444,7 @@ function CoachDashboard(props) {
                       height="40px"
                     />
                     <h4
-                    style={{cursor: "pointer"}}
+                      style={{ cursor: "pointer" }}
                       onClick={() => {
                         history.push("/Athlete/" + `${item.id}`);
                       }}
