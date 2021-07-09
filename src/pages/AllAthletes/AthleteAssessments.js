@@ -38,7 +38,9 @@ function AthleteAssessments(props) {
       />
       {userType === "coach" ? (
         <div className="viewReport">
-          <div onClick={() => history.push('/athlete-history')} className="viewReport__button">View Athlete History</div>
+          <div onClick={() => history.push({pathname:'/athlete-history/', state: {
+            id: Id
+          }})} className="viewReport__button">View Athlete History</div>
           <img src="/assets/white_right.png" alt="" />
         </div>
         ) : (<></>)}

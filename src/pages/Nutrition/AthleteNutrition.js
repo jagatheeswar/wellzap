@@ -11,7 +11,7 @@ import formatSpecificDate from "../../functions/formatSpecificDate";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import formatDate1 from "../../functions/formatDate1";
 import { useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import AthleteNutritionCard from "../../Components/NutritionCard/AthleteNutritionCard";
 
 function AthleteNutrition() {
@@ -210,23 +210,25 @@ function AthleteNutrition() {
                   key={idx}
                   className="assignByCoach__Card"
                 >
+                  <div style={{display: 'flex', alignItems: 'center'}}>
                   <img
                     src="/assets/nutrition.jpeg"
                     alt=""
                     width="110px"
                     height="110px"
+                    style={{objectFit: 'contain'}}
                   />
-
-                  <div className="assignByCoach__CardInfo">
-                    <h4>{food.data.nutrition.nutritionName}</h4>
+                  <div style={{marginLeft: 20}}>
+                    <Typography variant="h6" style={{fontSize: 16}}>{food.data.nutrition.nutritionName}</Typography>
                     <div className="assignByCoach__CardInfoDates">
                       {food.data.selectedDays.map((day, i) => (
-                        <h4 key={i}>
+                        <Typography style={{fontSize: 12}} key={i}>
                           {formatDate1(day)}
                           {i < food.data.selectedDays.length - 1 ? "," : null}
-                        </h4>
+                        </Typography>
                       ))}
                     </div>
+                  </div>
                   </div>
                   <img
                     className="rightArrow"
