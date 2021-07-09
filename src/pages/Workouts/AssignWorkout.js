@@ -1307,18 +1307,6 @@ function AssignWorkout() {
               }}
             >
               <h3 className="createWorkout__inputLabel">Exercises</h3>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <p style={{ margin: 0 }}>Weights</p>
-                <Switch
-                  checked={cardio}
-                  onChange={(event) => {
-                    setCardio(!cardio);
-                  }}
-                  value={cardio}
-                  inputProps={{ "aria-label": "primary checkbox" }}
-                />
-                <p style={{ margin: 0 }}>Cardio</p>
-              </div>
             </div>
           )}
           <div>

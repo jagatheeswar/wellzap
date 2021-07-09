@@ -173,12 +173,12 @@ function AthleteDashboard(props) {
 
   useEffect(() => {
     db.collection("coaches")
-      .doc(userData?.data?.listOfCoaches[0])
+      .doc(userData?.data?.listOfCoaches[0] && userData?.data?.listOfCoaches[0])
       .get()
       .then(function (snap) {
         setCoachName(snap.data()?.name);
       });
-  }, []);
+  }, [userData?.data]);
 
   console.log({ workouts, nutrition, userData });
 

@@ -28,8 +28,7 @@ function areEqual(prevProps, nextProps) {
 function RightContainer(props) {
   const userType = useSelector(selectUserType);
   //props.toggle_date(new Date().setHours(0, 0, 0, 0));
-  React.useEffect(() => {}, [props?.selectedDate]);
-  console.log(props.selectedDate);
+
   return (
     <div className="rightContainer">
       {userType == "coach" ? <Notification /> : <AthleteNotifications />}

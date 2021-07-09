@@ -84,11 +84,14 @@ function Sleep(props) {
   };
 
   useEffect(() => {
+    console.log(userData?.id);
     if (userData?.id) {
       db.collection("athletes")
         .doc(userData?.id)
         .get()
         .then((doc) => {
+          // console.log(doc.data());
+
           if (doc.data().metrics) {
             if (doc.data().metrics[requestDate]) {
               if (doc.data().metrics[requestDate]?.sleep) {
@@ -126,7 +129,8 @@ function Sleep(props) {
     <div
       className="sleep"
       style={{
-        marginLeft: 20,
+        marginLeft: 0,
+        marginRight: 20,
       }}
     >
       <div className={classes.root}>
@@ -137,7 +141,13 @@ function Sleep(props) {
             alignItems: "center",
           }}
         >
-          <div style={{ fontFamily: "Montserrat", display: "flex" }}>
+          <div
+            style={{
+              fontFamily: "Montserrat",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <p style={{ fontSize: 16, fontFamily: "Montserrat" }}>
               Add Last Nights Sleep
             </p>

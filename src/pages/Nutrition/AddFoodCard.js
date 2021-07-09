@@ -34,6 +34,7 @@ const AddFoodCard = (props) => {
     setIndex(props.index);
     setIdx(props.idx);
     setItem(props.item);
+    console.log("s", props);
   }, [props.index, props.item, props.idx]);
 
   return (
@@ -75,7 +76,7 @@ const AddFoodCard = (props) => {
                   options={props.serverData}
                   getOptionLabel={(option) => option.name}
                   style={{ width: 300 }}
-                  inputValue={props.item.meal}
+                  inputValue={props.item.foodName}
                   onChange={(e, item) => {
                     let foodData = [...props.entireFood];
                     let temp = [...props.ent.food];

@@ -99,7 +99,7 @@ function AthleteNutritionCard({
                   state: {
                     entireFood: food.data.entireFood,
                     todaysFoodId: food.id,
-                    nutrition: coachMealHistory[0],
+                    nutrition: coachMealHistory && coachMealHistory[0],
                   },
                 });
               } else {
