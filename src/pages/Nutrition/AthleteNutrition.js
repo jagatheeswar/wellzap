@@ -144,9 +144,8 @@ function AthleteNutrition() {
                   nutrition={mealHistory}
                   food={food}
                   idx={idx}
-                  type="view"
+                  coachMealHistory={coachMealHistory[0]}
                   navigation={"add-meal"}
-                  selecteddate={food.data.date}
                 />
               ))
             ) : (

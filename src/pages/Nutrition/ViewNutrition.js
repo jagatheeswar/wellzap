@@ -246,17 +246,20 @@ function CreateNutrition(props) {
           location?.state?.nutrition?.data?.nutrition?.nutritionName
         );
       } else if (location.state.type === "view") {
-        setType(location.state.type);
-        setNutrition(location.state.nutrition.data.nutrition);
-        setNutritionId(location.state.nutrition.id);
-        setEntireFood(location.state.nutrition.data.nutrition.entireFood);
-        setAddFood(
-          location.state?.nutrition.data?.nutrition?.entireFood[0]?.addFood
-        );
-        setNutritionName(
-          location?.state?.nutrition?.data?.nutrition?.nutritionName
-        );
-        setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+        if (location.state.nutrition?.data?.nutrition?.entireFood) {
+          setType(location.state.type);
+          setNutrition(location.state.nutrition.data.nutrition);
+          setNutritionId(location.state.nutrition.id);
+          setEntireFood(location.state.nutrition?.data?.nutrition?.entireFood);
+          setAddFood(
+            location.state?.nutrition.data?.nutrition?.entireFood[0]?.addFood
+          );
+          setNutritionName(
+            location?.state?.nutrition?.data?.nutrition?.nutritionName
+          );
+          setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+        }
+        console.log(location.state.nutrition);
       } else {
         setNutritionName(location.state.nutrition.nutritionName);
         setEntireFood(location.state.nutrition.entireFood);

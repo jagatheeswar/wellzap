@@ -338,7 +338,11 @@ function AthleteDashboard(props) {
               onClick={() => {
                 history.push("/nutrition");
               }}
-              style={{ marginLeft: 10, fontFamily: "Montserrat", cursor: "pointer" }}
+              style={{
+                marginLeft: 10,
+                fontFamily: "Montserrat",
+                cursor: "pointer",
+              }}
             >
               See all
             </p>

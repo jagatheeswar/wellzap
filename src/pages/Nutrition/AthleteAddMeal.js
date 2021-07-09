@@ -8,6 +8,7 @@ import { db } from "../../utils/firebase";
 import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../functions/formatDate";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -21,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 function AthleteAddMeal() {
   const classes = useStyles();
+  const location = useLocation();
   const userData = useSelector(selectUserData);
   const [serverData, setServerData] = useState([]);
+  const [FoodName, setFoodName] = useState(null);
   const [entireFood, setEntireFood] = useState([
     {
       meal: "",
@@ -64,8 +67,34 @@ function AthleteAddMeal() {
         console.log("Error getting documents: ", error);
       });
   };
+  useEffect(() => {
+    if (location.state?.nutrition) {
+      console.log(location.state?.nutrition.data.nutrition.plan);
+      // setCoachEntireFood(location.state?.nutrition.data.nutrition.plan);
+      setFoodName(location.state?.nutrition.data.nutrition.nutritionName);
+    }
+  }, [location.state?.nutrition]);
 
   console.log({ entireFood });
+
+  useEffect(() => {
+    if (location.state?.type) {
+      setType(location.state?.type);
+    }
+  }, [location.state?.type]);
+
+  useEffect(() => {
+    if (location.state?.entireFood && location.state.entireFood.length > 0) {
+      setEntireFood(location.state.entireFood);
+    }
+  }, [location.state?.entireFood]);
+
+  useEffect(() => {
+    if (location.state?.todaysFoodId) {
+      setFoodId(location.state.todaysFoodId);
+      console.log("Food id is", location.state?.todaysFoodId);
+    }
+  }, [location.state?.todaysFoodId]);
 
   useEffect(() => {
     fetch("https://rongoeirnet.herokuapp.com/getFood")

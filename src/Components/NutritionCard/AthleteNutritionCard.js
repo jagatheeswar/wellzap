@@ -23,18 +23,18 @@ function AthleteNutritionCard({
   idx,
   type,
   navigation,
-  date,
+  coachMealHistory,
   selectedWeekNum,
   isLongTerm,
   weeks,
   handleCloseNutrition,
   setWeeks,
-  selectedDay,
+
   food_nutrition,
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
-  console.log("fd", date);
+
   // const isLongTerm = false;
   return (
     <div
@@ -93,13 +93,24 @@ function AthleteNutritionCard({
                 }
               }
             } else {
-              history.push({
-                pathname: "/view-nutrition",
-                state: {
-                  nutrition: food,
-                  type: "view",
-                },
-              });
+              if (navigation) {
+                history.push({
+                  pathname: "/add-meal",
+                  state: {
+                    entireFood: food.data.entireFood,
+                    todaysFoodId: food.id,
+                    nutrition: coachMealHistory[0],
+                  },
+                });
+              } else {
+                history.push({
+                  pathname: "/view-nutrition",
+                  state: {
+                    nutrition: food,
+                    type: "view",
+                  },
+                });
+              }
             }
           }
         }
@@ -118,63 +129,65 @@ function AthleteNutritionCard({
         }}
       >
         <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />
-        <div className="nutritionCard__info" style={{}}>
+        <div
+          className="nutritionCard__info"
+          style={{
+            marginLeft: 10,
+          }}
+        >
           <div
             className="nutritionCard__macroNutrients"
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-start",
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: 400,
+              height: 70,
             }}
           >
             {food?.data?.nutrition?.nutritionName && (
               <h1> {food?.data?.nutrition?.nutritionName}</h1>
             )}
-            {food?.data?.carbs && (
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                <div style={{ width: 70 }}>Carbs :</div>
-                {food.data?.carbs?.toFixed(2)}
-              </div>
-            )}
-            {food?.data?.Calories && (
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                {" "}
-                <div style={{ width: 70 }}>Calories :</div>
-                {food.data?.Calories?.toFixed(2)}
-              </div>
-            )}
-            {food?.data?.Fat && (
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                {" "}
-                <div style={{ width: 70 }}>Fats :</div>{" "}
-                {food.data?.Fat?.toFixed(2)}
-              </div>
-            )}
-            {food?.data?.proteins && (
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                {" "}
-                <div style={{ width: 70 }}>proteins :</div>
-                {food.data?.proteins?.toFixed(2)}
-              </div>
-            )}
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <div style={{ width: 70 }}>Carbs :</div>
+              {food.data?.carbs ? food.data?.carbs?.toFixed(2) : 0}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {" "}
+              <div style={{ width: 70 }}>Calories :</div>
+              {food.data?.calories ? food.data?.calories?.toFixed(2) : 0}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {" "}
+              <div style={{ width: 70 }}>Fats :</div>{" "}
+              {food.data?.fat ? food.data?.fat?.toFixed(2) : 0}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {" "}
+              <div style={{ width: 70 }}>proteins :</div>
+              {food.data?.proteins ? food.data?.proteins?.toFixed(2) : 0}
+            </div>
           </div>
         </div>
       </div>
@@ -185,8 +198,7 @@ function AthleteNutritionCard({
         }}
         className="nutritionCard__macroNutrients"
       >
-        {console.log("dni")}
-        <h3>{date ? date : formatDate()}</h3>
+        <h3>{food.id ? food.id : formatDate()}</h3>
         <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
       </div>
     </div>
