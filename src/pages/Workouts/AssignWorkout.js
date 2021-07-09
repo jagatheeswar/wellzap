@@ -25,6 +25,12 @@ import "./dropdown.css";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
 import styled from "styled-components";
 import CheckIcon from "@material-ui/icons/Check";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Slide, DialogContentText } from "@material-ui/core";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 const InputWrapper = styled("div")`
   width: 350px;
@@ -201,6 +207,15 @@ function AssignWorkout() {
     { name: "Row" },
   ]);
   const history = useHistory();
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   useEffect(() => {
     Axios.get("https://rongoeirnet.herokuapp.com/getexercise")
@@ -1383,7 +1398,7 @@ function AssignWorkout() {
                             style={{ cursor: "pointer" }}
                             onClick={() => {
                               setWorkoutVideoUrl(workout.videoUrl);
-                              setModal2(true);
+                              setOpenDialog(true)
                               setVideoLoading(true);
                             }}
                           >
@@ -1800,7 +1815,31 @@ function AssignWorkout() {
           <textarea placeholder="Enter Workout Description" />
         </div> */}
       </div>
-      <Modal
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        maxWidth="md"
+        // fullWidth
+        onClose={handleCloseDialog}
+      >
+        <DialogContent>
+          {/* <video width="500" height="500" controls>
+            <source src={workoutVideoUrl} type="video/mp4" />
+          </video> */}
+          <div dangerouslySetInnerHTML={{__html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
+                            workoutVideoUrl.lastIndexOf("/") + 1
+                          )}"></iframe>`}} />
+          <div
+          onClick={handleCloseDialog}
+          style={{cursor:"pointer", position: "absolute", right: 0, top: 0, padding: 12}} 
+        >
+          {" "}
+          <CloseIcon />
+        </div>
+        </DialogContent>
+      </Dialog>
+      {/* <Modal
         visible={modal2}
         width="80%"
         height="500"
@@ -1814,9 +1853,9 @@ function AssignWorkout() {
             justifyContent: "center",
           }}
         >
-          {/* <video width="500" height="400" autoplay controls>
+          <video width="500" height="400" autoplay controls>
             <source src={workoutVideoUrl} />
-          </video> */}
+          </video>
           <iframe width="420" height="415" src={workoutVideoUrl}></iframe>
           <div
             style={{
@@ -1836,7 +1875,7 @@ function AssignWorkout() {
             <CloseIcon />
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

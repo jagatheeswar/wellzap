@@ -17,9 +17,15 @@ import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
+import CloseIcon from "@material-ui/icons/Close";
 
 import MoodBadIcon from "@material-ui/icons/MoodBad";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Slide, DialogContentText } from "@material-ui/core";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function PostWorkoutDetails() {
   const userData = useSelector(selectUserData);
@@ -40,7 +46,19 @@ export default function PostWorkoutDetails() {
   const [preWorkout, setPreWorkout] = useState(null);
   const [workoutsCount, setWorkoutsCount] = useState(0);
   const [averageWorkoutTime, setAverageWorkoutTime] = useState(0);
+  const [workoutVideoUrl, setWorkoutVideoUrl] = useState("");
   const [workout, setWorkout] = useState([]);
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   useEffect(() => {
     if (userData?.id) {
       db.collection("athletes")
@@ -316,7 +334,11 @@ export default function PostWorkoutDetails() {
                                   setGroup(temp);
                                 }}
                               />
-
+                              <div onClick={() => {
+                                  console.log("img click")
+                                  setWorkoutVideoUrl(workout.videoUrl);
+                                  setOpenDialog(true);
+                                }}>
                               <img
                                 style={{
                                   width: 150,
@@ -324,13 +346,14 @@ export default function PostWorkoutDetails() {
                                   borderRadius: 8,
                                   backgroundColor: "#d3d3d3",
                                 }}
+                                
                                 src={
                                   workout.thumbnail_url
                                     ? `${workout.thumbnail_url}`
                                     : "../assets/illustration.jpeg"
                                 }
                               />
-
+                              </div>
                               <div style={{ marginHorizontal: 10 }}>
                                 <h3>{workout.name}</h3>
                                 <div
@@ -1350,6 +1373,30 @@ export default function PostWorkoutDetails() {
           {completed ? "Return" : "Complete Workout"}
         </h3>
       </button>
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        maxWidth="md"
+        // fullWidth
+        onClose={handleCloseDialog}
+      >
+        <DialogContent>
+          {/* <video width="500" height="500" controls>
+            <source src={workoutVideoUrl} type="video/mp4" />
+          </video> */}
+          <div dangerouslySetInnerHTML={{__html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
+                            workoutVideoUrl.lastIndexOf("/") + 1
+                          )}"></iframe>`}} />
+          <div
+          onClick={handleCloseDialog}
+          style={{cursor:"pointer", position: "absolute", right: 0, top: 0, padding: 12}} 
+        >
+          {" "}
+          <CloseIcon />
+        </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
