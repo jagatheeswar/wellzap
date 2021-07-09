@@ -61,19 +61,19 @@ function NutritionGoalProgress() {
           tempCarbs = 0;
           tempFat = 0;
           tempProtein = 0;
-            if (doc.data()?.entireFood) {
-              setEntireFood(doc.data()?.entireFood);
-              setTodaysFoodId(doc.id);
-              doc.data()?.entireFood.map((foodContainer) => {
-                foodContainer.food.map((f) => {
-                  tempCal = tempCal + f.calories;
-                  tempCarbs = tempCarbs + f.carbs;
-                  tempFat = tempFat + f.fat;
-                  tempProtein = tempProtein + f.proteins;
-                });
+          if (doc.data()?.entireFood) {
+            setEntireFood(doc.data()?.entireFood);
+            setTodaysFoodId(doc.id);
+            doc.data()?.entireFood.map((foodContainer) => {
+              foodContainer.food.map((f) => {
+                tempCal = tempCal + f.calories;
+                tempCarbs = tempCarbs + f.carbs;
+                tempFat = tempFat + f.fat;
+                tempProtein = tempProtein + f.proteins;
               });
-            }
-          
+            });
+          }
+
           console.log(tempCal);
           setCalories(tempCal.toFixed(2));
           setCarbs(tempCarbs.toFixed(2));
@@ -95,7 +95,16 @@ function NutritionGoalProgress() {
     >
       <div className="nutritionGoalProgress__container">
         <div className="nutritionGoalProgress__leftContainer">
-          <ProgressCircle progress={calories / userCalories} />
+          <ProgressCircle
+            progress={calories / userCalories}
+            progressColor={
+              (calories < (90 / 100) * userCalories && "#FFE66D") ||
+              (calories > (90 / 100) * userCalories &&
+                calories < (110 / 100) * userCalories &&
+                "#006D77") ||
+              (calories > (110 / 100) * userCalories && "#FF0000")
+            }
+          />
           <div className="nutritionGoalProgress__calories">
             <h2>
               {calories} / {userCalories} Calories

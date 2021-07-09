@@ -52,7 +52,7 @@ function AthleteGoals() {
       {!goal && (
         <div
           style={{
-            height: 60,
+            height: 40,
             display: "flex",
             justifyContent: "space-between",
             padding: 10,
@@ -68,7 +68,7 @@ function AthleteGoals() {
       {goal && (
         <div
           style={{
-            height: 60,
+            height: 40,
             display: "flex",
             justifyContent: "space-between",
             padding: 10,
@@ -81,21 +81,11 @@ function AthleteGoals() {
               alignItems: "center",
             }}
           >
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: 5,
-                backgroundColor: "black",
-                marginRight: 10,
-              }}
-            ></div>
             <div>
               <div
                 style={{
                   fontWeight: 700,
                   fontSize: 17,
-                  marginBottom: 8,
                 }}
               >
                 {goal?.name}
@@ -115,21 +105,21 @@ function AthleteGoals() {
           </div>
           <div
             style={{
-              width: 80,
-              height: 60,
               textAlign: "center",
               backgroundColor: "#fcd11c",
               borderRadius: 10,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              fontSize: 14,
+              padding: 15,
             }}
           >
             {moment(new Date(formatDate(goal.date))).diff(
               moment(new Date()),
               "days"
             )}{" "}
-            days <br /> left
+            days
             {console.log(
               goal,
               moment(new Date()),
