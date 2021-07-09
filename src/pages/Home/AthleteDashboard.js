@@ -47,7 +47,7 @@ function AthleteDashboard(props) {
         .where(
           "selectedDays",
           "array-contains",
-          formatSpecificDate("2021-05-18")
+          formatDate1(props?.selectedDate && props?.selectedDate)
         )
         .get()
         .then((snapshot) => {

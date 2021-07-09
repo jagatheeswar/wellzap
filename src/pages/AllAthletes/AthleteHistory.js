@@ -6,14 +6,17 @@ import { formatDate } from "../../functions/formatDate";
 import {Grid} from "@material-ui/core"
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import {Typography, Avatar} from "@material-ui/core";
 
 function AthleteHistory(props) {
   const history = useHistory();
+  const location = useLocation();
   const [workouts, setWorkouts] = useState([]);
   const [requestDate, setRequestDate] = useState(formatDate());
   const [nutrition, setNutrition] = useState([]);
-  const temperoryId = useSelector(selectTemperoryId);
+  const temperoryId = location.state?.id
   const [mealHistory, setMealHistory] = useState([]);
   const [pastWorkouts, setPastWorkouts] = useState([]);
 
@@ -42,7 +45,8 @@ function AthleteHistory(props) {
   }
 
   useEffect(() => {
-
+    console.log(temperoryId);
+    console.log(props?.selectedDate);
     if (temperoryId) {
      var unsub1 =  db.collection("workouts")
         .where("assignedToId", "==", temperoryId)
@@ -97,7 +101,7 @@ function AthleteHistory(props) {
     }
 
 
-  }, [temperoryId]);
+  }, [temperoryId, ]);
 
   useEffect(() => {
     let temp = [];
@@ -105,6 +109,7 @@ function AthleteHistory(props) {
       db.collection("AthleteNutrition")
         .doc(temperoryId)
         .collection("nutrition")
+        // .where("date", "==", formatDate1(props?.selectedDate && props?.selectedDate))
         .doc(formatDate1(props?.selectedDate && props?.selectedDate))
         .get()
         .then((doc) => {
@@ -136,8 +141,12 @@ function AthleteHistory(props) {
 
   return (
     <div style={{minHeight: "99.7vh"}}>
+      <div onClick={() => history.goBack()} style={{display: "flex", alignItems: "center", marginTop: 20}}>
+          <ArrowBackIosRoundedIcon style={{height: 18, width: 18, padding: 5, cursor: "pointer"}} />
+          <Typography variant="h6" style={{fontSize: 25, marginLeft: 5}}>Print Preview</Typography>
+        </div>
       <Grid container>
-        <Grid item xs={6}>
+        <Grid item xs={6} style={{paddingLeft: 20}}>
           <div
             style={{
               display: "flex",
@@ -168,14 +177,16 @@ function AthleteHistory(props) {
             </p>
           </div>
         {workouts.length > 0 ? (
-            workouts?.map((workout, i) => (
+          <div style={{width: "90%"}}>
+            {workouts?.map((workout, i) => (
               <WorkoutCard
                 key={workout.id}
                 workouts={workout}
                 item={workout}
                 idx={i}
               />
-            ))
+            ))}
+            </div>
           ) : (
             <div
               style={{
@@ -230,7 +241,8 @@ function AthleteHistory(props) {
             </p>
           </div>
           {pastWorkouts.length > 0 ? (
-            pastWorkouts?.map((item, idx) => (
+          <div style={{width: "90%"}}>
+            {pastWorkouts?.map((item, idx) => (
               <WorkoutCard
                 key={idx}
                 workouts={pastWorkouts}
@@ -239,7 +251,8 @@ function AthleteHistory(props) {
                 completed={true}
                 type="non-editable"
               />
-            ))
+            ))}
+              </div>
           ) : (
           <div
             style={{
@@ -263,7 +276,7 @@ function AthleteHistory(props) {
           </div>
           )}
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} style={{paddingLeft: 20}}>
         <div
             style={{
               display: "flex",
@@ -294,7 +307,8 @@ function AthleteHistory(props) {
             </p>
           </div>
           {mealHistory.length > 0 ? (
-            mealHistory?.map((food, idx) => (
+          <div style={{width: "90%"}}>
+            {mealHistory?.map((food, idx) => (
               <NutritionCard
                 key={idx}
                 nutrition={mealHistory}
@@ -303,7 +317,8 @@ function AthleteHistory(props) {
                 type="view"
                 navigation={"add-meal"}
               />
-            ))
+            ))}
+            </div>
           ) : (
             <div
             style={{
@@ -350,14 +365,17 @@ function AthleteHistory(props) {
             </h2>{" "}
           </div>
           {nutrition.length > 0 ? (
-            nutrition?.map((food, idx) => (
+          <div style={{width: "90%"}}>
+            {nutrition?.map((food, idx) => (
               <NutritionCard
+                type="view"
                 key={idx}
                 nutrition={nutrition}
                 food={food}
                 idx={idx}
               />
-            ))
+            ))}
+            </div>
           ) : (
           <div
             style={{

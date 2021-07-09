@@ -399,12 +399,13 @@ function CreateNutrition(props) {
           type="text"
           placeholder="Enter Nutrition Plan Name"
           value={nutritionName}
+          readOnly={type === "view" ? true : false}
           onChange={(e) => {
             setNutritionName(e.target.value);
           }}
         />
       </div>
-      {type != "view" ? (
+      {type !== "view" ? (
         <div>
           <div {...getRootProps()}>
             <Label {...getInputLabelProps()}>Search for Athletes</Label>
@@ -721,7 +722,8 @@ function CreateNutrition(props) {
                   ? show_data[0]?.name
                   : "No athletes selected"
               }
-            />
+            readOnly={type === "view" ? true : false}
+          />
             {userType == "athlete" ? null : (
               <div
                 className="selectedAthletes_list"
@@ -1342,6 +1344,7 @@ function CreateNutrition(props) {
                     temp[idx].meal = e.target.value;
                     setEntireFood(temp);
                   }}
+                  readOnly={type === "view" ? true : false}
                 >
                   <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
                   <MenuItem value={"Lunch"}>Lunch</MenuItem>
@@ -1399,6 +1402,7 @@ function CreateNutrition(props) {
                     type="text"
                     placeholder="Enter Meal Description"
                     value={item.description}
+                    readOnly={type === "view" ? true : false}
                     onChange={(e) => {
                       let temp = [...entireFood];
                       temp[idx].description = e.target.value;
