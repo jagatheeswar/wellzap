@@ -52,7 +52,7 @@ function Sidebar() {
             {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar" /> */}
             <SidebarComponent logo="message" name="Messaging" path="chat" />
             <SidebarComponent logo="rupee" name="Payments" path="payments" />
-            <SidebarComponent logo="settings" name="Settings" />
+            <SidebarComponent logo="settings" name="Support" />
           </div>
         ) : (
           <div>
