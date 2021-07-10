@@ -66,7 +66,7 @@ function ViewAllSavedWorkouts(props) {
     }
   }, [userData?.id, athleteId]);
   useEffect(() => {
-    if (userData?.userType == "coach") {
+    if (userType == "coach") {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
