@@ -21,6 +21,8 @@ import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
 import SelectSearch, { fuzzySearch } from "react-select-search";
+import firebase from "firebase";
+
 import {
   Dialog,
   DialogActions,
@@ -2528,6 +2530,7 @@ function CoachAddWorkout() {
                       assignedById: userData?.id,
                       assignedToId: "",
                       date: formatDate(),
+                      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
                       preWorkout: {
                         workoutName,
                         workoutDescription,

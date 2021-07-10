@@ -9,6 +9,7 @@ import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../functions/formatDate";
 import { useLocation } from "react-router-dom";
+import firebase from "firebase";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -147,6 +148,7 @@ function AthleteAddMeal() {
                   {
                     entireFood,
                     date: new Date(foodId),
+                    timestamp:firebase.firestore.FieldValue.serverTimestamp(),
                   },
 
                   { merge: true }
