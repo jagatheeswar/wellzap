@@ -75,7 +75,7 @@ function AthleteAddMeal() {
     }
   }, [location.state?.nutrition]);
 
-  console.log({ entireFood });
+  console.log("total", location.state);
 
   useEffect(() => {
     if (location.state?.type) {
@@ -138,14 +138,17 @@ function AthleteAddMeal() {
             if (!save) {
               alert("Please select a meal");
             } else {
+              console.log("id", todaysFoodId);
               db.collection("AthleteNutrition")
                 .doc(userData?.id)
                 .collection("nutrition")
-                .doc(formatDate())
+                .doc(foodId ? foodId : formatDate())
                 .set(
                   {
                     entireFood,
+                    date: new Date(foodId),
                   },
+
                   { merge: true }
                 )
                 .then(() => {

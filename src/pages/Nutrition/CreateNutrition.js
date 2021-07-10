@@ -202,7 +202,8 @@ function CreateNutrition() {
 
   const [serverData, setServerData] = useState([]);
   const [addFood, setAddFood] = useState(false);
-
+  const [selectedAthletes1, setSelectedAthletes1] = useState([]);
+  const [athlete_selecteddays, setathlete_selecteddays] = useState({});
   const [specificDates, setSpecificDates] = useState([]);
   const [type, setType] = useState("");
   const location = useLocation();
@@ -357,6 +358,19 @@ function CreateNutrition() {
     }
   }, [userData?.id]);
 
+  useEffect(() => {
+    console.log(athlete_selecteddays);
+    let temp = [...selectedAthletes];
+    selectedAthletes.map((athlete, idx) => {
+      if (athlete_selecteddays[athlete.id]) {
+        temp[idx].selectedDays = athlete_selecteddays[athlete.id];
+      }
+      if (temp.length == selectedAthletes.length) {
+        setSelectedAthletes1(temp);
+      }
+    });
+  }, [selectedAthletes]);
+
   return (
     <div className="createNutrition">
       <NutritionScreenHeader name="Create Nutrition" />
@@ -395,9 +409,9 @@ function CreateNutrition() {
           </Listbox>
         ) : null}
       </div>
-      {console.log(selectedAthletes)}
+      {console.log(selectedAthletes1)}
       <div>
-        {selectedAthletes.map((athlete, index) => (
+        {selectedAthletes1?.map((athlete, index) => (
           <div
             key={index}
             style={{
@@ -526,6 +540,11 @@ function CreateNutrition() {
                                 specificDates[idx],
                               ],
                             };
+                            let temp = athlete_selecteddays;
+                            temp[selectedAthletes[index].id] =
+                              selectedAthletes[index].selectedDays;
+
+                            setathlete_selecteddays(temp);
                             setSelectedAthletes([...selectedAthletes]);
                           }
                         }

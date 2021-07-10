@@ -51,7 +51,7 @@ function NutritionGoalProgress() {
     if (userData) {
       let tempDate;
       tempDate = formatDate();
-
+      console.log(tempDate);
       db.collection("AthleteNutrition")
         .doc(userData?.id)
         .collection("nutrition")
@@ -61,6 +61,7 @@ function NutritionGoalProgress() {
           tempCarbs = 0;
           tempFat = 0;
           tempProtein = 0;
+          console.log(doc.data()?.entireFood);
           if (doc.data()?.entireFood) {
             setEntireFood(doc.data()?.entireFood);
             setTodaysFoodId(doc.id);

@@ -722,8 +722,8 @@ function CreateNutrition(props) {
                   ? show_data[0]?.name
                   : "No athletes selected"
               }
-            readOnly={type === "view" ? true : false}
-          />
+              readOnly={type === "view" ? true : false}
+            />
             {userType == "athlete" ? null : (
               <div
                 className="selectedAthletes_list"

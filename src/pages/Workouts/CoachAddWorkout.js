@@ -21,7 +21,14 @@ import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
 import SelectSearch, { fuzzySearch } from "react-select-search";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Slide, DialogContentText } from "@material-ui/core";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slide,
+  DialogContentText,
+} from "@material-ui/core";
 
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
@@ -598,7 +605,7 @@ function CoachAddWorkout() {
                       <div
                         style={{ cursor: "pointer" }}
                         onClick={() => {
-                          console.log(workout.videoUrl)
+                          console.log(workout.videoUrl);
                           setWorkoutVideoUrl(workout.videoUrl);
                           setOpenDialog(true);
                           setVideoLoading(true);
@@ -2472,12 +2479,8 @@ function CoachAddWorkout() {
 
       <Modal
         visible={modal}
-        width="450px"
-        height="250"
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
+        width="80%"
+        height="300"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
@@ -2648,16 +2651,26 @@ function CoachAddWorkout() {
           {/* <video width="500" height="500" controls>
             <source src={workoutVideoUrl} type="video/mp4" />
           </video> */}
-          <div dangerouslySetInnerHTML={{__html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
-                            workoutVideoUrl.lastIndexOf("/") + 1
-                          )}"></iframe>`}} />
           <div
-          onClick={handleCloseDialog}
-          style={{cursor:"pointer", position: "absolute", right: 0, top: 0, padding: 12}} 
-        >
-          {" "}
-          <CloseIcon />
-        </div>
+            dangerouslySetInnerHTML={{
+              __html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
+                workoutVideoUrl.lastIndexOf("/") + 1
+              )}"></iframe>`,
+            }}
+          />
+          <div
+            onClick={handleCloseDialog}
+            style={{
+              cursor: "pointer",
+              position: "absolute",
+              right: 0,
+              top: 0,
+              padding: 12,
+            }}
+          >
+            {" "}
+            <CloseIcon />
+          </div>
         </DialogContent>
       </Dialog>
       {/* <Modal

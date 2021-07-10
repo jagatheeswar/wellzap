@@ -20,6 +20,7 @@ function AthleteNutrition() {
   const [water, setWater] = useState(0);
   const [upcomingMealHistory, setUpcomingMealHistory] = useState([]);
   const [mealHistory, setMealHistory] = useState([]);
+  const [mealHistory_show, setMealHistory_show] = useState(null);
   const [coachMealHistory, setCoachMealHistory] = useState([]);
 
   useEffect(() => {
@@ -58,7 +59,9 @@ function AthleteNutrition() {
       db.collection("AthleteNutrition")
         .doc(userData?.id)
         .collection("nutrition")
+        .orderBy("date", "desc")
         .limit(3)
+
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -89,6 +92,11 @@ function AthleteNutrition() {
         });
     }
   }, [userData?.id]);
+
+  useEffect(() => {
+    if (mealHistory.length > 0) {
+    }
+  }, [mealHistory]);
 
   useEffect(() => {
     let temp = [];
@@ -209,25 +217,27 @@ function AthleteNutrition() {
                   key={idx}
                   className="assignByCoach__Card"
                 >
-                  <div style={{display: 'flex', alignItems: 'center'}}>
-                  <img
-                    src="/assets/nutrition.jpeg"
-                    alt=""
-                    width="110px"
-                    height="110px"
-                    style={{objectFit: 'contain'}}
-                  />
-                  <div style={{marginLeft: 20}}>
-                    <Typography variant="h6" style={{fontSize: 16}}>{food.data.nutrition.nutritionName}</Typography>
-                    <div className="assignByCoach__CardInfoDates">
-                      {food.data.selectedDays.map((day, i) => (
-                        <Typography style={{fontSize: 12}} key={i}>
-                          {formatDate1(day)}
-                          {i < food.data.selectedDays.length - 1 ? "," : null}
-                        </Typography>
-                      ))}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      src="/assets/nutrition.jpeg"
+                      alt=""
+                      width="110px"
+                      height="110px"
+                      style={{ objectFit: "contain" }}
+                    />
+                    <div style={{ marginLeft: 20 }}>
+                      <Typography variant="h6" style={{ fontSize: 16 }}>
+                        {food.data.nutrition.nutritionName}
+                      </Typography>
+                      <div className="assignByCoach__CardInfoDates">
+                        {food.data.selectedDays.map((day, i) => (
+                          <Typography style={{ fontSize: 12 }} key={i}>
+                            {formatDate1(day)}
+                            {i < food.data.selectedDays.length - 1 ? "," : null}
+                          </Typography>
+                        ))}
+                      </div>
                     </div>
-                  </div>
                   </div>
                   <img
                     className="rightArrow"

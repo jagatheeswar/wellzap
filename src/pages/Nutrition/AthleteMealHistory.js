@@ -18,7 +18,8 @@ function AthleteMealHistory() {
       db.collection("AthleteNutrition")
         .doc(userData?.id)
         .collection("nutrition")
-        .limit(3)
+        .orderBy("date", "desc")
+
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {

@@ -33,3 +33,12 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+.makeStyles-formControl-16 {
+  margin: 0 !important;
+  margin-bottom: 10px !important;
+}
+
+.MuiSelect-select.MuiSelect-select {
+  border-radius: 5px;
+}

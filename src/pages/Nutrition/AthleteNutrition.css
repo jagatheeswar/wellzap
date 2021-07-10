@@ -78,6 +78,9 @@
   opacity: 0.8;
   object-fit: cover;
 }
+.athleteAddMeal {
+  min-height: 100vh;
+}
 
 .athleteAddMealfood__container {
   margin: 20px;
@@ -281,5 +284,4 @@
 }
 
 .weekGoalContainer {
-
 }
