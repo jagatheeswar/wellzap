@@ -21,8 +21,8 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
         <h1>{name}</h1>
       </div>
 
-      {name === "Nutrition" && (
       <>
+      {userType == "coach" && name === "Nutrition" && (
         <div
           className="addNutrition__button"
           onClick={() =>
@@ -37,8 +37,9 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
         >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
           <h5>ADD LONG TERM MEAL</h5>
-        </div>
+        </div>)}
 
+        {name === "Nutrition" && (
         <div
           className="addNutrition__button"
           onClick={() =>
@@ -53,9 +54,8 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
         >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
           <h5>ADD MEAL</h5>
-        </div>
+        </div>)}
         </>
-      )}
     </div>
   );
 }

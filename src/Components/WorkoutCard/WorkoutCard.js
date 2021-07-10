@@ -14,6 +14,12 @@ function WorkoutCard({
   type,
   completed,
   athlete_id,
+  selectedWeekNum,
+  isLongTerm,
+  weeks,
+  handleCloseworkout,
+  setWeeks,
+  selectedDay
 }) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -65,6 +71,14 @@ function WorkoutCard({
     <div
       className="workoutCard"
       onClick={() => {
+        if(isLongTerm){
+          var lweeks = weeks;
+          var lselectedWeekNum = selectedWeekNum;
+          var lselectedDay = selectedDay;
+          lweeks[lselectedWeekNum - 1].days[lselectedDay] = item?.data;
+          setWeeks(lweeks);
+          handleCloseworkout();
+        }else{
         if (userType === "coach") {
           if (type === "non-editable" && !completed) {
             console.log("clicked 1");
@@ -131,6 +145,7 @@ function WorkoutCard({
             });
           }
         }
+      }
       }}
     >
       <img

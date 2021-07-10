@@ -18,6 +18,18 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
         </div>
         <h1>{name}</h1>
       </div>
+      {userType == "coach" && name === "Workouts" && (
+        <div
+          className="addWorkout__button"
+          onClick={() =>
+            history.push({
+              pathname: "/long-term-training",
+            })
+          }
+        >
+          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
+          <h5>ADD LONG TERM Workout</h5>
+        </div>)}
       {userType === "coach" && name === "Workouts" && (
         <div
           className="addWorkout__button"

@@ -31,8 +31,6 @@ function NutritionCard({ nutrition, food, idx, type, navigation, date,selectedWe
             () => {
               if (isLongTerm) {
                 var lweeks = weeks;
-                //console.log("before")
-                //console.log(lweeks)
                 var lselectedWeekNum = selectedWeekNum;
                 var lselectedDay = selectedDay;
                 lweeks[lselectedWeekNum - 1].days[lselectedDay] = food.data;
@@ -56,8 +54,6 @@ function NutritionCard({ nutrition, food, idx, type, navigation, date,selectedWe
                   proteins;
                 lweeks[lselectedWeekNum - 1].days[lselectedDay].fat = fat;
                 lweeks[lselectedWeekNum - 1].days[lselectedDay].carbs = carbs;
-                //console.log("nutri card")
-                //console.log(lweeks)
                 setWeeks(lweeks);
                 handleCloseNutrition();
               } else {

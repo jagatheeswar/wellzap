@@ -154,7 +154,7 @@ const Label = styled("label")`
 `;
 
 
-function AssignWorkout() {
+function AssignWorkout(props) {
   const location = useLocation();
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -226,7 +226,7 @@ function AssignWorkout() {
 
   useEffect(() => {
     objs?.map((item, idx) => {
-      item.name = item.workoutName;
+      item.name = item?.workoutName;
     });
     setExercises(objs);
   }, [objs]);
@@ -259,36 +259,59 @@ function AssignWorkout() {
   }, [location.state?.athlete_id]);
 
   useEffect(() => {
-    console.log(location.state.workout);
-    if (location.state.workout) {
-      setWorkout(location.state.workout);
+    if (location.state?.workout) {
+      setWorkout(location.state?.workout);
       setworkoutDifficulty(
-        location.state.workout?.data?.preWorkout?.workoutDifficulty
+        location.state?.workout?.data?.preWorkout?.workoutDifficulty
       );
 
       setworkoutDescription(
-        location.state.workout?.data?.preWorkout?.workoutDescription
+        location.state?.workout?.data?.preWorkout?.workoutDescription
       );
 
       setcaloriesBurnEstimate(
-        location.state.workout?.data?.preWorkout?.caloriesBurnEstimate
+        location.state?.workout?.data?.preWorkout?.caloriesBurnEstimate
       );
 
       setworkoutDuration(
-        location.state.workout?.data?.preWorkout?.workoutDuration
+        location.state?.workout?.data?.preWorkout?.workoutDuration
       );
       setSelectedExercises(
-        location.state.workout?.data?.preWorkout?.selectedExercises
+        location.state?.workout?.data?.preWorkout?.selectedExercises
       );
 
       if (
         location.state?.workout?.data?.selectedAthletes  ) {
-          //console.log("gagna")
-          //console.log(location.state?.workout?.data?.selectedAthletes)
         setSelectedAthletes(location.state?.workout?.data?.selectedAthletes);
       }
     }
   }, [location]);
+
+  useEffect(()=>{
+    if(props?.isLongTerm){
+      setWorkout({data:props.selectedDayData})
+      setworkoutDifficulty(props.selectedDayData.preWorkout.workoutDifficulty)
+      setworkoutDescription(
+        props.selectedDayData.preWorkout?.workoutDescription
+      );
+
+      setcaloriesBurnEstimate(
+        props.selectedDayData.preWorkout?.caloriesBurnEstimate
+      );
+
+      setworkoutDuration(
+        props.selectedDayData.preWorkout?.workoutDuration
+      );
+      setSelectedExercises(
+        props.selectedDayData.preWorkout?.selectedExercises
+      );
+      if (
+        props.selectedDayData.selectedAthletes  ) {
+        setSelectedAthletes(props.selectedDayData?.selectedAthletes);
+      }
+      console.log(props.selectedDayData)
+    }
+  },[props?.isLongTerm])
 
   useEffect(() => {
     if (group && workout) {
@@ -317,8 +340,8 @@ function AssignWorkout() {
   }, [location.state?.workout]);
 
   useEffect(() => {
-    if (type === "non-editable" && location.state.workout) {
-      var minDate = location.state.workout?.data?.selectedDates.reduce(
+    if (type === "non-editable" && location.state?.workout) {
+      var minDate = location.state?.workout?.data?.selectedDates.reduce(
         function (a, b) {
           return a < b ? a : b;
         }
@@ -341,7 +364,7 @@ function AssignWorkout() {
       setCurrentStartWeek(formatSpecificDate(firstday));
       setCurrentEndWeek(formatSpecificDate(lastday));
     }
-  }, [type, location.state.workout]);
+  }, [type, location.state?.workout]);
 
   useEffect(() => {
     if (currentStartWeek) {
@@ -377,10 +400,6 @@ function AssignWorkout() {
     }
   }, [userData?.id]);
 
-  useEffect(()=>{
-    console.log("selectedAthletes")
-    console.log(selectedAthletes)
-  },[selectedAthletes])
 
   const {
     getRootProps,
@@ -463,7 +482,7 @@ function AssignWorkout() {
                 value={caloriesBurnEstimate}
                 disabled={type == "non-editable" || type == "view"}
                 onChange={(val) => {
-                  //console.log(workout.data.preWorkout.workoutDuration);
+                  //console.log(workout.data.preWorkout?.workoutDuration);
                   let temp = workout;
                   setcaloriesBurnEstimate(val.target.value);
                   temp.data.preWorkout.caloriesBurnEstimate =
@@ -520,6 +539,7 @@ function AssignWorkout() {
                 </div>
               </div>
             </div>
+            {props.isLongTerm ? null :
             <div
               className="createWorkout__completeWorkoutButton"
               onClick={() => {
@@ -623,12 +643,12 @@ function AssignWorkout() {
                 : type === "non-editable"
                 ? "Return"
                 : "Save Changes and Exit"}
-            </div>
+            </div>}
           </div>
         </div>
         <div style={{marginBottom:20}} className="assignWorkout__athletesList">
 
-        {userType == "athlete" || type == "non-editable" ? null :
+        {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
           <div style={{marginBottom:20}} {...getRootProps()}>
           <Label {...getInputLabelProps()}>Search for Athletes</Label>
           <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
@@ -972,7 +992,7 @@ function AssignWorkout() {
         </div>
 
         <div className="createWorkout__exercises">
-        {userType == "athlete" || type == "non-editable" ? null :
+        {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
         <div style={{display:"flex",justifyContent:"space-between",marginRight:20}}>
         <h3 className="createWorkout__inputLabel">Exercises</h3>
           <div style={{display:"flex",alignItems:"center"}}>
@@ -990,7 +1010,7 @@ function AssignWorkout() {
         </div>}
           <div>
             <div>
-            {userType == "athlete" || type == "non-editable" ? null :
+            {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
               <div style={{ width: "100%" }}>
               <SearchableDropdown
                 name="Search for Exercise"

@@ -5,7 +5,7 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
-function ViewAllSavedWorkouts() {
+function ViewAllSavedWorkouts(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
@@ -123,6 +123,12 @@ function ViewAllSavedWorkouts() {
                   item={item}
                   idx={idx}
                   navigation={"ViewAllSavedWorkouts"}
+                  isLongTerm={props?.isLongTerm}
+                  handleCloseworkout={props?.handleCloseworkout}
+                  setWeeks={props?.setWeeks}
+                  weeks={props?.weeks}
+                  selectedWeekNum={props?.selectedWeekNum}
+                  selectedDay={props?.selectedDay}
                 />
               </div>
             ))
