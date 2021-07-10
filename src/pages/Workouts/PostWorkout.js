@@ -661,6 +661,11 @@ export default function PostWorkoutDetails() {
                                     borderRadius: 8,
                                     backgroundColor: "#d3d3d3",
                                   }}
+                                  onClick={() => {
+                                    console.log("img click")
+                                    setWorkoutVideoUrl(workout.videoUrl);
+                                    setOpenDialog(true);
+                                  }}
                                   src={
                                     workout.thumbnail_url
                                       ? ` ${workout.thumbnail_url}`
