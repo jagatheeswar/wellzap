@@ -543,8 +543,8 @@ const Compliance_report = (props) => {
               position: "absolute",
               marginLeft: "auto",
               marginRight: "auto",
-              transform: "translateX(50%)",
-              top: 240,
+              transform: "translateX(40%)",
+              top: 220,
             }}
           >
             No data available to show
@@ -572,7 +572,7 @@ const Compliance_report = (props) => {
             style={{ marginRight: "auto" }}
             src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
           />
-          <div className="chart_legend" style={{ fontSize: 17 }}>
+          <div className="chart_legend" style={{ fontSize: 14 }}>
             {formatDate2(currentStartWeek1)} - {formatDate2(currentEndWeek1)}
           </div>
           <img

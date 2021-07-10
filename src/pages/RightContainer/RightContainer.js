@@ -13,7 +13,6 @@ import {
   setUserData,
 } from "../../features/userSlice";
 
-import dateContext from "../../features/context";
 import { date } from "yup/lib/locale";
 import moment from "moment";
 function areEqual(prevProps, nextProps) {
@@ -29,8 +28,7 @@ function areEqual(prevProps, nextProps) {
 function RightContainer(props) {
   const userType = useSelector(selectUserType);
   //props.toggle_date(new Date().setHours(0, 0, 0, 0));
-  React.useEffect(() => {}, [props?.selectedDate]);
-  console.log(props.selectedDate);
+
   return (
     <div className="rightContainer">
       {userType == "coach" ? <Notification /> : <AthleteNotifications />}

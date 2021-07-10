@@ -125,7 +125,7 @@ function AthletePayments() {
 
 
   return (
-    <div className="workouts__home">
+    <div style={{minHeight: "99.7vh"}} className="workouts__home">
       <div className="coachDashboard__leftContainer">
         <PaymentsScreenHeader name="Payments" />
 

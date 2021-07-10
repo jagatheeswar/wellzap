@@ -51,7 +51,7 @@ function NutritionGoalProgress() {
     if (userData) {
       let tempDate;
       tempDate = formatDate();
-
+      console.log(tempDate);
       db.collection("AthleteNutrition")
         .doc(userData?.id)
         .collection("nutrition")
@@ -61,19 +61,20 @@ function NutritionGoalProgress() {
           tempCarbs = 0;
           tempFat = 0;
           tempProtein = 0;
-            if (doc.data()?.entireFood) {
-              setEntireFood(doc.data()?.entireFood);
-              setTodaysFoodId(doc.id);
-              doc.data()?.entireFood.map((foodContainer) => {
-                foodContainer.food.map((f) => {
-                  tempCal = tempCal + f.calories;
-                  tempCarbs = tempCarbs + f.carbs;
-                  tempFat = tempFat + f.fat;
-                  tempProtein = tempProtein + f.proteins;
-                });
+          console.log(doc.data()?.entireFood);
+          if (doc.data()?.entireFood) {
+            setEntireFood(doc.data()?.entireFood);
+            setTodaysFoodId(doc.id);
+            doc.data()?.entireFood.map((foodContainer) => {
+              foodContainer.food.map((f) => {
+                tempCal = tempCal + f.calories;
+                tempCarbs = tempCarbs + f.carbs;
+                tempFat = tempFat + f.fat;
+                tempProtein = tempProtein + f.proteins;
               });
-            }
-          
+            });
+          }
+
           console.log(tempCal);
           setCalories(tempCal.toFixed(2));
           setCarbs(tempCarbs.toFixed(2));
@@ -95,7 +96,16 @@ function NutritionGoalProgress() {
     >
       <div className="nutritionGoalProgress__container">
         <div className="nutritionGoalProgress__leftContainer">
-          <ProgressCircle progress={calories / userCalories} />
+          <ProgressCircle
+            progress={calories / userCalories}
+            progressColor={
+              (calories < (90 / 100) * userCalories && "#FFE66D") ||
+              (calories > (90 / 100) * userCalories &&
+                calories < (110 / 100) * userCalories &&
+                "#006D77") ||
+              (calories > (110 / 100) * userCalories && "#FF0000")
+            }
+          />
           <div className="nutritionGoalProgress__calories">
             <h2>
               {calories} / {userCalories} Calories
@@ -108,7 +118,7 @@ function NutritionGoalProgress() {
               {carbs} Carbs of {userCarbs}g
             </h2>
             <ProgressBarComponent
-              containerWidth={140}
+              containerWidth={180}
               progress={(carbs / userCarbs) * 100}
               progressColor={
                 (carbs < (90 / 100) * userCarbs && "#FFE66D") ||
@@ -124,7 +134,7 @@ function NutritionGoalProgress() {
               {fat} Fat of {userFat}g
             </h2>
             <ProgressBarComponent
-              containerWidth={140}
+              containerWidth={180}
               progress={(fat / userFat) * 100}
               progressColor={
                 (fat < (90 / 100) * userFat && "#FFE66D") ||
@@ -140,7 +150,7 @@ function NutritionGoalProgress() {
               {protein} Protiens of {userProtein}g
             </h2>
             <ProgressBarComponent
-              containerWidth={140}
+              containerWidth={180}
               progress={(protein / userProtein) * 100}
               progressColor={
                 (protein < (90 / 100) * userProtein && "#FFE66D") ||

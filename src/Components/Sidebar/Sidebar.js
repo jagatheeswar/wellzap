@@ -24,12 +24,15 @@ function Sidebar() {
           alt={userData?.data.name}
           width="100px"
           height="100px"
+          onClick={() => history.push("/profile")}
+          style={{cursor:"pointer"}}
         />
         <h1>{userData?.data.name}</h1>
         {userType === "coach" && <h3>Strength and Conditioning Coach</h3>}
         <Link
           className="view-link"
-          to={userType === "athlete" ? "/profile" : "/coach"}
+          to="/profile"
+          // to={userType === "athlete" ? "/profile" : "/profile"}
           style={{fontFamily: 'Montserrat'}}
         >
           {" "}
@@ -46,10 +49,10 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
-            <SidebarComponent logo="calendar" name="Calendar" path="calendar" />
+            {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar" /> */}
             <SidebarComponent logo="message" name="Messaging" path="chat" />
             <SidebarComponent logo="rupee" name="Payments" path="payments" />
-            <SidebarComponent logo="settings" name="Settings" />
+            <SidebarComponent logo="settings" name="Support" />
           </div>
         ) : (
           <div>
@@ -60,9 +63,9 @@ function Sidebar() {
               name="Nutrition"
               path="nutrition"
             />
-            <SidebarComponent logo="user" name="Coaches" />
+            <SidebarComponent logo="user" name="Coaches" path="coachProfile" />
             <SidebarComponent logo="rupee" name="Payments" path="payments"/>
-            <SidebarComponent logo="calendar" name="Calendar" path="calendar"/>
+            {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar"/> */}
             <SidebarComponent
               logo="message"
               name="Messaging"

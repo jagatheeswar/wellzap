@@ -11,8 +11,10 @@ import formatSpecificDate from "../../functions/formatSpecificDate";
 import AthleteGoals from "./AthleteGoals";
 import "./Home.css";
 import { useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core"
-import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
+import { Grid } from "@material-ui/core";
+import "../../fonts/Open_Sans/OpenSans-Regular.ttf";
+import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
+import WaterCard from "../../Components/WaterCard/WaterCard";
 
 function AthleteDashboard(props) {
   const userData = useSelector(selectUserData);
@@ -25,6 +27,7 @@ function AthleteDashboard(props) {
   const [upcomingMealHistory, setUpcomingMealHistory] = useState([]);
   const [mealHistory, setMealHistory] = useState([]);
   const [coachMealHistory, setCoachMealHistory] = useState([]);
+  const [coachName, setCoachName] = useState("");
 
   useEffect(() => {
     if (userData?.data?.metrics) {
@@ -44,7 +47,7 @@ function AthleteDashboard(props) {
         .where(
           "selectedDays",
           "array-contains",
-          formatSpecificDate("2021-05-18")
+          formatDate1(props?.selectedDate && props?.selectedDate)
         )
         .get()
         .then((snapshot) => {
@@ -168,182 +171,219 @@ function AthleteDashboard(props) {
     }
   }, [userData]);
 
+  useEffect(() => {
+    db.collection("coaches")
+      .doc(userData?.data?.listOfCoaches[0] && userData?.data?.listOfCoaches[0])
+      .get()
+      .then(function (snap) {
+        setCoachName(snap.data()?.name);
+      });
+  }, [userData?.data]);
+
   console.log({ workouts, nutrition, userData });
 
   return (
     <div className="coachDashboard__container">
-        <h1 style={{fontSize: 23, fontFamily: 'Open_Sans'}}>Dashboard</h1>
-    <Grid container spacing={2}>
-      <Grid item xs={6} className="coachDashboard__leftContainer">
-        <div style={{width: "90%"}}>
-        <h2 style={{fontSize: 19, fontWeight: '500'}}>Goals</h2>
-        <AthleteGoals />
-        </div>
-      </Grid>
-      <Grid item xs={6} className="coachDashboard__rightContainer">
-        <div style={{width: "90%"}}>
-        <h2 style={{fontSize: 19, fontWeight: '500'}}>Coach</h2>
-        <div className="athletes__card">
-          <div className="athletes__cardInfo">
-            <img
-              src={userData?.data.imageUrl}
-              alt=""
-              width="40px"
-              height="40px"
-            />
-            <h4 style={{fontFamily: 'Montserrat'}}>{userData?.data.name}</h4>
+      <h1 style={{ fontSize: 23, fontFamily: "Open_Sans" }}>Dashboard</h1>
+      <Grid container spacing={2}>
+        <Grid item xs={6} className="coachDashboard__leftContainer">
+          <div style={{ width: "90%" }}>
+            <h2 style={{ fontSize: 19, fontWeight: "500" }}>Goals</h2>
+            <AthleteGoals />
           </div>
+        </Grid>
+        <Grid item xs={6} className="coachDashboard__rightContainer">
+          <div style={{ width: "90%" }}>
+            <h2 style={{ fontSize: 19, fontWeight: "500" }}>Coach</h2>
+            <div className="athletes__card">
+              <div className="athletes__cardInfo">
+                <img
+                  src={userData?.data.imageUrl}
+                  alt=""
+                  width="40px"
+                  height="40px"
+                />
+                <h4 style={{ fontFamily: "Montserrat" }}>{coachName}</h4>
+              </div>
 
-          <img src="/assets/message.png" alt="" width="15px" height="15px" />
-        </div>
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div style={{width: "90%"}}>
-        <h2 style={{fontSize: 19, fontWeight: '500'}}>Sleep</h2>
-        <Sleep sleep={sleep} setSleep={setSleep} />
-        </div>
-      </Grid>
-      <Grid item xs={6}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "90%"
-          }}
-        >
-          {" "}
-          <h2
-            style={{
-              fontSize: 19,
-              fontWeight: 500,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            Workout Plans on
-            <p
-              style={{
-                fontSize: 18,
-                fontWeight: 400,
-                marginLeft: 10,
-              }}
-            >
-              {" "}
-              {formatDate1(props?.selectedDate)}
-            </p>
-          </h2>{" "}
-          <p
-            onClick={() => {
-              history.push("/workouts");
-            }}
-            style={{fontFamily: 'Montserrat'}}
-          >
-            See all
-          </p>
-        </div>
-        {workouts.length > 0 ? (
-          workouts?.map((workout, i) => (
-          <WorkoutCard
-            key={workout.id}
-            workouts={workout}
-            item={workout}
-            idx={i}
-          />
-        ))) : (
+              <img
+                onClick={() => history.push("/messaging")}
+                src="/assets/message.png"
+                alt=""
+                width="15px"
+                height="15px"
+              />
+            </div>
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div style={{ width: "100%" }}>
+            <h2 style={{ fontSize: 19, fontWeight: "500" }}>Sleep</h2>
+            <Sleep date={formatDate1(props?.selectedDate)} />
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div style={{ width: "93%" }}>
+            <h2 style={{ fontSize: 19, fontWeight: "500" }}>Nutrition</h2>
+            <NutritionGoalProgress />
+          </div>
+          <div style={{ width: "93%" }}>
+            <WaterCard date={formatDate()} water={water} setWater={setWater} />
+          </div>
+        </Grid>
+        <Grid item xs={6}>
           <div
             style={{
-              backgroundColor: "#fff",
-              width: "100%",
-              height: 90,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: "center",
-              borderRadius: "5px",
-            }}
-          >
-            <h5 style={{
-              fontSize: "12px",
-            }}>There are no Workouts for now</h5>
-          </div>
-        ) 
-        }
-      </Grid>
-      <Grid item xs={6}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "90%"
-          }}
-        >
-          {" "}
-          <h2
-            style={{
-              fontSize: 19,
-              fontWeight: 500,
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              justifyContent: "center",
+              width: "90%",
             }}
           >
-            Nutrition Plans on
-            <p
+            {" "}
+            <h2
               style={{
-                fontSize: 18,
-                fontWeight: 400,
-                marginLeft: 10,
+                fontSize: 19,
+                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              {" "}
-              {formatDate1(props?.selectedDate)}
+              Workout Plans on
+              <p
+                style={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  marginLeft: 10,
+                }}
+              >
+                {" "}
+                {formatDate1(props?.selectedDate)}
+              </p>
+            </h2>{" "}
+            <p
+              onClick={() => {
+                history.push("/workouts");
+              }}
+              style={{ fontFamily: "Montserrat", cursor: "pointer" }}
+            >
+              See all
             </p>
-          </h2>{" "}
-          <p
-            onClick={() => {
-              history.push("/nutrition");
-            }}
-            style={{marginLeft: 10, fontFamily: 'Montserrat'}}
-          >
-            See all
-          </p>
-        </div>
-        {console.log(nutrition)}
-        <div style={{width: "90%"}}>
-        {upcomingMealHistory.length > 0 ? (
-          upcomingMealHistory?.map((food, idx) => (
-            <NutritionCard
-              key={idx}
-              nutrition={nutrition}
-              food={food}
-              idx={idx}
-              navigation={"ViewAllNutrition"}
-              type="view"
-              date={formatDate1(props?.selectedDate)}
-            />
-          ))
-        ) : (
+          </div>
+          {workouts.length > 0 ? (
+            workouts?.map((workout, i) => (
+              <WorkoutCard
+                key={workout.id}
+                workouts={workout}
+                item={workout}
+                idx={i}
+              />
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "normal",
+                }}
+              >
+                There are no Workouts for now
+              </h5>
+            </div>
+          )}
+        </Grid>
+        <Grid item xs={6}>
           <div
             style={{
-              backgroundColor: "#fff",
-              width: "100%",
-              height: 90,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: "center",
-              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "93%",
             }}
           >
-            <h5 style={{
-              fontSize: "12px",
-            }}>There are no nutrition for now</h5>
+            {" "}
+            <h2
+              style={{
+                fontSize: 19,
+                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Nutrition Plans on
+              <p
+                style={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  marginLeft: 10,
+                }}
+              >
+                {" "}
+                {formatDate1(props?.selectedDate)}
+              </p>
+            </h2>{" "}
+            <p
+              onClick={() => {
+                history.push("/nutrition");
+              }}
+              style={{
+                marginLeft: 10,
+                fontFamily: "Montserrat",
+                cursor: "pointer",
+              }}
+            >
+              See all
+            </p>
           </div>
-        )}
-        </div>
-      </Grid>
+          {console.log(nutrition)}
+          <div style={{ width: "93%" }}>
+            {upcomingMealHistory.length > 0 ? (
+              upcomingMealHistory?.map((food, idx) => (
+                <NutritionCard
+                  key={idx}
+                  nutrition={nutrition}
+                  food={food}
+                  idx={idx}
+                  navigation={"ViewAllNutrition"}
+                  type="view"
+                  date={formatDate1(props?.selectedDate)}
+                />
+              ))
+            ) : (
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  width: "100%",
+                  height: 90,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "5px",
+                }}
+              >
+                <h5
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  There are no nutrition for now
+                </h5>
+              </div>
+            )}
+          </div>
+        </Grid>
       </Grid>
     </div>
   );

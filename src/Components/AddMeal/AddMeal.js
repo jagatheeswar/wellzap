@@ -38,6 +38,7 @@ function AddMeal({ serverData, entireFood, setEntireFood, type, classes }) {
                 <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
                 <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
                 <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                <MenuItem value={"Supplements"}>Supplements</MenuItem>
               </Select>
             </FormControl>
 
@@ -56,6 +57,17 @@ function AddMeal({ serverData, entireFood, setEntireFood, type, classes }) {
                 />
               );
             })}
+            <textarea
+              className="foodCard__description"
+              type="text"
+              placeholder="Description"
+              value={entireFood[index].description}
+              onChange={(e) => {
+                let temp = [...entireFood];
+                temp[index].description = e.target.value;
+                setEntireFood(temp);
+              }}
+            />
 
             <div className="foodCard__addButtons">
               <div

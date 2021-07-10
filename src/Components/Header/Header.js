@@ -13,6 +13,7 @@ function Header(props) {
   const Id = props.Id;
   const [name, setname] = useState(null);
   const [img, setimg] = useState(null);
+  const [coachName, setCoachName] = useState("");
 
   useEffect(() => {
     if (Id) {
@@ -32,6 +33,17 @@ function Header(props) {
     }
   }, [userData, userType]);
 
+  useEffect(() => {
+    if(userType !== "coach"){
+    db.collection("coaches")
+      .doc(userData?.data?.listOfCoaches[0])
+      .get()
+      .then(function(snap) {
+        setCoachName(snap.data()?.name)
+      })
+    }
+  }, [])
+
   return (
     <div className="header">
       <div className="coachProfile__header">
@@ -40,7 +52,7 @@ function Header(props) {
             className="leftarrow"
             src="/assets/left_arrow.png"
             alt=""
-            onClick={() => history.push("/profile")}
+            onClick={() => history.goBack()}
           />
           <img
             className="image"
@@ -51,8 +63,14 @@ function Header(props) {
           />
         </div>
         <div className="coachProfile__content">
+          {userType === "coach" ? 
+          <>
           <h1>{name ? name : userData?.data.name}</h1>
-          <h3>Strength and Conditioning Coach</h3>
+          </>
+          : props.athlete ? 
+          <h1>{props.athlete}</h1>
+          : <h1>{coachName}</h1>
+          }
         </div>
       </div>
     </div>

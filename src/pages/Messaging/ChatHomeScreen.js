@@ -3,7 +3,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
-
+import {Typography} from "@material-ui/core";
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import ChatCard from "./ChatCard";
 import { useHistory } from "react-router";
 
@@ -97,7 +98,7 @@ function ChatHomeScreen({ navigation }) {
   }, [userData?.id]);
 
   return (
-    <div className="container">
+    <div style={{ minHeight: "99.5vh" }} className="container">
       <div>
         <div
           style={{
@@ -107,26 +108,10 @@ function ChatHomeScreen({ navigation }) {
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            <div
-              style={{
-                marginRight: "20px",
-              }}
-              onClick={() => {
-                history.push("/");
-              }}
-            >
-              <ChevronLeftIcon style={{ cursor: "pointer" }} />
-            </div>
-            <h3
-              style={{
-                fontSize: "30px",
-                lineHeight: "28px",
-                fontWeight: "600",
-                color: "black",
-              }}
-            >
-              Chats
-            </h3>
+          <div onClick={() => history.goBack()} style={{marginTop: 20, display: "flex", alignItems: 'center'}} >
+          <ArrowBackIosRoundedIcon style={{height: 18, width: 18, padding: 5, cursor: "pointer"}} />
+          <Typography variant="h6" style={{fontSize: 25, marginLeft: 5}}>Chats</Typography>
+        </div>
             <div
               className="athlete_list"
               onClick={() => {

@@ -34,6 +34,8 @@ const AddFoodCard = (props) => {
     setIndex(props.index);
     setIdx(props.idx);
     setItem(props.item);
+    console.log("s", props.item.foodName);
+    setOpen(props.item.foodName ? false : true);
   }, [props.index, props.item, props.idx]);
 
   return (
@@ -75,7 +77,7 @@ const AddFoodCard = (props) => {
                   options={props.serverData}
                   getOptionLabel={(option) => option.name}
                   style={{ width: 300 }}
-                  inputValue={props.item.meal}
+                  inputValue={props.item.foodName}
                   onChange={(e, item) => {
                     let foodData = [...props.entireFood];
                     let temp = [...props.ent.food];
@@ -262,7 +264,13 @@ const AddFoodCard = (props) => {
                 <h5 style={{ marginHorizontal: 5, color: "black" }}>g</h5>
               </div>
               <div className="foodCard__macroNutrient">
-                <h4>Carbs</h4>
+                <h4
+                  style={{
+                    width: 110,
+                  }}
+                >
+                  Carbs
+                </h4>
                 <input
                   editable={false}
                   readOnly={true}
@@ -294,29 +302,37 @@ const AddFoodCard = (props) => {
                 />
                 <h5 style={{ marginHorizontal: 5 }}>g</h5>
               </div>
+              <div className="foodCard__caloriesContainer">
+                <h4
+                  style={{
+                    width: 110,
+                  }}
+                >
+                  Total Calories
+                </h4>
+                <input
+                  editable={false}
+                  readOnly={true}
+                  style={{
+                    width: 80,
+                    marginRight: 5,
+                  }}
+                  className="foodCard__caloriesInput"
+                  value={
+                    item.calories
+                      ? String(Math.round(item.calories * 10) / 10)
+                      : String(0)
+                  }
+                  editable={false}
+                />
+                <h5 style={{ marginLeft: "5px" }}>kcal</h5>
+              </div>
             </div>
-            <div className="foodCard__caloriesContainer">
-              <h4>Total Calories</h4>
-              <input
-                editable={false}
-                readOnly={true}
-                className="foodCard__caloriesInput"
-                value={
-                  item.calories
-                    ? String(Math.round(item.calories * 10) / 10)
-                    : String(0)
-                }
-                editable={false}
-              />
-              <h5 style={{ marginLeft: "5px" }}>kcal</h5>
-            </div>
-            <textarea
-              className="foodCard__description"
-              type="text"
-              placeholder="Description"
-            />
 
             <CheckBoxOutlinedIcon
+              onClick={() => {
+                setOpen(false);
+              }}
               style={{
                 cursor: "pointer",
                 marginLeft: "98%",
@@ -349,15 +365,34 @@ const AddFoodCard = (props) => {
           </div>
         </div>
       ) : (
-        <div className="foodCard__checkAlternative">
-          <div onClick={() => setOpen(true)}>
-            <h5>{item.foodName}</h5>
+        <div
+          className="foodCard__checkAlternative"
+          style={{
+            height: 30,
+
+            backgroundColor: "white",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+
+              width: "100%",
+            }}
+            onClick={() => setOpen(true)}
+          >
+            <div>{item.foodName}</div>
             {/* <Icon
               name="chevron-down"
               type="font-awesome-5"
               size={20}
             /> */}
-            down
+            <div>
+              {item.units === "Grams"
+                ? item.quantity + " Grams"
+                : item.quantity + " " + item.units}{" "}
+              , Total Calories: {item.calories}
+            </div>
           </div>
         </div>
       )}

@@ -80,6 +80,24 @@ function Event_card(props) {
                 >
                   {item.eventDate && moment(item.eventDate).format("LT")}
                 </button>
+                {moment(new Date()).valueOf() > item.eventDate - 60000*20 ? 
+                <a style={{cursor:"pointer"}} href={item.showVideoLink && item.videolink}> 
+                <button
+                  style={{
+                    height: 25,
+                    backgroundColor: "#fcd54a",
+                    color: "black",
+                    cursor:"pointer"
+                  }}
+                  onClick={()=>   { 
+                    if(userType == "athlete"){
+                      db.collection("events").doc(item.id).update({
+                        attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
+                      })
+                    }}}
+                >
+                  Join now
+                </button> </a>:null}
               </div>
             </div>
             <div style={{ marginLeft: 20 }}>

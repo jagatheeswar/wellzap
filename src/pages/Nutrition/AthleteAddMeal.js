@@ -8,6 +8,7 @@ import { db } from "../../utils/firebase";
 import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../functions/formatDate";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -21,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 function AthleteAddMeal() {
   const classes = useStyles();
+  const location = useLocation();
   const userData = useSelector(selectUserData);
   const [serverData, setServerData] = useState([]);
+  const [FoodName, setFoodName] = useState(null);
   const [entireFood, setEntireFood] = useState([
     {
       meal: "",
@@ -55,18 +58,43 @@ function AthleteAddMeal() {
       .doc(formatDate())
       .get()
       .then((doc) => {
-          if (doc.data()?.entireFood) {
-            setEntireFood(doc.data()?.entireFood);
-            setTodaysFoodId(doc.id);
-          }
-      
+        if (doc.data()?.entireFood) {
+          setEntireFood(doc.data()?.entireFood);
+          setTodaysFoodId(doc.id);
+        }
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
   };
+  useEffect(() => {
+    if (location.state?.nutrition) {
+      console.log(location.state?.nutrition.data.nutrition.plan);
+      // setCoachEntireFood(location.state?.nutrition.data.nutrition.plan);
+      setFoodName(location.state?.nutrition.data.nutrition.nutritionName);
+    }
+  }, [location.state?.nutrition]);
 
-  console.log({ entireFood });
+  console.log("total", location.state);
+
+  useEffect(() => {
+    if (location.state?.type) {
+      setType(location.state?.type);
+    }
+  }, [location.state?.type]);
+
+  useEffect(() => {
+    if (location.state?.entireFood && location.state.entireFood.length > 0) {
+      setEntireFood(location.state.entireFood);
+    }
+  }, [location.state?.entireFood]);
+
+  useEffect(() => {
+    if (location.state?.todaysFoodId) {
+      setFoodId(location.state.todaysFoodId);
+      console.log("Food id is", location.state?.todaysFoodId);
+    }
+  }, [location.state?.todaysFoodId]);
 
   useEffect(() => {
     fetch("https://rongoeirnet.herokuapp.com/getFood")
@@ -110,41 +138,24 @@ function AthleteAddMeal() {
             if (!save) {
               alert("Please select a meal");
             } else {
+              console.log("id", todaysFoodId);
               db.collection("AthleteNutrition")
-              .doc(userData?.id)
-              .collection("nutrition")
-              .doc(formatDate())
-                .get()
-                .then((snap) => {
-                  if (snap.empty) {
-                    db.collection("AthleteNutrition")
-                      .doc(userData?.id)
-                      .collection("nutrition")
-                      .doc(formatDate())
-                      .set({
-                        entireFood,
-                      })
-                      .then((docRef) => {
-                        console.log("Document successfully updated!", docRef);
-                        history.push("/nutrition");
-                      })
-                      .catch((error) => {
-                        console.error("Error updating document: ", error);
-                      });
-                  } else {
-                    db.collection("AthleteNutrition")
-                      .doc(userData?.id)
-                      .collection("nutrition")
-                      .doc(formatDate())
-                          .update({
-                            entireFood,
-                          })
-                          .then(() => {})
-                          .catch((err) => {
-                            console.log(err);
-                          });
-  
-                  }
+                .doc(userData?.id)
+                .collection("nutrition")
+                .doc(foodId ? foodId : formatDate())
+                .set(
+                  {
+                    entireFood,
+                    date: new Date(foodId),
+                  },
+
+                  { merge: true }
+                )
+                .then(() => {
+                  history.push("/nutrition");
+                })
+                .catch((error) => {
+                  console.error("Error updating document: ", error);
                 });
             }
           }

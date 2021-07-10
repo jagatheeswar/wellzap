@@ -26,17 +26,17 @@
 @font-face {
   font-family: "Open_Sans";
   src: local("Open_Sans"),
-  url("./fonts/Open_Sans/OpenSans-Regular.ttf") format("truetype");
+    url("./fonts/Open_Sans/OpenSans-Regular.ttf") format("truetype");
   font-weight: normal;
 }
 
 @font-face {
   font-family: "Montserrat";
   src: local("Montserrat"),
-  url("./fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
+    url("./fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
   font-weight: normal;
 }
 
 * {
-  font-family: 'Open_Sans';
+  font-family: "Open_Sans";
 }

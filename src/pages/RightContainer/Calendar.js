@@ -52,9 +52,9 @@ const Calendar_ = (props) => {
   const [tdy, settdy] = useState([]);
   const [upcomingevents, setupcomingevents] = useState([]);
   const defaultValue = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth(),
-    day: new Date().getDate(),
+    year: 2000,
+    month: 2,
+    day: 10,
   };
   const [selectedDay, setSelectedDay] = useState(null);
   const [showevent_count, setshowevent_count] = useState(3);

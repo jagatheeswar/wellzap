@@ -14,12 +14,11 @@ import { useSelector } from "react-redux";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { db } from "../../utils/firebase";
-import firebase from "firebase"
-import Switch from '@material-ui/core/Switch';
+import firebase from "firebase";
+import Switch from "@material-ui/core/Switch";
 import styled from "styled-components";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
 import CloseIcon from "@material-ui/icons/Close";
-
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -52,7 +51,7 @@ function CoachAddMeal(props) {
           quantity: 1,
         },
       ],
-      addFood:false,
+      addFood: false,
     },
   ]);
   const [foodId, setFoodId] = useState("");
@@ -60,8 +59,6 @@ function CoachAddMeal(props) {
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
   const history = useHistory();
-
-
 
   useEffect(() => {
     fetch("https://rongoeirnet.herokuapp.com/getFood")
@@ -75,7 +72,6 @@ function CoachAddMeal(props) {
       });
   }, []);
 
-
   // useEffect(() => {
   //   if (route.params?.nutrition) {
   //     setPlan(route.params?.nutrition.data.nutrition.plan);
@@ -83,8 +79,7 @@ function CoachAddMeal(props) {
   //   }
   // }, [route.params?.nutrition]);
 
-
-  const AddLongTermMeal = () =>{
+  const AddLongTermMeal = () => {
     /*
     db.collection("Food")
     .add({
@@ -106,10 +101,9 @@ function CoachAddMeal(props) {
         entireFood,
       },
     };
-    props.setWeeks(weeks)
-    props.handleCloseNutrition()
-  }
-
+    props.setWeeks(weeks);
+    props.handleCloseNutrition();
+  };
 
   return (
     <div className="coachAddMeal">
@@ -118,25 +112,25 @@ function CoachAddMeal(props) {
         <img src="/assets/nutrition.jpeg" alt="" />
       </div>
       <div className="coachAddMeal__input">
-        <div style={{display:"flex",justifyContent:"space-between"}}>
-        <h4>Nutrition Plan Name</h4>
-        {userType !== "athlete" && (
-        <div style={{display:"flex",alignItems:"center"}}>
-          <p style={{margin:0,marginRight:10}}>Add Food</p>
-        <Switch
-            checked={addFood}
-            onChange={(event)=>{
-              let tempMeal = [...entireFood];
-              tempMeal[0].addFood = !addFood;
-              setEntireFood(tempMeal);
-              setAddFood(!addFood)
-            }}
-            name="Add Food"
-            value={addFood}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-        </div>)}
-
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <h4>Nutrition Plan Name</h4>
+          {userType !== "athlete" && (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <p style={{ margin: 0, marginRight: 10 }}>Add Food</p>
+              <Switch
+                checked={addFood}
+                onChange={(event) => {
+                  let tempMeal = [...entireFood];
+                  tempMeal[0].addFood = !addFood;
+                  setEntireFood(tempMeal);
+                  setAddFood(!addFood);
+                }}
+                name="Add Food"
+                value={addFood}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </div>
+          )}
         </div>
         <input
           type="text"
@@ -151,7 +145,7 @@ function CoachAddMeal(props) {
           {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
               <FormControl className={classes.formControl}>
-                  <b style={{marginBottom:10}}>Select the type of meal</b>
+                <b style={{ marginBottom: 10 }}>Select the type of meal</b>
                 <Select
                   labelId="meal-select-label"
                   id="meal-select-label"
@@ -161,7 +155,7 @@ function CoachAddMeal(props) {
                     temp[idx].meal = e.target.value;
                     setEntireFood(temp);
                   }}
-                  style={{width:"97%"}}
+                  style={{ width: "97%" }}
                 >
                   <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
                   <MenuItem value={"Lunch"}>Lunch</MenuItem>
@@ -171,58 +165,59 @@ function CoachAddMeal(props) {
                   <MenuItem value={"Dinner"}>Dinner</MenuItem>
                 </Select>
               </FormControl>
-              {addFood ? 
-              <div>
-            {item.food?.map((item2, idx2) => {
-              return (
-                <AddFoodCard
-                  type={type}
-                  item={item2}
-                  idx={idx2}
-                  key={idx2}
-                  ent={item}
-                  entireFood={entireFood}
-                  index={idx}
-                  serverData={serverData}
-                  setEntireFood={setEntireFood}
-                />
-              );
-            })}
-              <div
-                className="foodCard__addfoodButton"
-                onClick={() => {
-                  let foodData = [...entireFood];
-                  let temp = [...item.food];
-                  temp.push({
-                    foodName: "",
-                    proteins: 0,
-                    carbs: 0,
-                    fat: 0,
-                    calories: 0,
-                    quantity: 1,
-                  });
-                  foodData[idx].food = temp;
+              {addFood ? (
+                <div>
+                  {item.food?.map((item2, idx2) => {
+                    return (
+                      <AddFoodCard
+                        type={type}
+                        item={item2}
+                        idx={idx2}
+                        key={idx2}
+                        ent={item}
+                        entireFood={entireFood}
+                        index={idx}
+                        serverData={serverData}
+                        setEntireFood={setEntireFood}
+                      />
+                    );
+                  })}
+                  <div
+                    className="foodCard__addfoodButton"
+                    onClick={() => {
+                      let foodData = [...entireFood];
+                      let temp = [...item.food];
+                      temp.push({
+                        foodName: "",
+                        proteins: 0,
+                        carbs: 0,
+                        fat: 0,
+                        calories: 0,
+                        quantity: 1,
+                      });
+                      foodData[idx].food = temp;
 
-                  setEntireFood(foodData);
-                }}
-              >
-                <h3>Add Food</h3>
-              </div>
-            </div>
-              :
-              <div className="coachAddMeal__textArea">
-                <h4 style={{margin:0,marginBottom:10}}>Description</h4>
-                <textarea
-                  type="text"
-                  placeholder="Enter Meal Description"
-                  value={item.description}
-                  onChange={(e) => {
-                    let temp = [...entireFood];
-                    temp[idx].description = e.target.value;
-                    setEntireFood(temp);
-                  }}
-                />
-              </div>}
+                      setEntireFood(foodData);
+                    }}
+                  >
+                    <h3>Add Food</h3>
+                  </div>
+                </div>
+              ) : (
+                <div className="coachAddMeal__textArea">
+                  <h4 style={{ margin: 0, marginBottom: 10 }}>Description</h4>
+                  <textarea
+                    type="text"
+                    placeholder="Enter Meal Description"
+                    value={item.description}
+                    onChange={(e) => {
+                      let temp = [...entireFood];
+                      temp[idx].description = e.target.value;
+                      setEntireFood(temp);
+                    }}
+                  />
+                </div>
+              )}
             </div>
           ))}
 
@@ -245,7 +240,7 @@ function CoachAddMeal(props) {
                         quantity: 1,
                       },
                     ],
-                    addFood:false,
+                    addFood: false,
                   },
                 ]);
               }}
@@ -257,9 +252,9 @@ function CoachAddMeal(props) {
             <div
               className="coachFoodCard__submitMealButton"
               onClick={() => {
-                if(props.isLongTerm){
+                if (props.isLongTerm) {
                   AddLongTermMeal();
-                }else{
+                } else {
                   setModal(true);
                 }
               }}
@@ -271,102 +266,145 @@ function CoachAddMeal(props) {
       </div>
       <Modal
         visible={modal}
-        width="80%"
-        height="300"
+        width="450px"
+        height="250"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
         <div className="createWorkout__modal">
-          <h3>Do you want to save the meal?</h3>
+          <h3>Save Nutrition?</h3>
+          <h3> Do you want to save the Nutrition</h3>
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal(false);
-                setModal1(true);
+              onClick={() => setModal(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              DON'T SAVE
+              CANCEL
             </div>
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                db.collection("Food")
-                  .add({
-                    from_id: userData?.id,
-                    assignedTo_id: "",
-                    nutrition: {
-                      nutritionName: nutritionName,
-                      entireFood,
-                      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    },
-                  })
-                  .then(() => {
-                    // navigation.navigate("CreateNutrition", {
-                    //   nutrition: {
-                    //     nutritionName: foodName,
-                    //     plan,
-                    //   },
-                    // });
-                    setModal(false);
-                    setModal1(true);
-                  });
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              SAVE
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal(false);
+                  setModal1(true);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                DON'T SAVE
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+                onClick={() => {
+                  db.collection("Food")
+                    .add({
+                      from_id: userData?.id,
+                      assignedTo_id: "",
+                      nutrition: {
+                        nutritionName: nutritionName,
+                        entireFood,
+                        timestamp:
+                          firebase.firestore.FieldValue.serverTimestamp(),
+                      },
+                    })
+                    .then(() => {
+                      // navigation.navigate("CreateNutrition", {
+                      //   nutrition: {
+                      //     nutritionName: foodName,
+                      //     plan,
+                      //   },
+                      // });
+                      setModal(false);
+                      setModal1(true);
+                    });
+                }}
+              >
+                SAVE
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>
       <Modal
         visible={modal1}
-        width="80%"
-        height="300"
+        width="450"
+        height="250"
         effect="fadeInUp"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
         onClickaway={() => setModal(false)}
       >
         <div className="createWorkout__modal">
-          <h3>Would you like to assign this meal to your athletes?</h3>
-          <h4>You can complete this step later from the meal screen</h4>
+          <h3>Assign meal</h3>
+          <h4>Do you want to Assign the Meal</h4>
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal1(false);
+              onClick={() => setModal1(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              NO
+              CANCEL
             </div>
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                history.push({
-                  pathname: "/assign-nutrition",
-                  state: {
-                    nutrition: {
-                      nutritionName: nutritionName,
-                      entireFood,
-                    },
-                    type: "add",
-                  },
-                });
-                setModal1(false);
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              YES
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal1(false);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                NO
+              </div>
+
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  history.push({
+                    pathname: "/assign-nutrition",
+                    state: {
+                      nutrition: {
+                        nutritionName: nutritionName,
+                        entireFood,
+                      },
+                      type: "add",
+                    },
+                  });
+                  setModal1(false);
+                }}
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+              >
+                YES
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal1(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>

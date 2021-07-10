@@ -306,30 +306,52 @@ function AthleteCalendar() {
 
 
   return (
-    <div className="workouts__home">
+    <div style={{minHeight: "99.7vh"}} className="workouts__home">
         <CalendarScreenHeader name="Calendar" />
 
         <div style={{display:"flex",justifyContent:"space-evenly"}}>
           <div style={{flex:0.48,paddingLeft:20,width:"100%"}}>
       <div style={{display:"flex",alignItems:"center",marginBottom:20,marginRight:30}}>
-          <span onClick={()=>setSideBar("eventsHistory")} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"auto"}}>
+          {/* <span onClick={()=>setSideBar("eventsHistory")} style={{backgroundColor:"#fcd54a",borderRadius:5,padding:10,cursor:"pointer",marginLeft:"auto"}}>
             Events History
-          </span>
-        <button onClick={()=>setSideBar("AddGoal")} style={{backgroundColor:"#fcd54a",fontSize:25,fontWeight:"bold",cursor:"pointer",padding:5,paddingLeft:12,paddingRight:12,border:"none",borderRadius:5,marginLeft:15}}>
-           +
+          </span> */}
+        <button onClick={()=>setSideBar("AddGoal")} style={{
+          backgroundColor:"#fcd54a",
+          fontSize:25,
+          fontWeight:"bold",
+          cursor:"pointer",
+          padding: '5px 12px',
+          border:"none",
+          borderRadius:5,
+          marginLeft:15,
+          display: 'flex',
+          alignItems: 'center'
+          }}>
+        <span> +</span> <span style={{fontSize: 16, fontWeight: 'normal', marginLeft: 15}}> Create Goal </span>
         </button>
       </div>
-      <Calendar
+      {/* <Calendar
         value={selectedDay}
         onChange={setSelectedDay}
         colorPrimary="#fcd54a" // added this
         colorPrimaryLight="blue"
         calendarClassName="customcalendarScreen" // and this
         calendarTodayClassName="custom-today-day" // also this
-      />
+      /> */}
 
       <div className="eventsContainerScreen">
-        <div class="events_today">
+        {eventHistoryOpen ? 
+          <div>
+            <p style={{fontWeight:"bold",fontSize:18}}>Events History</p>
+            {eventHistory}
+          </div> : 
+          <div>
+            <p style={{fontWeight:"bold",fontSize:18}}>Events History</p>
+            {eventHistory.slice(0,6)}
+            {eventHistory.length > 6 ?
+            <p onClick={()=>setEventHistoryOpen(true)} style={{textAlign:"center",color: "#acacac",cursor:"pointer"}}>+ {eventHistory.length - 6} more</p>:null}
+          </div>}
+        {/* <div class="events_today">
           <div style={{ fontWeight: 100, color: "grey" }}></div>
           <div className="events_today_list">
             {tdy.length !== 0 ? (
@@ -364,7 +386,7 @@ function AthleteCalendar() {
           </div>
         </div>
 
-        {/* Upcoming events list */}
+        Upcoming events list
 
         <div
           class="upcoming_events"
@@ -381,7 +403,7 @@ function AthleteCalendar() {
             Upcoming
           </div>
 
-          {/* Upcoming events single item */}
+          Upcoming events single item
 
           <div className="upcoming_event_">
             {upcomingevents.length !== 0 && (
@@ -400,7 +422,7 @@ function AthleteCalendar() {
           >
             +{upcomingevents.length - showevent_count} more
           </div>
-        )}
+        )} */}
       </div>
           </div>
           <div style={{flex:0.48,alignSelf:"flex-start"}}>
@@ -410,7 +432,7 @@ function AthleteCalendar() {
           </span>
           </div>
           <div style={{backgroundColor:"white",paddingLeft:30,borderRadius:10,alignSelf:"flex-start",paddingBottom:20,paddingTop:10,marginRight:15}}>
-              {sideBar == "eventsHistory" ? 
+              {/* {sideBar == "eventsHistory" ? 
                 eventHistoryOpen ? 
                   <div>
                       <p style={{fontWeight:"bold",fontSize:18}}>Events History</p>
@@ -422,9 +444,9 @@ function AthleteCalendar() {
                     {eventHistory.length > 6 ?
                     <p onClick={()=>setEventHistoryOpen(true)} style={{textAlign:"center",color: "#acacac",cursor:"pointer"}}>+ {eventHistory.length - 6} more</p>:null}
                 </div>
-                 : null}
+                 : null} */}
 
-              {sideBar == "goals" ? 
+              {sideBar === "goals" ? 
                 goals ? 
                   <div>
                       <p style={{fontWeight:"bold",fontSize:18}}>Goals</p>
@@ -438,7 +460,7 @@ function AthleteCalendar() {
                 </div>
                  : null}  
 
-              {sideBar == "AddGoal" ? 
+              {sideBar === "AddGoal" ? 
                 <div>
                   <p style={{fontWeight:"bold",fontSize:18}}>Add Goals</p>
                   <AddGoal setsidebarfunc={setsidebarfunc}/>
@@ -446,7 +468,7 @@ function AthleteCalendar() {
                  : null}  
 
               
-            {sideBar == "eventInfo" ? 
+            {sideBar === "eventInfo" ? 
                 <div>
                   <p style={{fontWeight:"bold",fontSize:18}}>Event Info</p>
                   <EventInfo data={eventInfoData} />

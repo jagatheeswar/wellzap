@@ -60,13 +60,16 @@ import AthleteTrainingAssessment_coach from "./pages/AllAthletes/AthleteTraining
 import ViewNutrition from "./pages/Nutrition/ViewNutrition";
 import PostWorkoutDetails from "./pages/Workouts/PostWorkout";
 import CreateLongTermNutritionPlan from "./pages/Nutrition/CreateLongTermNutritionPlan";
-
-import dateContext from "../src/features/context";
 import CoachAddWorkout from "./pages/Workouts/CoachAddWorkout";
 import CreateLongTermTrainingPlan from "./pages/Workouts/CreateLongTermTrainingPlan";
 import "./fonts/Open_Sans/OpenSans-Regular.ttf";
 import "./fonts/Montserrat/Montserrat-Regular.ttf";
 import { Grid } from "@material-ui/core";
+import CoachProfile from "./pages/Profile/CoachProfile";
+import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
+import ViewAllPastWorkouts from "./pages/Workouts/ViewAllPastWorkouts";
+import AthleteHistory from "./pages/AllAthletes/AthleteHistory"
+import PrintPreview from "./pages/Reports/PrintPreview";
 
 function App() {
   const user = useSelector(selectUser);
@@ -220,7 +223,12 @@ function App() {
             <Route path="/profile">
               <RoutesComp AthleteComp={<Profile />} CoachComp={<Profile />} />
             </Route>
-
+            <Route path="/coachProfile">
+              <RoutesComp
+                AthleteComp={<CoachProfile />}
+                CoachComp={<NotFound />}
+              />
+            </Route>
             <Route path="/reports">
               <RoutesComp
                 AthleteComp={<Reports />}
@@ -243,6 +251,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<CoachAddMeal />}
                 CoachComp={<CoachAddMeal />}
+              />
+            </Route>
+            <Route path="/athlete-history">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteHistory selectedDate={selectedDate} />}
               />
             </Route>
             <Route path="/Athlete/training-assessment/:AthleteId">
@@ -313,6 +327,12 @@ function App() {
                 CoachComp={<ViewAllSavedWorkouts />}
               />
             </Route>
+            <Route path="/view-all-past-workouts">
+              <RoutesComp
+                AthleteComp={<ViewAllPastWorkouts />}
+                CoachComp={<NotFound />}
+              />
+            </Route>
             <Route path="/post-workout">
               <RoutesComp
                 AthleteComp={<PostWorkoutDetails />}
@@ -339,8 +359,14 @@ function App() {
             </Route>
             <Route path="/view-nutrition">
               <RoutesComp
-                AthleteComp={<AthleteNutrition />}
+                AthleteComp={<ViewNutrition />}
                 CoachComp={<ViewNutrition />}
+              />
+            </Route>
+            <Route path="/view-all-meal-history">
+              <RoutesComp
+                AthleteComp={<AthleteMealHistory />}
+                CoachComp={<NotFound />}
               />
             </Route>
             <Route path="/view-all-nutrition">
@@ -438,6 +464,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AllAthletes />}
                 CoachComp={<AllAthletes />}
+              />
+            </Route>
+            <Route path="/print">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<PrintPreview />}
               />
             </Route>
             <Route component={NotFound} />

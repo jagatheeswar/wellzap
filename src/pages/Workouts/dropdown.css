@@ -220,6 +220,7 @@
 }
 
 .select-search {
+  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -248,12 +249,13 @@
   border-top: none;
 }
 .select-search__input {
-  background-color: rgb(240, 240, 240);
+  background-color: white;
 }
 
 .excercise__container {
   display: flex;
   width: 100%;
+  margin-top: 20px;
   border-radius: 10px;
   background-color: white;
   box-shadow: 0 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -312,19 +314,17 @@
   flex-direction: row;
 }
 
-.selectedAthletes_item:hover{
-  background-color: rgb(243, 222, 147)
-
+.selectedAthletes_item:hover {
+  background-color: rgb(243, 222, 147);
 }
-.selectedAthletes_item{
-  background-color:red
-}
-
-.assignWorkout__athletesList{
-  scrollbar-width: thin;          /* "auto" or "thin" */
-  scrollbar-color: blue orange; 
+.selectedAthletes_item {
+  background-color: red;
 }
 
+.assignWorkout__athletesList {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: blue orange;
+}
 
 /* Demonstrate a "mostly customized" scrollbar
  * (won't be visible otherwise if width/height is specified) */
@@ -336,5 +336,5 @@
 
 /* Add a thumb */
 .assignWorkout__athletesList::-webkit-scrollbar-thumb {
-    background: #000 !important;
+  background: #000 !important;
 }

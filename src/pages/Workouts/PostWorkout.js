@@ -13,11 +13,19 @@ import moment from "moment";
 import { useLocation } from "react-router";
 import { DriveEtaOutlined } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import WorkoutScreenHeader from "./WorkoutScreenHeader";
+import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
+import CloseIcon from "@material-ui/icons/Close";
 
 import MoodBadIcon from "@material-ui/icons/MoodBad";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Slide, DialogContentText } from "@material-ui/core";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function PostWorkoutDetails() {
   const userData = useSelector(selectUserData);
@@ -38,7 +46,19 @@ export default function PostWorkoutDetails() {
   const [preWorkout, setPreWorkout] = useState(null);
   const [workoutsCount, setWorkoutsCount] = useState(0);
   const [averageWorkoutTime, setAverageWorkoutTime] = useState(0);
+  const [workoutVideoUrl, setWorkoutVideoUrl] = useState("");
   const [workout, setWorkout] = useState([]);
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   useEffect(() => {
     if (userData?.id) {
       db.collection("athletes")
@@ -62,9 +82,15 @@ export default function PostWorkoutDetails() {
     return [year, month, day].join("-");
   }
   useEffect(() => {
+    console.log(location?.state?.workout);
     if (location.state?.workout) {
-      setGroup(location.state?.workout?.data?.preWorkout?.group);
-      setPostWorkout(location.state?.workout?.data?.postWorkout);
+      setGroup([
+        {
+          exercises:
+            location.state?.workout?.data?.preWorkout?.selectedExercises,
+        },
+      ]);
+      setPostWorkout(location.state?.workout?.data?.preWorkout);
       setPreWorkout(location.state?.workout?.data?.preWorkout);
       setWorkout(location.state?.workout);
       console.log(location.state);
@@ -108,9 +134,10 @@ export default function PostWorkoutDetails() {
 
   return (
     <div className="Postworkout__container">
-      <div>
+      {/* <div>
         <h3>Post Workout details</h3>
-      </div>
+      </div> */}
+      <WorkoutScreenHeader name="Post Workout details" />
       <div className="Postworkout__body">
         <h4> Title</h4>
         <input
@@ -159,8 +186,8 @@ export default function PostWorkoutDetails() {
               style={{
                 borderWidth: 1,
                 borderColor: "#DBE2EA",
-                backgroundColor: "black",
-                color: "white",
+                backgroundColor: "#fcd11c",
+                color: "black",
 
                 borderRadius: 8,
                 padding: 7,
@@ -175,8 +202,11 @@ export default function PostWorkoutDetails() {
             />
           </div>
           <div style={{}}>
-            <div>Completed</div>
+            <div>
+              Completed <span style={{ fontSize: 14 }}>(HH:MM:SS)</span>
+            </div>
             <input
+              type="time"
               style={{
                 borderWidth: 1,
                 borderColor: "#DBE2EA",
@@ -186,9 +216,10 @@ export default function PostWorkoutDetails() {
                 backgroundColor: "white",
                 borderRadius: 8,
                 padding: 7,
-
+                width: "100%",
                 textAlign: "center",
               }}
+              step="1"
               value={postWorkout?.workoutDuration}
               placeholder="HH : MM : SS"
               disabled={completed}
@@ -204,15 +235,14 @@ export default function PostWorkoutDetails() {
           </div>
         </div>
         <div className="Planned_data">
-          <div style={{ width: 100 }}>Calories</div>
+          <div style={{ width: 120 }}>Calories</div>
           <input
             style={{
-              marginLeft: 20,
               borderWidth: 1,
               borderColor: "#DBE2EA",
-              backgroundColor: "black",
-              color: "white",
-              width: 150,
+              backgroundColor: "#fcd11c",
+              color: "black",
+
               borderRadius: 8,
               padding: 7,
               height: 25,
@@ -224,14 +254,8 @@ export default function PostWorkoutDetails() {
             setselectedworkouteditable={false}
           />
         </div>
-
-        <div
-          className="excercise__container"
-          style={{
-            marginTop: 20,
-          }}
-        >
-          <div className="yellow"></div>
+        <h3 style={{ fontSize: 14, marginTop: 20 }}>Exercises</h3>
+        <div className="excercise__container" style={{ marginTop: 5 }}>
           <div
             style={{
               display: "flex",
@@ -239,46 +263,15 @@ export default function PostWorkoutDetails() {
               width: "100%",
             }}
           >
-            <div className="excercise__header">
-              <div>
-                Warm-Up
-                <div> 5 minutes</div>
-              </div>
-              <div>
-                {" "}
-                {selectedWorkoutEdit ? (
-                  <img
-                    style={{
-                      width: "25px",
-                      height: "20px",
-                      marginRight: "5px",
-                      objectFit: "cover",
-                    }}
-                    src="/assets/up.png"
-                  />
-                ) : (
-                  <img
-                    style={{
-                      width: "25px",
-                      height: "20px",
-                      marginRight: "5px",
-                      objectFit: "cover",
-                    }}
-                    src="/assets/down.png"
-                  />
-                )}
-              </div>
-            </div>
-
             <div className="excercises">
               {group?.map((grp, idx) => (
                 <div
                   key={idx}
                   style={{
-                    marginBottom: 20,
+                    marginBottom: idx == 0 ? 0 : 20,
                     borderBottomWidth: 1,
                     borderColor: "#d3d3d3",
-
+                    marginBottom: 20,
                     width: "100%",
                   }}
                 >
@@ -341,21 +334,26 @@ export default function PostWorkoutDetails() {
                                   setGroup(temp);
                                 }}
                               />
-
+                              <div onClick={() => {
+                                  console.log("img click")
+                                  setWorkoutVideoUrl(workout.videoUrl);
+                                  setOpenDialog(true);
+                                }}>
                               <img
                                 style={{
-                                  width: 20,
-                                  height: 20,
+                                  width: 150,
+                                  height: 84,
                                   borderRadius: 8,
                                   backgroundColor: "#d3d3d3",
                                 }}
+                                
                                 src={
                                   workout.thumbnail_url
                                     ? `${workout.thumbnail_url}`
                                     : "../assets/illustration.jpeg"
                                 }
                               />
-
+                              </div>
                               <div style={{ marginHorizontal: 10 }}>
                                 <h3>{workout.name}</h3>
                                 <div
@@ -597,12 +595,7 @@ export default function PostWorkoutDetails() {
                           )}
                         </div>
                       ) : (
-                        <div
-                          key={idx1}
-                          style={{
-                            borderBottom: "1px solid rgb(0,0,0,0.2)",
-                          }}
-                        >
+                        <div key={idx1} style={{}}>
                           <button
                             style={{
                               display: "flex",
@@ -663,10 +656,15 @@ export default function PostWorkoutDetails() {
                               <div>
                                 <img
                                   style={{
-                                    width: 100,
-                                    height: 100,
+                                    width: 150,
+                                    height: 84,
                                     borderRadius: 8,
                                     backgroundColor: "#d3d3d3",
+                                  }}
+                                  onClick={() => {
+                                    console.log("img click")
+                                    setWorkoutVideoUrl(workout.videoUrl);
+                                    setOpenDialog(true);
                                   }}
                                   src={
                                     workout.thumbnail_url
@@ -682,7 +680,15 @@ export default function PostWorkoutDetails() {
                                   textAlign: "left",
                                 }}
                               >
-                                <h3>{workout.name}</h3>
+                                <div
+                                  style={{
+                                    fontSize: 17,
+                                    fontWeight: 700,
+                                    marginBottom: 5,
+                                  }}
+                                >
+                                  {workout.name}
+                                </div>
                                 <div
                                   style={{
                                     display: "flex",
@@ -690,6 +696,64 @@ export default function PostWorkoutDetails() {
                                   }}
                                 >
                                   <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                    }}
+                                  >
+                                    {workout?.sets?.map((s, i) => (
+                                      <div
+                                        style={{
+                                          display: i == 0 ? "flex" : "none",
+                                          flexDirection: "column",
+                                        }}
+                                      >
+                                        {Object.keys(s).map((set_, i) => (
+                                          <div
+                                            style={{
+                                              display:
+                                                set_ == "actualReps"
+                                                  ? "none"
+                                                  : "flex",
+                                              marginRight: 10,
+                                            }}
+                                          >
+                                            <div
+                                              style={{
+                                                fontSize: 13,
+                                                fontWeight: 600,
+                                                width: 100,
+                                              }}
+                                            >
+                                              {set_}
+                                            </div>
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                width: "100%",
+                                              }}
+                                            >
+                                              {workout?.sets?.map((s, i) => (
+                                                <div
+                                                  key={i}
+                                                  style={{
+                                                    fontSize: 13,
+                                                    fontWeight: 500,
+                                                  }}
+                                                >
+                                                  {s[set_] ? s[set_] : 12}
+                                                  {i < workout.sets.length - 1
+                                                    ? "  -  "
+                                                    : null}
+                                                </div>
+                                              ))}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    ))}
+                                  </div>
+                                  {/* <div
                                     style={{
                                       display: "flex",
                                       flexDirection: "row",
@@ -767,7 +831,7 @@ export default function PostWorkoutDetails() {
                                           : null}
                                       </h3>
                                     ))}
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                               {/* <h3
@@ -782,7 +846,7 @@ export default function PostWorkoutDetails() {
                               v
                             </h3> */}
                             </div>
-                            <div style={{ marginLeft: 30 }}>
+                            <div style={{ marginRight: 100 }}>
                               <div style={{ alignItems: "center" }}>
                                 <h3 style={{ fontSize: 11 }}>Edit</h3>
                                 <div>
@@ -998,29 +1062,6 @@ export default function PostWorkoutDetails() {
                                   </div>
                                 ))}
                               </div>
-                              <button
-                                onClick={() => {
-                                  console.log(4);
-                                  console.log(selectedWorkoutEdit);
-                                  setSelectedWorkoutEdit("");
-                                }}
-                                style={{
-                                  borderWidth: 1,
-                                  borderRadius: 5,
-                                  borderColor: "#DBE2EA",
-                                  alignSelf: "flex-end",
-                                  padding: 5,
-                                  paddingHorizontal: 7,
-                                }}
-                              >
-                                <Icon
-                                  name="check"
-                                  size={20}
-                                  style={{ alignSelf: "flex-end" }}
-                                  color="black"
-                                  type="font-awesome-5"
-                                />
-                              </button>
                             </div>
                           )}
                         </div>
@@ -1032,151 +1073,156 @@ export default function PostWorkoutDetails() {
             </div>
           </div>
         </div>
-      </div>
 
-      <div
-        style={{
-          width: "100%",
-        }}
-      >
-        <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
-        <input
+        <div
           style={{
-            borderWidth: 1,
-            borderColor: "#DBE2EA",
-            backgroundColor: "#fff",
             width: "100%",
-            borderRadius: 8,
-            textAlignVertical: "top",
-            padding: 10,
-            height: 30,
-            marginBottom: 15,
           }}
-          disabled={completed}
-          value={postWorkout?.description}
-          onChange={(newValue) => {
-            let temp = { ...postWorkout };
-            temp.description = newValue.target.value;
-            setPostWorkout(temp);
-          }}
-          multiline={true}
-          underlineColorAndroid="transparent"
-          numberOfLines={4}
-          placeholder="Enter Description"
-          editable={completed ? false : true}
-        />
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          flexDirection: "column",
-          alignSelf: "flex-start",
-          width: 400,
-        }}
-      >
-        <h3 style={{ fontSize: 15, marginBottom: 7, color: "black" }}>
-          Post workout fatigue level
-        </h3>
+        >
+          <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
+          <input
+            style={{
+              borderWidth: 1,
+              borderColor: "#DBE2EA",
+              backgroundColor: "#fff",
+              width: "100%",
+              borderRadius: 8,
+              textAlignVertical: "top",
+              padding: 20,
+              height: 30,
+              marginBottom: 15,
+              boxSizing: "border-box",
+            }}
+            disabled={completed}
+            value={postWorkout?.description}
+            onChange={(newValue) => {
+              let temp = { ...postWorkout };
+              temp.description = newValue.target.value;
+              setPostWorkout(temp);
+            }}
+            multiline={true}
+            underlineColorAndroid="transparent"
+            numberOfLines={4}
+            placeholder="Enter Description"
+            editable={completed ? false : true}
+          />
+        </div>
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: 10,
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            alignSelf: "flex-start",
+            width: 400,
           }}
         >
+          <h3 style={{ fontSize: 15, marginBottom: 7, color: "black" }}>
+            Post workout fatigue level
+          </h3>
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               alignItems: "center",
-              marginRight: 15,
+              marginTop: 10,
             }}
           >
-            <button
+            <div
               style={{
-                border: "none",
-              }}
-              onClick={() => {
-                if (!completed) {
-                  let temp = { ...postWorkout };
-                  temp.fatigue = "very-sore";
-                  setPostWorkout(temp);
-                }
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginRight: 15,
               }}
             >
-              <SentimentVeryDissatisfiedIcon
+              <button
                 style={{
-                  fill: `${
-                    postWorkout?.fatigue === "very-sore" ? "red" : "black"
-                  }`,
-                  height: 70,
-                  width: 70,
+                  border: "none",
                 }}
-              />
-            </button>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              marginRight: 15,
-            }}
-          >
-            <button
+                onClick={() => {
+                  if (!completed) {
+                    let temp = { ...postWorkout };
+                    temp.fatigue = "very-sore";
+                    setPostWorkout(temp);
+                  }
+                }}
+              >
+                <SentimentVeryDissatisfiedIcon
+                  style={{
+                    fill: `${
+                      postWorkout?.fatigue === "very-sore" ? "red" : "black"
+                    }`,
+                    height: 70,
+                    width: 70,
+                  }}
+                />
+              </button>
+            </div>
+            <div
               style={{
-                border: "none",
-              }}
-              onClick={() => {
-                if (!completed) {
-                  let temp = { ...postWorkout };
-                  temp.fatigue = "moderately-sore";
-                  setPostWorkout(temp);
-                }
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                marginRight: 15,
               }}
             >
-              <MoodBadIcon
+              <button
                 style={{
-                  height: 70,
-                  width: 70,
+                  border: "none",
                 }}
-              />
-            </button>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginRight: 15,
-            }}
-          >
-            <button
+                onClick={() => {
+                  if (!completed) {
+                    let temp = { ...postWorkout };
+                    temp.fatigue = "moderately-sore";
+                    setPostWorkout(temp);
+                  }
+                }}
+              >
+                <SentimentSatisfiedIcon
+                  style={{
+                    fill: `${
+                      postWorkout?.fatigue === "moderately-sore"
+                        ? "rgb(252, 213, 74)"
+                        : "black"
+                    }`,
+                    height: 70,
+                    width: 70,
+                  }}
+                />
+              </button>
+            </div>
+            <div
               style={{
-                border: "none",
-              }}
-              onClick={() => {
-                if (!completed) {
-                  let temp = { ...postWorkout };
-                  temp.fatigue = "not-sore";
-                  setPostWorkout(temp);
-                }
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginRight: 15,
               }}
             >
-              <InsertEmoticonIcon
+              <button
                 style={{
-                  fill: `${
-                    postWorkout?.fatigue === "not-sore" ? "green" : "black"
-                  }`,
-                  height: 70,
-                  width: 70,
+                  border: "none",
                 }}
-              />
-            </button>
+                onClick={() => {
+                  if (!completed) {
+                    let temp = { ...postWorkout };
+                    temp.fatigue = "not-sore";
+                    setPostWorkout(temp);
+                  }
+                }}
+              >
+                <InsertEmoticonIcon
+                  style={{
+                    fill: `${
+                      postWorkout?.fatigue === "not-sore" ? "green" : "black"
+                    }`,
+                    height: 70,
+                    width: 70,
+                  }}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1232,7 +1278,9 @@ export default function PostWorkoutDetails() {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
+          border: "none",
         }}
+        className="Submit__button"
         onClick={() => {
           if (completed) {
             history.push("/workouts");
@@ -1274,9 +1322,12 @@ export default function PostWorkoutDetails() {
             } else {
               complianceMessage = "";
             }
-            postWorkout.compliance = compliance;
-            postWorkout.group = group;
-            if (!postWorkout.date) {
+            if (postWorkout?.compliance) {
+              postWorkout.compliance = compliance;
+              postWorkout.group = group;
+            }
+
+            if (!postWorkout?.date) {
               postWorkout.date = formatDate();
             }
             console.log(workoutId, postWorkout);
@@ -1288,21 +1339,17 @@ export default function PostWorkoutDetails() {
                 compliance: complianceMessage,
               })
               .then(() => {
-                          
-                          db.collection("CoachNotifications")
-                            .doc(userData.data.listOfCoaches[0])
-                            .collection("notifications")
-                            .add({
-                              message: `${
-                                userData?.data?.name
-                              } has completed Workout ${
-                                workout?.data?.preWorkout?.workoutName
-                              } on ${postWorkout.date || formatDate()} `,
-                              seen: false,
-                              timestamp:
-                                firebase.firestore.FieldValue.serverTimestamp(),
-                              athlete_id: userData.id,
-                            });       
+                db.collection("CoachNotifications")
+                  .doc(userData.data.listOfCoaches[0])
+                  .collection("notifications")
+                  .add({
+                    message: `${userData?.data?.name} has completed Workout ${
+                      workout?.data?.preWorkout?.workoutName
+                    } on ${postWorkout.date || formatDate()} `,
+                    seen: false,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    athlete_id: userData.id,
+                  });
 
                 db.collection("athletes")
                   .doc(userData.id)
@@ -1331,6 +1378,30 @@ export default function PostWorkoutDetails() {
           {completed ? "Return" : "Complete Workout"}
         </h3>
       </button>
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        maxWidth="md"
+        // fullWidth
+        onClose={handleCloseDialog}
+      >
+        <DialogContent>
+          {/* <video width="500" height="500" controls>
+            <source src={workoutVideoUrl} type="video/mp4" />
+          </video> */}
+          <div dangerouslySetInnerHTML={{__html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
+                            workoutVideoUrl.lastIndexOf("/") + 1
+                          )}"></iframe>`}} />
+          <div
+          onClick={handleCloseDialog}
+          style={{cursor:"pointer", position: "absolute", right: 0, top: 0, padding: 12}} 
+        >
+          {" "}
+          <CloseIcon />
+        </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -17,24 +17,24 @@ export function formatDate1(date) {
   return [year, month, day].join("-");
 }
 
-function NutritionCard({
+function AthleteNutritionCard({
   nutrition,
   food,
   idx,
   type,
   navigation,
-  date,
+  coachMealHistory,
   selectedWeekNum,
   isLongTerm,
   weeks,
   handleCloseNutrition,
   setWeeks,
-  selectedDay,
-  selectedDate,
+
+  food_nutrition,
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
-  console.log("fd", date);
+
   // const isLongTerm = false;
   return (
     <div
@@ -93,13 +93,24 @@ function NutritionCard({
                 }
               }
             } else {
-              history.push({
-                pathname: "/view-nutrition",
-                state: {
-                  nutrition: food,
-                  type: "view",
-                },
-              });
+              if (navigation) {
+                history.push({
+                  pathname: "/add-meal",
+                  state: {
+                    entireFood: food.data.entireFood,
+                    todaysFoodId: food.id,
+                    nutrition: coachMealHistory && coachMealHistory[0],
+                  },
+                });
+              } else {
+                history.push({
+                  pathname: "/view-nutrition",
+                  state: {
+                    nutrition: food,
+                    type: "view",
+                  },
+                });
+              }
             }
           }
         }
@@ -110,21 +121,88 @@ function NutritionCard({
         // });
       }
     >
-      <div className="nutritionCard_main">
+      <div
+        className="nutritionCard_main"
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />
-        <div className="nutritionCard__info">
-          <div className="nutritionCard__macroNutrients">
-            <h1> {food?.data?.nutrition?.nutritionName}</h1>
-          </div>
-          <div className="nutritionCard__macroNutrients">
-            {console.log("s", selectedDate)}
-            <h3>{selectedDate ? selectedDate : formatDate()}</h3>
+        <div
+          className="nutritionCard__info"
+          style={{
+            marginLeft: 10,
+          }}
+        >
+          <div
+            className="nutritionCard__macroNutrients"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              fontSize: 12,
+              fontWeight: 400,
+              height: 70,
+            }}
+          >
+            {food?.data?.nutrition?.nutritionName && (
+              <h1> {food?.data?.nutrition?.nutritionName}</h1>
+            )}
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <div style={{ width: 70 }}>Carbs :</div>
+              {food.data?.carbs ? food.data?.carbs?.toFixed(2) : 0}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {" "}
+              <div style={{ width: 70 }}>Calories :</div>
+              {food.data?.calories ? food.data?.calories?.toFixed(2) : 0}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {" "}
+              <div style={{ width: 70 }}>Fats :</div>{" "}
+              {food.data?.fat ? food.data?.fat?.toFixed(2) : 0}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              {" "}
+              <div style={{ width: 70 }}>proteins :</div>
+              {food.data?.proteins ? food.data?.proteins?.toFixed(2) : 0}
+            </div>
           </div>
         </div>
       </div>
-      <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+      <div
+        style={{
+          height: 10,
+          width: 100,
+        }}
+        className="nutritionCard__macroNutrients"
+      >
+        <h3>{food.id ? food.id : formatDate()}</h3>
+        <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+      </div>
     </div>
   );
 }
 
-export default NutritionCard;
+export default AthleteNutritionCard;

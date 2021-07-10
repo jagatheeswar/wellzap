@@ -6,7 +6,7 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { useHistory } from "react-router";
-import { Grid } from '@material-ui/core';
+import { Grid } from "@material-ui/core";
 
 function AthleteWorkouts() {
   const userData = useSelector(selectUserData);
@@ -22,17 +22,25 @@ function AthleteWorkouts() {
       db.collection("athletes")
         .doc(userData?.id)
         .onSnapshot((doc) => {
-          if (doc.data()?.completedWorkouts) {
-            setCompletedWorkouts(doc.data().completedWorkouts);
-          } else {
-            setCompletedWorkouts(0);
-          }
+          setCompletedWorkouts(
+            doc.data().completedWorkouts ? doc.data().completedWorkouts : 0
+          );
+          setAverageWorkoutTime(
+            doc.data().averageWorkoutTime
+              ? doc.data().averageWorkoutTime?.toFixed(2)
+              : 0
+          );
+          // if (doc.data()?.completedWorkouts) {
+          //   setCompletedWorkouts(doc.data().completedWorkouts);
+          // } else {
+          //   setCompletedWorkouts(0);
+          // }
 
-          if (doc.data()?.averageWorkoutTime) {
-            setAverageWorkoutTime(doc.data().averageWorkoutTime?.toFixed(2));
-          } else {
-            setAverageWorkoutTime(0);
-          }
+          // if (doc.data()?.averageWorkoutTime) {
+          //   setAverageWorkoutTime(doc.data().averageWorkoutTime?.toFixed(2));
+          // } else {
+          //   setAverageWorkoutTime(0);
+          // }
         });
     }
   }, [userData?.id]);
@@ -69,33 +77,59 @@ function AthleteWorkouts() {
   }, [userData?.id]);
 
   return (
-    <div className="workouts__home">
+    <div style={{ minHeight: "100vh" }} className="workouts__home">
       <div className="coachDashboard__leftContainer">
         <WorkoutScreenHeader name="Workouts" />
 
         <Grid container spacing={2} className="workouts__homeContainer">
           <Grid item xs={6} className="workouts__homeLeftContainer">
-            <div style={{width: "90%", paddingLeft: 20}} className="workoutHeading__row">
+            <div
+              style={{ width: "90%", paddingLeft: 20 }}
+              className="workoutHeading__row"
+            >
               <h1>Upcoming Workouts</h1>
               <div onClick={() => history.push("/view-all-workouts")}>
                 View All
               </div>
             </div>
-            <div style={{width: "90%", paddingLeft: 20}}>
-            {workouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={workouts}
-                item={workout}
-                idx={i}
-                type={"non-editable"}
-              />
-            ))}
+            <div style={{ width: "90%", paddingLeft: 20 }}>
+              {workouts.length > 0 ? (
+                workouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={workouts}
+                    item={workout}
+                    idx={i}
+                    type={"non-editable"}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    width: "100%",
+                    height: 90,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <h5
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    There are no Upcoming Workouts for now
+                  </h5>
+                </div>
+              )}
             </div>
           </Grid>
           <Grid item xs={6} className="workouts__homeRightContainer">
             <h1>Workout History</h1>
-            <div style={{width: "90%"}} className="workoutRecord">
+            <div style={{ width: "90%" }} className="workoutRecord">
               <div className="workoutRecord__info">
                 <h5>{completedWorkouts}</h5>
                 <h6>Completed Workouts</h6>
@@ -109,23 +143,46 @@ function AthleteWorkouts() {
                 <h6>Goals Met</h6>
               </div>
             </div>
-            <div style={{width: "90%"}} className="workoutHeading__row">
+            <div style={{ width: "90%" }} className="workoutHeading__row">
               <h1>Past Workouts</h1>
-              <div onClick={() => history.push("/view-all-saved-workouts")}>
+              <div onClick={() => history.push("/view-all-past-workouts")}>
                 View All
               </div>
             </div>
-            <div style={{width: "90%"}}>
-            {pastWorkouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={workouts}
-                item={workout}
-                idx={i}
-                type={"non-editable"}
-                completed={true}
-              />
-            ))}
+            <div style={{ width: "90%" }}>
+              {pastWorkouts.length > 0 ? (
+                pastWorkouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={workouts}
+                    item={workout}
+                    idx={i}
+                    type={"non-editable"}
+                    completed={true}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    width: "100%",
+                    height: 90,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <h5
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    There are no Past Workouts for now
+                  </h5>
+                </div>
+              )}
             </div>
           </Grid>
         </Grid>

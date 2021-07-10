@@ -4,6 +4,8 @@ import { useHistory } from "react-router";
 import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import "./AllAthletes.css";
+import {Typography} from "@material-ui/core";
+import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 
 function AllAthletes() {
   const history = useHistory();
@@ -29,16 +31,14 @@ function AllAthletes() {
   }, [userData?.id]);
 
   return (
-    <div className="allAthletes">
+    <div style={{minHeight: "99.7vh"}} className="allAthletes">
       <div className="allAthletes__info">
-        <div
-          className="allAthletes__backButton"
-          onClick={() => history.goBack()}
-        >
-          <img src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
+      <div onClick={() => history.goBack()} style={{marginTop: 20, display: "flex", alignItems: 'center'}} >
+          <ArrowBackIosRoundedIcon style={{height: 18, width: 18, padding: 5, cursor: "pointer"}} />
+          <Typography variant="h6" style={{fontSize: 25, marginLeft: 5}}>All Athletes</Typography>
         </div>
-        <h1>All Athletes</h1>
         <div
+        style={{marginTop: 20}}
           className="allAthletes__inviteAthletesButton"
           onClick={() => history.push("/invite-athlete")}
         >
@@ -48,6 +48,7 @@ function AllAthletes() {
 
       {athletes.map((athlete) => (
         <div className="allAthletes__athletes">
+          <div style={{display: "flex", alignItems: "center"}}>
           <img
             className="allAthletes__athleteslogo"
             src="/assets/userImage.jpeg"
@@ -55,10 +56,28 @@ function AllAthletes() {
             width="40px"
             height="40px"
           />
-          <h1 onClick={() => history.push("/Athlete/" + athlete.id)}>
+          <p style={{fontSize: 18, fontWeight: "500", marginLeft: 20}}>
             {athlete.name}
-          </h1>
-          <img src="/assets/message.png" alt="" width="20px" height="20px" />
+          </p>
+          </div>
+          <div style={{display: "flex", alignItems: "center"}}>
+          <img
+            onClick={() =>
+              history.push({
+                pathname: "/messaging",
+                state: {
+                  id: null,
+                  from_id: userData?.id,
+                  to_id: athlete.id,
+                  from_name: userData?.data.name,
+                  to_name: athlete?.name,
+                  type: "coach",
+                },
+              })
+            }
+            src="/assets/message.png" alt="" width="20px" height="20px" style={{cursor: "pointer"}} />
+          <button onClick={() => history.push("/Athlete/" + athlete.id)} style={{marginLeft: 20, outline: "none", border: "none", padding: "5px 10px", backgroundColor: "#fcd54a", borderRadius: 8, cursor: "pointer"}}>View Profile</button>
+          </div>
         </div>
       ))}
     </div>

@@ -164,6 +164,8 @@
 }
 .calendar_right {
   margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 .calendar_header {
   display: flex;

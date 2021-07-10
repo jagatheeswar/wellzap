@@ -82,7 +82,7 @@ function ViewAllSavedWorkouts(props) {
   }, [userData?.id]);
 
   return (
-    <div>
+    <div style={{ minHeight: "99.6vh" }}>
       <WorkoutScreenHeader name="Saved Templates" />
       <div
         style={{
@@ -133,19 +133,19 @@ function ViewAllSavedWorkouts(props) {
               </div>
             ))
           ) : (
-            <h5
+            <div
               style={{
-                fontSize: "12px",
+                fontSize: "13px",
                 backgroundColor: "#fff",
                 width: "100%",
-                paddingTop: "10px",
-                paddingRight: "10px",
+                padding: "10px 20px",
                 textAlign: "center",
                 borderRadius: "5px",
+                fontWeight: "normal",
               }}
             >
-              There are no saved workouts for now
-            </h5>
+              <h5> There are no saved workouts for now </h5>
+            </div>
           )}
         </div>
       </div>

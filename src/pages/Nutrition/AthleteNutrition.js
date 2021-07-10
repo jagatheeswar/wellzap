@@ -10,12 +10,17 @@ import { db } from "../../utils/firebase";
 import formatSpecificDate from "../../functions/formatSpecificDate";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import formatDate1 from "../../functions/formatDate1";
+import { useHistory } from "react-router-dom";
+import { Grid, Typography } from "@material-ui/core";
+import AthleteNutritionCard from "../../Components/NutritionCard/AthleteNutritionCard";
 
 function AthleteNutrition() {
+  const history = useHistory();
   const userData = useSelector(selectUserData);
   const [water, setWater] = useState(0);
   const [upcomingMealHistory, setUpcomingMealHistory] = useState([]);
   const [mealHistory, setMealHistory] = useState([]);
+  const [mealHistory_show, setMealHistory_show] = useState(null);
   const [coachMealHistory, setCoachMealHistory] = useState([]);
 
   useEffect(() => {
@@ -31,11 +36,7 @@ function AthleteNutrition() {
     if (userData?.id) {
       db.collection("Food")
         .where("assignedTo_id", "==", userData?.id)
-        .where(
-          "selectedDays",
-          "array-contains",
-          formatSpecificDate("2021-05-18")
-        )
+        .where("selectedDays", "array-contains", formatDate())
         .get()
         .then((snapshot) => {
           setUpcomingMealHistory(
@@ -58,7 +59,9 @@ function AthleteNutrition() {
       db.collection("AthleteNutrition")
         .doc(userData?.id)
         .collection("nutrition")
+        .orderBy("date", "desc")
         .limit(3)
+
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -85,9 +88,15 @@ function AthleteNutrition() {
             }
           });
           setMealHistory(temp);
+          console.log(temp);
         });
     }
   }, [userData?.id]);
+
+  useEffect(() => {
+    if (mealHistory.length > 0) {
+    }
+  }, [mealHistory]);
 
   useEffect(() => {
     let temp = [];
@@ -108,21 +117,63 @@ function AthleteNutrition() {
   }, [userData]);
 
   return (
-    <div className="athleteNutrition">
+    <div style={{ minHeight: "99.7vh" }} className="athleteNutrition">
       <NutritionScreenHeader name="Nutrition" />
-      <div className="athleteNutrition__homeContainer">
-        <div className="athleteNutrition__homeLeftContainer">
-          <div className="athleteNutritionHeading__row">
-            <h1>Today’s Stats and Goals</h1>
+      <Grid container className="athleteNutrition__homeContainer">
+        <Grid item xs={6}>
+          <div
+            style={{ width: "90%", marginLeft: 10 }}
+            className="athleteNutritionHeading__row"
+          >
+            <h1>Nutrition Tracker</h1>
           </div>
-          <NutritionGoalProgress />
-          <div style={{width: "95%"}}>
-          <WaterCard date={formatDate()} water={water} setWater={setWater} />
+          <div style={{ width: "90%", marginTop: 11, marginLeft: 10 }}>
+            <NutritionGoalProgress />
           </div>
-          <div className="athleteNutritionHeading__row">
+          <div style={{ width: "90%", marginLeft: 10 }}>
+            <WaterCard date={formatDate()} water={water} setWater={setWater} />
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div
+            style={{ width: "90%" }}
+            className="athleteNutritionHeading__row"
+          >
+            <h1>Meal History</h1>
+            <div onClick={() => history.push("/view-all-meal-history")}>
+              View All
+            </div>
+          </div>
+          <div style={{ width: "90%" }} className="nutrition__list">
+            {mealHistory.length > 0 ? (
+              mealHistory?.map((food, idx) => (
+                <AthleteNutritionCard
+                  key={idx}
+                  nutrition={mealHistory}
+                  food={food}
+                  idx={idx}
+                  coachMealHistory={coachMealHistory[0]}
+                  navigation={"add-meal"}
+                />
+              ))
+            ) : (
+              <h5 className="no-upcoming-food-text">
+                There are no upcoming meals for now
+              </h5>
+            )}
+          </div>
+        </Grid>
+        <Grid item xs={6}>
+          <div
+            style={{ width: "90%", marginLeft: 20 }}
+            className="athleteNutritionHeading__row"
+          >
             <h1>Upcoming Meals</h1>
           </div>
-          <div className="nutrition__list">
+          <div
+            style={{ width: "90%", marginLeft: 20 }}
+            className="nutrition__list"
+          >
             {upcomingMealHistory.length > 0 ? (
               upcomingMealHistory?.map((food, idx) => (
                 <NutritionCard
@@ -139,67 +190,70 @@ function AthleteNutrition() {
               </h5>
             )}
           </div>
-        </div>
-        <div className="athleteNutrition__homeRightContainer">
-          <h1>Nutrition Tracker</h1>
-          <div className="athleteNutritionHeading__row">
-            <h1>Meal History</h1>
+        </Grid>
+        <Grid item xs={6}>
+          <div
+            style={{ width: "90%" }}
+            className="athleteNutritionHeading__row"
+          >
+            <h1>Assigned Meals By Coach</h1>
+            <div onClick={() => history.push("/view-all-nutrition")}>
+              View All
+            </div>
           </div>
-          <div className="nutrition__list">
-            {mealHistory.length > 0 ? (
-              mealHistory?.map((food, idx) => (
-                <NutritionCard
+          <div style={{ width: "90%" }}>
+            {coachMealHistory.length > 0 ? (
+              coachMealHistory?.map((food, idx) => (
+                <div
+                  onClick={() => {
+                    history.push({
+                      pathname: "/view-nutrition",
+                      state: {
+                        nutrition: food,
+                        type: "view",
+                      },
+                    });
+                  }}
                   key={idx}
-                  nutrition={mealHistory}
-                  food={food}
-                  idx={idx}
-                  navigation={"add-meal"}
-                />
+                  className="assignByCoach__Card"
+                >
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      src="/assets/nutrition.jpeg"
+                      alt=""
+                      width="110px"
+                      height="110px"
+                      style={{ objectFit: "contain" }}
+                    />
+                    <div style={{ marginLeft: 20 }}>
+                      <Typography variant="h6" style={{ fontSize: 16 }}>
+                        {food.data.nutrition.nutritionName}
+                      </Typography>
+                      <div className="assignByCoach__CardInfoDates">
+                        {food.data.selectedDays.map((day, i) => (
+                          <Typography style={{ fontSize: 12 }} key={i}>
+                            {formatDate1(day)}
+                            {i < food.data.selectedDays.length - 1 ? "," : null}
+                          </Typography>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    className="rightArrow"
+                    src="/assets/right__arrow.png"
+                    alt=""
+                  />
+                </div>
               ))
             ) : (
               <h5 className="no-upcoming-food-text">
-                There are no upcoming meals for now
+                There are no assigned meals.
               </h5>
             )}
           </div>
-          <div className="athleteNutritionHeading__row">
-            <h1>Assigned Meals By Coach</h1>
-          </div>
-          {coachMealHistory.length > 0 ? (
-            coachMealHistory?.map((food, idx) => (
-              <div key={idx} className="assignByCoach__Card">
-                <img
-                  src="/assets/nutrition.jpeg"
-                  alt=""
-                  width="110px"
-                  height="110px"
-                />
-
-                <div className="assignByCoach__CardInfo">
-                  <h4>{food.data.nutrition.nutritionName}</h4>
-                  <div className="assignByCoach__CardInfoDates">
-                    {food.data.selectedDays.map((day, i) => (
-                      <h4 key={i}>
-                        {formatDate1(day)}
-                        {i < food.data.selectedDays.length - 1 ? "," : null}
-                      </h4>
-                    ))}
-                  </div>
-                </div>
-                <img
-                  className="rightArrow"
-                  src="/assets/right__arrow.png"
-                  alt=""
-                />
-              </div>
-            ))
-          ) : (
-            <h5 className="no-upcoming-food-text">
-              There are no assigned meals.
-            </h5>
-          )}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }

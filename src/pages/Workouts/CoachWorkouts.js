@@ -6,7 +6,7 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import { db } from "../../utils/firebase";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
-import { Grid } from "@material-ui/core"
+import { Grid } from "@material-ui/core";
 function CoachWorkouts() {
   const userData = useSelector(selectUserData);
   const [workouts, setWorkouts] = useState([]);
@@ -18,7 +18,7 @@ function CoachWorkouts() {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("saved", "==", false)
-        .where("selectedDates", "array-contains", formatDate())
+
         .limit(3)
         .onSnapshot((snapshot) => {
           setWorkouts(
@@ -47,47 +47,96 @@ function CoachWorkouts() {
   console.log({ workouts });
 
   return (
-    <div style={{minHeight: '99vh'}} className="workouts__home">
+    <div style={{ minHeight: "99vh" }} className="workouts__home">
       <div className="coachDashboard__leftContainer">
         <WorkoutScreenHeader name="Workouts" />
 
         <Grid container spacing={2} className="workouts__homeContainer">
           <Grid item xs={6} className="workouts__homeLeftContainer">
-            <div style={{width: '90%', paddingLeft: 10, display: 'flex', alignItems: 'center'}} className="workoutHeading__row">
+            <div
+              style={{
+                width: "90%",
+                paddingLeft: 10,
+                display: "flex",
+                alignItems: "center",
+              }}
+              className="workoutHeading__row"
+            >
               <h1>Assigned Workouts</h1>
-              <p style={{cursor: 'pointer'}} onClick={() => history.push("/view-all-workouts")}>
+              <p
+                style={{ cursor: "pointer" }}
+                onClick={() => history.push("/view-all-workouts")}
+              >
                 View All
               </p>
             </div>
-            <div style={{width: '90%'}} >
-            {workouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={workouts}
-                item={workout}
-                idx={i}
-                type="non-editable"
-              />
-             
-            ))}
+            <div style={{ width: "90%" }}>
+              {workouts.length > 0 ? (
+                workouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={workouts}
+                    item={workout}
+                    idx={i}
+                    type="non-editable"
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+                    width: "90%",
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+                    marginLeft: 10,
+                  }}
+                >
+                  <h5> There are no assigned workouts for now </h5>
+                </div>
+              )}
             </div>
           </Grid>
           <Grid item xs={6} className="workouts__homeRightContainer">
-            <div style={{width: '90%', display: 'flex', alignItems: 'center'}} className="workoutHeading__row">
+            <div
+              style={{ width: "90%", display: "flex", alignItems: "center" }}
+              className="workoutHeading__row"
+            >
               <h1>Saved Templates</h1>
-              <p style={{cursor: 'pointer'}} onClick={() => history.push("/view-all-saved-workouts")}>
+              <p
+                style={{ cursor: "pointer" }}
+                onClick={() => history.push("/view-all-saved-workouts")}
+              >
                 View All
               </p>
             </div>
-            <div style={{width: '90%'}} >
-            {savedWorkouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={savedWorkouts}
-                item={workout}
-                idx={i}
-              />
-            ))}
+            <div style={{ width: "90%" }}>
+              {workouts.length > 0 ? (
+                savedWorkouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={savedWorkouts}
+                    item={workout}
+                    idx={i}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+                    width: "90%",
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+                  }}
+                >
+                  <h5> There are no saved workouts for now </h5>
+                </div>
+              )}
             </div>
           </Grid>
         </Grid>

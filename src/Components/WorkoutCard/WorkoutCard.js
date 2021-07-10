@@ -135,6 +135,7 @@ function WorkoutCard({
               },
             });
           } else {
+            console.log("opening past workouts")
             history.push({
               pathname: "/post-workout",
               state: {

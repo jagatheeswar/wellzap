@@ -15,10 +15,10 @@ function ViewAllWorkouts() {
 
   React.useEffect(() => {
     if (userData) {
-      if (userType === "athlete") {
+      if (userType !== "coach") {
         db.collection("workouts")
           .where("assignedToId", "==", userData?.id)
-          .where("completed", "==", true)
+          .where("completed", "==", false)
           //.orderBy("date","desc")
           .onSnapshot((snapshot) => {
             setWorkouts(
@@ -66,7 +66,7 @@ function ViewAllWorkouts() {
   }, [userData?.id, athleteId]);
 
   return (
-    <div>
+    <div style={{minHeight: "99.7vh"}}>
       <WorkoutScreenHeader name="Upcoming Workouts" />
       <div
         style={{
@@ -116,19 +116,19 @@ function ViewAllWorkouts() {
               </div>
             ))
           ) : (
-            <h5
+            <div
               style={{
-                fontSize: "12px",
                 backgroundColor: "#fff",
                 width: "100%",
-                paddingTop: "10px",
-                paddingRight: "10px",
-                textAlign: "center",
+                height: 90,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: "center",
                 borderRadius: "5px",
               }}
             >
-              There are no workouts for now
-            </h5>
+              <h5>There are no workouts for now</h5>
+            </div>
           )}
         </div>
       </div>

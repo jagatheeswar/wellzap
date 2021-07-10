@@ -42,13 +42,23 @@
 .assignByCoach__Card {
   display: flex;
   align-items: center;
+  padding: 20px;
+  width: 90%;
+  height: 60px;
+  justify-content: space-between;
   background-color: white;
-  border-radius: 5px;
-  width: 100%;
-  margin: 8px 0;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.assignByCoach__Card > img {
+  object-fit: contain;
 }
 
 .assignByCoach__CardInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-right: 20px;
 }
 
@@ -67,6 +77,9 @@
   height: 20px;
   opacity: 0.8;
   object-fit: cover;
+}
+.athleteAddMeal {
+  min-height: 100vh;
 }
 
 .athleteAddMealfood__container {
@@ -255,4 +268,20 @@
   background-color: #fcd54a;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.assignByCoach__Card:hover {
+  cursor: pointer;
+}
+
+.weekGoalMain {
+  display: flex;
+  background-color: #fff;
+  width: 85%;
+  border-radius: 10px;
+  margin-top: 18px;
+  padding: 10px;
+}
+
+.weekGoalContainer {
 }

@@ -16,7 +16,8 @@ import { Chart } from "chart.js";
 import Graph3_ from "./Graph3";
 import { useParams } from "react-router";
 import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
-import {Grid} from '@material-ui/core'
+import {Grid, Typography} from '@material-ui/core'
+import NutritionWeekGoal from "../Nutrition/NutritionWeekGoal";
 const Reports = (props) => {
   const [chart_data, setchart_data] = useState({});
   const [chart_data2, setchart_data2] = useState({});
@@ -248,6 +249,7 @@ const Reports = (props) => {
           data: graph2Data,
           backgroundColor: "#fcd549",
           padding: 30,
+          borderRadius: 5,
         },
       ],
     };
@@ -362,7 +364,7 @@ const Reports = (props) => {
     },
   ];
   return (
-    <Grid container spacing={2} className="reports__container">
+    <Grid style={{marginLeft: props.showOthers === false ? 0 : 10}} container spacing={2} className="reports__container">
       <Grid item xs={6}>
         <h1 style={{fontSize: 19, fontWeight: "600"}}>Compliance</h1>
         {<Compliance_report Id={Id} height={200} />}
@@ -425,7 +427,7 @@ const Reports = (props) => {
             />
             <div
               className="chart_legend"
-              style={{ color: "#808080", fontSize: 17 }}
+              style={{ color: "#808080", fontSize: 14 }}
             >
               {formatDate2(currentStartWeek2)} - {formatDate2(currentEndWeek2)}
             </div>
@@ -457,10 +459,19 @@ const Reports = (props) => {
         </div>
         </div>
       </Grid>
-      {/* {<Graph3_ Id={Id} />}
-      <div className="chart_container" style={{ alignItems: "center" }}>
-        <NutritionGoalProgress />
-      </div> */}
+      {props.showOthers === false ? (<></>) : (
+        <>
+        <Grid item xs={6}>
+        <h1 style={{fontSize: 19, fontWeight: "600"}}>Body Stats</h1>
+          <Graph3_ Id={Id} />
+        </Grid>
+      <Grid item xs={6}>
+        {/* <NutritionGoalProgress /> */}
+        <h1 style={{fontSize: 19, fontWeight: "600"}}>Average Macronutrients consumed</h1>
+        <NutritionWeekGoal />
+      </Grid>
+      </>
+      )}
     </Grid>
   );
 };

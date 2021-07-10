@@ -61,7 +61,7 @@ function AthleteProfile() {
     <div className="athleteProfile">
       <div className="athleteProfile__container">
         <div className="athleteProfile__leftContainer">
-          <Header />
+          <Header athlete={userData?.data.name} />
           <AthleteProfileForm />
           <AthleteAssessments />
         </div>

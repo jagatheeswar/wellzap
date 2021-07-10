@@ -11,12 +11,13 @@ function ViewAllNutrition() {
   const [nutrition, setNutrition] = React.useState([]);
   const [type, setType] = React.useState("");
   const [athleteId, setAthleteId] = React.useState("");
+  const [assignedMealplans, setassignedMealplans] = React.useState(null);
 
   React.useEffect(() => {
     if (userData) {
       if (userType === "athlete") {
         db.collection("Food")
-          .where("assignedTo_id", "==", userData)
+          .where("assignedTo_id", "==", userData?.id)
           .where("saved", "==", false)
           .onSnapshot((snapshot) => {
             if (snapshot) {
@@ -63,8 +64,24 @@ function ViewAllNutrition() {
     }
   }, [userData?.id, athleteId]);
 
+  React.useEffect(async () => {
+    let data = {};
+    var data1 = [];
+    if (nutrition) {
+      nutrition.forEach((item) => {
+        item.data.selectedDays.forEach((val) => {
+          let temp = [];
+          temp = { ...item };
+          temp["currentdate"] = val;
+          data1.push(temp);
+        });
+      });
+    }
+    setassignedMealplans(data1);
+  }, [nutrition]);
+
   return (
-    <div>
+    <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Assigned Meal Plans" />
       <div
         style={{
@@ -89,8 +106,9 @@ function ViewAllNutrition() {
             alignItems: "center",
           }}
         >
-          {nutrition.length > 0 ? (
-            nutrition?.map((food, idx) => (
+          {console.log(nutrition)}
+          {assignedMealplans?.length > 0 ? (
+            assignedMealplans?.map((food, idx) => (
               <NutritionCard
                 key={idx}
                 nutrition={nutrition}
@@ -98,22 +116,30 @@ function ViewAllNutrition() {
                 idx={idx}
                 navigation={"ViewAllNutrition"}
                 type="view"
+                selectedDate={food.currentdate}
               />
             ))
           ) : (
-            <h5
+            <div
               style={{
-                fontSize: "12px",
                 backgroundColor: "#fff",
                 width: "100%",
-                paddingTop: "10px",
-                paddingRight: "10px",
-                textAlign: "center",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 borderRadius: "5px",
               }}
             >
-              There are no nutrition for now
-            </h5>
+              <h5
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "normal",
+                }}
+              >
+                There are no nutrition for now
+              </h5>
+            </div>
           )}
         </div>
       </div>

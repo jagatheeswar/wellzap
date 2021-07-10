@@ -170,12 +170,14 @@ function CreateNutrition(props) {
   const [nutrition, setNutrition] = useState(null);
   const [athletes, setAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
+  const [selectedAthletes1, setSelectedAthletes1] = useState([]);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
   const [show_data, setshow_data] = useState([]);
   const [options, setoptions] = useState(null);
   const [addFood, setAddFood] = useState(false);
   const [serverData, setServerData] = useState([]);
+  const [athlete_selecteddays, setathlete_selecteddays] = useState({});
   const [daysList, setDaysList] = useState([
     "Sun",
     "Mon",
@@ -217,7 +219,6 @@ function CreateNutrition(props) {
 
   useEffect(() => {
     if (location.state.nutrition) {
-      console.log(location.state.nutrition.data.selectedAthletes);
       if (location.state.type === "update") {
         setType(location.state.type);
         setNutrition(location.state.nutrition.data.nutrition);
@@ -239,23 +240,26 @@ function CreateNutrition(props) {
         setNutritionId(location.state.nutrition.id);
         setEntireFood(location.state.nutrition.data.nutrition.entireFood);
         setAddFood(
-          location.state.nutrition.data?.nutrition?.entireFood[0]?.addFood
+          location.state?.nutrition?.data?.nutrition?.entireFood[0]?.addFood
         );
         setNutritionName(
           location?.state?.nutrition?.data?.nutrition?.nutritionName
         );
       } else if (location.state.type === "view") {
-        setType(location.state.type);
-        setNutrition(location.state.nutrition.data.nutrition);
-        setNutritionId(location.state.nutrition.id);
-        setEntireFood(location.state.nutrition.data.nutrition.entireFood);
-        setAddFood(
-          location.state.nutrition.data?.nutrition?.entireFood[0]?.addFood
-        );
-        setNutritionName(
-          location?.state?.nutrition?.data?.nutrition?.nutritionName
-        );
-        setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+        if (location.state.nutrition?.data?.nutrition?.entireFood) {
+          setType(location.state.type);
+          setNutrition(location.state.nutrition.data.nutrition);
+          setNutritionId(location.state.nutrition.id);
+          setEntireFood(location.state.nutrition?.data?.nutrition?.entireFood);
+          setAddFood(
+            location.state?.nutrition.data?.nutrition?.entireFood[0]?.addFood
+          );
+          setNutritionName(
+            location?.state?.nutrition?.data?.nutrition?.nutritionName
+          );
+          setSelectedAthletes(location.state.nutrition.data.selectedAthletes);
+        }
+        console.log(location.state.nutrition);
       } else {
         setNutritionName(location.state.nutrition.nutritionName);
         setEntireFood(location.state.nutrition.entireFood);
@@ -271,7 +275,6 @@ function CreateNutrition(props) {
       setNutritionName(props.selectedDayData.nutrition.nutritionName);
       setEntireFood(props.selectedDayData.nutrition.entireFood);
       setAddFood(props.selectedDayData.nutrition.entireFood[0]?.addFood);
-      console.log(props.selectedDayData);
     }
   }, [props.isLongTerm]);
 
@@ -295,14 +298,35 @@ function CreateNutrition(props) {
       //   temp.push(selectedAthletes[0]);
       //   setshow_data(temp);
       // }
-      selectedAthletes.forEach((item) => {
-        item.value = item["id"];
-        temp.push(item);
-        if (temp.length == selectedAthletes.length) {
-          setoptions(temp);
-        }
-      });
+      if (userType == "athlete") {
+        selectedAthletes.forEach((item) => {
+          if (item.id == userData?.id) {
+            let temp = [];
+            temp.push(item);
+            setshow_data(temp);
+          }
+        });
+      } else {
+        selectedAthletes.forEach((item) => {
+          item.value = item["id"];
+          temp.push(item);
+          if (temp.length == selectedAthletes.length) {
+            setoptions(temp);
+          }
+        });
+      }
     }
+  }, [selectedAthletes, userData, userType]);
+
+  useEffect(() => {
+    console.log(athlete_selecteddays);
+    let temp = [...selectedAthletes];
+    selectedAthletes.map((athlete, idx) => {
+      if (athlete_selecteddays[athlete.id]) {
+        temp[idx].selectedDays = athlete_selecteddays[athlete.id];
+      }
+      setSelectedAthletes1(temp);
+    });
   }, [selectedAthletes]);
 
   useEffect(() => {
@@ -342,7 +366,7 @@ function CreateNutrition(props) {
   }, [currentStartWeek]);
 
   useEffect(() => {
-    if (userData?.id) {
+    if (userData?.id && userType == "coach") {
       const data = [];
       db.collection("athletes")
         .orderBy("name", "asc")
@@ -358,118 +382,75 @@ function CreateNutrition(props) {
           setAthletes(data);
         });
     }
-  }, [userData?.id]);
+  }, [userData?.id, userType]);
 
   return (
     <div className="createNutrition">
       <NutritionScreenHeader name="Create Nutrition" />
       <img src="/assets/nutrition.jpeg" alt="" />
-      <div className="createNutrition__input">
+      <div
+        className="createNutrition__input"
+        style={{
+          padding: 20,
+        }}
+      >
         <h4>Nutrition Plan Name</h4>
         <input
           type="text"
           placeholder="Enter Nutrition Plan Name"
           value={nutritionName}
+          readOnly={type === "view" ? true : false}
           onChange={(e) => {
             setNutritionName(e.target.value);
           }}
         />
       </div>
+      {type !== "view" ? (
+        <div>
+          <div {...getRootProps()}>
+            <Label {...getInputLabelProps()}>Search for Athletes</Label>
+            <InputWrapper
+              ref={setAnchorEl}
+              className={focused ? "focused" : ""}
+            >
+              {value.map((option, index) => (
+                <Tag label={option.name} {...getTagProps({ index })} />
+              ))}
 
-      <div
-        style={{
-          padding: "20px",
-        }}
-      >
-        {" "}
-        <div className="assignWorkout__athletesList">
-          <h4>Selected Athletes</h4>
-          <input
-            style={{
-              width: "100%",
-              padding: 12,
-              marginBottom: 10,
-              boxSizing: "border-box",
-              border: "none",
-            }}
-            placeholder={
-              selectedAthletes?.length == 0 ? "no athletes selected" : ""
-            }
-            value={
-              show_data.length > 0 ? show_data[0]?.name : "No athletes selected"
-            }
-          />
-          <div
-            className="selectedAthletes_list"
-            style={{
-              height:
-                `${selectedAthletes?.length}` > 4
-                  ? 260
-                  : `${selectedAthletes?.length}` * 65,
-              overflow: "scroll",
-              overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
-              backgroundColor: "white",
-              overflowX: "hidden",
-            }}
-          >
-            {selectedAthletes?.map((athlete, idx) => (
-              <div
-                onClick={() => {
-                  let temp = [];
-                  if (show_data[0]?.id == athlete.id) {
-                    setshow_data([]);
-                  } else {
-                    temp.push(athlete);
-                    setshow_data(temp);
-                    console.log(athlete.name, show_data);
-                  }
-                }}
-                style={{
-                  backgroundColor:
-                    athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
-                }}
-                className="selectedAthletes_item"
-              >
-                <div
-                  style={{ display: "flex", alignItems: "center", padding: 10 }}
-                >
-                  <img
-                    style={{ borderRadius: 18 }}
-                    src={athlete.imageUrl}
-                    alt=""
-                    width="36"
-                    height="36"
-                  />
-                  <span style={{ marginLeft: 15 }}>{athlete.name}</span>
-                </div>
-              </div>
-            ))}
+              <input {...getInputProps()} />
+            </InputWrapper>
           </div>
-
+          {groupedOptions.length > 0 ? (
+            <Listbox {...getListboxProps()}>
+              {groupedOptions.map((option, index) => (
+                <li {...getOptionProps({ option, index })}>
+                  <span>{option.name}</span>
+                  <CheckIcon fontSize="small" />
+                </li>
+              ))}
+            </Listbox>
+          ) : null}
           <div>
-            {show_data?.map((athlete, index) => (
+            {selectedAthletes1?.map((athlete, index) => (
               <div
                 key={index}
                 style={{
-                  //  marginLeft: "4%",
-                  marginTop: 20,
+                  marginLeft: "4%",
+                  marginTop: "25px",
                   display: "flex",
                   justifyContent: "center",
                   flexDirection: "column",
-                  alignItems: "center",
-
-                  backgroundColor: "white",
-                  borderRadius: 10,
-                  //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
+                  alignItems: "flex-start",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    // backgroundColor: "#fcd54a",
+                    backgroundColor: "#fcd54a",
                     borderRadius: "10px",
                     height: "45px",
+                    width: "350px",
                   }}
                 >
                   <img
@@ -488,32 +469,31 @@ function CreateNutrition(props) {
                       fontWeight: "600",
                       lineHeight: "28px",
                       color: "black",
+                      marginLeft: "15%",
                     }}
                   >
                     {athlete.name}
                   </h2>
                 </div>
-                {type != "view" && type != "non-editable" && (
-                  <h2
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "600",
-                      marginTop: "10px",
-                      lineHeight: "28px",
-                      marginLeft: "1%",
-                    }}
-                  >
-                    Select days
-                  </h2>
-                )}
+                <h2
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: "600",
+                    marginTop: "10px",
+                    lineHeight: "28px",
+                    marginLeft: "1%",
+                  }}
+                >
+                  Select days
+                </h2>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "flex-start",
                     flexWrap: "wrap",
                     marginBottom: "10px",
-                    width: "45%",
+                    width: "300px",
                   }}
                 >
                   <div
@@ -522,7 +502,7 @@ function CreateNutrition(props) {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      width: "50%",
+                      width: "300px",
                     }}
                   >
                     <IconButton
@@ -554,7 +534,8 @@ function CreateNutrition(props) {
                       <div
                         key={idx}
                         onClick={() => {
-                          if (type !== "view" && type !== "non-editable") {
+                          console.log(day);
+                          if (type !== "view") {
                             if (
                               athlete?.selectedDays?.includes(
                                 specificDates[idx]
@@ -585,6 +566,11 @@ function CreateNutrition(props) {
                                     specificDates[idx],
                                   ],
                                 };
+                                let temp = athlete_selecteddays;
+                                temp[selectedAthletes[index].id] =
+                                  selectedAthletes[index].selectedDays;
+
+                                setathlete_selecteddays(temp);
                                 setSelectedAthletes([...selectedAthletes]);
                               }
                             }
@@ -677,14 +663,14 @@ function CreateNutrition(props) {
                       alignItems: "center",
                       width: "100%",
                       height: "25px",
-                      marginLeft: "45px",
+                      marginLeft: "35px",
                       cursor: "pointer",
                     }}
                   >
                     {specificDates?.map((tempDate, idx) => (
                       <div
                         style={{
-                          width: "43px",
+                          width: "45px",
                           height: "30px",
                         }}
                         key={idx}
@@ -711,7 +697,356 @@ function CreateNutrition(props) {
             ))}
           </div>
         </div>
-      </div>
+      ) : (
+        <div
+          style={{
+            padding: "20px",
+          }}
+        >
+          {" "}
+          <div className="assignWorkout__athletesList">
+            <h4>Selected Athletes</h4>
+            <input
+              style={{
+                width: "100%",
+                padding: 12,
+                marginBottom: 10,
+                boxSizing: "border-box",
+                border: "none",
+              }}
+              placeholder={
+                selectedAthletes?.length == 0 ? "no athletes selected" : ""
+              }
+              value={
+                show_data.length > 0
+                  ? show_data[0]?.name
+                  : "No athletes selected"
+              }
+              readOnly={type === "view" ? true : false}
+            />
+            {userType == "athlete" ? null : (
+              <div
+                className="selectedAthletes_list"
+                style={{
+                  height:
+                    `${selectedAthletes?.length}` > 4
+                      ? 260
+                      : `${selectedAthletes?.length}` * 65,
+                  overflow: "scroll",
+                  overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
+                  backgroundColor: "white",
+                  overflowX: "hidden",
+                }}
+              >
+                {selectedAthletes?.map((athlete, idx) => (
+                  <div
+                    onClick={() => {
+                      let temp = [];
+                      if (show_data[0]?.id == athlete.id) {
+                        setshow_data([]);
+                      } else {
+                        temp.push(athlete);
+                        setshow_data(temp);
+                      }
+                    }}
+                    style={{
+                      backgroundColor:
+                        athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
+                    }}
+                    className="selectedAthletes_item"
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: 10,
+                      }}
+                    >
+                      <img
+                        style={{ borderRadius: 18 }}
+                        src={athlete.imageUrl}
+                        alt=""
+                        width="36"
+                        height="36"
+                      />
+                      <span style={{ marginLeft: 15 }}>{athlete.name}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div>
+              {show_data?.map((athlete, index) => (
+                <div
+                  key={index}
+                  style={{
+                    //  marginLeft: "4%",
+                    marginTop: 20,
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    alignItems: "center",
+
+                    backgroundColor: "white",
+                    borderRadius: 10,
+                    //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      // backgroundColor: "#fcd54a",
+                      borderRadius: "10px",
+                      height: "45px",
+                    }}
+                  >
+                    <img
+                      style={{
+                        width: "35px",
+                        height: "35px",
+                        borderRadius: "10px",
+                        marginLeft: "20px",
+                        marginRight: "20px",
+                      }}
+                      src={athlete.imageUrl ? athlete.imageUrl : null}
+                    />
+                    <h2
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: "600",
+                        lineHeight: "28px",
+                        color: "black",
+                      }}
+                    >
+                      {athlete.name}
+                    </h2>
+                  </div>
+                  {type != "view" && type != "non-editable" && (
+                    <h2
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: "600",
+                        marginTop: "10px",
+                        lineHeight: "28px",
+                        marginLeft: "1%",
+                      }}
+                    >
+                      Select days
+                    </h2>
+                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                      marginBottom: "10px",
+                      width: "45%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        marginLeft: "3%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "50%",
+                      }}
+                    >
+                      <IconButton
+                        style={{
+                          marginRight: "10px",
+                          marginLeft: "25%",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onClick={() => {
+                          var curr = new Date(currentStartWeek); // get current date
+                          var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
+
+                          var firstday = new Date(
+                            curr.setDate(first)
+                          ).toUTCString();
+                          var lastday = new Date(
+                            curr.setDate(curr.getDate() + 6)
+                          ).toUTCString();
+                          if (new Date(currentStartWeek) > new Date()) {
+                            setCurrentStartWeek(formatSpecificDate(firstday));
+                            setCurrentEndWeek(formatSpecificDate(lastday));
+                          }
+                        }}
+                      >
+                        <ChevronLeftIcon />
+                      </IconButton>
+                      {daysList.map((day, idx) => (
+                        <div
+                          key={idx}
+                          onClick={() => {
+                            if (type !== "view" && type !== "non-editable") {
+                              console.log(day);
+                              if (
+                                athlete?.selectedDays?.includes(
+                                  specificDates[idx]
+                                )
+                              ) {
+                                let selected =
+                                  selectedAthletes[index].selectedDays;
+                                var index1 = selected.indexOf(
+                                  specificDates[idx]
+                                );
+                                if (index1 !== -1) {
+                                  selected.splice(index1, 1);
+                                  selectedAthletes[index] = {
+                                    ...selectedAthletes[index],
+                                    selected,
+                                  };
+                                  setSelectedAthletes([...selectedAthletes]);
+                                }
+                              } else {
+                                if (
+                                  new Date(specificDates[idx]) > new Date() ||
+                                  specificDates[idx] === formatDate()
+                                ) {
+                                  let selectedDays =
+                                    selectedAthletes[index].selectedDays;
+                                  selectedAthletes[index] = {
+                                    ...selectedAthletes[index],
+                                    selectedDays: [
+                                      ...selectedDays,
+                                      specificDates[idx],
+                                    ],
+                                  };
+                                  setSelectedAthletes([...selectedAthletes]);
+                                }
+                              }
+                            }
+                          }}
+                          style={
+                            athlete?.selectedDays?.includes(specificDates[idx])
+                              ? {
+                                  backgroundColor: "#fcd54a",
+                                  color: "#fff",
+                                  width: "85px",
+                                  height: "25px",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  position: "relative",
+                                  borderRadius: "8px",
+                                  marginRight: "2px",
+                                  marginBottom: "5px",
+                                  padding: "5px",
+                                  cursor: "pointer",
+                                }
+                              : {
+                                  width: "85px",
+                                  height: "25px",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  position: "relative",
+                                  borderRadius: "8px",
+                                  marginRight: "2px",
+                                  marginBottom: "5px",
+                                  padding: "5px",
+                                  cursor: "pointer",
+                                }
+                          }
+                        >
+                          <div>
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "600",
+                                lineHeight: "20px",
+                                width: "80%",
+                                textAlign: "center",
+                                padding: "5px",
+                                color: athlete?.selectedDays?.includes(
+                                  specificDates[idx]
+                                )
+                                  ? "black"
+                                  : "black",
+                              }}
+                            >
+                              {day}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <IconButton
+                        style={{
+                          marginLeft: "10%",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onClick={() => {
+                          var curr = new Date(currentStartWeek); // get current date
+                          var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
+
+                          var firstday = new Date(
+                            curr.setDate(first)
+                          ).toUTCString();
+                          var lastday = new Date(
+                            curr.setDate(curr.getDate() + 6)
+                          ).toUTCString();
+
+                          setCurrentStartWeek(formatSpecificDate(firstday));
+                          setCurrentEndWeek(formatSpecificDate(lastday));
+                        }}
+                      >
+                        <ChevronRightIcon />
+                      </IconButton>
+                    </div>
+
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        fontWeight: "500",
+                        lineHeight: "18px",
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        alignItems: "center",
+                        width: "100%",
+                        height: "25px",
+                        marginLeft: "45px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {specificDates?.map((tempDate, idx) => (
+                        <div
+                          style={{
+                            width: "43px",
+                            height: "30px",
+                          }}
+                          key={idx}
+                        >
+                          <div
+                            style={{
+                              fontSize: "10px",
+                              fontWeight: "500",
+                              lineHeight: "18px",
+                              width: "100%",
+                              paddingLeft: "5px",
+                              paddingRight: "5px",
+                              paddingBottom: "5px",
+                              textAlign: "center",
+                            }}
+                          >
+                            {formatSpecificDate1(tempDate)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* <div>
         <div {...getRootProps()}>
           <Label {...getInputLabelProps()}>Search for Athletes</Label>
@@ -1009,6 +1344,7 @@ function CreateNutrition(props) {
                     temp[idx].meal = e.target.value;
                     setEntireFood(temp);
                   }}
+                  readOnly={type === "view" ? true : false}
                 >
                   <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
                   <MenuItem value={"Lunch"}>Lunch</MenuItem>
@@ -1066,6 +1402,7 @@ function CreateNutrition(props) {
                     type="text"
                     placeholder="Enter Meal Description"
                     value={item.description}
+                    readOnly={type === "view" ? true : false}
                     onChange={(e) => {
                       let temp = [...entireFood];
                       temp[idx].description = e.target.value;
@@ -1116,7 +1453,6 @@ function CreateNutrition(props) {
                       history.push("/post-add-screen");
                     }
                   } else {
-                    console.log("works");
                     let tempDate1 = [];
                     selectedAthletes.map((athlete) => {
                       athlete.selectedDays.map((d) => {

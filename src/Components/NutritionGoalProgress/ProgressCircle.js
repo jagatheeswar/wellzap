@@ -25,6 +25,9 @@ function ProgressCircle({ progress }) {
         value={100}
         size={100}
         thickness={6}
+        colorPrimary="black"
+        value={progress * 100}
+        progressColor={"red"}
       />
     </div>
   );
