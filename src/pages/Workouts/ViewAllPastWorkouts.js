@@ -65,25 +65,25 @@ function PastWorkouts() {
 
   React.useEffect(() => {
     if (userData) {
-      db.collection("workouts")
-        .where("assignedToId", "==", userData?.id)
-        //.where("date", "==", formatDate())
-        .where("completed", "==", false)
-        // .limit(4)
-        .onSnapshot((snapshot) => {
-          setWorkouts(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              data: doc.data(),
-            }))
-          );
-        });
+      // db.collection("workouts")
+      //   .where("assignedToId", "==", userData?.id)
+      //   .orderBy("timestamp", sorting)
+      //   .where("completed", "==", false)
+      //   // .limit(4)
+      //   .onSnapshot((snapshot) => {
+      //     setWorkouts(
+      //       snapshot.docs.map((doc) => ({
+      //         id: doc.id,
+      //         data: doc.data(),
+      //       }))
+      //     );
+      //   });
 
       db.collection("workouts")
         .where("assignedToId", "==", userData?.id)
         .where("completed", "==", true)
         // .limit(4)
-        .orderBy("date", sorting)
+        .orderBy("timestamp", sorting)
         .onSnapshot((snapshot) => {
           setPastWorkouts(
             snapshot.docs.map((doc) => ({
@@ -93,7 +93,7 @@ function PastWorkouts() {
           );
         });
     }
-  }, [userData?.id]);
+  }, [userData?.id, sorting]);
 
   const options = [
     { value: "asc", label: "Recent" },

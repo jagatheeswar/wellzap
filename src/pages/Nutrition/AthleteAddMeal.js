@@ -147,12 +147,9 @@ function AthleteAddMeal() {
                 .set(
                   {
                     entireFood,
-<<<<<<< HEAD
                     date: new Date(foodId ? foodId : formatDate()),
-=======
-                    date: new Date(foodId),
-                    timestamp:firebase.firestore.FieldValue.serverTimestamp(),
->>>>>>> 7702d3b647b8ca8f8a722eb3ab6f2ad9aa7ac35a
+
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                   },
 
                   { merge: true }

@@ -47,7 +47,7 @@ function ViewAllNutrition() {
             .where("from_id", "==", userData?.id)
             .where("assignedTo_id", "==", athleteId)
             .where("saved", "==", false)
-            // .orderBy("date", sorting)
+            .orderBy("timestamp", sorting)
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 setNutrition(
@@ -62,7 +62,7 @@ function ViewAllNutrition() {
           db.collection("Food")
             .where("from_id", "==", userData?.id)
             .where("saved", "==", false)
-            // .orderBy("date", sorting)
+            // .orderBy("timestamp", sorting)
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 setNutrition(

@@ -57,7 +57,7 @@ function ViewAllWorkouts() {
         db.collection("workouts")
           .where("assignedToId", "==", userData?.id)
           .where("completed", "==", false)
-          // .orderBy("date", sorting)
+          .orderBy("timestamp", sorting)
           .onSnapshot((snapshot) => {
             setWorkouts(
               snapshot.docs.map((doc) => ({
@@ -72,7 +72,7 @@ function ViewAllWorkouts() {
             .where("assignedToId", "==", athleteId)
             .where("saved", "==", false)
             .where("completed", "==", completed)
-            // .orderBy("date", sorting)
+            .orderBy("timestamp", sorting)
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 console.log("Inside snapshot");
@@ -91,7 +91,7 @@ function ViewAllWorkouts() {
           db.collection("CoachWorkouts")
             .where("assignedById", "==", userData?.id)
             .where("saved", "==", false)
-            //.orderBy("date", sorting)
+            .orderBy("timestamp", sorting)
             .onSnapshot((snapshot) => {
               setWorkouts(
                 snapshot.docs.map((doc) => ({

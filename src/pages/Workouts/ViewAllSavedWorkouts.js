@@ -11,7 +11,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
-function ViewAllSavedWorkouts() {
+function ViewAllSavedWorkouts(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
@@ -63,17 +63,17 @@ function ViewAllSavedWorkouts() {
               }
             });
         } else {
-          db.collection("CoachWorkouts")
-            .where("assignedById", "==", userData?.id)
-            .where("saved", "==", false)
-            .onSnapshot((snapshot) => {
-              setWorkouts(
-                snapshot.docs.map((doc) => ({
-                  id: doc.id,
-                  data: doc.data(),
-                }))
-              );
-            });
+          // db.collection("CoachWorkouts")
+          //   .where("assignedById", "==", userData?.id)
+          //   .where("saved", "==", false)
+          //   .onSnapshot((snapshot) => {
+          //     setWorkouts(
+          //       snapshot.docs.map((doc) => ({
+          //         id: doc.id,
+          //         data: doc.data(),
+          //       }))
+          //     );
+          //   });
         }
       }
     }
@@ -83,6 +83,7 @@ function ViewAllSavedWorkouts() {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
+        .orderBy("timestamp", sorting)
         .onSnapshot((snapshot) => {
           setWorkouts(
             snapshot.docs.map((doc) => ({
@@ -92,7 +93,7 @@ function ViewAllSavedWorkouts() {
           );
         });
     }
-  }, [userData?.id]);
+  }, [userData?.id, sorting]);
 
   React.useEffect(() => {
     setSearchList(workouts);
