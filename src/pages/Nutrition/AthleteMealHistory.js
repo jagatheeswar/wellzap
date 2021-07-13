@@ -6,10 +6,13 @@ import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import NutritionScreenHeader from "./NutritionScreenHeader";
 import "./AthleteNutrition.css";
 import AthleteNutritionCard from "../../Components/NutritionCard/AthleteNutritionCard";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 
 function AthleteMealHistory() {
   const userData = useSelector(selectUserData);
   const [mealHistory, setMealHistory] = React.useState([]);
+  const [sorting, setsorting] = React.useState("desc");
 
   React.useEffect(() => {
     let temp = [];
@@ -18,8 +21,7 @@ function AthleteMealHistory() {
       db.collection("AthleteNutrition")
         .doc(userData?.id)
         .collection("nutrition")
-        .orderBy("date", "desc")
-
+        .orderBy("date", sorting)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -48,11 +50,31 @@ function AthleteMealHistory() {
           setMealHistory(temp);
         });
     }
-  }, [userData?.id]);
+  }, [userData?.id, sorting]);
+  const options = [
+    { value: "asc", label: "Recent" },
+    { value: "desc", label: "old" },
+  ];
 
   return (
     <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Meal History" />
+
+      <div
+        style={{
+          width: 150,
+          marginLeft: "auto",
+        }}
+      >
+        <Dropdown
+          options={options}
+          placeholder="Order By"
+          onChange={(s) => {
+            setsorting(s.value);
+          }}
+        />
+      </div>
+
       <div style={{ width: "50%", marginLeft: 20 }}>
         {mealHistory.length > 0 ? (
           mealHistory?.map((food, idx) => (

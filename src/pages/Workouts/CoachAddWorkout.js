@@ -2479,7 +2479,7 @@ function CoachAddWorkout() {
 
       <Modal
         visible={modal}
-        width="80%"
+        width="450px"
         height="300"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
@@ -2528,6 +2528,7 @@ function CoachAddWorkout() {
                       assignedById: userData?.id,
                       assignedToId: "",
                       date: formatDate(),
+                      createdAt: new Date(),
                       preWorkout: {
                         workoutName,
                         workoutDescription,

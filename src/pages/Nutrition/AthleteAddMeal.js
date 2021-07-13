@@ -138,7 +138,7 @@ function AthleteAddMeal() {
             if (!save) {
               alert("Please select a meal");
             } else {
-              console.log("id", todaysFoodId);
+              console.log("id", entireFood);
               db.collection("AthleteNutrition")
                 .doc(userData?.id)
                 .collection("nutrition")
@@ -146,7 +146,7 @@ function AthleteAddMeal() {
                 .set(
                   {
                     entireFood,
-                    date: new Date(foodId),
+                    date: new Date(foodId ? foodId : formatDate()),
                   },
 
                   { merge: true }

@@ -5,9 +5,20 @@ import { db } from "../../utils/firebase";
 import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import NutritionScreenHeader from "./NutritionScreenHeader";
 
+import SearchIcon from "@material-ui/icons/Search";
+
+import ClearIcon from "@material-ui/icons/Clear";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
+
 function ViewAllSavedNutrition(props) {
   const userData = useSelector(selectUserData);
   const [nutrition, setNutrition] = React.useState([]);
+  const [search, setsearch] = React.useState("");
+  const [SearchList, setSearchList] = React.useState(null);
+  const [SearchLoading, SetSearhLoading] = React.useState(false);
+
+  const [sorting, setsorting] = React.useState("desc");
 
   React.useEffect(() => {
     if (userData) {
@@ -25,9 +36,114 @@ function ViewAllSavedNutrition(props) {
     }
   }, [userData?.id]);
 
+  React.useEffect(() => {
+    setSearchList(nutrition);
+    // console.log(assignedMealplans);
+  }, [nutrition]);
+
+  React.useEffect(async () => {
+    if (search?.length > 0) {
+      const names = await nutrition?.filter((workout) => {
+        return workout.data.nutrition.nutritionName
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      });
+
+      setSearchList(names);
+      SetSearhLoading(false);
+    } else {
+      setSearchList(nutrition);
+      SetSearhLoading(false);
+    }
+  }, [search, nutrition]);
+
+  const options = [
+    { value: "asc", label: "Recent" },
+    { value: "desc", label: "old" },
+  ];
+
   return (
-    <div style={{minHeight: "99.7vh"}}>
+    <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Saved Meal Plans" />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            margin: 20,
+            backgroundColor: "white",
+            padding: 5,
+            display: "flex",
+            alignItems: "center",
+            border: "1px solid black",
+            width: "500px",
+            borderRadius: 10,
+          }}
+        >
+          <input
+            value={search}
+            style={{
+              width: "100%",
+
+              fontSize: 20,
+              outline: "none",
+              border: "none",
+            }}
+            onChange={(e) => {
+              setsearch(e.target.value);
+            }}
+          />
+          {search?.length == 0 ? (
+            <SearchIcon
+              style={{
+                width: 30,
+                height: 30,
+              }}
+            />
+          ) : (
+            <div
+              onClick={() => {
+                setsearch("");
+              }}
+            >
+              <ClearIcon
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        <div
+          style={{
+            width: 150,
+            marginLeft: "auto",
+          }}
+        >
+          <Dropdown
+            options={options}
+            placeholder="Order By"
+            onChange={(s) => {
+              setsorting(s.value);
+            }}
+          />
+        </div>
+      </div>
+      {search.length > 0 && (
+        <div
+          style={{
+            fontSize: 13,
+            marginLeft: 20,
+          }}
+        >
+          {SearchList?.length} search results loaded
+        </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -51,8 +167,8 @@ function ViewAllSavedNutrition(props) {
             alignItems: "center",
           }}
         >
-          {nutrition.length > 0 ? (
-            nutrition?.map((food, idx) => (
+          {SearchList?.length > 0 ? (
+            SearchList?.map((food, idx) => (
               <NutritionCard
                 key={idx}
                 nutrition={nutrition}
