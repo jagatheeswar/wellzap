@@ -317,8 +317,7 @@ function CoachAddMeal(props) {
                       nutrition: {
                         nutritionName: nutritionName,
                         entireFood,
-                        timestamp:
-                          firebase.firestore.FieldValue.serverTimestamp(),
+                        timestamp:firebase.firestore.FieldValue.serverTimestamp(),
                       },
                     })
                     .then(() => {

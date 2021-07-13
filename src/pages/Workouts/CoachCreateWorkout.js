@@ -21,6 +21,7 @@ import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
 import { formatDate } from "../../functions/formatDate";
 import Switch from '@material-ui/core/Switch';
+import firebase from "firebase";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -664,6 +665,7 @@ function CoachCreateWorkout() {
                     assignedById: userData?.id,
                     assignedToId: "",
                     date: formatDate(),
+                    timestamp:firebase.firestore.FieldValue.serverTimestamp(),
                     preWorkout: {
                       workoutName,
                       workoutDescription,

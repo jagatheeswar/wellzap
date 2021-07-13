@@ -71,8 +71,7 @@ function NutritionScreenHeader({ name, entireFood, todaysFoodId }) {
             />
             <h5>ADD MEAL</h5>
           </div>
-        </>
-      )}
+        </>)}
     </div>
   );
 }

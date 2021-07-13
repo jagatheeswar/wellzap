@@ -34,6 +34,7 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -163,7 +164,8 @@ const Label = styled("label")`
   margin-top: 20px;
 `;
 
-function AssignWorkout() {
+
+function AssignWorkout(props) {
   const location = useLocation();
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -246,7 +248,7 @@ function AssignWorkout() {
 
   useEffect(() => {
     objs?.map((item, idx) => {
-      item.name = item.workoutName;
+      item.name = item?.workoutName;
     });
     setExercises(objs);
   }, [objs]);
@@ -280,26 +282,25 @@ function AssignWorkout() {
   }, [location.state?.athlete_id]);
 
   useEffect(() => {
-    console.log(location.state.workout);
-    if (location.state.workout) {
-      setWorkout(location.state.workout);
+    if (location.state?.workout) {
+      setWorkout(location.state?.workout);
       setworkoutDifficulty(
-        location.state.workout?.data?.preWorkout?.workoutDifficulty
+        location.state?.workout?.data?.preWorkout?.workoutDifficulty
       );
 
       setworkoutDescription(
-        location.state.workout?.data?.preWorkout?.workoutDescription
+        location.state?.workout?.data?.preWorkout?.workoutDescription
       );
 
       setcaloriesBurnEstimate(
-        location.state.workout?.data?.preWorkout?.caloriesBurnEstimate
+        location.state?.workout?.data?.preWorkout?.caloriesBurnEstimate
       );
 
       setworkoutDuration(
-        location.state.workout?.data?.preWorkout?.workoutDuration
+        location.state?.workout?.data?.preWorkout?.workoutDuration
       );
       setSelectedExercises(
-        location.state.workout?.data?.preWorkout?.selectedExercises
+        location.state?.workout?.data?.preWorkout?.selectedExercises
       );
 
       if (location.state?.workout?.data?.selectedAthletes) {
@@ -309,6 +310,32 @@ function AssignWorkout() {
       }
     }
   }, [location]);
+
+  useEffect(()=>{
+    if(props?.isLongTerm){
+      setWorkout({data:props.selectedDayData})
+      setworkoutDifficulty(props.selectedDayData.preWorkout.workoutDifficulty)
+      setworkoutDescription(
+        props.selectedDayData.preWorkout?.workoutDescription
+      );
+
+      setcaloriesBurnEstimate(
+        props.selectedDayData.preWorkout?.caloriesBurnEstimate
+      );
+
+      setworkoutDuration(
+        props.selectedDayData.preWorkout?.workoutDuration
+      );
+      setSelectedExercises(
+        props.selectedDayData.preWorkout?.selectedExercises
+      );
+      if (
+        props.selectedDayData.selectedAthletes  ) {
+        setSelectedAthletes(props.selectedDayData?.selectedAthletes);
+      }
+      console.log(props.selectedDayData)
+    }
+  },[props?.isLongTerm])
 
   useEffect(() => {
     if (group && workout) {
@@ -374,7 +401,7 @@ function AssignWorkout() {
       setCurrentStartWeek(formatSpecificDate(firstday));
       setCurrentEndWeek(formatSpecificDate(lastday));
     }
-  }, [type, location.state.workout]);
+  }, [type, location.state?.workout]);
 
   useEffect(() => {
     if (currentStartWeek) {
@@ -498,7 +525,7 @@ function AssignWorkout() {
                 value={caloriesBurnEstimate}
                 disabled={type == "non-editable" || type == "view"}
                 onChange={(val) => {
-                  //console.log(workout.data.preWorkout.workoutDuration);
+                  //console.log(workout.data.preWorkout?.workoutDuration);
                   let temp = workout;
                   setcaloriesBurnEstimate(val.target.value);
                   temp.data.preWorkout.caloriesBurnEstimate =
@@ -555,6 +582,7 @@ function AssignWorkout() {
                 </div>
               </div>
             </div>
+            {props.isLongTerm ? null :
             <div
               className="createWorkout__completeWorkoutButton"
               onClick={() => {
@@ -663,7 +691,7 @@ function AssignWorkout() {
                 : type === "non-editable"
                 ? "Return"
                 : "Save Changes and Exit"}
-            </div>
+            </div>}
           </div>
         </div>
 
@@ -1317,30 +1345,34 @@ function AssignWorkout() {
         {console.log("ss", selectedAthletes)}
 
         <div className="createWorkout__exercises">
-          {userType == "athlete" || type == "non-editable" ? null : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginRight: 20,
-              }}
-            >
-              <h3 className="createWorkout__inputLabel">Exercises</h3>
-            </div>
-          )}
+        {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
+        <div style={{display:"flex",justifyContent:"space-between",marginRight:20}}>
+        <h3 className="createWorkout__inputLabel">Exercises</h3>
+          <div style={{display:"flex",alignItems:"center"}}>
+            <p style={{margin:0}}>Weights</p>
+            <Switch
+            checked={cardio}
+            onChange={(event)=>{
+              setCardio(!cardio)
+            }}
+            value={cardio}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+            <p style={{margin:0}}>Cardio</p>
+          </div>
+        </div>}
           <div>
             <div>
-              {userType == "athlete" || type == "non-editable" ? null : (
-                <div style={{ width: "100%" }}>
-                  <SearchableDropdown
-                    name="Search for Exercise"
-                    list={cardio ? cardioExercise : exercises}
-                    state={selectedExercises}
-                    setState={setSelectedExercises}
-                    cardio={cardio}
-                  />
-                </div>
-              )}
+            {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
+              <div style={{ width: "100%" }}>
+              <SearchableDropdown
+                name="Search for Exercise"
+                list={cardio ?cardioExercise : exercises}
+                state={selectedExercises}
+                setState={setSelectedExercises}
+                cardio={cardio}
+              />
+              </div>}
 
               <div className="excercise__container">
                 <div className="yellow"></div>

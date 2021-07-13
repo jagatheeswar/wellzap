@@ -79,7 +79,7 @@ function ViewAllSavedWorkouts() {
     }
   }, [userData?.id, athleteId]);
   useEffect(() => {
-    if (userData?.userType == "coach") {
+    if (userType == "coach") {
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
@@ -253,6 +253,12 @@ function ViewAllSavedWorkouts() {
                   item={item}
                   idx={idx}
                   navigation={"ViewAllSavedWorkouts"}
+                  isLongTerm={props?.isLongTerm}
+                  handleCloseworkout={props?.handleCloseworkout}
+                  setWeeks={props?.setWeeks}
+                  weeks={props?.weeks}
+                  selectedWeekNum={props?.selectedWeekNum}
+                  selectedDay={props?.selectedDay}
                 />
               </div>
             ))

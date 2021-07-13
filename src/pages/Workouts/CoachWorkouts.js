@@ -113,7 +113,7 @@ function CoachWorkouts() {
               </p>
             </div>
             <div style={{ width: "90%" }}>
-              {workouts.length > 0 ? (
+              {savedWorkouts.length > 0 ? (
                 savedWorkouts?.map((workout, i) => (
                   <WorkoutCard
                     key={workout.id}
