@@ -21,7 +21,14 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import MoodBadIcon from "@material-ui/icons/MoodBad";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Slide, DialogContentText } from "@material-ui/core";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slide,
+  DialogContentText,
+} from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -82,7 +89,7 @@ export default function PostWorkoutDetails() {
     return [year, month, day].join("-");
   }
   useEffect(() => {
-    console.log(location?.state?.workout);
+    console.log(location?.state?.workout.data);
     if (location.state?.workout) {
       setGroup([
         {
@@ -93,7 +100,6 @@ export default function PostWorkoutDetails() {
       setPostWorkout(location.state?.workout?.data?.preWorkout);
       setPreWorkout(location.state?.workout?.data?.preWorkout);
       setWorkout(location.state?.workout);
-      console.log(location.state);
 
       setWorkoutId(location.state?.workout?.id);
       setCalories(
@@ -107,7 +113,7 @@ export default function PostWorkoutDetails() {
 
   useEffect(() => {
     setCompleted(location.state?.completed);
-    console.log(location.state?.completed);
+    console.log(location.state);
     if (location.state?.completed && location.state?.workout) {
       setGroup(location.state?.workout?.data?.postWorkout?.group);
       setPostWorkout(location.state?.workout?.data?.postWorkout);
@@ -116,6 +122,7 @@ export default function PostWorkoutDetails() {
 
   useEffect(() => {
     if (group && postWorkout && !location.state.completed) {
+      console.log(postWorkout);
       let temp = { ...postWorkout };
       temp.group = group;
       setPostWorkout(temp);
@@ -132,6 +139,9 @@ export default function PostWorkoutDetails() {
     return minutes;
   }
 
+  useEffect(() => {
+    console.log("pt", postWorkout);
+  }, [postWorkout]);
   return (
     <div className="Postworkout__container">
       {/* <div>
@@ -157,6 +167,7 @@ export default function PostWorkoutDetails() {
           value={location?.state?.workoutName}
         />
         <h4 style={{ borderTop: 20 }}>Date</h4>
+
         <div className="Datepicker__container">
           <DatePicker
             placeholder="Set Date"
@@ -334,25 +345,26 @@ export default function PostWorkoutDetails() {
                                   setGroup(temp);
                                 }}
                               />
-                              <div onClick={() => {
-                                  console.log("img click")
+                              <div
+                                onClick={() => {
+                                  console.log("img click");
                                   setWorkoutVideoUrl(workout.videoUrl);
                                   setOpenDialog(true);
-                                }}>
-                              <img
-                                style={{
-                                  width: 150,
-                                  height: 84,
-                                  borderRadius: 8,
-                                  backgroundColor: "#d3d3d3",
                                 }}
-                                
-                                src={
-                                  workout.thumbnail_url
-                                    ? `${workout.thumbnail_url}`
-                                    : "../assets/illustration.jpeg"
-                                }
-                              />
+                              >
+                                <img
+                                  style={{
+                                    width: 150,
+                                    height: 84,
+                                    borderRadius: 8,
+                                    backgroundColor: "#d3d3d3",
+                                  }}
+                                  src={
+                                    workout.thumbnail_url
+                                      ? `${workout.thumbnail_url}`
+                                      : "../assets/illustration.jpeg"
+                                  }
+                                />
                               </div>
                               <div style={{ marginHorizontal: 10 }}>
                                 <h3>{workout.name}</h3>
@@ -662,7 +674,7 @@ export default function PostWorkoutDetails() {
                                     backgroundColor: "#d3d3d3",
                                   }}
                                   onClick={() => {
-                                    console.log("img click")
+                                    console.log("img click");
                                     setWorkoutVideoUrl(workout.videoUrl);
                                     setOpenDialog(true);
                                   }}
@@ -1390,16 +1402,26 @@ export default function PostWorkoutDetails() {
           {/* <video width="500" height="500" controls>
             <source src={workoutVideoUrl} type="video/mp4" />
           </video> */}
-          <div dangerouslySetInnerHTML={{__html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
-                            workoutVideoUrl.lastIndexOf("/") + 1
-                          )}"></iframe>`}} />
           <div
-          onClick={handleCloseDialog}
-          style={{cursor:"pointer", position: "absolute", right: 0, top: 0, padding: 12}} 
-        >
-          {" "}
-          <CloseIcon />
-        </div>
+            dangerouslySetInnerHTML={{
+              __html: `<iframe title="video" height="470" width="730" frameborder="0" src="https://player.vimeo.com/video/${workoutVideoUrl.substring(
+                workoutVideoUrl.lastIndexOf("/") + 1
+              )}"></iframe>`,
+            }}
+          />
+          <div
+            onClick={handleCloseDialog}
+            style={{
+              cursor: "pointer",
+              position: "absolute",
+              right: 0,
+              top: 0,
+              padding: 12,
+            }}
+          >
+            {" "}
+            <CloseIcon />
+          </div>
         </DialogContent>
       </Dialog>
     </div>

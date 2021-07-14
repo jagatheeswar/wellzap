@@ -31,6 +31,11 @@ function ViewAllWorkouts() {
   React.useEffect(() => {
     setSearchList(workouts);
     console.log(workouts);
+    workouts.forEach((workout) => {
+      if (workout?.data?.isLongTerm) {
+        console.log("d", workout);
+      }
+    });
   }, [workouts]);
 
   React.useEffect(async () => {
@@ -57,6 +62,7 @@ function ViewAllWorkouts() {
         db.collection("workouts")
           .where("assignedToId", "==", userData?.id)
           .where("completed", "==", false)
+
           .orderBy("timestamp", sorting)
           .onSnapshot((snapshot) => {
             setWorkouts(
@@ -233,9 +239,7 @@ function ViewAllWorkouts() {
                   navigation={"ViewAllWorkouts"}
                   showDate={true}
                   type="non-editable"
-                  completed={
-                    userType === "athlete" || completed === true ? true : false
-                  }
+                  completed={completed === true ? true : false}
                 />
               </div>
             ))

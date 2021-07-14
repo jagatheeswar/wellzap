@@ -1,9 +1,17 @@
-import React ,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from "react";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
-import {Dialog, DialogContent, Grid, Divider, DialogActions, FormControlLabel, Checkbox} from '@material-ui/core';
-import {EventNoteOutlined, DashboardOutlined} from '@material-ui/icons';
-import CoachAddWorkout from './CoachAddWorkout';
-import ViewAllSavedWorkouts from "./ViewAllSavedWorkouts"
+import {
+  Dialog,
+  DialogContent,
+  Grid,
+  Divider,
+  DialogActions,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
+import { EventNoteOutlined, DashboardOutlined } from "@material-ui/icons";
+import CoachAddWorkout from "./CoachAddWorkout";
+import ViewAllSavedWorkouts from "./ViewAllSavedWorkouts";
 import { db } from "../../utils/firebase";
 import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
@@ -17,13 +25,14 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import { Calendar,utils  } from "react-modern-calendar-datepicker";
+import { Calendar, utils } from "react-modern-calendar-datepicker";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import 'date-fns';
-import CoachCreateWorkout from "./CoachCreateWorkout"
-import AssignWorkout from "./AssignWorkout"
+import "date-fns";
+import CoachCreateWorkout from "./CoachCreateWorkout";
+import AssignWorkout from "./AssignWorkout";
 
-import moment from "moment"
+import moment from "moment";
+
 const InputWrapper = styled("div")`
   width: 350px;
   border: 1px solid #d9d9d9;
@@ -149,33 +158,43 @@ const Label = styled("label")`
   margin-top: 20px;
 `;
 
-
 const CreateLongTermTrainingPlan = () => {
   const userData = useSelector(selectUserData);
   const [weeks, setWeeks] = React.useState([
-    { weeknum: 1, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''} }, 
+    {
+      weeknum: 1,
+      days: {
+        monday: "",
+        tuesday: "",
+        wednesday: "",
+        thursday: "",
+        friday: "",
+        saturday: "",
+        sunday: "",
+      },
+    },
 
-    // { weeknum: 2, days: {monday: '', tuesday: ''} }, 
+    // { weeknum: 2, days: {monday: '', tuesday: ''} },
     // { weeknum: 3, days: {monday: '', tuesday: ''} }
   ]);
 
   const [checkBox, setCheckBox] = React.useState([
-    {name: 'week2', checked: false},
-    {name: 'week3', checked: false},
-    {name: 'week4', checked: false},
-    {name: 'week5', checked: false},
-    {name: 'week6', checked: false},
-    {name: 'week7', checked: false},
-    {name: 'week8', checked: false},
-    {name: 'week9', checked: false},
-    {name: 'week10', checked: false},
-    {name: 'week11', checked: false},
-    {name: 'week12', checked: false},
-    {name: 'week13', checked: false},
-    {name: 'week14', checked: false},
-    {name: 'week15', checked: false},
-    {name: 'week16', checked: false},
-  ])
+    { name: "week2", checked: false },
+    { name: "week3", checked: false },
+    { name: "week4", checked: false },
+    { name: "week5", checked: false },
+    { name: "week6", checked: false },
+    { name: "week7", checked: false },
+    { name: "week8", checked: false },
+    { name: "week9", checked: false },
+    { name: "week10", checked: false },
+    { name: "week11", checked: false },
+    { name: "week12", checked: false },
+    { name: "week13", checked: false },
+    { name: "week14", checked: false },
+    { name: "week15", checked: false },
+    { name: "week16", checked: false },
+  ]);
 
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogCopy, setOpenDialogCopy] = React.useState(false);
@@ -198,11 +217,11 @@ const CreateLongTermTrainingPlan = () => {
     day: 5,
   };
   const [selectedDate, setSelectedDate] = useState(defaultValue);
-  const [disabledDays,setDisabledDays] = useState({
-    year:2021,
-    month:0,day:0
-  })
-
+  const [disabledDays, setDisabledDays] = useState({
+    year: 2021,
+    month: 0,
+    day: 0,
+  });
 
   const {
     getRootProps,
@@ -250,15 +269,15 @@ const CreateLongTermTrainingPlan = () => {
     setSelectedAthletes(value);
   }, [value]);
 
-  useEffect(()=>{
-      console.log("weeks ")
-      console.log(JSON.stringify(weeks))
-  },[weeks])
- 
-  useEffect(()=>{
+  useEffect(() => {
+    console.log("weeks ");
+    console.log(JSON.stringify(weeks));
+  }, [weeks]);
+
+  useEffect(() => {
     //console.log("5")
     let now = moment();
-  
+
     let today_date = {
       year: now.get("year"),
       month: now.get("month") + 1,
@@ -267,40 +286,51 @@ const CreateLongTermTrainingPlan = () => {
 
     setSelectedDate(today_date);
     var temp = [];
-    for(var i=0;i<90;i++){
-      if(moment(new Date()).add(i + 1,"days").isoWeekday() != 1 ){
+    for (var i = 0; i < 90; i++) {
+      if (
+        moment(new Date())
+          .add(i + 1, "days")
+          .isoWeekday() != 1
+      ) {
         temp.push({
-          year:moment(new Date()).add(i + 1,"days").get("year"),
-          month:moment(new Date()).add(i + 1,"days").get("month") + 1,
-          day:moment(new Date()).add(i + 1,"days").get("date")
-        })
+          year: moment(new Date())
+            .add(i + 1, "days")
+            .get("year"),
+          month:
+            moment(new Date())
+              .add(i + 1, "days")
+              .get("month") + 1,
+          day: moment(new Date())
+            .add(i + 1, "days")
+            .get("date"),
+        });
       }
     }
-    setDisabledDays(temp)
+    setDisabledDays(temp);
     const dayINeed = 1;
     const today = moment().isoWeekday();
 
-    if (today <= dayINeed) { 
+    if (today <= dayINeed) {
       //alert(moment().isoWeekday(dayINeed));
     } else {
       //alert(moment().add(1, 'weeks').isoWeekday(dayINeed))
     }
-  },[])
+  }, []);
 
-  useEffect(()=>{
-    console.log("2")
-    console.log(JSON.stringify(weeks))
-    if(weeks.length <= 1){
-      setSelectedWeeks(weeks)
-    }else{
-      if(weeks.length >= weekIndex + 1){
-        setSelectedWeeks(weeks.slice(weekIndex,weekIndex + 2))
+  useEffect(() => {
+    console.log("2");
+    console.log(JSON.stringify(weeks));
+    if (weeks.length <= 1) {
+      setSelectedWeeks(weeks);
+    } else {
+      if (weeks.length >= weekIndex + 1) {
+        setSelectedWeeks(weeks.slice(weekIndex, weekIndex + 2));
         //console.log(weeks.slice(weekIndex,weekIndex + 2))
       }
     }
-  },[weekIndex,weeks])
+  }, [weekIndex, weeks]);
 
-  const handleClickOpenDialog = (week,day) => {
+  const handleClickOpenDialog = (week, day) => {
     setSelectedWeekNum(week);
     setSelectedDay(day);
     setOpenDialog(true);
@@ -318,94 +348,133 @@ const CreateLongTermTrainingPlan = () => {
     setOpenDialogCopy(false);
   };
 
-  const handleCloseworkout = () =>{
+  const handleCloseworkout = () => {
     setOpenCreateworkout(false);
-    setOpenSavedworkout(false)
-  }
+    setOpenSavedworkout(false);
+  };
 
-  const handleWeeksCopy = () =>{
+  const handleWeeksCopy = () => {
     //console.log(checkBox)
     var temp = weeks;
     var index = 0;
-    for(var i=checkBox.length - 1;i>0;i--){
-      if(checkBox[i].checked){
+    for (var i = checkBox.length - 1; i > 0; i--) {
+      if (checkBox[i].checked) {
         index = i;
         break;
       }
     }
     //alert("index " + index)
     var len = weeks.length;
-    if(index !=0 && weeks.length < index + 2){
-      for(var j=0;j<index + 2 - len;j++){
-        temp.push(
-          { weeknum: len + 1 + j, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''}}
-        )
+    if (index != 0 && weeks.length < index + 2) {
+      for (var j = 0; j < index + 2 - len; j++) {
+        temp.push({
+          weeknum: len + 1 + j,
+          days: {
+            monday: "",
+            tuesday: "",
+            wednesday: "",
+            thursday: "",
+            friday: "",
+            saturday: "",
+            sunday: "",
+          },
+        });
       }
-      for(var k = 0;k<index + 1;k++){
-        if(checkBox[k].checked){
-          temp[k+1].days = weeks[weekIndex - 1].days
+      for (var k = 0; k < index + 1; k++) {
+        if (checkBox[k].checked) {
+          temp[k + 1].days = weeks[weekIndex - 1].days;
           //console.log(k+2)
         }
       }
-      console.log("temp " + temp)
-      console.log(JSON.stringify(temp))
-      setWeeks(temp)
-      setWeekIndex(0)
+      console.log("temp " + temp);
+      console.log(JSON.stringify(temp));
+      setWeeks(temp);
+      setWeekIndex(0);
     }
-
-    setOpenDialogCopy(false)
+    console.log(weeks);
+    setOpenDialogCopy(false);
     //alert(index)
+  };
+
+  function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
 
-  const AssignworkoutPlan = () =>{
-    //console.log(selectedDate)
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+
+  const AssignworkoutPlan = () => {
+    console.log(selectedDate);
     //console.log(selectedAthletes)
+
     var dat = weeks;
     var athlete = selectedAthletes;
-   var local_date = selectedDate.year + "-" + (selectedDate.month <= 9 ? "0" + String(selectedDate.month) : selectedDate.month) + "-" + (selectedDate.day <= 9 ? "0" + selectedDate.day : selectedDate.day)
-    console.log("date : "+ local_date)
+    var local_date =
+      selectedDate.year +
+      "-" +
+      (selectedDate.month <= 9
+        ? "0" + String(selectedDate.month)
+        : selectedDate.month) +
+      "-" +
+      (selectedDate.day <= 9 ? "0" + selectedDate.day : selectedDate.day);
+    console.log("date : " + new Date(local_date));
 
-    dat.forEach((id)=>{
+    dat.forEach((id, idx) => {
       var dat2 = id.days;
       var keys = Object.keys(dat2);
-      keys.forEach((id2)=>{
-        if(dat2[id2] != ""){
-          athlete.forEach((ath)=>{
-            db.collection("workouts").add({
-              assignedById: userData?.id,
-              assignedToId: ath,
-              date: local_date,
-              selectedAthletes:[ath],
-              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-              completed: false,
-              preWorkout: dat2[id2],
-              saved: false,
-              coachWorkoutId: "",
-              isLongTerm:true,
-            });
-          })
+      console.log(dat);
+      keys.forEach((id2, idx2) => {
+        if (dat2[id2] != "") {
+          athlete.forEach((ath) => {
+            console.log(addDays(local_date, 7 * idx + idx2));
+            db.collection("workouts")
+              .add({
+                workoutName: "workoutName",
+                assignedById: userData?.id,
+                assignedToId: ath.id,
+                date: formatDate(addDays(local_date, 7 * idx + idx2)),
+                selectedAthletes: [ath],
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                completed: false,
+                preWorkout: dat2[id2].preWorkout,
+                saved: false,
+                coachWorkoutId: "",
+                isLongTerm: true,
+              })
+              .then((e) => {
+                console.log(e);
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          });
         }
-      })
-      
-    })
-    
-  }
-
+      });
+    });
+  };
 
   const handleChange = (event) => {
     //console.log(event.target.name)
     var temp = checkBox;
     //console.log(event.target.name.split("week"))
-    temp[event.target.name.split("week")[1] - 2].checked = event.target.checked
+    temp[event.target.name.split("week")[1] - 2].checked = event.target.checked;
     //console.log(temp)
-   setCheckBox([ ...temp]);
+    setCheckBox([...temp]);
   };
 
-
-
-
-  const saveLongTermworkout = () =>{
-    setModal(true)
+  const saveLongTermworkout = () => {
+    setModal(true);
     /*
     db.collection("longTermworkout").add({
       weeks,
@@ -415,331 +484,1245 @@ const CreateLongTermTrainingPlan = () => {
       assigned_by:userData?.id,
     })
     */
-  }
+  };
   return (
     <div>
       <WorkoutScreenHeader name="Create Long-Term Workout Plan" />
-      <div style={{justifyContent:"flex-end",alignItems:"flex-end",width:"100%",display:"flex"}}>
       <div
+        style={{
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          width: "100%",
+          display: "flex",
+        }}
+      >
+        <div
           style={{
-            backgroundColor:"#fcd13f",
-            borderRadius:20,
+            backgroundColor: "#fcd13f",
+            borderRadius: 20,
             cursor: "pointer",
-            padding:10,
-            width:200,
-            marginRight:20,
+            padding: 10,
+            width: 200,
+            marginRight: 20,
           }}
           onClick={saveLongTermworkout}
         >
-          <h5 style={{padding:0,margin:0,textAlign:"center"}}>SAVE LONG TERM WORKOUT</h5>
+          <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
+            SAVE LONG TERM WORKOUT
+          </h5>
         </div>
       </div>
 
       <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: 20
-      }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 20,
+        }}
       >
-        <div onClick={()=>setWeekIndex(0)} style={{cursor:"pointer"}}>
-          <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />
-          <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
+        <div onClick={() => setWeekIndex(0)} style={{ cursor: "pointer" }}>
+          <img
+            style={{ objectFit: "contain" }}
+            src="/assets/left_arrow.png"
+            alt=""
+            width="15px"
+            height="15px"
+          />
+          <img
+            style={{ objectFit: "contain" }}
+            src="/assets/left_arrow.png"
+            alt=""
+            width="15px"
+            height="15px"
+          />{" "}
         </div>
-        <div onClick={()=>weekIndex >= 1 ? setWeekIndex(weekIndex - 1) : null} style={{marginLeft: 20,cursor:"pointer"}}>
-          <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
+        <div
+          onClick={() => (weekIndex >= 1 ? setWeekIndex(weekIndex - 1) : null)}
+          style={{ marginLeft: 20, cursor: "pointer" }}
+        >
+          <img
+            style={{ objectFit: "contain" }}
+            src="/assets/left_arrow.png"
+            alt=""
+            width="15px"
+            height="15px"
+          />{" "}
         </div>
-        <div style={{width: 300, marginTop: -22, justifyContent: 'center', display: 'flex', alignItems: 'baseline'}}>
-          <p>Week</p> {
-          weeks.length <= 6 ? weeks.map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)
-          :
-          ( weekIndex <=2 ?
-            weeks.slice(0,7).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)
-            : (
-              weekIndex >= weeks.length - 3 ?
-              weeks.slice(weeks.length - 6, weeks.length).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)
-              : (
-               [weeks.slice(0, 2).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>),
-               <p>..</p>,
-               <p onClick={()=>setWeekIndex(weekIndex - 1)} style={{padding: 5,cursor:"pointer",fontWeight:"100"}}>{weekIndex}</p>,
-              <p onClick={()=>setWeekIndex(weekIndex)} style={{padding: 5,cursor:"pointer",fontWeight: "bold"}}>{weekIndex + 1}</p>,
-              <p onClick={()=>setWeekIndex(weekIndex + 1)} style={{padding: 5,cursor:"pointer",fontWeight:"100"}}>{weekIndex + 2}</p>,
-              <p>..</p>,
-                weeks.slice(weeks.length - 2,weeks.length).map((i) => <p onClick={()=>setWeekIndex(i.weeknum - 1)} style={{padding: 5,cursor:"pointer",fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100"}}>{i.weeknum}</p>)]
-              )
-            )
-          )
+        <div
+          style={{
+            width: 300,
+            marginTop: -22,
+            justifyContent: "center",
+            display: "flex",
+            alignItems: "baseline",
+          }}
+        >
+          <p>Week</p>{" "}
+          {weeks.length <= 6
+            ? weeks.map((i) => (
+                <p
+                  onClick={() => setWeekIndex(i.weeknum - 1)}
+                  style={{
+                    padding: 5,
+                    cursor: "pointer",
+                    fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100",
+                  }}
+                >
+                  {i.weeknum}
+                </p>
+              ))
+            : weekIndex <= 2
+            ? weeks.slice(0, 7).map((i) => (
+                <p
+                  onClick={() => setWeekIndex(i.weeknum - 1)}
+                  style={{
+                    padding: 5,
+                    cursor: "pointer",
+                    fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100",
+                  }}
+                >
+                  {i.weeknum}
+                </p>
+              ))
+            : weekIndex >= weeks.length - 3
+            ? weeks.slice(weeks.length - 6, weeks.length).map((i) => (
+                <p
+                  onClick={() => setWeekIndex(i.weeknum - 1)}
+                  style={{
+                    padding: 5,
+                    cursor: "pointer",
+                    fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100",
+                  }}
+                >
+                  {i.weeknum}
+                </p>
+              ))
+            : [
+                weeks.slice(0, 2).map((i) => (
+                  <p
+                    onClick={() => setWeekIndex(i.weeknum - 1)}
+                    style={{
+                      padding: 5,
+                      cursor: "pointer",
+                      fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100",
+                    }}
+                  >
+                    {i.weeknum}
+                  </p>
+                )),
+                <p>..</p>,
+                <p
+                  onClick={() => setWeekIndex(weekIndex - 1)}
+                  style={{ padding: 5, cursor: "pointer", fontWeight: "100" }}
+                >
+                  {weekIndex}
+                </p>,
+                <p
+                  onClick={() => setWeekIndex(weekIndex)}
+                  style={{ padding: 5, cursor: "pointer", fontWeight: "bold" }}
+                >
+                  {weekIndex + 1}
+                </p>,
+                <p
+                  onClick={() => setWeekIndex(weekIndex + 1)}
+                  style={{ padding: 5, cursor: "pointer", fontWeight: "100" }}
+                >
+                  {weekIndex + 2}
+                </p>,
+                <p>..</p>,
+                weeks.slice(weeks.length - 2, weeks.length).map((i) => (
+                  <p
+                    onClick={() => setWeekIndex(i.weeknum - 1)}
+                    style={{
+                      padding: 5,
+                      cursor: "pointer",
+                      fontWeight: weekIndex + 1 == i.weeknum ? "bold" : "100",
+                    }}
+                  >
+                    {i.weeknum}
+                  </p>
+                )),
+              ]}
+        </div>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() =>
+            weeks.length == weekIndex + 1 ? null : setWeekIndex(weekIndex + 1)
           }
+        >
+          <img
+            style={{ objectFit: "contain" }}
+            src="/assets/right__arrow.png"
+            alt=""
+            width="15px"
+            height="15px"
+          />{" "}
         </div>
-        <div style={{cursor:"pointer"}} onClick={()=>weeks.length == weekIndex + 1 ? null:setWeekIndex(weekIndex + 1)}>
-          <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />{" "}
-        </div>
-        <div onClick={()=>setWeekIndex(weeks.length - 1)} style={{marginLeft: 20,cursor:"pointer"}}>
-          <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />
-          <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />{" "}
+        <div
+          onClick={() => setWeekIndex(weeks.length - 1)}
+          style={{ marginLeft: 20, cursor: "pointer" }}
+        >
+          <img
+            style={{ objectFit: "contain" }}
+            src="/assets/right__arrow.png"
+            alt=""
+            width="15px"
+            height="15px"
+          />
+          <img
+            style={{ objectFit: "contain" }}
+            src="/assets/right__arrow.png"
+            alt=""
+            width="15px"
+            height="15px"
+          />{" "}
         </div>
       </div>
-      <div className="weeksContainer" style={{overflow: 'auto', width: '115vh', marginLeft: 20}}>
-
-        <div className="eachWeek" style={{display: 'flex', flexDirection: 'row',justifyContent:"space-between"}}>
-          {weeks.length > 1 ?
-        <div onClick={()=>weekIndex >= 1 ? setWeekIndex(weekIndex - 1) : null} style={{cursor:"pointer",marginTop:"40%"}}>
-          <img style={{objectFit: 'contain'}} src="/assets/left_arrow.png" alt="" width="15px" height="15px" />{" "}
-        </div>:null}
-          {selectedWeeks.map((index,idx) => (
-            <div style={{flexDirection: 'column',width:"45%",marginLeft:20}}>
+      <div
+        className="weeksContainer"
+        style={{ overflow: "auto", width: "115vh", marginLeft: 20 }}
+      >
+        <div
+          className="eachWeek"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          {weeks.length > 1 ? (
+            <div
+              onClick={() =>
+                weekIndex >= 1 ? setWeekIndex(weekIndex - 1) : null
+              }
+              style={{ cursor: "pointer", marginTop: "40%" }}
+            >
+              <img
+                style={{ objectFit: "contain" }}
+                src="/assets/left_arrow.png"
+                alt=""
+                width="15px"
+                height="15px"
+              />{" "}
+            </div>
+          ) : null}
+          {selectedWeeks.map((index, idx) => (
+            <div
+              style={{ flexDirection: "column", width: "45%", marginLeft: 20 }}
+            >
               <p>Week {index.weeknum}</p>
-              <div style={{backgroundColor: '#fff', borderRadius: 15, padding: 1}}>
-                <div style={{display:"flex",justifyContent:"space-between"}}>
-                  <p style={{marginLeft: 20}}>Workout Plan</p>
-                  <p onClick={()=>{
-                    setWeekIndex(index.weeknum);
-                    handleClickOpenDialogCopy();
-                  }} style={{marginRight:20,cursor:"pointer"}}>Copy</p>
-                </div>
-                <div  style={{alignSelf:"center",alignItems:"center",height: 130,cursor:"pointer",width: 350, marginLeft: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.monday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"monday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>MONDAY</p></div>
-                  :
-                  <>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>MONDAY</p>
-                    <p onClick={()=>{
-                      var temp = [...weeks];
-                      temp[index.weeknum - 1].days.monday = "";
-                      console.log("delete temp")
-                      console.log(JSON.stringify(temp))
-                      setWeeks(temp);
-                      setWeekIndex(index.weeknum - 1);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.monday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.monday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.monday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.monday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.monday?.preWorkout?.workoutDuration}</p>
-                  </Grid>
-                  </Grid>
-                  </>}
-                </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.tuesday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"tuesday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>TUESDAY</p></div>
-                  :
-                  <>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>TUESDAY</p>
-                    <p onClick={()=>{
-                      var temp = weeks;
-                      temp[index.weeknum - 1].days.tuesday = "";
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 15,
+                  padding: 1,
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ marginLeft: 20 }}>Workout Plan</p>
+                  <p
+                    onClick={() => {
                       setWeekIndex(index.weeknum);
-                      setWeeks(temp);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.tuesday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.tuesday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.tuesday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.tuesday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.tuesday?.preWorkout?.workoutDuration}</p>
-                  </Grid>
-                  </Grid>
-                  </>}
+                      handleClickOpenDialogCopy();
+                    }}
+                    style={{ marginRight: 20, cursor: "pointer" }}
+                  >
+                    Copy
+                  </p>
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.wednesday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"wednesday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>WEDNESDAY</p></div>
-                  :
-                  <>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>WEDNESDAY</p>
-                    <p onClick={()=>{
-                      var temp = weeks;
-                      temp[index.weeknum - 1].days.wednesday = "";
-                      setWeekIndex(index.weeknum);
-                      setWeeks(temp);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.wednesday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.wednesday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.wednesday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.wednesday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.wednesday?.preWorkout?.workoutDuration}</p>
-
-                  </Grid>
-                  </Grid>
-                  </>}
+                <div
+                  style={{
+                    alignSelf: "center",
+                    alignItems: "center",
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    marginLeft: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.monday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "monday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        MONDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          MONDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = [...weeks];
+                            temp[index.weeknum - 1].days.monday = "";
+                            console.log("delete temp");
+                            console.log(JSON.stringify(temp));
+                            setWeeks(temp);
+                            setWeekIndex(index.weeknum - 1);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.monday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.monday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.monday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {index.days.monday?.preWorkout?.workoutDifficulty}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.monday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.thursday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"thursday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>THURSDAY</p></div>
-                  :
-                  <>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>THURSDAY</p>
-                    <p onClick={()=>{
-                      var temp = weeks;
-                      temp[index.weeknum - 1].days.thursday = "";
-                      setWeekIndex(index.weeknum);
-                      setWeeks(temp);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.thursday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.thursday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.thursday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.thursday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.thursday?.preWorkout?.workoutDuration}</p>
-
-                  </Grid>
-                  </Grid>
-                  </>}
+                <div
+                  style={{
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    margin: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.tuesday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "tuesday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        TUESDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          TUESDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = weeks;
+                            temp[index.weeknum - 1].days.tuesday = "";
+                            setWeekIndex(index.weeknum);
+                            setWeeks(temp);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.tuesday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.tuesday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.tuesday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {index.days.tuesday?.preWorkout?.workoutDifficulty}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.tuesday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.friday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"friday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>FRIDAY</p></div>
-                  :
-                  <>
-                    <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>FRIDAY</p>
-                    <p onClick={()=>{
-                      var temp = weeks;
-                      temp[index.weeknum - 1].days.friday = "";
-                      setWeekIndex(index.weeknum);
-                      setWeeks(temp);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.friday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.friday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.friday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.friday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.friday?.preWorkout?.workoutDuration}</p>
-
-                  </Grid>
-                  </Grid>
-                  </>}
+                <div
+                  style={{
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    margin: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.wednesday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "wednesday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        WEDNESDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          WEDNESDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = weeks;
+                            temp[index.weeknum - 1].days.wednesday = "";
+                            setWeekIndex(index.weeknum);
+                            setWeeks(temp);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.wednesday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.wednesday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.wednesday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {
+                              index.days.wednesday?.preWorkout
+                                ?.workoutDifficulty
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.wednesday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.saturday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"saturday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>SATURDAY</p></div>
-                  :
-                  <>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                      <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>SATURDAY</p>
-                    <p onClick={()=>{
-                      var temp = weeks;
-                      temp[index.weeknum - 1].days.saturday = "";
-                      setWeekIndex(index.weeknum);
-                      setWeeks(temp);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.saturday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.saturday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.saturday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.saturday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.saturday?.preWorkout?.workoutDuration}</p>
-                  </Grid>
-                  </Grid>
-                  </>}
+                <div
+                  style={{
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    margin: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.thursday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "thursday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        THURSDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          THURSDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = weeks;
+                            temp[index.weeknum - 1].days.thursday = "";
+                            setWeekIndex(index.weeknum);
+                            setWeeks(temp);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.thursday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.thursday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.thursday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {index.days.thursday?.preWorkout?.workoutDifficulty}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.thursday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
                 </div>
-                <div  style={{height: 130,cursor:"pointer",width: 350, margin: 10, border: "1px solid #727272",alignItems:"center",borderRadius: 15, flexDirection: 'column'}}>
-                  {index.days.sunday == "" ? 
-                  <div onClick={()=>handleClickOpenDialog(index.weeknum,"sunday")} style={{justifyContent:"center",height:"100%",display:"flex"}}><p style={{margin:0,textAlign:"center",justifyContent:"center",alignSelf:"center"}}>SUNDAY</p></div>
-                  :
-                  <>
-                  <div style={{display:"flex",justifyContent:"space-between"}}>
-                  <p style={{marginLeft: 10, marginTop: 2, marginBottom: 4}}>SUNDAY</p>
-                    <p onClick={()=>{
-                      var temp = weeks;
-                      temp[index.weeknum - 1].days.sunday = "";
-                      setWeekIndex(index.weeknum);
-                      setWeeks(temp);
-                    }} style={{marginLeft: 10, marginTop: 2, marginBottom: 4,marginRight:20}}>x</p>
-                  </div>
-                  <Grid onClick={()=>{setSelectedDayData(index.days.sunday); setShowworkout(true)}} container>
-                  <Grid item xs={4}>
-                    <img
-                      src="/assets/illustration.jpeg"
-                      alt=""
-                      width="80px"
-                      height="80px"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                  <p style={{margin: 0, fontSize: 16, fontWeight: '600'}}>{index.days.sunday?.preWorkout.workoutName}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Calories: {index.days.sunday?.preWorkout?.caloriesBurnEstimate}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Difficulty: {index.days.sunday?.preWorkout?.workoutDifficulty}</p>
-                    <p style={{margin: 0, fontSize: 13, fontWeight: '600'}}>Duration: {index.days.sunday?.preWorkout?.workoutDuration}</p>
-
-                  </Grid>
-                  </Grid>
-                  </>}
+                <div
+                  style={{
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    margin: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.friday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "friday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        FRIDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          FRIDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = weeks;
+                            temp[index.weeknum - 1].days.friday = "";
+                            setWeekIndex(index.weeknum);
+                            setWeeks(temp);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.friday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.friday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.friday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {index.days.friday?.preWorkout?.workoutDifficulty}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.friday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
+                </div>
+                <div
+                  style={{
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    margin: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.saturday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "saturday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        SATURDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          SATURDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = weeks;
+                            temp[index.weeknum - 1].days.saturday = "";
+                            setWeekIndex(index.weeknum);
+                            setWeeks(temp);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.saturday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.saturday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.saturday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {index.days.saturday?.preWorkout?.workoutDifficulty}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.saturday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
+                </div>
+                <div
+                  style={{
+                    height: 130,
+                    cursor: "pointer",
+                    width: 350,
+                    margin: 10,
+                    border: "1px solid #727272",
+                    alignItems: "center",
+                    borderRadius: 15,
+                    flexDirection: "column",
+                  }}
+                >
+                  {index.days.sunday == "" ? (
+                    <div
+                      onClick={() =>
+                        handleClickOpenDialog(index.weeknum, "sunday")
+                      }
+                      style={{
+                        justifyContent: "center",
+                        height: "100%",
+                        display: "flex",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          textAlign: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        SUNDAY
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          SUNDAY
+                        </p>
+                        <p
+                          onClick={() => {
+                            var temp = weeks;
+                            temp[index.weeknum - 1].days.sunday = "";
+                            setWeekIndex(index.weeknum);
+                            setWeeks(temp);
+                          }}
+                          style={{
+                            marginLeft: 10,
+                            marginTop: 2,
+                            marginBottom: 4,
+                            marginRight: 20,
+                          }}
+                        >
+                          x
+                        </p>
+                      </div>
+                      <Grid
+                        onClick={() => {
+                          setSelectedDayData(index.days.sunday);
+                          setShowworkout(true);
+                        }}
+                        container
+                      >
+                        <Grid item xs={4}>
+                          <img
+                            src="/assets/illustration.jpeg"
+                            alt=""
+                            width="80px"
+                            height="80px"
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {index.days.sunday?.preWorkout.workoutName}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Calories:{" "}
+                            {
+                              index.days.sunday?.preWorkout
+                                ?.caloriesBurnEstimate
+                            }
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Difficulty:{" "}
+                            {index.days.sunday?.preWorkout?.workoutDifficulty}
+                          </p>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: 13,
+                              fontWeight: "600",
+                            }}
+                          >
+                            Duration:{" "}
+                            {index.days.sunday?.preWorkout?.workoutDuration}
+                          </p>
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
           ))}
-          {weeks.length <= 1 || weeks.length == weekIndex + 1 ?
-          <div style={{flexDirection: 'column',width:"45%",padding:10,marginLeft:20}}>
-            {/*<p style={{cursor:"pointer"}} onClick={handleClickOpenDialogCopy}>Copy</p>*/}
-            <div onClick={()=>{setWeeks([...weeks,{ weeknum: weeks.length + 1, days: {monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''}}])}} style={{ borderRadius: 15, margin: 15, cursor:"pointer",border: "1px dashed #727272",height: 100, width: 350, justifyContent: 'center', display: 'flex', alignItems: 'center' }}>
-            <img style={{objectFit: 'contain'}} src="/assets/plus_thin.png" alt="" width="25px" height="25px" />{" "}
+          {weeks.length <= 1 || weeks.length == weekIndex + 1 ? (
+            <div
+              style={{
+                flexDirection: "column",
+                width: "45%",
+                padding: 10,
+                marginLeft: 20,
+              }}
+            >
+              {/*<p style={{cursor:"pointer"}} onClick={handleClickOpenDialogCopy}>Copy</p>*/}
+              <div
+                onClick={() => {
+                  setWeeks([
+                    ...weeks,
+                    {
+                      weeknum: weeks.length + 1,
+                      days: {
+                        monday: "",
+                        tuesday: "",
+                        wednesday: "",
+                        thursday: "",
+                        friday: "",
+                        saturday: "",
+                        sunday: "",
+                      },
+                    },
+                  ]);
+                }}
+                style={{
+                  borderRadius: 15,
+                  margin: 15,
+                  cursor: "pointer",
+                  border: "1px dashed #727272",
+                  height: 100,
+                  width: 350,
+                  justifyContent: "center",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  style={{ objectFit: "contain" }}
+                  src="/assets/plus_thin.png"
+                  alt=""
+                  width="25px"
+                  height="25px"
+                />{" "}
+              </div>
             </div>
-          </div>:null}
-          <div style={{cursor:"pointer",marginTop:"40%"}} onClick={()=>weeks.length == weekIndex + 1 ? null:setWeekIndex(weekIndex + 1)}>
-          <img style={{objectFit: 'contain'}} src="/assets/right__arrow.png" alt="" width="15px" height="15px" />{" "}
-        </div>
+          ) : null}
+          <div
+            style={{ cursor: "pointer", marginTop: "40%" }}
+            onClick={() =>
+              weeks.length == weekIndex + 1 ? null : setWeekIndex(weekIndex + 1)
+            }
+          >
+            <img
+              style={{ objectFit: "contain" }}
+              src="/assets/right__arrow.png"
+              alt=""
+              width="15px"
+              height="15px"
+            />{" "}
+          </div>
         </div>
       </div>
       <Dialog
@@ -749,16 +1732,58 @@ const CreateLongTermTrainingPlan = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <Grid container style={{height: 300, width: 500, display: 'flex', alignItems: 'center'}}>
+          <Grid
+            container
+            style={{
+              height: 300,
+              width: 500,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <Grid item xs={6}>
-              <div onClick={()=>{setOpenCreateworkout(true); handleCloseDialog()}} style={{display: 'flex', flexDirection: 'column', alignItems: 'center',cursor:"pointer"}}>
-                <EventNoteOutlined style={{backgroundColor: "#fcd13f", padding: 20, borderRadius: "50%"}} />
+              <div
+                onClick={() => {
+                  setOpenCreateworkout(true);
+                  handleCloseDialog();
+                }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <EventNoteOutlined
+                  style={{
+                    backgroundColor: "#fcd13f",
+                    padding: 20,
+                    borderRadius: "50%",
+                  }}
+                />
                 <p>Create New Workout</p>
               </div>
             </Grid>
             <Grid item xs={6}>
-              <div onClick={()=>{setOpenSavedworkout(true); handleCloseDialog(); }} style={{display: 'flex', flexDirection: 'column', alignItems: 'center',cursor:"pointer"}}>
-                <DashboardOutlined style={{backgroundColor: "#fcd13f", padding: 20, borderRadius: "50%"}} />
+              <div
+                onClick={() => {
+                  setOpenSavedworkout(true);
+                  handleCloseDialog();
+                }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <DashboardOutlined
+                  style={{
+                    backgroundColor: "#fcd13f",
+                    padding: 20,
+                    borderRadius: "50%",
+                  }}
+                />
                 <p>Add From Saved Workouts</p>
               </div>
             </Grid>
@@ -773,30 +1798,44 @@ const CreateLongTermTrainingPlan = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <Grid container style={{height: 450, width: "90vh", display: 'flex', padding: 20}}>
+          <Grid
+            container
+            style={{ height: 450, width: "90vh", display: "flex", padding: 20 }}
+          >
             <Grid item xs={4}>
               <p>Copy selected week to:</p>
             </Grid>
             <Divider orientation="vertical" />
             <Grid item xs={6}>
-            <FormControl
-              component="fieldset"
-              onChange={handleChange}
-            >
-              {checkBox.map((index) => (
-                <div  style={{flexDirection: 'column', marginLeft: 20}}>
-                <FormControlLabel
-                control={<Checkbox name={index.name} />}
-                label={index.name}
-                />
-                </div>
-              ))}
-            </FormControl>
+              <FormControl component="fieldset" onChange={handleChange}>
+                {checkBox.map((index) => (
+                  <div style={{ flexDirection: "column", marginLeft: 20 }}>
+                    <FormControlLabel
+                      control={<Checkbox name={index.name} />}
+                      label={index.name}
+                    />
+                  </div>
+                ))}
+              </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <button onClick={handleWeeksCopy} style={{backgroundColor: '#fcd13f', border: 'none', outline: 'none', padding: "10px 30px", borderRadius: 25, fontSize: 16, fontWeight: '600',cursor:"pointer"}}>Confirm</button>
+          <button
+            onClick={handleWeeksCopy}
+            style={{
+              backgroundColor: "#fcd13f",
+              border: "none",
+              outline: "none",
+              padding: "10px 30px",
+              borderRadius: 25,
+              fontSize: 16,
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+          >
+            Confirm
+          </button>
         </DialogActions>
       </Dialog>
       <Dialog
@@ -806,8 +1845,15 @@ const CreateLongTermTrainingPlan = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent style={{width:800,height:450}}>
-          <CoachAddWorkout isLongTerm={true} handleCloseworkout={handleCloseworkout} setWeeks={setWeeks} weeks={weeks} selectedWeekNum={selectedWeekNum} selectedDay={selectedDay}  />
+        <DialogContent style={{ width: 800, height: 450 }}>
+          <CoachAddWorkout
+            isLongTerm={true}
+            handleCloseworkout={handleCloseworkout}
+            setWeeks={setWeeks}
+            weeks={weeks}
+            selectedWeekNum={selectedWeekNum}
+            selectedDay={selectedDay}
+          />
         </DialogContent>
       </Dialog>
       <Dialog
@@ -818,19 +1864,34 @@ const CreateLongTermTrainingPlan = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <ViewAllSavedWorkouts isLongTerm={true} handleCloseworkout={handleCloseworkout} setWeeks={setWeeks} weeks={weeks} selectedWeekNum={selectedWeekNum} selectedDay={selectedDay}  />
+          <ViewAllSavedWorkouts
+            isLongTerm={true}
+            handleCloseworkout={handleCloseworkout}
+            setWeeks={setWeeks}
+            weeks={weeks}
+            selectedWeekNum={selectedWeekNum}
+            selectedDay={selectedDay}
+          />
         </DialogContent>
       </Dialog>
       <Dialog
         open={showworkout}
-        onClose={()=>setShowworkout(false)}
+        onClose={() => setShowworkout(false)}
         maxWidth="lg"
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent >
-          <div style={{width:1000,height:550}}>
-            <AssignWorkout selectedDayData={selectedDayData} isLongTerm={true} handleCloseworkout={handleCloseworkout} setWeeks={setWeeks} weeks={weeks} selectedWeekNum={selectedWeekNum} selectedDay={selectedDay}  />
+        <DialogContent>
+          <div style={{ width: 1000, height: 550 }}>
+            <AssignWorkout
+              selectedDayData={selectedDayData}
+              isLongTerm={true}
+              handleCloseworkout={handleCloseworkout}
+              setWeeks={setWeeks}
+              weeks={weeks}
+              selectedWeekNum={selectedWeekNum}
+              selectedDay={selectedDay}
+            />
           </div>
         </DialogContent>
       </Dialog>
@@ -856,13 +1917,13 @@ const CreateLongTermTrainingPlan = () => {
             <div
               className="createWorkout__modalButton"
               onClick={() => {
-              db.collection("longTermWorkout").add({
-                weeks,
-                completed:false,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                assigned_to:[],
-                assigned_by:userData?.id,
-                })
+                db.collection("longTermWorkout").add({
+                  weeks,
+                  completed: false,
+                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                  assigned_to: [],
+                  assigned_by: userData?.id,
+                });
                 setModal(false);
                 setModal1(true);
               }}
@@ -901,7 +1962,7 @@ const CreateLongTermTrainingPlan = () => {
               className="createWorkout__modalButton"
               onClick={() => {
                 setModal1(false);
-                setOpenAssignworkout(true)
+                setOpenAssignworkout(true);
               }}
             >
               YES
@@ -917,56 +1978,73 @@ const CreateLongTermTrainingPlan = () => {
       </Modal>
       <Dialog
         open={openAssignworkout}
-        onClose={()=>setOpenAssignworkout(false)}
+        onClose={() => setOpenAssignworkout(false)}
         maxWidth="lg"
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-        <div style={{width:600,height:500}}>
-        <div style={{marginBottom:20}} {...getRootProps()}>
-          <Label {...getInputLabelProps()}>Search for Athletes</Label>
-          <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
-            {value.map((option, index) => (
-              <Tag label={option.name} {...getTagProps({ index })} />
-            ))}
+          <div style={{ width: 600, height: 500 }}>
+            <div style={{ marginBottom: 20 }} {...getRootProps()}>
+              <Label {...getInputLabelProps()}>Search for Athletes</Label>
+              <InputWrapper
+                ref={setAnchorEl}
+                className={focused ? "focused" : ""}
+              >
+                {value.map((option, index) => (
+                  <Tag label={option.name} {...getTagProps({ index })} />
+                ))}
 
-            <input {...getInputProps()} />
-          </InputWrapper>
-        </div>
-        {groupedOptions.length > 0 ? (
-          <Listbox {...getListboxProps()}>
-            {groupedOptions.map((option, index) => (
-              <li {...getOptionProps({ option, index })}>
-                <span>{option.name}</span>
-                <CheckIcon fontSize="small" />
-              </li>
-            ))}
-          </Listbox>
-        ) : null}
-                <div style={{marginLeft:25}}>
-                <p>Select Start Date</p>
-                <Calendar
-                  value={selectedDate}
-                  onChange={setSelectedDate}
-                  colorPrimary="#fcd54a" // added this
-                  colorPrimaryLight="blue"
-                  calendarClassName="customcalendarScreen" // and this
-                  calendarTodayClassName="custom-today-day" // also this
-                  minimumDate={utils().getToday()}
-                  maximumDate={{year:2021,month:9,day:17}}
-                  disabledDays={disabledDays} 
-                />
-                </div>
-      </div>
-
+                <input {...getInputProps()} />
+              </InputWrapper>
+            </div>
+            {groupedOptions.length > 0 ? (
+              <Listbox {...getListboxProps()}>
+                {groupedOptions.map((option, index) => (
+                  <li {...getOptionProps({ option, index })}>
+                    <span>{option.name}</span>
+                    <CheckIcon fontSize="small" />
+                  </li>
+                ))}
+              </Listbox>
+            ) : null}
+            <div style={{ marginLeft: 25 }}>
+              <p>Select Start Date</p>
+              <Calendar
+                value={selectedDate}
+                onChange={setSelectedDate}
+                colorPrimary="#fcd54a" // added this
+                colorPrimaryLight="blue"
+                calendarClassName="customcalendarScreen" // and this
+                calendarTodayClassName="custom-today-day" // also this
+                minimumDate={utils().getToday()}
+                maximumDate={{ year: 2021, month: 9, day: 17 }}
+                disabledDays={disabledDays}
+              />
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
-          <button onClick={AssignworkoutPlan} style={{backgroundColor: '#fcd13f', border: 'none', outline: 'none', padding: "10px 30px", borderRadius: 25, fontSize: 16, fontWeight: '600',cursor:"pointer",marginRight:20}}>Assign workout Plan</button>
+          <button
+            onClick={AssignworkoutPlan}
+            style={{
+              backgroundColor: "#fcd13f",
+              border: "none",
+              outline: "none",
+              padding: "10px 30px",
+              borderRadius: 25,
+              fontSize: 16,
+              fontWeight: "600",
+              cursor: "pointer",
+              marginRight: 20,
+            }}
+          >
+            Assign workout Plan1
+          </button>
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default CreateLongTermTrainingPlan
+export default CreateLongTermTrainingPlan;

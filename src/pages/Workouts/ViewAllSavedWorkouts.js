@@ -93,7 +93,7 @@ function ViewAllSavedWorkouts(props) {
           );
         });
     }
-  }, [userData?.id, sorting]);
+  }, [userData?.id, sorting, userType]);
 
   React.useEffect(() => {
     setSearchList(workouts);
