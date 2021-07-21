@@ -1388,7 +1388,7 @@ function AssignWorkout(props) {
                     {console.log("ex", selectedExercises)}
                     <div>
                       {" "}
-                      {selectedWorkoutEdit ? (
+                      {/*selectedWorkoutEdit ? (
                         <img
                           style={{
                             width: "25px",
@@ -1408,7 +1408,7 @@ function AssignWorkout(props) {
                           }}
                           src="/assets/down.png"
                         />
-                      )}
+                      )*/}
                     </div>
                   </div>
 
@@ -1534,7 +1534,7 @@ function AssignWorkout(props) {
                         </div>
 
                         <div
-                          style={{ fontSize: 12 }}
+                          style={{ fontSize: 12, cursor: 'pointer' }}
                           onClick={() => {
                             if (selectedWorkoutEdit === "") {
                               setSelectedWorkoutEdit(idx1);
