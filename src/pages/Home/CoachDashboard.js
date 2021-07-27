@@ -165,28 +165,33 @@ function CoachDashboard(props) {
   }, [nutrition]);
 
   return (
-    <Grid container spacing={2} className="coachDashboard__container">
+    <Grid container style={{marginBottom: 30}} className="coachDashboard__container">
       <Grid item xs={6} className="coachDashboard__leftContainer">
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            width: "90%",
+            width: "92%",
           }}
         >
           {" "}
+          <div style={{
+            display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+          }}>
           <h2
             style={{
               fontSize: 19,
               fontWeight: 500,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              
             }}
           >
             Workout Plans on
-            <p
+            
+          </h2>
+          <p
               style={{
                 fontSize: 18,
                 fontWeight: 400,
@@ -196,7 +201,7 @@ function CoachDashboard(props) {
               {" "}
               {formatDate1(props?.selectedDate)}
             </p>
-          </h2>{" "}
+          </div>{" "}
           <p
             onClick={() => {
               history.push("/workouts");
@@ -206,7 +211,7 @@ function CoachDashboard(props) {
             See all
           </p>
         </div>
-        <div style={{ width: "90%" }}>
+        <div style={{ width: "92%" }}>
           {savedWorkouts.length > 0 ? (
             savedWorkouts.length > 1 ? (
               savedWorkouts
@@ -236,8 +241,9 @@ function CoachDashboard(props) {
             <div
               style={{
                 backgroundColor: "#fff",
-                width: "90%",
+                width: "100%",
                 height: 90,
+                marginTop: 8,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -256,143 +262,8 @@ function CoachDashboard(props) {
           )}
         </div>
       </Grid>
-      <Grid item xs={6} className="coachDashboard__rightContainer">
-        <div style={{ flexDirection: "column" }}>
-          <h2
-            style={{
-              fontSize: 19,
-              fontWeight: 500,
-              display: "flex",
-              padding: "15px 0px",
-            }}
-          >
-            Messaging
-          </h2>
-          <div className="messaging">
-            <div
-              className="messaging__component"
-              onClick={() => {
-                history.push("/messaging");
-              }}
-            >
-              Open Messages
-            </div>
-            <div
-              className="messaging__component"
-              onClick={() => {
-                history.push("/calendar");
-              }}
-            >
-              Schedule Video Call
-            </div>
-          </div>
-        </div>
-      </Grid>
       <Grid item xs={6}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "90%",
-          }}
-        >
-          {" "}
-          <h2
-            style={{
-              fontSize: 19,
-              fontWeight: 500,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 10,
-            }}
-          >
-            Nutrition Plans on
-            <p
-              style={{
-                fontSize: 18,
-                fontWeight: 400,
-                marginLeft: 10,
-              }}
-            >
-              {" "}
-              {formatDate1(props?.selectedDate)}
-            </p>
-          </h2>{" "}
-          <p
-            onClick={() => {
-              history.push("/nutrition");
-            }}
-            style={{ cursor: "pointer" }}
-          >
-            See all
-          </p>
-        </div>
-        <div style={{ width: "90%" }}>
-          {nutrition.length > 0 ? (
-            nutrition.map((food, idx) => (
-              <NutritionCard
-                key={idx}
-                nutrition={nutrition}
-                food={food}
-                idx={idx}
-                navigation={"ViewAllNutrition"}
-                type="view"
-                date={formatDate1(props?.selectedDate)}
-              />
-            ))
-          ) : (
-            <div
-              style={{
-                backgroundColor: "#fff",
-                width: "100%",
-                height: 90,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "10px",
-              }}
-            >
-              <h5
-                style={{
-                  fontSize: "12px",
-                }}
-              >
-                There are no nutrition for now
-              </h5>
-            </div>
-          )}
-
-          {nutrition.length > nutritoin_show ? (
-            <p
-              onClick={() => {
-                setnutirtion_show(nutritoin_show + 3);
-              }}
-              style={{ textAlign: "center" }}
-            >
-              {" "}
-              View more
-            </p>
-          ) : (
-            <></>
-            // <p
-            //   onClick={() => {
-            //     if (nutrition.length < 3) {
-            //       setnutirtion_show(nutrition.length);
-            //     } else {
-            //       setnutirtion_show(3);
-            //     }
-            //   }}
-            // >
-            //   Hide all
-            // </p>
-          )}
-        </div>
-      </Grid>
-      {/* </div> */}
-      <Grid item xs={6}>
-        <div style={{ width: "90%", marginTop: 18 }}>
+        <div style={{ width: "100%" }}>
           <div
             style={{
               display: "flex",
@@ -428,7 +299,7 @@ function CoachDashboard(props) {
               height: 200,
               overflowY: "scroll",
               overflow: "scroll",
-
+              marginTop: 8,
               backgroundColor: "white",
               overflowX: "hidden",
             }}
@@ -505,6 +376,142 @@ function CoachDashboard(props) {
             Hide all
           </p>
         )} */}
+        </div>
+      </Grid>
+      <Grid item xs={6}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "92%",
+          }}
+        >
+          {" "}
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 10,
+            }}
+          >
+            Nutrition Plans on
+            <p
+              style={{
+                fontSize: 18,
+                fontWeight: 400,
+                marginLeft: 10,
+              }}
+            >
+              {" "}
+              {formatDate1(props?.selectedDate)}
+            </p>
+          </h2>{" "}
+          <p
+            onClick={() => {
+              history.push("/nutrition");
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            See all
+          </p>
+        </div>
+        <div style={{ width: "92%" }}>
+          {nutrition.length > 0 ? (
+            nutrition.map((food, idx) => (
+              <NutritionCard
+                key={idx}
+                nutrition={nutrition}
+                food={food}
+                idx={idx}
+                navigation={"ViewAllNutrition"}
+                type="view"
+                date={formatDate1(props?.selectedDate)}
+              />
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "100%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "10px",
+              }}
+            >
+              <h5
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "normal",
+                }}
+              >
+                There are no nutrition for now
+              </h5>
+            </div>
+          )}
+
+          {nutrition.length > nutritoin_show ? (
+            <p
+              onClick={() => {
+                setnutirtion_show(nutritoin_show + 3);
+              }}
+              style={{ textAlign: "center" }}
+            >
+              {" "}
+              View more
+            </p>
+          ) : (
+            <></>
+            // <p
+            //   onClick={() => {
+            //     if (nutrition.length < 3) {
+            //       setnutirtion_show(nutrition.length);
+            //     } else {
+            //       setnutirtion_show(3);
+            //     }
+            //   }}
+            // >
+            //   Hide all
+            // </p>
+          )}
+        </div>
+      </Grid>
+      {/* </div> */}
+      <Grid item xs={6} className="coachDashboard__rightContainer">
+        <div style={{ width: "100%", flexDirection: "column" }}>
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 500,
+              display: "flex",
+              padding: "15px 0px",
+            }}
+          >
+            Messaging
+          </h2>
+          <div className="messaging">
+            <div
+              className="messaging__component"
+              onClick={() => {
+                history.push("/messaging");
+              }}
+            >
+              Open Messages
+            </div>
+            <div
+              className="messaging__component"
+              onClick={() => {
+                history.push("/calendar");
+              }}
+            >
+              Schedule Video Call
+            </div>
+          </div>
         </div>
       </Grid>
       {/* </div> */}

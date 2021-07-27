@@ -262,7 +262,7 @@ function LogWeight({ route, navigation }) {
 
   return (
     <div className="athleteMeasurements">
-      <div className="athleteProfile__leftContainer">
+      <div style={{width: "98%"}} className="athleteProfile__leftContainer">
         <Header />
         <h2>Log Weight</h2>
         <div style={{display:"flex",flex:1,width:"100%",justifyContent:"space-between"}}>

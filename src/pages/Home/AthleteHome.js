@@ -155,7 +155,7 @@ function AthleteHome(props) {
         maxWidth="md"
       >
         <div className="modal__athleteComponents">
-          <div onClick={() => history.push("/workouts") } style={{cursor:"pointer"}} className="modal__addWorkout">
+          {/* <div onClick={() => history.push("/workouts") } style={{cursor:"pointer"}} className="modal__addWorkout">
             <div className="modal__addWorkoutImg">
               {" "}
               <img
@@ -164,7 +164,7 @@ function AthleteHome(props) {
               />
             </div>
             <h3>Add Workout</h3>
-          </div>
+          </div> */}
           <div 
             className="modal__addGoal"
             style={{cursor:"pointer"}} 
@@ -199,7 +199,7 @@ function AthleteHome(props) {
 
             <h3>Log Weight</h3>
           </div>
-          <div style={{cursor:"pointer"}} className="modal__viewReport">
+          <div onClick={() => history.push("/reports")}style={{cursor:"pointer"}} className="modal__viewReport">
             <div className="modal__viewReportImg">
               {" "}
               <img src="/assets/Icon material-event.png" alt="" />

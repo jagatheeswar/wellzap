@@ -54,7 +54,7 @@ function CoachAddWorkout() {
   const [targetedMuscleGroup, setTargetedMuscleGroup] = useState([]);
   const [workoutDuration, setWorkoutDuration] = useState("");
   const [caloriesBurnEstimate, setCaloriesBurnEstimate] = useState("");
-  const [workoutDifficulty, setWorkoutDifficulty] = useState("");
+  const [workoutDifficulty, setWorkoutDifficulty] = useState("easy");
   const [selectedExercises, setSelectedExercises] = useState([
     {
       value: null,
