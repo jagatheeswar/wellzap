@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { selectUserType } from "../../features/userSlice";
@@ -31,10 +31,12 @@ function NutritionCard({
   setWeeks,
   selectedDay,
   selectedDate,
+  navigate,
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
-  console.log("fd", date);
+  const [Weeks, setWeeks_data] = useState([]);
+
   // const isLongTerm = false;
   return (
     <div
@@ -72,6 +74,29 @@ function NutritionCard({
             // //console.log(lweeks)
             // setWeeks(lweeks);
             // handleCloseNutrition();
+
+            if (navigate) {
+              if (navigate) {
+                history.push({
+                  pathname: "/long-term-nutrition",
+                  state: {
+                    workout: true,
+                    food: food,
+                    weeks: weeks,
+                    assignType: type,
+                  },
+                });
+              }
+            } else {
+              var lweeks = weeks;
+              var lselectedWeekNum = selectedWeekNum;
+              var lselectedDay = selectedDay;
+              lweeks[lselectedWeekNum - 1].days[lselectedDay] = food?.data;
+
+              setWeeks_data(lweeks);
+
+              handleCloseNutrition();
+            }
           } else {
             if (userType === "coach") {
               if (type === "view") {
@@ -117,7 +142,6 @@ function NutritionCard({
             <h1> {food?.data?.nutrition?.nutritionName}</h1>
           </div>
           <div className="nutritionCard__macroNutrients">
-            {console.log("s", selectedDate)}
             <h3>{selectedDate ? selectedDate : formatDate()}</h3>
           </div>
         </div>

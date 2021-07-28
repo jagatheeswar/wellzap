@@ -7,6 +7,7 @@ import { db } from "../../utils/firebase";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { useHistory } from "react-router";
 import { Grid } from "@material-ui/core";
+import { formatDate } from "../../functions/formatDate";
 
 function AthleteWorkouts() {
   const userData = useSelector(selectUserData);
@@ -15,6 +16,8 @@ function AthleteWorkouts() {
   const [pastWorkouts, setPastWorkouts] = useState([]);
   const [completedWorkouts, setCompletedWorkouts] = useState("");
   const [averageWorkoutTime, setAverageWorkoutTime] = useState("");
+  const [AthleteWorkouts, setAthleteWorkouts] = useState([]);
+  const [videoData, setVideoData] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -51,7 +54,7 @@ function AthleteWorkouts() {
         .where("assignedToId", "==", userData?.id)
         //.where("date", "==", formatDate())
         .where("completed", "==", false)
-        .limit(4)
+        .limit(3)
         .onSnapshot((snapshot) => {
           setWorkouts(
             snapshot.docs.map((doc) => ({
@@ -64,7 +67,7 @@ function AthleteWorkouts() {
       db.collection("workouts")
         .where("assignedToId", "==", userData?.id)
         .where("completed", "==", true)
-        .limit(4)
+        .limit(3)
         .onSnapshot((snapshot) => {
           setPastWorkouts(
             snapshot.docs.map((doc) => ({
@@ -73,9 +76,44 @@ function AthleteWorkouts() {
             }))
           );
         });
+      db.collection("WorkoutVideo")
+        .where("AssignedToId", "array-contains", userData?.id)
+        //.where("selectedDays", "array-contains", formatDate())
+
+        //  .orderBy("timestamp")
+        .limit(3)
+        .get()
+        .then((snap) => {
+          let data = [];
+
+          snap.docs.forEach((s) => {
+            if (s.data().selectedDays.includes(formatDate())) {
+              data.push(s.data());
+              console.log("ss", s.data());
+            }
+            setVideoData(data);
+          });
+        });
+
+      db.collection("AthleteWorkouts")
+        .doc(userData?.id)
+        //.where("selectedDays", "array-contains", formatDate())
+        .collection(formatDate())
+        //  .orderBy("timestamp")
+        .limit(3)
+        .onSnapshot((snapshot) => {
+          setAthleteWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
     }
   }, [userData?.id]);
-
+  useEffect(() => {
+    console.log(AthleteWorkouts, pastWorkouts);
+  }, [AthleteWorkouts, pastWorkouts]);
   return (
     <div style={{ minHeight: "100vh" }} className="workouts__home">
       <div className="coachDashboard__leftContainer">
@@ -184,6 +222,97 @@ function AthleteWorkouts() {
                 </div>
               )}
             </div>
+          </Grid>
+
+          <Grid item xs={6} className="workouts__homeRightContainer">
+            <div
+              style={{ width: "90%", marginLeft: 20 }}
+              className="workoutHeading__row"
+            >
+              <h1>Video Workouts</h1>
+              <div onClick={() => history.push("/assigned-videos")}>
+                View All
+              </div>
+            </div>
+
+            {videoData?.length > 0 ? (
+              videoData?.map((video, idx) => (
+                <div style={{}}>
+                  {console.log("hh", videoData)}
+                  {video?.Video?.map((Id, idx) => (
+                    <div class="iframe_container">
+                      <iframe
+                        style={{ borderRadius: 10 }}
+                        src={
+                          "https://player.vimeo.com/video/" + `${Id?.videoId}`
+                        }
+                        width="400px"
+                        height="200px"
+                        frameborder="0"
+                        webkitallowfullscreen
+                        mozallowfullscreen
+                        allowfullscreen
+                      ></iframe>
+                    </div>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  fontSize: "13px",
+                  backgroundColor: "#fff",
+
+                  padding: "10px 20px",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                  fontWeight: "normal",
+                  marginLeft: 10,
+                }}
+              >
+                <h5> There are no assigned videos for now </h5>
+              </div>
+            )}
+          </Grid>
+
+          <Grid item xs={6} className="workouts__homeRightContainer">
+            <div
+              style={{ width: "90%", marginLeft: 20 }}
+              className="workoutHeading__row"
+            >
+              <h1>Your Workouts</h1>
+              <div onClick={() => history.push("/my-workouts")}>View All</div>
+            </div>
+
+            {console.log(AthleteWorkouts)}
+            {AthleteWorkouts?.length > 0 ? (
+              AthleteWorkouts?.map((workout, i) => (
+                <WorkoutCard
+                  key={workout.id}
+                  workouts={AthleteWorkouts}
+                  item={workout}
+                  idx={i}
+                  type={"non-editable"}
+                  completed={true}
+                  navigate={"create-workout"}
+                />
+              ))
+            ) : (
+              <div
+                style={{
+                  fontSize: "13px",
+                  backgroundColor: "#fff",
+
+                  padding: "10px 20px",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                  fontWeight: "normal",
+                  marginLeft: 10,
+                }}
+              >
+                <h5> There are no assigned videos for now </h5>
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>

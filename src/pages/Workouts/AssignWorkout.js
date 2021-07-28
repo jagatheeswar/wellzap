@@ -34,7 +34,6 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -164,7 +163,6 @@ const Label = styled("label")`
   margin-top: 20px;
 `;
 
-
 function AssignWorkout(props) {
   const location = useLocation();
   const userData = useSelector(selectUserData);
@@ -282,6 +280,7 @@ function AssignWorkout(props) {
   }, [location.state?.athlete_id]);
 
   useEffect(() => {
+    console.log("st", location.state);
     if (location.state?.workout) {
       setWorkout(location.state?.workout);
       setworkoutDifficulty(
@@ -311,10 +310,10 @@ function AssignWorkout(props) {
     }
   }, [location]);
 
-  useEffect(()=>{
-    if(props?.isLongTerm){
-      setWorkout({data:props.selectedDayData})
-      setworkoutDifficulty(props.selectedDayData.preWorkout.workoutDifficulty)
+  useEffect(() => {
+    if (props?.isLongTerm) {
+      setWorkout({ data: props.selectedDayData });
+      setworkoutDifficulty(props.selectedDayData.preWorkout.workoutDifficulty);
       setworkoutDescription(
         props.selectedDayData.preWorkout?.workoutDescription
       );
@@ -323,19 +322,13 @@ function AssignWorkout(props) {
         props.selectedDayData.preWorkout?.caloriesBurnEstimate
       );
 
-      setworkoutDuration(
-        props.selectedDayData.preWorkout?.workoutDuration
-      );
-      setSelectedExercises(
-        props.selectedDayData.preWorkout?.selectedExercises
-      );
-      if (
-        props.selectedDayData.selectedAthletes  ) {
+      setworkoutDuration(props.selectedDayData.preWorkout?.workoutDuration);
+      setSelectedExercises(props.selectedDayData.preWorkout?.selectedExercises);
+      if (props.selectedDayData.selectedAthletes) {
         setSelectedAthletes(props.selectedDayData?.selectedAthletes);
       }
-      console.log(props.selectedDayData)
     }
-  },[props?.isLongTerm])
+  }, [props?.isLongTerm]);
 
   useEffect(() => {
     if (group && workout) {
@@ -346,7 +339,6 @@ function AssignWorkout(props) {
   }, [group]);
 
   useEffect(() => {
-    console.log(athlete_selecteddays);
     let temp = [...selectedAthletes];
     selectedAthletes.map((athlete, idx) => {
       if (athlete_selecteddays[athlete.id]) {
@@ -354,8 +346,6 @@ function AssignWorkout(props) {
       }
       setSelectedAthletes1(temp);
     });
-
-    console.log(athlete_selecteddays);
   }, [selectedAthletes]);
 
   useEffect(() => {
@@ -436,11 +426,6 @@ function AssignWorkout(props) {
         });
     }
   }, [userData?.id]);
-
-  useEffect(() => {
-    console.log("selectedAthletes");
-    console.log(selectedAthletes);
-  }, [selectedAthletes]);
 
   const {
     getRootProps,
@@ -582,116 +567,117 @@ function AssignWorkout(props) {
                 </div>
               </div>
             </div>
-            {props.isLongTerm ? null :
-            <div
-              className="createWorkout__completeWorkoutButton"
-              onClick={() => {
-                if (userType === "athlete") {
-                  // navigation.navigate("PostWorkoutDetails", {
-                  //   workout: workout,
-                  //   workoutName: location.state?.workoutName,
-                  // });
-                } else {
-                  if (type === "non-editable") {
-                    history.goBack();
-                  } else if (type === "update") {
-                    let tempDate1 = [];
-                    selectedAthletes?.map((athlete) => {
-                      athlete.selectedDays.map((d) => {
-                        tempDate1.push(d);
-                      });
-                    });
-
-                    selectedAthletes.selectedDays = tempDate1;
-
-                    db.collection("workouts")
-                      .doc(workout.id)
-                      .update({
-                        completed: false,
-                        preWorkout: workout.data?.preWorkout,
-                        saved: false,
-                        selectedAthletes,
-                        timestamp:
-                          firebase.firestore.FieldValue.serverTimestamp(),
-                      })
-                      .then(() => {
-                        history.goBack();
-                      });
+            {props.isLongTerm ? null : (
+              <div
+                className="createWorkout__completeWorkoutButton"
+                onClick={() => {
+                  if (userType === "athlete") {
+                    // navigation.navigate("PostWorkoutDetails", {
+                    //   workout: workout,
+                    //   workoutName: location.state?.workoutName,
+                    // });
                   } else {
-                    console.log("Assigning the workout");
-                    let tempDate1 = [];
-                    selectedAthletes?.map((athlete) => {
-                      athlete.selectedDays?.map((d) => {
-                        tempDate1.push(d);
+                    if (type === "non-editable") {
+                      history.goBack();
+                    } else if (type === "update") {
+                      let tempDate1 = [];
+                      selectedAthletes?.map((athlete) => {
+                        athlete.selectedDays.map((d) => {
+                          tempDate1.push(d);
+                        });
                       });
-                    });
-                    if (selectedAthletes && tempDate1.length > 0) {
-                      db.collection("CoachWorkouts")
-                        .add({
-                          createdAt: new Date(),
-                          assignedById: workout.data?.assignedById,
+
+                      selectedAthletes.selectedDays = tempDate1;
+
+                      db.collection("workouts")
+                        .doc(workout.id)
+                        .update({
                           completed: false,
                           preWorkout: workout.data?.preWorkout,
                           saved: false,
-                          selectedAthletes: selectedAthletes,
-                          selectedDates: tempDate1,
+                          selectedAthletes,
                           timestamp:
                             firebase.firestore.FieldValue.serverTimestamp(),
                         })
-                        .then((docRef) => {
-                          console.log("Coach Workout ID", docRef);
-                          selectedAthletes?.map((athlete, idx) => {
-                            workout.data.assignedToId = athlete.id;
-                            // sendPushNotification(
-                            //   athlete.token,
-                            //   "new workout assigned"
-                            // );
-                            athlete.selectedDays?.map((tempDate, idx1) => {
-                              workout.data.date = tempDate;
-
-                              db.collection("workouts")
-                                .add({
-                                  createdAt: new Date(),
-                                  assignedById: workout.data?.assignedById,
-                                  assignedToId: workout.data?.assignedToId,
-                                  date: workout.data?.date,
-                                  completed: false,
-                                  preWorkout: workout.data?.preWorkout,
-                                  saved: false,
-                                  selectedAthletes,
-                                  coachWorkoutId: docRef.id,
-                                  timestamp:
-                                    firebase.firestore.FieldValue.serverTimestamp(),
-                                })
-                                .then((docRef1) => {
-                                  console.log({ docRef1 });
-                                  history.push("/workouts");
-                                })
-                                .catch((error) => {
-                                  console.error(
-                                    "Error adding document: ",
-                                    error
-                                  );
-                                });
-                            });
-                          });
-                        })
-                        .catch((error) => {
-                          console.error("Error adding document: ", error);
+                        .then(() => {
+                          history.goBack();
                         });
                     } else {
-                      alert("Please select an athlete and assign a date");
+                      console.log("Assigning the workout");
+                      let tempDate1 = [];
+                      selectedAthletes?.map((athlete) => {
+                        athlete.selectedDays?.map((d) => {
+                          tempDate1.push(d);
+                        });
+                      });
+                      if (selectedAthletes && tempDate1.length > 0) {
+                        db.collection("CoachWorkouts")
+                          .add({
+                            createdAt: new Date(),
+                            assignedById: workout.data?.assignedById,
+                            completed: false,
+                            preWorkout: workout.data?.preWorkout,
+                            saved: false,
+                            selectedAthletes: selectedAthletes,
+                            selectedDates: tempDate1,
+                            timestamp:
+                              firebase.firestore.FieldValue.serverTimestamp(),
+                          })
+                          .then((docRef) => {
+                            console.log("Coach Workout ID", docRef);
+                            selectedAthletes?.map((athlete, idx) => {
+                              workout.data.assignedToId = athlete.id;
+                              // sendPushNotification(
+                              //   athlete.token,
+                              //   "new workout assigned"
+                              // );
+                              athlete.selectedDays?.map((tempDate, idx1) => {
+                                workout.data.date = tempDate;
+
+                                db.collection("workouts")
+                                  .add({
+                                    createdAt: new Date(),
+                                    assignedById: workout.data?.assignedById,
+                                    assignedToId: workout.data?.assignedToId,
+                                    date: workout.data?.date,
+                                    completed: false,
+                                    preWorkout: workout.data?.preWorkout,
+                                    saved: false,
+                                    selectedAthletes,
+                                    coachWorkoutId: docRef.id,
+                                    timestamp:
+                                      firebase.firestore.FieldValue.serverTimestamp(),
+                                  })
+                                  .then((docRef1) => {
+                                    console.log({ docRef1 });
+                                    history.push("/workouts");
+                                  })
+                                  .catch((error) => {
+                                    console.error(
+                                      "Error adding document: ",
+                                      error
+                                    );
+                                  });
+                              });
+                            });
+                          })
+                          .catch((error) => {
+                            console.error("Error adding document: ", error);
+                          });
+                      } else {
+                        alert("Please select an athlete and assign a date");
+                      }
                     }
                   }
-                }
-              }}
-            >
-              {userType === "athlete"
-                ? "Complete Workout"
-                : type === "non-editable"
-                ? "Return"
-                : "Save Changes and Exit"}
-            </div>}
+                }}
+              >
+                {userType === "athlete"
+                  ? "Complete Workout"
+                  : type === "non-editable"
+                  ? "Return"
+                  : "Save Changes and Exit"}
+              </div>
+            )}
           </div>
         </div>
 
@@ -743,7 +729,7 @@ function AssignWorkout(props) {
                       } else {
                         temp.push(athlete);
                         setshow_data(temp);
-                        console.log(athlete.name, show_data);
+                        // console.log(athlete.name, show_data);
                       }
                     }}
                     style={{
@@ -773,6 +759,7 @@ function AssignWorkout(props) {
               </div>
 
               <div>
+                {console.log(show_data)}
                 {show_data?.map((athlete, index) => (
                   <div
                     key={index}
@@ -1342,37 +1329,47 @@ function AssignWorkout(props) {
           </div>
         )}
 
-        {console.log("ss", selectedAthletes)}
-
         <div className="createWorkout__exercises">
-        {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
-        <div style={{display:"flex",justifyContent:"space-between",marginRight:20}}>
-        <h3 className="createWorkout__inputLabel">Exercises</h3>
-          <div style={{display:"flex",alignItems:"center"}}>
-            <p style={{margin:0}}>Weights</p>
-            <Switch
-            checked={cardio}
-            onChange={(event)=>{
-              setCardio(!cardio)
-            }}
-            value={cardio}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-            <p style={{margin:0}}>Cardio</p>
-          </div>
-        </div>}
+          {props.isLongTerm ||
+          userType == "athlete" ||
+          type == "non-editable" ? null : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginRight: 20,
+              }}
+            >
+              <h3 className="createWorkout__inputLabel">Exercises</h3>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <p style={{ margin: 0 }}>Weights</p>
+                <Switch
+                  checked={cardio}
+                  onChange={(event) => {
+                    setCardio(!cardio);
+                  }}
+                  value={cardio}
+                  inputProps={{ "aria-label": "primary checkbox" }}
+                />
+                <p style={{ margin: 0 }}>Cardio</p>
+              </div>
+            </div>
+          )}
           <div>
             <div>
-            {props.isLongTerm || userType == "athlete" || type == "non-editable" ? null :
-              <div style={{ width: "100%" }}>
-              <SearchableDropdown
-                name="Search for Exercise"
-                list={cardio ?cardioExercise : exercises}
-                state={selectedExercises}
-                setState={setSelectedExercises}
-                cardio={cardio}
-              />
-              </div>}
+              {props.isLongTerm ||
+              userType == "athlete" ||
+              type == "non-editable" ? null : (
+                <div style={{ width: "100%" }}>
+                  <SearchableDropdown
+                    name="Search for Exercise"
+                    list={cardio ? cardioExercise : exercises}
+                    state={selectedExercises}
+                    setState={setSelectedExercises}
+                    cardio={cardio}
+                  />
+                </div>
+              )}
 
               <div className="excercise__container">
                 <div className="yellow"></div>
@@ -1385,7 +1382,7 @@ function AssignWorkout(props) {
                 >
                   <div className="excercise__header">
                     <div>Exercise</div>
-                    {console.log("ex", selectedExercises)}
+
                     <div>
                       {" "}
                       {selectedWorkoutEdit ? (

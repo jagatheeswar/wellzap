@@ -34,15 +34,21 @@ function Header(props) {
   }, [userData, userType]);
 
   useEffect(() => {
-    if(userType !== "coach"){
-    db.collection("coaches")
-      .doc(userData?.data?.listOfCoaches[0])
-      .get()
-      .then(function(snap) {
-        setCoachName(snap.data()?.name)
-      })
+    if (userType !== "coach") {
+      // db.collection("coaches")
+      //   .doc(userData?.data?.listOfCoaches[0])
+      //   .get()
+      //   .then(function(snap) {
+      //     setCoachName(snap.data()?.name)
+      //   })
+      db.collection("athletes")
+        .doc(userData?.id)
+        .get()
+        .then(function (snap) {
+          setCoachName(snap.data()?.name);
+        });
     }
-  }, [])
+  }, []);
 
   return (
     <div className="header">
@@ -63,14 +69,15 @@ function Header(props) {
           />
         </div>
         <div className="coachProfile__content">
-          {userType === "coach" ? 
-          <>
-          <h1>{name ? name : userData?.data.name}</h1>
-          </>
-          : props.athlete ? 
-          <h1>{props.athlete}</h1>
-          : <h1>{coachName}</h1>
-          }
+          {userType === "coach" ? (
+            <>
+              <h1>{name ? name : userData?.data.name}</h1>
+            </>
+          ) : props.athlete ? (
+            <h1>{props.athlete}</h1>
+          ) : (
+            <h1>{coachName}</h1>
+          )}
         </div>
       </div>
     </div>

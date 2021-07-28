@@ -111,7 +111,7 @@
 }
 
 .coachProfileForm {
-  width: 97%;
+  width: 95%;
 }
 
 .coachProfileForm > form > h4 {
@@ -139,7 +139,7 @@
   border: none;
   outline: gray;
   height: 80px;
-  width: 97%;
+  width: 95%;
 }
 
 .coachProfileForm__Button,
@@ -177,7 +177,7 @@
 }
 
 .athleteMeasurements {
-  width: 97%;
+  width: 95%;
 }
 
 .athleteMeasurements__container > form > h4,
@@ -257,7 +257,7 @@
 }
 
 .athleteAssessment {
-  width: 97%;
+  width: 95%;
 }
 
 .athleteAssessments {

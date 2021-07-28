@@ -1,0 +1,29 @@
+.file {
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: absolute;
+}
+
+.videoupload {
+  margin-left: 10px;
+}
+
+.videoupload:hover {
+  cursor: pointer;
+}
+#filelabel:hover {
+  cursor: pointer;
+}
+
+.vod_input {
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.button__assignVideo:hover {
+  cursor: pointer;
+}

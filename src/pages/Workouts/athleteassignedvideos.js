@@ -1,24 +1,30 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { selectUserData } from "../../features/userSlice";
+import React from "react";
 import { db } from "../../utils/firebase";
-import NutritionCard from "../../Components/NutritionCard/NutritionCard";
-import NutritionScreenHeader from "./NutritionScreenHeader";
+import { useSelector } from "react-redux";
+import { selectUserData, selectUserType } from "../../features/userSlice";
+import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
+import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
 import SearchIcon from "@material-ui/icons/Search";
-
 import ClearIcon from "@material-ui/icons/Clear";
+
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { formatDate } from "../../functions/formatDate";
 
-function ViewAllSavedNutrition(props) {
+function AthleteAssignedVideos() {
   const userData = useSelector(selectUserData);
-  const [nutrition, setNutrition] = React.useState([]);
+  const userType = useSelector(selectUserType);
+  const [workouts, setWorkouts] = React.useState([]);
+  const [pastWorkouts, setPastWorkouts] = React.useState([]);
+
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
-
+  const [videoData, setVideoData] = React.useState([]);
   const [sorting, setsorting] = React.useState("desc");
+  const [AssignedVideos, setAssignedVideos] = React.useState([]);
+
   const [showFilter, setShowFilter] = React.useState(false);
 
   document.addEventListener("mouseup", function (e) {
@@ -26,42 +32,61 @@ function ViewAllSavedNutrition(props) {
       setShowFilter(false);
     }
   });
-  React.useEffect(() => {
-    if (userData) {
-      db.collection("Food")
-        .where("from_id", "==", userData?.id)
-        .where("assignedTo_id", "==", "")
-        .onSnapshot((snapshot) => {
-          setNutrition(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              data: doc.data(),
-            }))
-          );
-        });
-    }
-  }, [userData?.id]);
-
-  React.useEffect(() => {
-    setSearchList(nutrition);
-    // console.log(assignedMealplans);
-  }, [nutrition]);
 
   React.useEffect(async () => {
+    SetSearhLoading(true);
+
     if (search?.length > 0) {
-      const names = await nutrition?.filter((workout) => {
-        return workout.data.nutrition.nutritionName
-          .toLowerCase()
-          .includes(search.toLowerCase());
+      const names = await videoData?.filter((workout) => {
+        return workout.title.toLowerCase().includes(search.toLowerCase());
       });
 
       setSearchList(names);
       SetSearhLoading(false);
     } else {
-      setSearchList(nutrition);
+      setSearchList(videoData);
       SetSearhLoading(false);
     }
-  }, [search, nutrition]);
+  }, [search]);
+
+  React.useEffect(() => {
+    let temp = [...AssignedVideos];
+    let videos = [];
+    let c = 0;
+    console.log(temp);
+    temp?.map((data, idx) => {
+      data.Video.map((dat, idx1) => {
+        videos[c] = {};
+        videos[c] = { ...temp[idx] };
+        videos[c]["Video"] = [data?.Video[idx1]];
+        videos[c]["title"] = data?.Video[idx1]?.title;
+        c = c + 1;
+      });
+    });
+    console.log(videos);
+    setVideoData(videos);
+    setSearchList(videos);
+  }, [AssignedVideos]);
+
+  React.useEffect(() => {
+    if (userData) {
+      db.collection("WorkoutVideo")
+        .where("AssignedToId", "array-contains", userData?.id)
+        //.where("selectedDays", "array-contains", formatDate())
+
+        .orderBy("timestamp", sorting)
+        .get()
+        .then((snap) => {
+          let data = [];
+
+          snap.docs.forEach((s) => {
+            data.push(s.data());
+            console.log("ss", s.data());
+          });
+          setAssignedVideos(data);
+        });
+    }
+  }, [userData?.id, sorting]);
 
   const options = [
     { value: "asc", label: "Recent" },
@@ -70,7 +95,7 @@ function ViewAllSavedNutrition(props) {
 
   return (
     <div style={{ minHeight: "99.7vh" }}>
-      <NutritionScreenHeader name="Saved Meal Plans" />
+      <WorkoutScreenHeader name="Assigned Videos" />
       <div
         style={{
           display: "flex",
@@ -162,9 +187,10 @@ function ViewAllSavedNutrition(props) {
               style={{
                 padding: 10,
                 borderBottom: "1px solid black",
+                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
+
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
-                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
               }}
             >
               Recent
@@ -176,10 +202,10 @@ function ViewAllSavedNutrition(props) {
               }}
               style={{
                 padding: 10,
-                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
 
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
+                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
               }}
             >
               oldest to new
@@ -201,75 +227,55 @@ function ViewAllSavedNutrition(props) {
           />
         </div>
       </div>
-      {search.length > 0 && (
+      {search?.length > 0 && (
         <div
           style={{
             fontSize: 13,
             marginLeft: 20,
           }}
         >
-          {SearchList?.length} search results loaded
+          {SearchList?.length} results found
         </div>
       )}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          width: "100%",
-          marginLeft: "10px",
-          marginRight: "10px",
-          marginTop: "15px",
-        }}
-      >
-        <div
-          style={{
-            width: "50%",
-            marginTop: "20px",
-            paddingLeft: "15px",
-            paddingRight: "15px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {SearchList?.length > 0 ? (
-            SearchList?.map((food, idx) => (
-              <NutritionCard
-                key={idx}
-                nutrition={nutrition}
-                food={food}
-                idx={idx}
-                navigation={"ViewAllNutrition"}
-                type={true}
-                isLongTerm={props?.isLongTerm}
-                handleCloseNutrition={props?.handleCloseNutrition}
-                setWeeks={props?.setWeeks}
-                weeks={props?.weeks}
-                selectedWeekNum={props?.selectedWeekNum}
-                selectedDay={props?.selectedDay}
-              />
-            ))
-          ) : (
-            <h5
-              style={{
-                fontSize: "12px",
-                backgroundColor: "#fff",
-                width: "100%",
-                paddingTop: "10px",
-                paddingRight: "10px",
-                textAlign: "center",
-                borderRadius: "5px",
-              }}
-            >
-              There are no saved nutrition for now
-            </h5>
-          )}
-        </div>
+      <div style={{ width: "50%", marginLeft: 20 }}>
+        {SearchList?.length > 0 ? (
+          SearchList?.map((video, idx) => (
+            <div style={{}}>
+              {video?.Video?.map((Id, idx) => (
+                <div class="iframe_container">
+                  <iframe
+                    style={{ borderRadius: 10 }}
+                    src={"https://player.vimeo.com/video/" + `${Id?.videoId}`}
+                    width="400px"
+                    height="200px"
+                    frameborder="0"
+                    webkitallowfullscreen
+                    mozallowfullscreen
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              ))}
+            </div>
+          ))
+        ) : (
+          <div
+            style={{
+              fontSize: "13px",
+              backgroundColor: "#fff",
+              width: "90%",
+              padding: "10px 20px",
+              textAlign: "center",
+              borderRadius: "5px",
+              fontWeight: "normal",
+              marginLeft: 10,
+            }}
+          >
+            <h5> There are no assigned videos for now </h5>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default ViewAllSavedNutrition;
+export default AthleteAssignedVideos;

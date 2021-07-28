@@ -418,3 +418,10 @@
 .iYKfNu {
   width: 100% !important;
 }
+
+.filter div:hover {
+  cursor: pointer;
+}
+.filter_icon:hover {
+  cursor: pointer;
+}

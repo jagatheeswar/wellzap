@@ -74,24 +74,24 @@ function AthleteNutritionCard({
             // handleCloseNutrition();
           } else {
             if (userType === "coach") {
-              if (type === "view") {
-                history.push({
-                  pathname: "/view-nutrition",
-                  state: { nutrition: food, type: "view" },
-                });
-              } else {
-                if (food.data.assignedTo_id === "") {
-                  history.push({
-                    pathname: "/view-nutrition",
-                    state: { nutrition: food, type: "create" },
-                  });
-                } else {
-                  history.push({
-                    pathname: "/view-nutrition",
-                    state: { nutrition: food, type: "update" },
-                  });
-                }
-              }
+              // if (type === "view") {
+              //   history.push({
+              //     pathname: "/view-nutrition",
+              //     state: { nutrition: food, type: "view" },
+              //   });
+              // } else {
+              //   if (food.data.assignedTo_id === "") {
+              //     history.push({
+              //       pathname: "/view-nutrition",
+              //       state: { nutrition: food, type: "create" },
+              //     });
+              //   } else {
+              //     history.push({
+              //       pathname: "/view-nutrition",
+              //       state: { nutrition: food, type: "update" },
+              //     });
+              //   }
+              // }
             } else {
               if (navigation) {
                 history.push({

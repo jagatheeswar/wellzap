@@ -14,7 +14,8 @@ function CoachNutritionHome() {
   const [nutrition1, setNutrition1] = useState([]);
   const [nutrition, setNutrition] = useState([]);
   const [savedNutrition, setSavedNutrition] = useState([]);
-
+  const [savedLongTermNutrition, setsavedLongTermNutrition] = useState([]);
+  const [LongTermNutrition, setLongTermNutrition] = useState([]);
   useEffect(() => {
     if (nutrition1) {
       let temp = [];
@@ -39,7 +40,7 @@ function CoachNutritionHome() {
       db.collection("Food")
         .where("from_id", "==", userData?.id)
         .where("saved", "==", false)
-        .limit(4)
+        .limit(3)
         .onSnapshot((snapshot) => {
           if (snapshot) {
             setNutrition(
@@ -63,9 +64,38 @@ function CoachNutritionHome() {
             }))
           );
         });
+
+      db.collection("longTermMeal")
+        .where("assignedById", "==", userData?.id)
+        .where("assignedToId", "==", "")
+        .limit(4)
+        .onSnapshot((snapshot) => {
+          setsavedLongTermNutrition(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+
+      db.collection("longTermMeal")
+        .where("assignedById", "==", userData?.id)
+        .where("saved", "==", false)
+
+        .onSnapshot((snapshot) => {
+          setLongTermNutrition(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
     }
   }, [userData?.id]);
 
+  useEffect(() => {
+    console.log(LongTermNutrition);
+  }, [LongTermNutrition]);
   return (
     <div style={{ minHeight: "99vh" }} className="coachNutritionHome">
       <NutritionScreenHeader name="Nutrition" />
@@ -116,6 +146,64 @@ function CoachNutritionHome() {
                   nutrition={nutrition}
                   food={food}
                   idx={idx}
+                />
+              ))
+            ) : (
+              <h5 className="no-upcoming-food-text">
+                There are no saved meal plans.
+              </h5>
+            )}
+          </div>
+        </Grid>
+
+        <Grid item xs={6} className="coachNutrition__homeRightContainer">
+          <div style={{ width: "90%" }} className="coachNutrition__row">
+            <h1>Assigned LongTerm Plans</h1>
+            <div onClick={() => history.push("/all-LongTerm-Nutrition")}>
+              View All
+            </div>
+          </div>
+          <div style={{ width: "90%" }} className="coachNutrition__list">
+            {LongTermNutrition.length > 0 ? (
+              LongTermNutrition?.map((food, idx) => (
+                <NutritionCard
+                  key={idx}
+                  weeks={food.data.weeks}
+                  isLongTerm={true}
+                  idx={idx}
+                  food={food.data}
+                  selectedWeekNum={food.data.weeks[0].weeknum}
+                  navigate={true}
+                  type="view"
+                />
+              ))
+            ) : (
+              <h5 className="no-upcoming-food-text">
+                There are no saved meal plans.
+              </h5>
+            )}
+          </div>
+        </Grid>
+
+        <Grid item xs={6} className="coachNutrition__homeRightContainer">
+          <div style={{ width: "90%" }} className="coachNutrition__row">
+            <h1>Saved LongTerm Plans</h1>
+            <div onClick={() => history.push("/all-saved-LongTerm-Nutrition")}>
+              View All
+            </div>
+          </div>
+          <div style={{ width: "90%" }} className="coachNutrition__list">
+            {console.log("slt", savedLongTermNutrition)}
+            {savedLongTermNutrition.length > 0 ? (
+              savedLongTermNutrition?.map((food, idx) => (
+                <NutritionCard
+                  key={idx}
+                  weeks={food.data.weeks}
+                  isLongTerm={true}
+                  idx={idx}
+                  food={food.data}
+                  selectedWeekNum={food.data.weeks[0].weeknum}
+                  navigate={true}
                 />
               ))
             ) : (

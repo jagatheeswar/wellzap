@@ -5,7 +5,7 @@ import {
   selectTemperoryId,
   selectUser,
   selectUserType,
-  selectUserData
+  selectUserData,
 } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import "./profile.css";
@@ -22,12 +22,12 @@ function LogWeight({ route, navigation }) {
   const [muscle, setMuscle] = useState("");
   const [image, setImage] = useState("");
   const defaultValue = {
-    year: 2021,
-    month: 4,
-    day: 5,
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: 10,
   };
   const [selectedDay, setSelectedDay] = useState(defaultValue);
-  const [date, setDate] = useState(moment(new Date).format("YYYY-MM-DD"));
+  const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
   const userData = useSelector(selectUserData);
   const [backUrl, setBackUrl] = useState(null);
   const [frontUrl, setFrontUrl] = useState(null);
@@ -37,13 +37,12 @@ function LogWeight({ route, navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-        
     let now = moment();
-  
+
     let today_date = {
       year: now.get("year"),
       month: now.get("month") + 1,
-      day: now.get("day"),
+      day: now.get("date"),
     };
 
     setSelectedDay(today_date);
@@ -84,14 +83,19 @@ function LogWeight({ route, navigation }) {
     }
   }, [date]);
 
-  useEffect(()=>{
-    var local_date = selectedDay.year + "-" + (selectedDay.month <= 9 ? "0" + String(selectedDay.month) : selectedDay.month) + "-" + (selectedDay.day <= 9 ? "0" + selectedDay.day : selectedDay.day)
-    setDate(local_date)
-  },[selectedDay])
+  useEffect(() => {
+    var local_date =
+      selectedDay.year +
+      "-" +
+      (selectedDay.month <= 9
+        ? "0" + String(selectedDay.month)
+        : selectedDay.month) +
+      "-" +
+      (selectedDay.day <= 9 ? "0" + selectedDay.day : selectedDay.day);
+    setDate(local_date);
+  }, [selectedDay]);
 
-
-  const AddDetails = async  () => {
-  
+  const AddDetails = async () => {
     if (weight) {
       let temp = { ...userData?.data?.metrics };
       if (temp[date]) {
@@ -101,7 +105,7 @@ function LogWeight({ route, navigation }) {
         t.fat = fat;
         t.muscle = muscle;
         temp[date] = t;
-        t.frontImageUrl = frontUrl ? frontUrl :"";
+        t.frontImageUrl = frontUrl ? frontUrl : "";
         t.backImageUrl = backUrl ? backUrl : "";
       } else {
         temp[date] = {
@@ -109,8 +113,8 @@ function LogWeight({ route, navigation }) {
           height,
           fat,
           muscle,
-          frontImageUrl:frontUrl,
-          backImageUrl:backUrl,
+          frontImageUrl: frontUrl,
+          backImageUrl: backUrl,
         };
       }
 
@@ -134,24 +138,28 @@ function LogWeight({ route, navigation }) {
                   weight,
                   fat,
                   muscle,
-                  backImageUrl:backUrl,
-                  frontImageUrl:frontUrl,
+                  backImageUrl: backUrl,
+                  frontImageUrl: frontUrl,
                 })
-                .then((res) => 
-                {
-                  alert("Logged Metrics Sucessfully!")
-                  
-                  db.collection("CoachNotifications")
-                  .doc(userData.data.listOfCoaches[0])
-                  .collection("notifications")
-                  .add({
-                    message: `${userData?.data?.name} has logged metrics on ${formatDate()} `,
-                    seen: false,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    athlete_id: userData?.id,
-                  },{ merge: true })
+                .then((res) => {
+                  alert("Logged Metrics Sucessfully!");
 
-              })
+                  db.collection("CoachNotifications")
+                    .doc(userData.data.listOfCoaches[0])
+                    .collection("notifications")
+                    .add(
+                      {
+                        message: `${
+                          userData?.data?.name
+                        } has logged metrics on ${formatDate()} `,
+                        seen: false,
+                        timestamp:
+                          firebase.firestore.FieldValue.serverTimestamp(),
+                        athlete_id: userData?.id,
+                      },
+                      { merge: true }
+                    );
+                })
                 .catch((e) => {
                   console.log(e);
                 });
@@ -165,12 +173,11 @@ function LogWeight({ route, navigation }) {
                   weight,
                   fat,
                   muscle,
-                  backImageUrl:backUrl,
-                  frontImageUrl:frontUrl,
+                  backImageUrl: backUrl,
+                  frontImageUrl: frontUrl,
                 })
                 .then((res) => {
-                  alert("Logged Metrics Sucessfully!")
-                  
+                  alert("Logged Metrics Sucessfully!");
                 })
                 .catch((e) => console.log(e));
             }
@@ -180,7 +187,6 @@ function LogWeight({ route, navigation }) {
       alert("Please enter the weight.");
     }
   };
-
 
   useEffect(() => {
     if (userData) {
@@ -203,154 +209,163 @@ function LogWeight({ route, navigation }) {
     }
   }, [userData?.id]);
 
-
-
-
-  useEffect(()=>{
+  useEffect(() => {
     const uploadImage = async () => {
-      if(backImageUrl){
+      if (backImageUrl) {
         const response = await fetch(backImageUrl);
         const blob = await response.blob();
         const childPath = `images/${userData.data.email}/${date}/backImage`;
-    
+
         const task = firebase.storage().ref().child(childPath).put(blob);
-    
+
         const taskProgress = (snapshot) => {
           console.log(`transferred: ${snapshot.bytesTransferred}`);
         };
-    
+
         const taskCompleted = () => {
           task.snapshot.ref.getDownloadURL().then((snapshot) => {
-              setBackUrl(snapshot);
+            setBackUrl(snapshot);
           });
         };
-    
+
         const taskError = (snapshot) => {
           console.log(snapshot);
         };
-    
+
         task.on("state_changed", taskProgress, taskError, taskCompleted);
       }
-      if(frontImageUrl){
+      if (frontImageUrl) {
         const response = await fetch(frontImageUrl);
         const blob = await response.blob();
         const childPath = `images/${userData.data.email}/${date}/frontImage`;
-    
+
         const task = firebase.storage().ref().child(childPath).put(blob);
-    
+
         const taskProgress = (snapshot) => {
           console.log(`transferred: ${snapshot.bytesTransferred}`);
         };
-    
+
         const taskCompleted = () => {
           task.snapshot.ref.getDownloadURL().then((snapshot) => {
-              setFrontUrl(snapshot);
-              console.log(snapshot);
+            setFrontUrl(snapshot);
+            console.log(snapshot);
           });
         };
-    
-        const taskError = (snapshot) => {
-        };
-    
+
+        const taskError = (snapshot) => {};
+
         task.on("state_changed", taskProgress, taskError, taskCompleted);
       }
-    }
+    };
     uploadImage();
-
-  },[backImageUrl,frontImageUrl])
-
+  }, [backImageUrl, frontImageUrl]);
 
   return (
     <div className="athleteMeasurements">
       <div className="athleteProfile__leftContainer">
         <Header />
         <h2>Log Weight</h2>
-        <div style={{display:"flex",flex:1,width:"100%",justifyContent:"space-between"}}>
-        <div style={{width:"50%"}}>
-        <Calendar
-        value={selectedDay}
-        onChange={setSelectedDay}
-        colorPrimary="#fcd54a" // added this
-        colorPrimaryLight="blue"
-        calendarClassName="customcalendarScreen" // and this
-        calendarTodayClassName="custom-today-day" // also this
-      />
-        </div>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ width: "50%" }}>
+            <Calendar
+              value={selectedDay}
+              onChange={setSelectedDay}
+              colorPrimary="#fcd54a" // added this
+              colorPrimaryLight="blue"
+              calendarClassName="customcalendarScreen" // and this
+              calendarTodayClassName="custom-today-day" // also this
+            />
+          </div>
 
-        <div style={{width:"47%"}} className="athleteMeasurements__container">
-          <form style={{width:"80%"}}>
-          <h4>Weight*</h4>
-            <input
-              style={{width:"100%"}}
-              defaultValue={userData?.data?.weight}
-              value={weight}
-              onChange={(e) => {
-                setWeight(e.target.value);
-              }}
-              type="text"
-              placeholder="Enter Weight"
-            />
-            <hr style={{width:"90%",marginTop:20}}></hr>
-            <h4>Height*</h4>
-            <input
-              style={{width:"100%"}}
-              defaultValue={userData?.data?.height}
-              value={height}
-              onChange={(e) => {
-                setHeight(e.target.value);
-              }}
-              type="text"
-              placeholder="Enter Height"
-            />
-            <h4>Fat Percentage</h4>
-            <input
-              style={{width:"100%"}}
-              defaultValue={userData?.data?.fat}
-              value={fat}
-              onChange={(e) => {
-                setFat(e.target.value);
-              }}
-              type="text"
-              placeholder="Enter Fat Percentage"
-            />
-            <h4>Muscle Percentage</h4>
-            <input
-              style={{width:"100%"}}
-              placeholder="Enter Muscle Percentage"
-              defaultValue={userData?.data?.muscle}
-              value={muscle}
-              onChange={(e) => {
-                setMuscle(e.target.value);
-              }}
-              type="text"
-              placeholder="Enter Muscle Percentage"
-            />
-            <h6>*Compulsory Fields</h6>
-          </form>
-    <form>
-        <p style={{margin:0,padding:0}}>Front Image</p>
-      <input 
-        style={{width:"80%"}}
-        type="file" 
-        name="user[image]" 
-        multiple="true"
-        onChange={(event)=>setFrontImageUrl(URL.createObjectURL(event.target.files[0]))}/>
-     </form>
-     <form>
-        <p style={{margin:0,padding:0,marginTop:10}}>Back Image</p>
-      <input 
-        style={{width:"80%"}}
-        type="file" 
-        name="user[image]" 
-        multiple="true"
-        onChange={(event)=>setBackImageUrl(URL.createObjectURL(event.target.files[0]))}/>
-     </form>
+          <div
+            style={{ width: "47%" }}
+            className="athleteMeasurements__container"
+          >
+            <form style={{ width: "80%" }}>
+              <h4>Weight*</h4>
+              <input
+                style={{ width: "100%" }}
+                defaultValue={userData?.data?.weight}
+                value={weight}
+                onChange={(e) => {
+                  setWeight(e.target.value);
+                }}
+                type="text"
+                placeholder="Enter Weight"
+              />
+              <hr style={{ width: "90%", marginTop: 20 }}></hr>
+              <h4>Height*</h4>
+              <input
+                style={{ width: "100%" }}
+                defaultValue={userData?.data?.height}
+                value={height}
+                onChange={(e) => {
+                  setHeight(e.target.value);
+                }}
+                type="text"
+                placeholder="Enter Height"
+              />
+              <h4>Fat Percentage</h4>
+              <input
+                style={{ width: "100%" }}
+                defaultValue={userData?.data?.fat}
+                value={fat}
+                onChange={(e) => {
+                  setFat(e.target.value);
+                }}
+                type="text"
+                placeholder="Enter Fat Percentage"
+              />
+              <h4>Muscle Percentage</h4>
+              <input
+                style={{ width: "100%" }}
+                placeholder="Enter Muscle Percentage"
+                defaultValue={userData?.data?.muscle}
+                value={muscle}
+                onChange={(e) => {
+                  setMuscle(e.target.value);
+                }}
+                type="text"
+                placeholder="Enter Muscle Percentage"
+              />
+              <h6>*Compulsory Fields</h6>
+            </form>
+            <form>
+              <p style={{ margin: 0, padding: 0 }}>Front Image</p>
+              <input
+                style={{ width: "80%" }}
+                type="file"
+                name="user[image]"
+                multiple="true"
+                onChange={(event) =>
+                  setFrontImageUrl(URL.createObjectURL(event.target.files[0]))
+                }
+              />
+            </form>
+            <form>
+              <p style={{ margin: 0, padding: 0, marginTop: 10 }}>Back Image</p>
+              <input
+                style={{ width: "80%" }}
+                type="file"
+                name="user[image]"
+                multiple="true"
+                onChange={(event) =>
+                  setBackImageUrl(URL.createObjectURL(event.target.files[0]))
+                }
+              />
+            </form>
 
-              <div className="saveProfileButton" onClick={() => AddDetails()}>
-                <h3>Log Details</h3>
-              </div>
-        
-        </div>
+            <div className="saveProfileButton" onClick={() => AddDetails()}>
+              <h3>Log Details</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>

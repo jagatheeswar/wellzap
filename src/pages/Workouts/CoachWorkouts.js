@@ -11,6 +11,8 @@ function CoachWorkouts() {
   const userData = useSelector(selectUserData);
   const [workouts, setWorkouts] = useState([]);
   const [savedWorkouts, setSavedWorkouts] = useState([]);
+  const [savedLongTermWorkouts, setsavedLongTermWorkouts] = useState([]);
+  const [LongTermWorkouts, setLongTermWorkouts] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -28,11 +30,12 @@ function CoachWorkouts() {
             }))
           );
         });
+
       db.collection("CoachWorkouts")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
         // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
-        .limit(5)
+        .limit(3)
         .onSnapshot((snapshot) => {
           setSavedWorkouts(
             snapshot.docs.map((doc) => ({
@@ -41,10 +44,41 @@ function CoachWorkouts() {
             }))
           );
         });
+
+      db.collection("longTermWorkout")
+        .where("assignedById", "==", userData?.id)
+        .where("saved", "==", false)
+        .where("isLongTerm", "==", true)
+        // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
+        .limit(3)
+        .onSnapshot((snapshot) => {
+          setLongTermWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+      db.collection("longTermWorkout")
+        .where("assignedById", "==", userData?.id)
+        .where("assignedToId", "==", "")
+
+        // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
+        .limit(3)
+        .onSnapshot((snapshot) => {
+          setsavedLongTermWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+
+      console.log(LongTermWorkouts, savedLongTermWorkouts);
     }
   }, [userData?.id]);
 
-  console.log({ workouts });
+  console.log({ LongTermWorkouts });
 
   return (
     <div style={{ minHeight: "99vh" }} className="workouts__home">
@@ -99,6 +133,7 @@ function CoachWorkouts() {
               )}
             </div>
           </Grid>
+
           <Grid item xs={6} className="workouts__homeRightContainer">
             <div
               style={{ width: "90%", display: "flex", alignItems: "center" }}
@@ -135,6 +170,108 @@ function CoachWorkouts() {
                   }}
                 >
                   <h5> There are no saved workouts for now </h5>
+                </div>
+              )}
+            </div>
+          </Grid>
+          <Grid item xs={6} className="workouts__homeLeftContainer">
+            <div
+              style={{
+                width: "90%",
+                paddingLeft: 10,
+                display: "flex",
+                alignItems: "center",
+              }}
+              className="workoutHeading__row"
+            >
+              <h1>Assigned LongTerm Workouts</h1>
+              <p
+                style={{ cursor: "pointer" }}
+                onClick={() => history.push("/all-LongTerm-workouts")}
+              >
+                View All
+              </p>
+            </div>
+            <div style={{ width: "90%" }}>
+              {LongTermWorkouts?.length > 0 ? (
+                LongTermWorkouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={workout.data}
+                    weeks={workout.data.weeks}
+                    isLongTerm={true}
+                    item={workout}
+                    idx={i}
+                    type="view"
+                    navigate={true}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+                    width: "90%",
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+                    marginLeft: 10,
+                  }}
+                >
+                  <h5> There are no assigned workouts for now </h5>
+                </div>
+              )}
+            </div>
+          </Grid>
+
+          <Grid item xs={6} className="workouts__homeLeftContainer">
+            <div
+              style={{
+                width: "90%",
+                paddingLeft: 10,
+                display: "flex",
+                alignItems: "center",
+              }}
+              className="workoutHeading__row"
+            >
+              <h1>Saved LongTerm Workouts</h1>
+              <p
+                style={{ cursor: "pointer" }}
+                onClick={() => history.push("/all-saved-LongTerm-workouts")}
+              >
+                View All
+              </p>
+            </div>
+            {console.log("ss", savedLongTermWorkouts)}
+            <div style={{ width: "90%" }}>
+              {savedLongTermWorkouts?.length > 0 ? (
+                savedLongTermWorkouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    weeks={workout.data.weeks}
+                    item={workout}
+                    idx={i}
+                    selectedWeekNum={workout.data.weeks[0].weeknum}
+                    isLongTerm={true}
+                    type="edit"
+                    navigate={true}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+                    width: "90%",
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+                    marginLeft: 10,
+                  }}
+                >
+                  <h5> There are no assigned workouts for now </h5>
                 </div>
               )}
             </div>

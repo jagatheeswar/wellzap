@@ -30,9 +30,14 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import "date-fns";
 import CoachCreateWorkout from "./CoachCreateWorkout";
 import AssignWorkout from "./AssignWorkout";
-
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import IconButton from "@material-ui/core/IconButton";
 import moment from "moment";
-
+import { useHistory, useLocation } from "react-router-dom";
+import incr_date from "../../functions/incr_date";
+import formatSpecificDate from "../../functions/formatSpecificDate";
+import formatSpecificDate1 from "../../functions/formatSpecificDate1";
 const InputWrapper = styled("div")`
   width: 350px;
   border: 1px solid #d9d9d9;
@@ -178,6 +183,7 @@ const CreateLongTermTrainingPlan = () => {
     // { weeknum: 3, days: {monday: '', tuesday: ''} }
   ]);
 
+  const history = useHistory();
   const [checkBox, setCheckBox] = React.useState([
     { name: "week2", checked: false },
     { name: "week3", checked: false },
@@ -206,10 +212,12 @@ const CreateLongTermTrainingPlan = () => {
   const [selectedDay, setSelectedDay] = React.useState("monday");
   const [selectedDayData, setSelectedDayData] = React.useState(null);
   const [modal, setModal] = React.useState(false);
+  const [show_data, setshow_data] = React.useState([]);
   const [modal1, setModal1] = React.useState(false);
   const [selectedAthletes, setSelectedAthletes] = React.useState([]);
   const [athletes, setAthletes] = useState([]);
   const [weekIndex, setWeekIndex] = useState(0);
+  const [editable, seteditable] = useState(true);
   const [selectedWeeks, setSelectedWeeks] = useState([]);
   const defaultValue = {
     year: 2021,
@@ -222,6 +230,25 @@ const CreateLongTermTrainingPlan = () => {
     month: 0,
     day: 0,
   });
+
+  const [currentStartWeek, setCurrentStartWeek] = useState(null);
+  const [currentEndWeek, setCurrentEndWeek] = useState(null);
+  const [athlete_selecteddays, setathlete_selecteddays] = useState({});
+  const [workoutDuration, setworkoutDuration] = useState(null);
+  const [caloriesBurnEstimate, setcaloriesBurnEstimate] = useState(null);
+  const [workoutDifficulty, setworkoutDifficulty] = useState(null);
+  const [workoutDescription, setworkoutDescription] = useState(null);
+  const [daysList, setDaysList] = useState([
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+  ]);
+  const [specificDates, setSpecificDates] = useState([]);
+  const location = useLocation();
 
   const {
     getRootProps,
@@ -240,6 +267,21 @@ const CreateLongTermTrainingPlan = () => {
     options: athletes,
     getOptionLabel: (option) => option.name,
   });
+
+  useEffect(() => {
+    console.log(location?.state);
+    if (location?.state?.weeks) {
+      let temp = location.state.weeks;
+      setWeeks(temp);
+      let tmp = [];
+      tmp.push(location.state.workout?.selectedAthletes[0]);
+      setshow_data(tmp);
+
+      console.log(location.state.workout);
+      seteditable(location.state.assignType === "view" ? false : true);
+      console.log(location.state.assignType, editable);
+    }
+  }, [location?.state]);
 
   useEffect(() => {
     //console.log("3")
@@ -268,11 +310,6 @@ const CreateLongTermTrainingPlan = () => {
     });
     setSelectedAthletes(value);
   }, [value]);
-
-  useEffect(() => {
-    console.log("weeks ");
-    console.log(JSON.stringify(weeks));
-  }, [weeks]);
 
   useEffect(() => {
     //console.log("5")
@@ -319,7 +356,7 @@ const CreateLongTermTrainingPlan = () => {
 
   useEffect(() => {
     console.log("2");
-    console.log(JSON.stringify(weeks));
+    // console.log(JSON.stringify(weeks));
     if (weeks.length <= 1) {
       setSelectedWeeks(weeks);
     } else {
@@ -329,6 +366,21 @@ const CreateLongTermTrainingPlan = () => {
       }
     }
   }, [weekIndex, weeks]);
+
+  useEffect(() => {
+    if (currentStartWeek) {
+      let temp = currentStartWeek;
+
+      let datesCollection = [];
+
+      for (var i = 0; i < 7; i++) {
+        datesCollection.push(temp);
+        temp = incr_date(temp);
+      }
+
+      setSpecificDates(datesCollection);
+    }
+  }, [currentStartWeek]);
 
   const handleClickOpenDialog = (week, day) => {
     setSelectedWeekNum(week);
@@ -430,38 +482,91 @@ const CreateLongTermTrainingPlan = () => {
       (selectedDate.day <= 9 ? "0" + selectedDate.day : selectedDate.day);
     console.log("date : " + new Date(local_date));
 
-    dat.forEach((id, idx) => {
-      var dat2 = id.days;
-      var keys = Object.keys(dat2);
-      console.log(dat);
-      keys.forEach((id2, idx2) => {
-        if (dat2[id2] != "") {
-          athlete.forEach((ath) => {
-            console.log(addDays(local_date, 7 * idx + idx2));
-            db.collection("workouts")
-              .add({
-                workoutName: "workoutName",
-                assignedById: userData?.id,
-                assignedToId: ath.id,
-                date: formatDate(addDays(local_date, 7 * idx + idx2)),
-                selectedAthletes: [ath],
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                completed: false,
-                preWorkout: dat2[id2].preWorkout,
-                saved: false,
-                coachWorkoutId: "",
-                isLongTerm: true,
-              })
-              .then((e) => {
-                console.log(e);
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          });
-        }
+    let tempdates = [];
+    let tempDate1 = [];
+    console.log("ath", athlete);
+    athlete?.map((ath) => {
+      ath.selectedDays?.map((d) => {
+        tempDate1.push(d);
       });
     });
+    if (athlete?.length > 0 && selectedDate) {
+      dat.forEach((id, idx) => {
+        var dat2 = id.days;
+        var keys = Object.keys(dat2);
+        keys.forEach((id2, idx2) => {
+          athlete?.map((ath) => {
+            tempDate1.push(formatDate(addDays(local_date, 7 * idx + idx2)));
+            if (ath.selectedDays) {
+              ath.selectedDays = [];
+              ath.selectedDays.push(
+                formatDate(addDays(local_date, 7 * idx + idx2))
+              );
+            } else {
+              ath.selectedDays.push(
+                formatDate(addDays(local_date, 7 * idx + idx2))
+              );
+            }
+          });
+          //  console.log(addDays(local_date, 7 * idx + idx2));
+        });
+      });
+      db.collection("longTermWorkout")
+        .add({
+          weeks,
+          completed: false,
+          assignedById: userData?.id,
+          isLongTerm: true,
+          date: formatDate(new Date()),
+
+          saved: false,
+          selectedAthletes: athlete,
+          selectedDates: tempDate1,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+        .then((e) => {
+          console.log(e);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+      dat.forEach((id, idx) => {
+        var dat2 = id.days;
+        var keys = Object.keys(dat2);
+        console.log(dat);
+        keys.forEach((id2, idx2) => {
+          if (dat2[id2] != "") {
+            athlete.forEach((ath) => {
+              console.log(addDays(local_date, 7 * idx + idx2));
+              db.collection("workouts")
+                .add({
+                  workoutName: "workoutName",
+                  assignedById: userData?.id,
+                  assignedToId: ath.id,
+                  date: formatDate(addDays(local_date, 7 * idx + idx2)),
+                  selectedAthletes: [ath],
+                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                  completed: false,
+                  preWorkout: dat2[id2].preWorkout,
+                  saved: false,
+                  coachWorkoutId: "",
+                  isLongTerm: true,
+                })
+                .then((e) => {
+                  console.log(e);
+                  history.push("/workouts");
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            });
+          }
+        });
+      });
+    } else {
+      alert("select atleast one athlete to continue");
+    }
   };
 
   const handleChange = (event) => {
@@ -488,29 +593,315 @@ const CreateLongTermTrainingPlan = () => {
   return (
     <div>
       <WorkoutScreenHeader name="Create Long-Term Workout Plan" />
-      <div
-        style={{
-          justifyContent: "flex-end",
-          alignItems: "flex-end",
-          width: "100%",
-          display: "flex",
-        }}
-      >
+      {editable && (
         <div
           style={{
-            backgroundColor: "#fcd13f",
-            borderRadius: 20,
-            cursor: "pointer",
-            padding: 10,
-            width: 200,
-            marginRight: 20,
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            width: "100%",
+            display: "flex",
           }}
-          onClick={saveLongTermworkout}
         >
-          <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
-            SAVE LONG TERM WORKOUT
-          </h5>
+          <div
+            style={{
+              backgroundColor: "#fcd13f",
+              borderRadius: 20,
+              cursor: "pointer",
+              padding: 10,
+              width: 200,
+              marginRight: 20,
+            }}
+            onClick={saveLongTermworkout}
+          >
+            <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
+              SAVE LONG TERM WORKOUT
+            </h5>
+          </div>
         </div>
+      )}
+
+      <div
+        style={{
+          //  marginLeft: "4%",
+          marginTop: 20,
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+
+          backgroundColor: "white",
+          borderRadius: 10,
+          //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        {!editable && (
+          <div>
+            {console.log(show_data)}
+            {show_data?.map((athlete, index) => (
+              <div
+                key={index}
+                style={{
+                  //  marginLeft: "4%",
+                  marginTop: 20,
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+
+                  backgroundColor: "white",
+                  borderRadius: 10,
+                  //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    // backgroundColor: "#fcd54a",
+                    borderRadius: "10px",
+                    height: "45px",
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "35px",
+                      height: "35px",
+                      borderRadius: "10px",
+                      marginLeft: "20px",
+                      marginRight: "20px",
+                    }}
+                    src={athlete?.imageUrl ? athlete?.imageUrl : null}
+                  />
+                  <h2
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      lineHeight: "28px",
+                      color: "black",
+                    }}
+                  >
+                    {athlete?.name}
+                  </h2>
+                </div>
+                {!editable && (
+                  <h2
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      marginTop: "10px",
+                      lineHeight: "28px",
+                      marginLeft: "1%",
+                    }}
+                  >
+                    Select days
+                  </h2>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                    marginBottom: "10px",
+                    width: "45%",
+                  }}
+                >
+                  <div
+                    style={{
+                      marginLeft: "3%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "50%",
+                    }}
+                  >
+                    <IconButton
+                      style={{
+                        marginRight: "10px",
+                        marginLeft: "25%",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      onClick={() => {
+                        var curr = new Date(currentStartWeek); // get current date
+                        var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
+
+                        var firstday = new Date(
+                          curr.setDate(first)
+                        ).toUTCString();
+                        var lastday = new Date(
+                          curr.setDate(curr.getDate() + 6)
+                        ).toUTCString();
+                        if (new Date(currentStartWeek) > new Date()) {
+                          setCurrentStartWeek(formatSpecificDate(firstday));
+                          setCurrentEndWeek(formatSpecificDate(lastday));
+                        }
+                      }}
+                    >
+                      <ChevronLeftIcon />
+                    </IconButton>
+                    {daysList.map((day, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          if (!editable) {
+                            console.log(day);
+                            if (
+                              athlete?.selectedDays?.includes(
+                                specificDates[idx]
+                              )
+                            ) {
+                              let selected =
+                                selectedAthletes[index].selectedDays;
+                              var index1 = selected.indexOf(specificDates[idx]);
+                              if (index1 !== -1) {
+                                selected.splice(index1, 1);
+                                selectedAthletes[index] = {
+                                  ...selectedAthletes[index],
+                                  selected,
+                                };
+                                setSelectedAthletes([...selectedAthletes]);
+                              }
+                            } else {
+                              if (
+                                new Date(specificDates[idx]) > new Date() ||
+                                specificDates[idx] === formatDate()
+                              ) {
+                                let selectedDays =
+                                  selectedAthletes[index].selectedDays;
+                                selectedAthletes[index] = {
+                                  ...selectedAthletes[index],
+                                  selectedDays: [
+                                    ...selectedDays,
+                                    specificDates[idx],
+                                  ],
+                                };
+                                setSelectedAthletes([...selectedAthletes]);
+                              }
+                            }
+                          }
+                        }}
+                        style={
+                          athlete?.selectedDays?.includes(specificDates[idx])
+                            ? {
+                                backgroundColor: "#fcd54a",
+                                color: "#fff",
+                                width: "85px",
+                                height: "25px",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                position: "relative",
+                                borderRadius: "8px",
+                                marginRight: "2px",
+                                marginBottom: "5px",
+                                padding: "5px",
+                                cursor: "pointer",
+                              }
+                            : {
+                                width: "85px",
+                                height: "25px",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                position: "relative",
+                                borderRadius: "8px",
+                                marginRight: "2px",
+                                marginBottom: "5px",
+                                padding: "5px",
+                                cursor: "pointer",
+                              }
+                        }
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              fontWeight: "600",
+                              lineHeight: "20px",
+                              width: "80%",
+                              textAlign: "center",
+                              padding: "5px",
+                              color: athlete?.selectedDays?.includes(
+                                specificDates[idx]
+                              )
+                                ? "black"
+                                : "black",
+                            }}
+                          >
+                            {day}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    <IconButton
+                      style={{
+                        marginLeft: "10%",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      onClick={() => {
+                        var curr = new Date(currentStartWeek); // get current date
+                        var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
+
+                        var firstday = new Date(
+                          curr.setDate(first)
+                        ).toUTCString();
+                        var lastday = new Date(
+                          curr.setDate(curr.getDate() + 6)
+                        ).toUTCString();
+
+                        setCurrentStartWeek(formatSpecificDate(firstday));
+                        setCurrentEndWeek(formatSpecificDate(lastday));
+                      }}
+                    >
+                      <ChevronRightIcon />
+                    </IconButton>
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: "500",
+                      lineHeight: "18px",
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                      width: "100%",
+                      height: "25px",
+                      marginLeft: "45px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {specificDates?.map((tempDate, idx) => (
+                      <div
+                        style={{
+                          width: "43px",
+                          height: "30px",
+                        }}
+                        key={idx}
+                      >
+                        <div
+                          style={{
+                            fontSize: "10px",
+                            fontWeight: "500",
+                            lineHeight: "18px",
+                            width: "100%",
+                            paddingLeft: "5px",
+                            paddingRight: "5px",
+                            paddingBottom: "5px",
+                            textAlign: "center",
+                          }}
+                        >
+                          {formatSpecificDate1(tempDate)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div
@@ -558,8 +949,8 @@ const CreateLongTermTrainingPlan = () => {
           }}
         >
           <p>Week</p>{" "}
-          {weeks.length <= 6
-            ? weeks.map((i) => (
+          {weeks?.length <= 6
+            ? weeks?.map((i) => (
                 <p
                   onClick={() => setWeekIndex(i.weeknum - 1)}
                   style={{
@@ -680,7 +1071,7 @@ const CreateLongTermTrainingPlan = () => {
       </div>
       <div
         className="weeksContainer"
-        style={{ overflow: "auto", width: "115vh", marginLeft: 20 }}
+        style={{ overflow: "auto", marginLeft: 20 }}
       >
         <div
           className="eachWeek"
@@ -718,20 +1109,22 @@ const CreateLongTermTrainingPlan = () => {
                   padding: 1,
                 }}
               >
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <p style={{ marginLeft: 20 }}>Workout Plan</p>
-                  <p
-                    onClick={() => {
-                      setWeekIndex(index.weeknum);
-                      handleClickOpenDialogCopy();
-                    }}
-                    style={{ marginRight: 20, cursor: "pointer" }}
+                {editable && (
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    Copy
-                  </p>
-                </div>
+                    <p style={{ marginLeft: 20 }}>Workout Plan</p>
+                    <p
+                      onClick={() => {
+                        setWeekIndex(index.weeknum);
+                        handleClickOpenDialogCopy();
+                      }}
+                      style={{ marginRight: 20, cursor: "pointer" }}
+                    >
+                      Copy
+                    </p>
+                  </div>
+                )}
                 <div
                   style={{
                     alignSelf: "center",
@@ -739,7 +1132,9 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    marginLeft: 10,
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -749,6 +1144,7 @@ const CreateLongTermTrainingPlan = () => {
                   {index.days.monday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "monday")
                       }
                       style={{
@@ -785,24 +1181,26 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           MONDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = [...weeks];
-                            temp[index.weeknum - 1].days.monday = "";
-                            console.log("delete temp");
-                            console.log(JSON.stringify(temp));
-                            setWeeks(temp);
-                            setWeekIndex(index.weeknum - 1);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = [...weeks];
+                              temp[index.weeknum - 1].days.monday = "";
+                              console.log("delete temp");
+                              console.log(JSON.stringify(temp));
+                              setWeeks(temp);
+                              setWeekIndex(index.weeknum - 1);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -827,7 +1225,7 @@ const CreateLongTermTrainingPlan = () => {
                               fontWeight: "600",
                             }}
                           >
-                            {index.days.monday?.preWorkout.workoutName}
+                            {index.days.monday?.preWorkout?.workoutName}
                           </p>
                           <p
                             style={{
@@ -872,7 +1270,10 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    margin: 10,
+
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -881,9 +1282,10 @@ const CreateLongTermTrainingPlan = () => {
                 >
                   {index.days.tuesday == "" ? (
                     <div
-                      onClick={() =>
-                        handleClickOpenDialog(index.weeknum, "tuesday")
-                      }
+                      onClick={() => {
+                        editable &&
+                          handleClickOpenDialog(index.weeknum, "tuesday");
+                      }}
                       style={{
                         justifyContent: "center",
                         height: "100%",
@@ -918,22 +1320,24 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           TUESDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = weeks;
-                            temp[index.weeknum - 1].days.tuesday = "";
-                            setWeekIndex(index.weeknum);
-                            setWeeks(temp);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = weeks;
+                              temp[index.weeknum - 1].days.tuesday = "";
+                              setWeekIndex(index.weeknum);
+                              setWeeks(temp);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -1003,7 +1407,10 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    margin: 10,
+
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -1013,6 +1420,7 @@ const CreateLongTermTrainingPlan = () => {
                   {index.days.wednesday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "wednesday")
                       }
                       style={{
@@ -1049,22 +1457,24 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           WEDNESDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = weeks;
-                            temp[index.weeknum - 1].days.wednesday = "";
-                            setWeekIndex(index.weeknum);
-                            setWeeks(temp);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = weeks;
+                              temp[index.weeknum - 1].days.wednesday = "";
+                              setWeekIndex(index.weeknum);
+                              setWeeks(temp);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -1137,7 +1547,10 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    margin: 10,
+
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -1147,6 +1560,7 @@ const CreateLongTermTrainingPlan = () => {
                   {index.days.thursday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "thursday")
                       }
                       style={{
@@ -1183,22 +1597,24 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           THURSDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = weeks;
-                            temp[index.weeknum - 1].days.thursday = "";
-                            setWeekIndex(index.weeknum);
-                            setWeeks(temp);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = weeks;
+                              temp[index.weeknum - 1].days.thursday = "";
+                              setWeekIndex(index.weeknum);
+                              setWeeks(temp);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -1268,7 +1684,10 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    margin: 10,
+
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -1278,6 +1697,7 @@ const CreateLongTermTrainingPlan = () => {
                   {index.days.friday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "friday")
                       }
                       style={{
@@ -1314,22 +1734,24 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           FRIDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = weeks;
-                            temp[index.weeknum - 1].days.friday = "";
-                            setWeekIndex(index.weeknum);
-                            setWeeks(temp);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = weeks;
+                              temp[index.weeknum - 1].days.friday = "";
+                              setWeekIndex(index.weeknum);
+                              setWeeks(temp);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -1399,7 +1821,10 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    margin: 10,
+
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -1409,6 +1834,7 @@ const CreateLongTermTrainingPlan = () => {
                   {index.days.saturday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "saturday")
                       }
                       style={{
@@ -1445,22 +1871,24 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           SATURDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = weeks;
-                            temp[index.weeknum - 1].days.saturday = "";
-                            setWeekIndex(index.weeknum);
-                            setWeeks(temp);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = weeks;
+                              temp[index.weeknum - 1].days.saturday = "";
+                              setWeekIndex(index.weeknum);
+                              setWeeks(temp);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -1530,7 +1958,10 @@ const CreateLongTermTrainingPlan = () => {
                     height: 130,
                     cursor: "pointer",
                     width: 350,
-                    margin: 10,
+
+                    marginTop: 20,
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     border: "1px solid #727272",
                     alignItems: "center",
                     borderRadius: 15,
@@ -1540,6 +1971,7 @@ const CreateLongTermTrainingPlan = () => {
                   {index.days.sunday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "sunday")
                       }
                       style={{
@@ -1576,22 +2008,24 @@ const CreateLongTermTrainingPlan = () => {
                         >
                           SUNDAY
                         </p>
-                        <p
-                          onClick={() => {
-                            var temp = weeks;
-                            temp[index.weeknum - 1].days.sunday = "";
-                            setWeekIndex(index.weeknum);
-                            setWeeks(temp);
-                          }}
-                          style={{
-                            marginLeft: 10,
-                            marginTop: 2,
-                            marginBottom: 4,
-                            marginRight: 20,
-                          }}
-                        >
-                          x
-                        </p>
+                        {editable && (
+                          <p
+                            onClick={() => {
+                              var temp = weeks;
+                              temp[index.weeknum - 1].days.sunday = "";
+                              setWeekIndex(index.weeknum);
+                              setWeeks(temp);
+                            }}
+                            style={{
+                              marginLeft: 10,
+                              marginTop: 2,
+                              marginBottom: 4,
+                              marginRight: 20,
+                            }}
+                          >
+                            x
+                          </p>
+                        )}
                       </div>
                       <Grid
                         onClick={() => {
@@ -1659,7 +2093,7 @@ const CreateLongTermTrainingPlan = () => {
               </div>
             </div>
           ))}
-          {weeks.length <= 1 || weeks.length == weekIndex + 1 ? (
+          {editable && (weeks.length <= 1 || weeks.length == weekIndex + 1) ? (
             <div
               style={{
                 flexDirection: "column",
@@ -1921,8 +2355,11 @@ const CreateLongTermTrainingPlan = () => {
                   weeks,
                   completed: false,
                   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                  assigned_to: [],
-                  assigned_by: userData?.id,
+                  assignedToId: "",
+                  assignedById: userData?.id,
+                  date: formatDate(new Date()),
+
+                  isLongTerm: true,
                 });
                 setModal(false);
                 setModal1(true);
@@ -2039,7 +2476,7 @@ const CreateLongTermTrainingPlan = () => {
               marginRight: 20,
             }}
           >
-            Assign workout Plan1
+            Assign workout Plan
           </button>
         </DialogActions>
       </Dialog>

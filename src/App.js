@@ -68,9 +68,20 @@ import { Grid } from "@material-ui/core";
 import CoachProfile from "./pages/Profile/CoachProfile";
 import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
 import ViewAllPastWorkouts from "./pages/Workouts/ViewAllPastWorkouts";
-import AthleteHistory from "./pages/AllAthletes/AthleteHistory"
+import AthleteHistory from "./pages/AllAthletes/AthleteHistory";
 import PrintPreview from "./pages/Reports/PrintPreview";
-
+import ViewAllSavedLongTermWorkouts from "./pages/Workouts/ViewAllSavedLongTermWorkouts";
+import ViewAllAssignedLongTermWorkouts from "./pages/Workouts/ViewAllAssignedLongTermWorkouts";
+import LongTermNutrition from "./pages/Nutrition/ViewAllLongTerm";
+import VideoUpload from "./pages/VOD/VideoUpload";
+import VODHome from "./pages/VOD/VODHome";
+import ViewAllUploadedVideos from "./pages/VOD/ViewAllUploadedvideos";
+import ViewAllAssignedVideos from "./pages/VOD/ViewAllAssignedvideos";
+import AssignVideo from "./pages/VOD/AssignVideo";
+import AthleteAssignedVideos from "./pages/Workouts/athleteassignedvideos";
+import SavedLongTermNutrition from "./pages/Nutrition/ViewAllSavedLongTerm";
+import AthleteCreateWorkout from "./pages/Workouts/AthleteCreateWorkout";
+import AthleteWorkoutsList from "./pages/Workouts/AthleteWorkoutsList";
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
@@ -308,7 +319,34 @@ function App() {
                 CoachComp={<AthleteMedicalAssessment_coach />}
               ></RoutesComp>
             </Route>
+            <Route path="/uploadvideo">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<VideoUpload />}
+              />
+            </Route>
+            <Route path="/vod">
+              <RoutesComp AthleteComp={<NotFound />} CoachComp={<VODHome />} />
+            </Route>
+            <Route path="/uploaded-videos">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<ViewAllUploadedVideos />}
+              />
+            </Route>
 
+            <Route path="/assigned-videos">
+              <RoutesComp
+                AthleteComp={<AthleteAssignedVideos />}
+                CoachComp={<ViewAllAssignedVideos />}
+              />
+            </Route>
+            <Route path="/assignvideo">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AssignVideo />}
+              />
+            </Route>
             <Route path="/workouts">
               <RoutesComp
                 AthleteComp={<AthleteWorkouts />}
@@ -321,10 +359,41 @@ function App() {
                 CoachComp={<ViewAllWorkouts />}
               />
             </Route>
+            <Route path="/my-workouts">
+              <RoutesComp
+                AthleteComp={<AthleteWorkoutsList />}
+                CoachComp={<NotFound />}
+              />
+            </Route>
             <Route path="/view-all-saved-workouts">
               <RoutesComp
                 AthleteComp={<ViewAllSavedWorkouts />}
                 CoachComp={<ViewAllSavedWorkouts />}
+              />
+            </Route>
+            <Route path="/all-saved-LongTerm-workouts">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<ViewAllSavedLongTermWorkouts />}
+              />
+            </Route>
+
+            <Route path="/all-LongTerm-workouts">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<ViewAllAssignedLongTermWorkouts />}
+              />
+            </Route>
+            <Route path="/all-LongTerm-Nutrition">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<LongTermNutrition />}
+              />
+            </Route>
+            <Route path="/all-saved-LongTerm-Nutrition">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<SavedLongTermNutrition />}
               />
             </Route>
             <Route path="/view-all-past-workouts">
@@ -341,7 +410,7 @@ function App() {
             </Route>
             <Route path="/create-workout">
               <RoutesComp
-                AthleteComp={<CoachCreateWorkout />}
+                AthleteComp={<AthleteCreateWorkout />}
                 CoachComp={<CoachAddWorkout />}
               />
             </Route>

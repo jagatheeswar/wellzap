@@ -1,28 +1,32 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import NutritionCard from "../../Components/NutritionCard/NutritionCard";
+import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import NutritionScreenHeader from "./NutritionScreenHeader";
-
 import SearchIcon from "@material-ui/icons/Search";
-
 import ClearIcon from "@material-ui/icons/Clear";
+
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 
-function ViewAllNutrition() {
+function SavedLongTermNutrition(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
-  const [nutrition, setNutrition] = React.useState([]);
+  const [workouts, setWorkouts] = React.useState([]);
+  const [savedWorkouts, setsavedWorkouts] = useState([]);
   const [type, setType] = React.useState("");
   const [athleteId, setAthleteId] = React.useState("");
-  const [assignedMealplans, setassignedMealplans] = React.useState(null);
+  const [completed, setCompleted] = React.useState(false);
 
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
+  const [LongTermNutrition, setLongTermNutrition] = React.useState([]);
 
+  const [sorting, setsorting] = React.useState("desc");
+  const [openSearch, setopenSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
 
   document.addEventListener("mouseup", function (e) {
@@ -30,79 +34,87 @@ function ViewAllNutrition() {
       setShowFilter(false);
     }
   });
-  const [sorting, setsorting] = React.useState("desc");
+
   React.useEffect(() => {
     if (userData) {
       if (userType === "athlete") {
-        db.collection("Food")
-          .where("assignedTo_id", "==", userData?.id)
-          .where("saved", "==", false)
-          .orderBy("timestamp", sorting)
+        db.collection("workouts")
+          .where("assignedToId", "==", userData?.id)
+          .where("completed", "==", true)
+          //.orderBy("date","desc")
           .onSnapshot((snapshot) => {
-            if (snapshot) {
-              setNutrition(
-                snapshot.docs.map((doc) => ({
-                  id: doc.id,
-                  data: doc.data(),
-                }))
-              );
-            }
+            setWorkouts(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data(),
+              }))
+            );
           });
       } else {
-        if (athleteId) {
-          db.collection("Food")
-            .where("from_id", "==", userData?.id)
-            .where("assignedTo_id", "==", athleteId)
-            .where("saved", "==", false)
-            .orderBy("timestamp", sorting)
+        if (type && athleteId) {
+          db.collection("workouts")
+            .where("assignedToId", "==", athleteId)
+            .where("assignedTo", "==", false)
+            .where("completed", "==", completed)
             .onSnapshot((snapshot) => {
               if (snapshot) {
-                setNutrition(
+                console.log("Inside snapshot");
+                setWorkouts(
                   snapshot.docs.map((doc) => ({
                     id: doc.id,
                     data: doc.data(),
                   }))
                 );
+              } else {
+                console.log("outside snapshot");
+                setWorkouts([]);
               }
             });
         } else {
-          console.log("sni");
-          db.collection("Food")
-            .where("from_id", "==", userData?.id)
-            .where("saved", "==", false)
-            .orderBy("timestamp", sorting)
-
-            .onSnapshot((snapshot) => {
-              if (snapshot) {
-                setNutrition(
-                  snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data(),
-                  }))
-                );
-              }
-            });
+          // db.collection("CoachWorkouts")
+          //   .where("assignedById", "==", userData?.id)
+          //   .where("saved", "==", false)
+          //   .onSnapshot((snapshot) => {
+          //     setWorkouts(
+          //       snapshot.docs.map((doc) => ({
+          //         id: doc.id,
+          //         data: doc.data(),
+          //       }))
+          //     );
+          //   });
         }
       }
     }
-  }, [userData?.id, athleteId, sorting]);
+  }, [userData?.id, athleteId]);
+  useEffect(() => {
+    if (userType == "coach") {
+      db.collection("longTermMeal")
+        .where("assignedById", "==", userData?.id)
+        .where("assignedToId", "==", "")
+
+        .orderBy("timestamp", sorting)
+        .onSnapshot((snapshot) => {
+          setLongTermNutrition(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+    }
+  }, [userData?.id, sorting, userType]);
 
   React.useEffect(() => {
-    setSearchList(nutrition);
-    setassignedMealplans(nutrition);
-
-    // nutrition?.forEach((d) => {
-    //   if (d.data.isLongTerm) {
-    //     console.log(d);
-    //   }
-    // });
-    console.log(nutrition);
-  }, [nutrition]);
+    setSearchList(LongTermNutrition);
+    console.log(LongTermNutrition);
+  }, [LongTermNutrition]);
 
   React.useEffect(async () => {
+    SetSearhLoading(true);
+
     if (search?.length > 0) {
-      const names = await assignedMealplans?.filter((workout) => {
-        return workout.data.nutrition.nutritionName
+      const names = await LongTermNutrition?.filter((workout) => {
+        return workout.data.preWorkout.workoutName
           .toLowerCase()
           .includes(search.toLowerCase());
       });
@@ -110,42 +122,19 @@ function ViewAllNutrition() {
       setSearchList(names);
       SetSearhLoading(false);
     } else {
-      setSearchList(assignedMealplans);
+      setSearchList(LongTermNutrition);
       SetSearhLoading(false);
     }
-  }, [search, assignedMealplans]);
-
-  // React.useEffect(async () => {
-  //   if (userType == "athlete") {
-  //     let data = {};
-  //     var data1 = [];
-
-  //     if (nutrition) {
-  //       nutrition.forEach((item) => {
-  //         item.data.selectedDays.forEach((val) => {
-  //           let temp = [];
-  //           temp = { ...item };
-  //           temp["currentdate"] = val;
-  //           data1.push(temp);
-  //         });
-  //       });
-  //     }
-  //     setassignedMealplans(data1);
-  //     setSearchList(data1);
-  //   } else {
-  //     setSearchList(nutrition);
-  //   }
-  //   console.log(nutrition)
-  // }, [nutrition]);
+  }, [search]);
 
   const options = [
     { value: "asc", label: "Recent" },
     { value: "desc", label: "old" },
   ];
-
   return (
-    <div style={{ minHeight: "99.7vh" }}>
-      <NutritionScreenHeader name="Assigned Meal Plans" />
+    <div style={{ minHeight: "99.6vh" }}>
+      <NutritionScreenHeader name="Assigned LongTerm Meal" />
+
       <div
         style={{
           display: "flex",
@@ -154,13 +143,15 @@ function ViewAllNutrition() {
       >
         <div
           style={{
-            margin: 20,
-            backgroundColor: "white",
+            marginTop: 20,
+            marginLeft: 20,
+            backgroundColor: openSearch && "white",
             padding: 5,
             display: "flex",
             alignItems: "center",
-            border: "1px solid black",
-            width: "500px",
+            border: openSearch && "1px solid black",
+            width: openSearch ? "500px" : "35px",
+            transition: "all 0.5s",
             borderRadius: 10,
           }}
         >
@@ -168,6 +159,7 @@ function ViewAllNutrition() {
             value={search}
             style={{
               width: "100%",
+              display: openSearch ? "block" : "none",
 
               fontSize: 20,
               outline: "none",
@@ -178,12 +170,19 @@ function ViewAllNutrition() {
             }}
           />
           {search?.length == 0 ? (
-            <SearchIcon
-              style={{
-                width: 30,
-                height: 30,
+            <div
+              onClick={() => {
+                setopenSearch(true);
+                setsearch("");
               }}
-            />
+            >
+              <SearchIcon
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </div>
           ) : (
             <div
               onClick={() => {
@@ -276,14 +275,14 @@ function ViewAllNutrition() {
           />
         </div>
       </div>
-      {search.length > 0 && (
+      {search?.length > 0 && (
         <div
           style={{
             fontSize: 13,
             marginLeft: 20,
           }}
         >
-          {SearchList?.length} search results loaded
+          {SearchList?.length} results found
         </div>
       )}
       <div
@@ -305,42 +304,44 @@ function ViewAllNutrition() {
             paddingLeft: "15px",
             paddingRight: "15px",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             alignItems: "center",
+            flexWrap: "wrap",
           }}
         >
           {SearchList?.length > 0 ? (
             SearchList?.map((food, idx) => (
-              <NutritionCard
-                key={idx}
-                nutrition={nutrition}
-                food={food}
-                idx={idx}
-                navigation={"ViewAllNutrition"}
-                type="view"
-                selectedDate={food.currentdate}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <NutritionCard
+                  key={idx}
+                  weeks={food.data.weeks}
+                  isLongTerm={true}
+                  idx={idx}
+                  selectedWeekNum={food.data.weeks[0].weeknum}
+                  navigate={true}
+                  type="edit"
+                />
+              </div>
             ))
           ) : (
             <div
               style={{
+                fontSize: "13px",
                 backgroundColor: "#fff",
                 width: "100%",
-                height: 90,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                padding: "10px 20px",
+                textAlign: "center",
                 borderRadius: "5px",
+                fontWeight: "normal",
               }}
             >
-              <h5
-                style={{
-                  fontSize: "12px",
-                  fontWeight: "normal",
-                }}
-              >
-                There are no nutrition for now
-              </h5>
+              <h5> There are no saved LongTerm workouts for now </h5>
             </div>
           )}
         </div>
@@ -349,4 +350,4 @@ function ViewAllNutrition() {
   );
 }
 
-export default ViewAllNutrition;
+export default SavedLongTermNutrition;
