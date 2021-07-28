@@ -111,7 +111,8 @@ function Event_card(props) {
                   }}} href={item.showVideoLink && item.videolink}>
                 {item.showVideoLink && item.videolink}
               </a> : 
-              item.showVideoLink && item.videolink
+              <span style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={() => window.open(item.showVideoLink && item.videolink)}>{item.showVideoLink && item.videolink}</span>
+              
               }
             </div>
 

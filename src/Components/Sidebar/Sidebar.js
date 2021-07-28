@@ -72,6 +72,7 @@ function Sidebar() {
               name="Messaging"
               path="messaging"
             />
+            <SidebarComponent logo="settings" name="Support" />
           </div>
         )}
       </div>

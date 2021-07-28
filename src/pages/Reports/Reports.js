@@ -379,8 +379,8 @@ const Reports = (props) => {
                 position: "absolute",
                 marginLeft: "auto",
                 marginRight: "auto",
-                transform: "translateX(50%)",
-                top: 240,
+                transform: "translateX(40%)",
+                top: 220,
               }}
             >
               No data available to show

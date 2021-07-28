@@ -140,7 +140,7 @@ function Login() {
             >
               Login
             </button>
-            <h6 className="login__heading">New to Training Essence?</h6>
+            <h6 className="login__heading">New to Wellzap?</h6>
             <Link className="signup-link" to="/signup">
               Create Account
             </Link>

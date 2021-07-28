@@ -126,6 +126,7 @@ function AthleteAddMeal() {
       />
       <div
         className="athleteFoodCard__submitMealButton"
+        style={{marginBottom: 20}}
         onClick={() => {
           if (type === "non-editable") {
             history.goBack();

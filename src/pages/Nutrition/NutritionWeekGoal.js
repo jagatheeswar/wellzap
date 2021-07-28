@@ -131,19 +131,17 @@ function NutritionWeekGoal() {
       <div className="weekGoalContainer">
         {/* <Typography variant="h6" style={{fontWeight:"normal"}}>Average Macronutrients consumed</Typography> */}
         <div style={{textAlign:'center', marginTop: 15, display:'flex',justifyContent:'center',alignItems:'center' }}>
-         
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            minDate={mindate}
-            placeholderText="MM:DD:YYYY"
-
-          />
-          <span>and</span>
           <DatePicker
             selected={endDate}
             maxDate={new Date()}
             onChange={(date) => setEndDate(date)}
+            placeholderText="MM:DD:YYYY"
+          />
+          <span>and</span>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            minDate={mindate}
             placeholderText="MM:DD:YYYY"
           />
         </div>

@@ -183,7 +183,7 @@ function AthleteDashboard(props) {
   console.log({ workouts, nutrition, userData });
 
   return (
-    <div className="coachDashboard__container">
+    <div style={{paddingBottom: 20}} className="coachDashboard__container">
       <h1 style={{ fontSize: 23, fontFamily: "Open_Sans" }}>Dashboard</h1>
       <Grid container spacing={2}>
         <Grid item xs={6} className="coachDashboard__leftContainer">
