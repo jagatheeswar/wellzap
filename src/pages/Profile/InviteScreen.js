@@ -122,20 +122,20 @@ function InviteScreen({ route, navigation }) {
 
   const decline = () => {
     if (window.confirm("Confirm decline request")) {
-      // db.collection("declinedInvites")
-      //   .add(data)
-      //   .then((id) => {
-      //     db.collection("invites")
-      //       .doc(location?.state.id)
-      //       .delete()
-      //       .catch(function (error) {
-      //         console.log("Error getting documents: ", error);
-      //       });
-      //     history.push("/all-athletes");
-      //   })
-      //   .catch(function (error) {
-      //     console.log("Error getting documents: ", error);
-      //   });
+      db.collection("declinedInvites")
+        .add(data)
+        .then((id) => {
+          db.collection("invites")
+            .doc(location?.state.id)
+            .delete()
+            .catch(function (error) {
+              console.log("Error getting documents: ", error);
+            });
+          history.push("/all-athletes");
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
 
       history.push("/all-athletes");
     }
