@@ -23,6 +23,8 @@ function AllAthletes() {
 
   const [sorting, setsorting] = React.useState("asc");
   const [openSearch, setopenSearch] = React.useState(false);
+  const [showFilter, setShowFilter] = React.useState(false);
+
   useEffect(() => {
     if (userData?.id) {
       const data = [];
@@ -102,15 +104,14 @@ function AllAthletes() {
       >
         <div
           style={{
-            marginTop: 20,
             marginLeft: 20,
-            backgroundColor: openSearch && "white",
+            backgroundColor: "white",
             padding: 5,
             display: "flex",
             alignItems: "center",
-            border: openSearch && "1px solid black",
-            width: openSearch ? "500px" : "35px",
-            transition: "all 0.5s",
+            border: "1px solid black",
+            width: 500,
+
             borderRadius: 10,
           }}
         >
@@ -118,7 +119,7 @@ function AllAthletes() {
             value={search}
             style={{
               width: "100%",
-              display: openSearch ? "block" : "none",
+              display: "block",
 
               fontSize: 20,
               outline: "none",
@@ -157,11 +158,9 @@ function AllAthletes() {
             </div>
           )}
         </div>
-
-        <div
+        {/* <div
           style={{
             width: 150,
-            marginLeft: "auto",
           }}
         >
           <Dropdown
@@ -171,6 +170,82 @@ function AllAthletes() {
               setsorting(s.value);
             }}
           />
+        </div> */}
+        <div
+          style={{
+            display: "flex",
+            position: "relative",
+            width: "100px",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <div className="filter_icon">
+            <img
+              onClick={() => {
+                setShowFilter(!showFilter);
+              }}
+              src="/assets/filter.png"
+              width="35px"
+              height="35px"
+            />
+          </div>
+          <div
+            className="filter"
+            style={{
+              position: "absolute",
+              marginTop: 40,
+              display: showFilter ? "block" : "none",
+              border: "1px solid black",
+              fontSize: 12,
+              borderRadius: 10,
+            }}
+          >
+            <div
+              onClick={() => {
+                setsorting("desc");
+                setShowFilter(false);
+              }}
+              style={{
+                padding: 10,
+                borderBottom: "1px solid black",
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
+              }}
+            >
+              Recent
+            </div>
+            <div
+              onClick={() => {
+                setsorting("asc");
+                setShowFilter(false);
+              }}
+              style={{
+                padding: 10,
+                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
+
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}
+            >
+              oldest to new
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            backgroundColor: "#fcd11c",
+            padding: "8px 10px",
+            borderRadius: 10,
+            marginLeft: "auto",
+          }}
+          onClick={() => {
+            history.push("/pending-invites");
+          }}
+        >
+          <div>pending invites</div>
         </div>
       </div>
       {search?.length > 0 && (
@@ -226,7 +301,7 @@ function AllAthletes() {
                 outline: "none",
                 border: "none",
                 padding: "5px 10px",
-                backgroundColor: "#fcd54a",
+                backgroundColor: "#ffe486",
                 borderRadius: 8,
                 cursor: "pointer",
               }}

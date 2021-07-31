@@ -9,6 +9,9 @@ import {
   setUserType,
   setUserVerified,
 } from "./features/userSlice";
+
+import { isMobile } from "react-device-detect";
+
 import { db } from "./utils/firebase";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -82,21 +85,27 @@ import AthleteAssignedVideos from "./pages/Workouts/athleteassignedvideos";
 import SavedLongTermNutrition from "./pages/Nutrition/ViewAllSavedLongTerm";
 import AthleteCreateWorkout from "./pages/Workouts/AthleteCreateWorkout";
 import AthleteWorkoutsList from "./pages/Workouts/AthleteWorkoutsList";
+import DisabledHome from "./pages/Home/DisabledHome";
+import InvitesList from "./pages/Profile/InviteList";
+import InviteScreen from "./pages/Profile/InviteScreen";
+
 function App() {
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
   const dispatch = useDispatch();
-  var d = new Date();
-  d.setHours(0, 0, 0, 0);
-  //(new Date().setHours(0, 0, 0, 0));
+
+  const [checkactive, setCheckactive] = useState(true);
   const [selectedDate, setselectedDate] = useState(
     new Date().setHours(0, 0, 0, 0)
   );
+  const [deviceMobile, setdeviceMobile] = useState(isMobile);
+  const [active, setActive] = useState(true);
 
   const toggle_date = (date) => {
     setselectedDate(date);
     console.log("ch", date);
   };
+  console.log(12111, isMobile);
 
   useEffect(() => {
     if (user) {
@@ -141,13 +150,19 @@ function App() {
                 data: doc.data(),
               })
             );
+
+            console.log("active", doc.data().active);
+            setActive(
+              doc.data().active !== undefined
+                ? doc.data().active === true
+                  ? true
+                  : false
+                : true
+            );
           });
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
     }
-  }, [user]);
+  }, [user, checkactive]);
 
   useEffect(() => {
     const getData = async () => {
@@ -181,20 +196,94 @@ function App() {
       console.log({ userType });
       return (
         <div className="home__container">
-          <Grid container>
-            <Grid item xs={2}>
-              <Sidebar />
+          {deviceMobile ? (
+            <div
+              style={{
+                minHeight: "99.99vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <h4>Please use our mobile app for better experience</h4>
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: 30,
+                  }}
+                >
+                  <div className="devicebutton">
+                    <button
+                      style={{
+                        border: "none",
+                        padding: 20,
+                        backgroundColor: "#ffe486",
+                        borderRadius: 10,
+                      }}
+                    >
+                      Android
+                    </button>
+                  </div>
+
+                  <div className="devicebutton" style={{ marginLeft: 50 }}>
+                    <button
+                      style={{
+                        border: "none",
+                        padding: 20,
+                        backgroundColor: "#ffe486",
+                        borderRadius: 10,
+                      }}
+                    >
+                      Android
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setdeviceMobile(!deviceMobile);
+                  }}
+                  className="devicebutton"
+                >
+                  <p style={{ textDecoration: "underline" }}>
+                    Continue to Website
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Grid container>
+              <Grid item xs={2}>
+                <Sidebar show_menu={active} />
+              </Grid>
+              <Grid
+                item
+                xs={7}
+                style={{ marginLeft: 13 }}
+                className="home__main"
+              >
+                {userType === "coach" ? CoachComp : AthleteComp}
+              </Grid>
+              <Grid item xs={3} className="home__rightContainer">
+                {active && (
+                  <RightContainer
+                    toggle_date={toggle_date}
+                    selectedDate={selectedDate}
+                  />
+                )}
+              </Grid>
             </Grid>
-            <Grid item xs={7} style={{ marginLeft: 13 }} className="home__main">
-              {userType === "coach" ? CoachComp : AthleteComp}
-            </Grid>
-            <Grid item xs={3} className="home__rightContainer">
-              <RightContainer
-                toggle_date={toggle_date}
-                selectedDate={selectedDate}
-              />
-            </Grid>
-          </Grid>
+          )}
         </div>
       );
     } else {
@@ -221,7 +310,7 @@ function App() {
             <Route component={NotFound} />
           </Switch>
         </Router>
-      ) : (
+      ) : active ? (
         <Router>
           <Switch>
             <Route exact path="/">
@@ -535,6 +624,19 @@ function App() {
                 CoachComp={<AllAthletes />}
               />
             </Route>
+
+            <Route path="/pending-invites">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<InvitesList />}
+              />
+            </Route>
+            <Route path="/invite">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<InviteScreen />}
+              />
+            </Route>
             <Route path="/print">
               <RoutesComp
                 AthleteComp={<NotFound />}
@@ -542,6 +644,23 @@ function App() {
               />
             </Route>
             <Route component={NotFound} />
+          </Switch>
+        </Router>
+      ) : (
+        <Router>
+          <Switch>
+            <Route>
+              <RoutesComp
+                // AthleteComp={<AthleteHome selectedDate={selectedDate} />}
+                CoachComp={
+                  <DisabledHome
+                    selectedDate={selectedDate && selectedDate}
+                    reload={setCheckactive}
+                    active={checkactive}
+                  />
+                }
+              />
+            </Route>
           </Switch>
         </Router>
       )}

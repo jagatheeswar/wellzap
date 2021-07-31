@@ -275,7 +275,7 @@ function ViewAllSavedLongTermWorkouts(props) {
             </div>
           </div>
         </div>
-        <div
+        {/* <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -288,7 +288,7 @@ function ViewAllSavedLongTermWorkouts(props) {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search?.length > 0 && (
         <div

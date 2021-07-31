@@ -75,7 +75,7 @@ function AthleteWorkoutsList() {
         //.where("selectedDays", "array-contains", formatDate())
         .collection(formatDate())
         .orderBy("timestamp", sorting)
-        .limit(3)
+
         .onSnapshot((snapshot) => {
           setAthleteWorkouts(
             snapshot.docs.map((doc) => ({
@@ -212,7 +212,7 @@ function AthleteWorkoutsList() {
           </div>
         </div>
 
-        <div
+        {/* <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -225,7 +225,7 @@ function AthleteWorkoutsList() {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search?.length > 0 && (
         <div

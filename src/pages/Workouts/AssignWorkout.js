@@ -623,7 +623,7 @@ function AssignWorkout(props) {
                     }}
                     style={{
                       backgroundColor:
-                        athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
+                        athlete?.id == show_data[0]?.id ? "#FFE486" : "white",
                     }}
                     className="selectedAthletes_item"
                   >
@@ -1219,7 +1219,7 @@ function AssignWorkout(props) {
         )}
 
         <div className="createWorkout__exercises">
-          {props.isLongTerm ||
+          {/* {props.isLongTerm ||
           userType == "athlete" ||
           type == "non-editable" ? null : (
             <div
@@ -1243,8 +1243,12 @@ function AssignWorkout(props) {
                 <p style={{ margin: 0 }}>Cardio</p>
               </div>
             </div>
-          )}
-          <div>
+          )} */}
+          <div
+            style={{
+              marginTop: 20,
+            }}
+          >
             <div>
               {props.isLongTerm ||
               userType == "athlete" ||

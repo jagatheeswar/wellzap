@@ -1204,7 +1204,7 @@ export default function PostWorkoutDetails() {
                   style={{
                     fill: `${
                       postWorkout?.fatigue === "moderately-sore"
-                        ? "rgb(252, 213, 74)"
+                        ? "#ffe486"
                         : "black"
                     }`,
                     height: 70,

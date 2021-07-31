@@ -261,7 +261,7 @@ function ViewAllNutrition() {
             </div>
           </div>
         </div>
-        <div
+        {/* <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -274,7 +274,7 @@ function ViewAllNutrition() {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search.length > 0 && (
         <div

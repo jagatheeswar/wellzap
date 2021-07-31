@@ -455,12 +455,6 @@ function AssignVideo({ navigation }) {
             className="workoutHeading__row"
           >
             <h1>Uploaded Videos</h1>
-            <p
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push("/view-all-workouts")}
-            >
-              View All
-            </p>
           </div>
           {console.log("b", videoData)}
           {videoData?.length > 0 ? (
@@ -486,8 +480,7 @@ function AssignVideo({ navigation }) {
                     setVideoData(temp);
                   }}
                   style={{
-                    backgroundColor:
-                      videoData[idx]?.checked && "rgb(252, 213, 74)",
+                    backgroundColor: videoData[idx]?.checked && "#ffe486",
                     marginBottom: 20,
                   }}
                 >
@@ -1049,7 +1042,7 @@ function AssignVideo({ navigation }) {
               padding: 10,
               width: 150,
               borderRadius: 10,
-              backgroundColor: "rgb(252, 213, 74)",
+              backgroundColor: "#ffe486",
               fontSize: 15,
             }}
             onClick={() => {
@@ -1075,7 +1068,7 @@ function AssignVideo({ navigation }) {
               padding: 10,
               width: 150,
               borderRadius: 10,
-              backgroundColor: "rgb(252, 213, 74)",
+              backgroundColor: "#ffe486",
               marginLeft: 20,
               fontSize: 15,
             }}
@@ -1120,7 +1113,7 @@ function AssignVideo({ navigation }) {
               padding: 10,
               width: 150,
               borderRadius: 10,
-              backgroundColor: "rgb(252, 213, 74)",
+              backgroundColor: "#ffe486",
               marginLeft: 20,
               fontSize: 15,
             }}

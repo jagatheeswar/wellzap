@@ -67,9 +67,9 @@ function NutritionGoalProgress() {
             setTodaysFoodId(doc.id);
             doc.data()?.entireFood.map((foodContainer) => {
               foodContainer.food.map((f) => {
-                tempCal = tempCal + f.calories;
-                tempCarbs = tempCarbs + f.carbs;
-                tempFat = tempFat + f.fat;
+                tempCal = tempCal + f.calories ? f.calories : 0;
+                tempCarbs = tempCarbs + f.carbs ? f.carbs : 0;
+                tempFat = tempFat + f.fat ? f.fat : 0;
                 tempProtein = tempProtein + f.proteins;
               });
             });

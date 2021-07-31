@@ -210,7 +210,7 @@ function PastWorkouts() {
           </div>
         </div>
 
-        <div
+        {/* <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -223,7 +223,7 @@ function PastWorkouts() {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search?.length > 0 && (
         <div

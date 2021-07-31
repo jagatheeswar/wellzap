@@ -20,6 +20,7 @@ function AthleteHistory(props) {
   const temperoryId = location.state?.id;
   const [mealHistory, setMealHistory] = useState([]);
   const [pastWorkouts, setPastWorkouts] = useState([]);
+  const [AthleteWorkouts, setAthleteWorkouts] = React.useState([]);
 
   // function formatDate() {
   //   var d = new Date(),
@@ -106,10 +107,26 @@ function AthleteHistory(props) {
         .catch((error) => {
           console.log("Error getting documents: ", error);
         });
+      var unsub3 = db
+        .collection("AthleteWorkouts")
+        .doc(temperoryId)
+        //.where("selectedDays", "array-contains", formatDate())
+        .collection(formatDate())
+        //  .orderBy("timestamp")
+        .limit(3)
+        .onSnapshot((snapshot) => {
+          setAthleteWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
 
       return () => {
         unsub1();
         unsub2();
+        unsub3();
       };
     }
   }, [temperoryId]);
@@ -413,6 +430,71 @@ function AthleteHistory(props) {
                 }}
               >
                 There are no assigned nutrition for now
+              </h5>
+            </div>
+          )}
+        </Grid>
+
+        <Grid item xs={6} style={{ paddingLeft: 20 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "90%",
+            }}
+          >
+            {" "}
+            <h2
+              style={{
+                fontSize: 19,
+                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Your Workouts
+            </h2>{" "}
+            <p
+              onClick={() => {
+                // history.push("/athlete-workouts");
+              }}
+              style={{ fontFamily: "Montserrat", cursor: "pointer" }}
+            >
+              See all
+            </p>
+          </div>
+          {AthleteWorkouts?.length > 0 ? (
+            AthleteWorkouts?.map((workout, i) => (
+              <WorkoutCard
+                key={workout.id}
+                workouts={AthleteWorkouts}
+                item={workout}
+                idx={i}
+                type={"non-editable"}
+                completed={true}
+              />
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "90%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "normal",
+                }}
+              >
+                There are no Workouts for now
               </h5>
             </div>
           )}

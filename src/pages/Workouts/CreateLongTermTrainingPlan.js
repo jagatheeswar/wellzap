@@ -526,6 +526,9 @@ const CreateLongTermTrainingPlan = () => {
         })
         .then((e) => {
           console.log(e);
+          if (dat.length == 0) {
+            history.push("/workouts");
+          }
         })
         .catch((e) => {
           console.log(e);
@@ -563,6 +566,9 @@ const CreateLongTermTrainingPlan = () => {
             });
           }
         });
+        if (idx + 1 == dat.length) {
+          history.push("/workouts");
+        }
       });
     } else {
       alert("select atleast one athlete to continue");
@@ -604,7 +610,7 @@ const CreateLongTermTrainingPlan = () => {
         >
           <div
             style={{
-              backgroundColor: "#fcd13f",
+              backgroundColor: "#FFE486",
               borderRadius: 20,
               cursor: "pointer",
               padding: 10,
@@ -2190,7 +2196,7 @@ const CreateLongTermTrainingPlan = () => {
               >
                 <EventNoteOutlined
                   style={{
-                    backgroundColor: "#fcd13f",
+                    backgroundColor: "#FFE486",
                     padding: 20,
                     borderRadius: "50%",
                   }}
@@ -2213,7 +2219,7 @@ const CreateLongTermTrainingPlan = () => {
               >
                 <DashboardOutlined
                   style={{
-                    backgroundColor: "#fcd13f",
+                    backgroundColor: "#FFE486",
                     padding: 20,
                     borderRadius: "50%",
                   }}
@@ -2258,7 +2264,7 @@ const CreateLongTermTrainingPlan = () => {
           <button
             onClick={handleWeeksCopy}
             style={{
-              backgroundColor: "#fcd13f",
+              backgroundColor: "#FFE486",
               border: "none",
               outline: "none",
               padding: "10px 30px",
@@ -2331,85 +2337,123 @@ const CreateLongTermTrainingPlan = () => {
       </Dialog>
       <Modal
         visible={modal}
-        width="80%"
+        width="450px"
         height="300"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
         <div className="createWorkout__modal">
+          <h2>Save Workout</h2>
           <h3>Do you want to save the Workout?</h3>
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal(false);
-                setModal1(true);
+              onClick={() => setModal(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              DON'T SAVE
+              CANCEL
             </div>
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                db.collection("longTermWorkout").add({
-                  weeks,
-                  completed: false,
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                  assignedToId: "",
-                  assignedById: userData?.id,
-                  date: formatDate(new Date()),
-
-                  isLongTerm: true,
-                });
-                setModal(false);
-                setModal1(true);
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              SAVE
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal(false);
+                  setModal1(true);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                DON'T SAVE
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+                onClick={() => {
+                  db.collection("longTermWorkout").add({
+                    weeks,
+                    completed: false,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    assignedToId: "",
+                    assignedById: userData?.id,
+                    date: formatDate(new Date()),
+
+                    isLongTerm: true,
+                  });
+                  setModal(false);
+                  setModal1(true);
+                }}
+              >
+                SAVE
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>
       <Modal
         visible={modal1}
-        width="80%"
-        height="350"
+        width="450px"
+        height="300"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
         <div className="createWorkout__modal">
+          <h2>Assign Workout</h2>
+
           <h3>Would you like to assign this Workout to your athletes?</h3>
-          <h4>You can complete this step later from the Workout screen</h4>
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal1(false);
+              onClick={() => setModal1(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              NO
+              RETURN
             </div>
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                setModal1(false);
-                setOpenAssignworkout(true);
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              YES
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal1(false);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                NO
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+                onClick={() => {
+                  setModal1(false);
+                  setOpenAssignworkout(true);
+                }}
+              >
+                YES
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal1(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>
@@ -2465,7 +2509,7 @@ const CreateLongTermTrainingPlan = () => {
           <button
             onClick={AssignworkoutPlan}
             style={{
-              backgroundColor: "#fcd13f",
+              backgroundColor: "#FFE486",
               border: "none",
               outline: "none",
               padding: "10px 30px",

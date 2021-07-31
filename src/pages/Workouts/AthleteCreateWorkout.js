@@ -92,6 +92,7 @@ export default function AthleteCreateWorkout() {
   useEffect(() => {
     console.log(location?.state?.workout.data);
     if (location.state?.workout) {
+      alert(2);
       setGroup([
         {
           exercises:
@@ -113,6 +114,7 @@ export default function AthleteCreateWorkout() {
   }, [location.state?.workout]);
 
   useEffect(() => {
+    console.log("ctd", location.state?.completed);
     if (location.state?.completed && location.state?.workout) {
       // setGroup(location.state?.workout?.data?.postWorkout?.group);
       // setPostWorkout(location.state?.workout?.data?.pre);
@@ -120,13 +122,13 @@ export default function AthleteCreateWorkout() {
     }
   }, [location.state?.completed, location.state?.workout]);
 
-  useEffect(() => {
-    if (group && postWorkout && !location.state?.completed) {
-      let temp = { ...postWorkout };
-      temp.group = group;
-      setPostWorkout(temp);
-    }
-  }, [group]);
+  // useEffect(() => {
+  //   if (group && postWorkout && !location.state?.completed) {
+  //     let temp = { ...postWorkout };
+  //     temp.group = group;
+  //     setPostWorkout(temp);
+  //   }
+  // }, [group]);
 
   function TimeToMinutes(time) {
     var hms = time; // your input string
@@ -165,7 +167,7 @@ export default function AthleteCreateWorkout() {
             let temp = { ...postWorkout };
             temp.workoutName = newValue.target.value;
             console.log(postWorkout);
-            setWorkout(temp);
+            setPostWorkout(temp);
           }}
         />
         <h4 style={{ borderTop: 20 }}>Date</h4>
@@ -187,7 +189,7 @@ export default function AthleteCreateWorkout() {
 
               temp["date"] = date;
               console.log(postWorkout);
-              setWorkout(temp);
+              setPostWorkout(temp);
             }}
             disabled={completed ? true : false}
           />
@@ -222,7 +224,7 @@ export default function AthleteCreateWorkout() {
 
                 temp["workoutDuration"] = itemValue.target.value;
                 console.log(postWorkout);
-                setWorkout(temp);
+                setPostWorkout(temp);
               }}
               setselectedworkouteditable={completed ? false : true}
             />
@@ -275,7 +277,7 @@ export default function AthleteCreateWorkout() {
               let temp = { ...postWorkout };
               temp.description = newValue.target.value;
               console.log(postWorkout);
-              setWorkout(temp);
+              setPostWorkout(temp);
             }}
             multiline={true}
             underlineColorAndroid="transparent"
@@ -295,7 +297,7 @@ export default function AthleteCreateWorkout() {
           }}
         >
           <h3 style={{ fontSize: 15, marginBottom: 7, color: "black" }}>
-            Post postWorkout fatigue level
+            PostWorkout fatigue level
           </h3>
           <div
             style={{
@@ -321,7 +323,7 @@ export default function AthleteCreateWorkout() {
                   if (!completed) {
                     let temp = { ...postWorkout };
                     temp.fatigue = "very-sore";
-                    setWorkout(temp);
+                    setPostWorkout(temp);
                   }
                 }}
               >
@@ -352,7 +354,7 @@ export default function AthleteCreateWorkout() {
                   if (!completed) {
                     let temp = { ...postWorkout };
                     temp.fatigue = "moderately-sore";
-                    setWorkout(temp);
+                    setPostWorkout(temp);
                   }
                 }}
               >
@@ -360,7 +362,7 @@ export default function AthleteCreateWorkout() {
                   style={{
                     fill: `${
                       postWorkout?.fatigue === "moderately-sore"
-                        ? "rgb(252, 213, 74)"
+                        ? "#ffe486"
                         : "black"
                     }`,
                     height: 70,
@@ -385,7 +387,7 @@ export default function AthleteCreateWorkout() {
                   if (!completed) {
                     let temp = { ...postWorkout };
                     temp.fatigue = "not-sore";
-                    setWorkout(temp);
+                    setPostWorkout(temp);
                   }
                 }}
               >
@@ -466,9 +468,10 @@ export default function AthleteCreateWorkout() {
             if (!postWorkout?.date) {
               let temp = { ...postWorkout };
               temp.date = formatDate();
-              setWorkout(temp);
+              setPostWorkout(temp);
               //  postWorkout.date = formatDate();
             }
+            console.log("ppw", postWorkout);
             if (postWorkout?.workoutName && postWorkout?.description) {
               db.collection("AthleteWorkouts")
                 .doc(userData?.id)

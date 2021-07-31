@@ -40,3 +40,7 @@
 * {
   font-family: "Open_Sans";
 }
+
+.devicebutton:hover {
+  cursor: pointer;
+}

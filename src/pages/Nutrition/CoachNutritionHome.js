@@ -157,13 +157,19 @@ function CoachNutritionHome() {
         </Grid>
 
         <Grid item xs={6} className="coachNutrition__homeRightContainer">
-          <div style={{ width: "90%" }} className="coachNutrition__row">
+          <div
+            style={{ width: "90%", marginLeft: 20 }}
+            className="coachNutrition__row"
+          >
             <h1>Assigned LongTerm Plans</h1>
             <div onClick={() => history.push("/all-LongTerm-Nutrition")}>
               View All
             </div>
           </div>
-          <div style={{ width: "90%" }} className="coachNutrition__list">
+          <div
+            style={{ width: "90%", marginLeft: 20 }}
+            className="coachNutrition__list"
+          >
             {LongTermNutrition.length > 0 ? (
               LongTermNutrition?.map((food, idx) => (
                 <NutritionCard

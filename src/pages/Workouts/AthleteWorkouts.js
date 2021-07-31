@@ -224,58 +224,7 @@ function AthleteWorkouts() {
             </div>
           </Grid>
 
-          <Grid item xs={6} className="workouts__homeRightContainer">
-            <div
-              style={{ width: "90%", marginLeft: 20 }}
-              className="workoutHeading__row"
-            >
-              <h1>Video Workouts</h1>
-              <div onClick={() => history.push("/assigned-videos")}>
-                View All
-              </div>
-            </div>
-
-            {videoData?.length > 0 ? (
-              videoData?.map((video, idx) => (
-                <div style={{}}>
-                  {console.log("hh", videoData)}
-                  {video?.Video?.map((Id, idx) => (
-                    <div class="iframe_container">
-                      <iframe
-                        style={{ borderRadius: 10 }}
-                        src={
-                          "https://player.vimeo.com/video/" + `${Id?.videoId}`
-                        }
-                        width="400px"
-                        height="200px"
-                        frameborder="0"
-                        webkitallowfullscreen
-                        mozallowfullscreen
-                        allowfullscreen
-                      ></iframe>
-                    </div>
-                  ))}
-                </div>
-              ))
-            ) : (
-              <div
-                style={{
-                  fontSize: "13px",
-                  backgroundColor: "#fff",
-
-                  padding: "10px 20px",
-                  textAlign: "center",
-                  borderRadius: "5px",
-                  fontWeight: "normal",
-                  marginLeft: 10,
-                }}
-              >
-                <h5> There are no assigned videos for now </h5>
-              </div>
-            )}
-          </Grid>
-
-          <Grid item xs={6} className="workouts__homeRightContainer">
+          <Grid item xs={6} className="workouts__homeLeftContainer">
             <div
               style={{ width: "90%", marginLeft: 20 }}
               className="workoutHeading__row"
@@ -283,36 +232,89 @@ function AthleteWorkouts() {
               <h1>Your Workouts</h1>
               <div onClick={() => history.push("/my-workouts")}>View All</div>
             </div>
+            <div style={{ width: "90%", paddingLeft: 20 }}>
+              {videoData?.length > 0 ? (
+                videoData?.map((video, idx) => (
+                  <div style={{}}>
+                    {console.log("hh", videoData)}
+                    {video?.Video?.map((Id, idx) => (
+                      <div class="iframe_container">
+                        <iframe
+                          style={{ borderRadius: 10 }}
+                          src={
+                            "https://player.vimeo.com/video/" + `${Id?.videoId}`
+                          }
+                          width="400px"
+                          height="200px"
+                          frameborder="0"
+                          webkitallowfullscreen
+                          mozallowfullscreen
+                          allowfullscreen
+                        ></iframe>
+                      </div>
+                    ))}
+                  </div>
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
 
-            {console.log(AthleteWorkouts)}
-            {AthleteWorkouts?.length > 0 ? (
-              AthleteWorkouts?.map((workout, i) => (
-                <WorkoutCard
-                  key={workout.id}
-                  workouts={AthleteWorkouts}
-                  item={workout}
-                  idx={i}
-                  type={"non-editable"}
-                  completed={true}
-                  navigate={"create-workout"}
-                />
-              ))
-            ) : (
-              <div
-                style={{
-                  fontSize: "13px",
-                  backgroundColor: "#fff",
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+                    marginLeft: 10,
+                  }}
+                >
+                  <h5> There are no assigned videos for now </h5>
+                </div>
+              )}
+            </div>
+          </Grid>
 
-                  padding: "10px 20px",
-                  textAlign: "center",
-                  borderRadius: "5px",
-                  fontWeight: "normal",
-                  marginLeft: 10,
-                }}
-              >
-                <h5> There are no assigned videos for now </h5>
-              </div>
-            )}
+          <Grid item xs={6} className="workouts__homeRightContainer">
+            <div style={{ width: "90%" }} className="workoutHeading__row">
+              <h1>Your Workouts</h1>
+              <div onClick={() => history.push("/my-workouts")}>View All</div>
+            </div>
+            <div style={{ width: "90%" }}>
+              {AthleteWorkouts.length > 0 ? (
+                AthleteWorkouts?.map((workout, i) => (
+                  <WorkoutCard
+                    key={workout.id}
+                    workouts={workouts}
+                    item={workout}
+                    idx={i}
+                    type={"non-editable"}
+                    completed={true}
+                    navigate={"create-workout"}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    width: "100%",
+                    height: 90,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <h5
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    There are no Upcoming Workouts for now
+                  </h5>
+                </div>
+              )}
+            </div>
           </Grid>
         </Grid>
       </div>

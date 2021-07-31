@@ -262,7 +262,7 @@ function ViewAllAssignedLongTermWorkouts(props) {
             </div>
           </div>
         </div>
-
+        {/* 
         <div
           style={{
             width: 150,
@@ -276,7 +276,7 @@ function ViewAllAssignedLongTermWorkouts(props) {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search?.length > 0 && (
         <div

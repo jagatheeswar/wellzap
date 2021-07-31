@@ -60,7 +60,7 @@ function AthleteMealHistory() {
     <div style={{ minHeight: "99.7vh" }}>
       <NutritionScreenHeader name="Meal History" />
 
-      <div
+      {/* <div
         style={{
           width: 150,
           marginLeft: "auto",
@@ -73,7 +73,7 @@ function AthleteMealHistory() {
             setsorting(s.value);
           }}
         />
-      </div>
+      </div> */}
 
       <div style={{ width: "50%", marginLeft: 20 }}>
         {mealHistory.length > 0 ? (

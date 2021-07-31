@@ -33,7 +33,7 @@
   display: flex;
   align-items: center;
   margin-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   border-radius: 10px;
   height: 25px;
   padding: 5px 20px;
@@ -48,7 +48,8 @@
   justify-content: space-between;
   display: flex;
   background-color: white;
-  width: 70%;
+  width: 97%;
+  box-sizing: border-box;
   align-items: center;
   border-radius: 5px;
   margin-top: 20px;
@@ -105,7 +106,7 @@
   display: flex;
   align-items: center;
   width: 90%;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   border-radius: 10px;
   height: 25px;
   padding: 8px 20px;

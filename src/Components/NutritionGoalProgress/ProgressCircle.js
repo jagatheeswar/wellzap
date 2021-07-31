@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   circle: {
-    color: "#fcd13f",
+    color: "#FFE486",
   },
 }));
 

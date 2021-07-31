@@ -104,7 +104,7 @@ function CoachWorkouts() {
                 View All
               </p>
             </div>
-            <div style={{ width: "90%" }}>
+            <div style={{ width: "90%", marginLeft: 20 }}>
               {workouts.length > 0 ? (
                 workouts?.map((workout, i) => (
                   <WorkoutCard
@@ -192,7 +192,7 @@ function CoachWorkouts() {
                 View All
               </p>
             </div>
-            <div style={{ width: "90%" }}>
+            <div style={{ width: "90%", marginLeft: 20 }}>
               {LongTermWorkouts?.length > 0 ? (
                 LongTermWorkouts?.map((workout, i) => (
                   <WorkoutCard

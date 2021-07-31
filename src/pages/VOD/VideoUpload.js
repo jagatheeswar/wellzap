@@ -455,7 +455,7 @@ function VideoUpload({ navigation }) {
             <button
               color="transparent"
               style={{
-                backgroundColor: "#fcd13f",
+                backgroundColor: "#FFE486",
                 boxShadow: "2px 4px #e6e6e6",
                 border: "none",
                 padding: 10,

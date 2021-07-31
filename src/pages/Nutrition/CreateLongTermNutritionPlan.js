@@ -30,7 +30,7 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import "date-fns";
 import CreateNutrition from "./ViewNutrition";
 
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -230,8 +230,9 @@ const CreateLongTermNutritionPlan = () => {
     day: 0,
   });
   const location = useLocation();
-  const [editable, seteditable] = useState(null);
+  const [editable, seteditable] = useState(true);
   const [show_data, setshow_data] = useState([]);
+  const history = useHistory();
 
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
@@ -548,7 +549,14 @@ const CreateLongTermNutritionPlan = () => {
             });
           }
         });
+        if (idx + 1 == dat.length) {
+          history.push("/workouts");
+        }
       });
+
+      if (dat.length == 0) {
+        history.push("/workouts");
+      }
     } else {
       alert("please select atleast one athlete and date");
     }
@@ -591,7 +599,7 @@ const CreateLongTermNutritionPlan = () => {
         >
           <div
             style={{
-              backgroundColor: "#fcd13f",
+              backgroundColor: "#FFE486",
               borderRadius: 20,
               cursor: "pointer",
               padding: 10,
@@ -1130,6 +1138,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.monday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "monday")
                       }
                       style={{
@@ -1270,6 +1279,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.tuesday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "tuesday")
                       }
                       style={{
@@ -1408,6 +1418,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.wednesday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "wednesday")
                       }
                       style={{
@@ -1546,6 +1557,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.thursday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "thursday")
                       }
                       style={{
@@ -1684,6 +1696,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.friday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "friday")
                       }
                       style={{
@@ -1822,6 +1835,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.saturday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "saturday")
                       }
                       style={{
@@ -1960,6 +1974,7 @@ const CreateLongTermNutritionPlan = () => {
                   {index.days.sunday == "" ? (
                     <div
                       onClick={() =>
+                        editable &&
                         handleClickOpenDialog(index.weeknum, "sunday")
                       }
                       style={{
@@ -2181,7 +2196,7 @@ const CreateLongTermNutritionPlan = () => {
               >
                 <EventNoteOutlined
                   style={{
-                    backgroundColor: "#fcd13f",
+                    backgroundColor: "#FFE486",
                     padding: 20,
                     borderRadius: "50%",
                   }}
@@ -2204,7 +2219,7 @@ const CreateLongTermNutritionPlan = () => {
               >
                 <DashboardOutlined
                   style={{
-                    backgroundColor: "#fcd13f",
+                    backgroundColor: "#FFE486",
                     padding: 20,
                     borderRadius: "50%",
                   }}
@@ -2249,7 +2264,7 @@ const CreateLongTermNutritionPlan = () => {
           <button
             onClick={handleWeeksCopy}
             style={{
-              backgroundColor: "#fcd13f",
+              backgroundColor: "#FFE486",
               border: "none",
               outline: "none",
               padding: "10px 30px",
@@ -2330,44 +2345,52 @@ const CreateLongTermNutritionPlan = () => {
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal(false);
-                setModal1(true);
-              }}
+              onClick={() => setModal(false)}
             >
-              DON'T SAVE
+              RETURN
             </div>
+
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                db.collection("longTermMeal").add({
-                  weeks,
-                  completed: false,
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                  assignedToId: "",
-                  assignedById: userData?.id,
-                  date: formatDate(new Date()),
-                  isLongTerm: true,
-                });
-                setModal(false);
-                setModal1(true);
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              SAVE
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal(false);
+                  setModal1(true);
+                }}
+              >
+                DON'T SAVE
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  db.collection("longTermMeal").add({
+                    weeks,
+                    completed: false,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    assignedToId: "",
+                    assignedById: userData?.id,
+                    date: formatDate(new Date()),
+                    isLongTerm: true,
+                  });
+                  setModal(false);
+                  setModal1(true);
+                }}
+              >
+                SAVE
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>
       <Modal
         visible={modal1}
-        width="80%"
-        height="350"
+        width="450px"
+        height="300"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
@@ -2377,27 +2400,38 @@ const CreateLongTermNutritionPlan = () => {
           <div className="createWorkout__modalButtons">
             <div
               className="createWorkout__modalButton"
-              onClick={() => {
-                setModal1(false);
+              onClick={() => setModal1(false)}
+              style={{
+                backgroundColor: "transparent",
               }}
             >
-              NO
+              RETURN
             </div>
+
             <div
-              className="createWorkout__modalButton"
-              onClick={() => {
-                setModal1(false);
-                setOpenAssignNutrition(true);
+              style={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              YES
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal1(false);
+                }}
+              >
+                NO
+              </div>
+              <div
+                className="createWorkout__modalButton"
+                onClick={() => {
+                  setModal1(false);
+                  setOpenAssignNutrition(true);
+                }}
+              >
+                YES
+              </div>
             </div>
-          </div>
-          <div
-            className="createWorkout__modalButton"
-            onClick={() => setModal1(false)}
-          >
-            RETURN
           </div>
         </div>
       </Modal>
@@ -2453,7 +2487,7 @@ const CreateLongTermNutritionPlan = () => {
           <button
             onClick={AssignMealPlan}
             style={{
-              backgroundColor: "#fcd13f",
+              backgroundColor: "#FFE486",
               border: "none",
               outline: "none",
               padding: "10px 30px",

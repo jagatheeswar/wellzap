@@ -20,7 +20,6 @@
 }
 
 .coachProfile__container {
-  display: flex;
   align-items: center;
   height: 100%;
   width: 100%;
@@ -28,7 +27,7 @@
 
 .coachProfile__leftContainer {
   flex: 0.75;
-  border: 1px solid #d3d3d3;
+  /* border: 1px solid #d3d3d3; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -36,7 +35,6 @@
   flex-wrap: wrap;
   height: 100%;
   width: 100%;
-  padding: 0 20px;
 }
 
 .coachProfile__rightContainer {
@@ -53,7 +51,7 @@
 .coachProfile__header {
   display: flex;
   align-items: center;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   width: 100%;
 }
 
@@ -99,7 +97,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
@@ -147,7 +145,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
@@ -210,7 +208,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 14px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
@@ -385,7 +383,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 14px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 40%;
   margin: 10px 0;
@@ -414,7 +412,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
