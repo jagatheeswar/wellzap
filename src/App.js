@@ -70,6 +70,7 @@ import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
 import ViewAllPastWorkouts from "./pages/Workouts/ViewAllPastWorkouts";
 import AthleteHistory from "./pages/AllAthletes/AthleteHistory"
 import PrintPreview from "./pages/Reports/PrintPreview";
+import CreateOwnWorkout from './pages/Workouts/CreateOwnWorkout';
 
 function App() {
   const user = useSelector(selectUser);
@@ -343,6 +344,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<CoachCreateWorkout />}
                 CoachComp={<CoachAddWorkout />}
+              />
+            </Route>
+            <Route path="/add-own-workout">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<CreateOwnWorkout />}
               />
             </Route>
             <Route path="/assign-workout">

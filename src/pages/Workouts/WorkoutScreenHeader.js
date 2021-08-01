@@ -38,6 +38,15 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
           <h5>CREATE WORKOUT</h5>
         </div>
       )}
+      {userType === "coach" && name === "Workouts" && (
+        <div
+          className="addWorkout__button"
+          onClick={() => history.push("add-own-workout")}
+        >
+          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
+          <h5>ADD OWN WORKOUT</h5>
+        </div>
+      )}
     </div>
   );
 };
