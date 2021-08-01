@@ -73,19 +73,24 @@ function AddMeal({ serverData, entireFood, setEntireFood, type, classes }) {
               <div
                 className="foodCard__addfoodButton"
                 onClick={() => {
-                  let foodData = [...entireFood];
-                  let temp = [...ent.food];
-                  temp.push({
-                    foodName: "",
-                    proteins: 0,
-                    carbs: 0,
-                    fat: 0,
-                    calories: 0,
-                    quantity: 1,
-                  });
-                  foodData[index].food = temp;
+                  if (ent.food[ent.food.length - 1].foodName == "") {
+                    console.log("no");
+                  } else {
+                    let foodData = [...entireFood];
+                    let temp = [...ent.food];
 
-                  setEntireFood(foodData);
+                    temp.push({
+                      foodName: "",
+                      proteins: 0,
+                      carbs: 0,
+                      fat: 0,
+                      calories: 0,
+                      quantity: 1,
+                    });
+                    foodData[index].food = temp;
+
+                    setEntireFood(foodData);
+                  }
                 }}
               >
                 <h3>Add Food</h3>
@@ -94,19 +99,23 @@ function AddMeal({ serverData, entireFood, setEntireFood, type, classes }) {
               <div
                 className="foodCard__addmealButton"
                 onClick={() => {
-                  setEntireFood([
-                    ...entireFood,
-                    {
-                      meal: "",
-                      description: "",
-                      food: [
-                        {
-                          foodName: "",
-                          quantity: 1,
-                        },
-                      ],
-                    },
-                  ]);
+                  if (entireFood[entireFood.length - 1].foodName == "") {
+                    console.log("no");
+                  } else {
+                    setEntireFood([
+                      ...entireFood,
+                      {
+                        meal: "",
+                        description: "",
+                        food: [
+                          {
+                            foodName: "",
+                            quantity: 1,
+                          },
+                        ],
+                      },
+                    ]);
+                  }
                 }}
               >
                 <h3>Add Meal</h3>

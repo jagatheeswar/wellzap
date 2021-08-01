@@ -10,8 +10,9 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { formatDate } from "../../functions/formatDate";
 
-function PastWorkouts() {
+function AthleteAssignedVideos() {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
@@ -20,12 +21,9 @@ function PastWorkouts() {
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
-
+  const [videoData, setVideoData] = React.useState([]);
   const [sorting, setsorting] = React.useState("desc");
-
-  React.useEffect(() => {
-    setSearchList(pastWorkouts);
-  }, [pastWorkouts]);
+  const [AssignedVideos, setAssignedVideos] = React.useState([]);
 
   const [showFilter, setShowFilter] = React.useState(false);
 
@@ -39,48 +37,53 @@ function PastWorkouts() {
     SetSearhLoading(true);
 
     if (search?.length > 0) {
-      const names = await pastWorkouts?.filter((workout) => {
-        return workout.data.preWorkout.workoutName
-          .toLowerCase()
-          .includes(search.toLowerCase());
+      const names = await videoData?.filter((workout) => {
+        return workout.title.toLowerCase().includes(search.toLowerCase());
       });
 
       setSearchList(names);
       SetSearhLoading(false);
     } else {
-      setSearchList(pastWorkouts);
+      setSearchList(videoData);
       SetSearhLoading(false);
     }
   }, [search]);
 
   React.useEffect(() => {
-    if (userData) {
-      // db.collection("workouts")
-      //   .where("assignedToId", "==", userData?.id)
-      //   .orderBy("timestamp", sorting)
-      //   .where("completed", "==", false)
-      //   // .limit(4)
-      //   .onSnapshot((snapshot) => {
-      //     setWorkouts(
-      //       snapshot.docs.map((doc) => ({
-      //         id: doc.id,
-      //         data: doc.data(),
-      //       }))
-      //     );
-      //   });
+    let temp = [...AssignedVideos];
+    let videos = [];
+    let c = 0;
+    console.log(temp);
+    temp?.map((data, idx) => {
+      data.Video.map((dat, idx1) => {
+        videos[c] = {};
+        videos[c] = { ...temp[idx] };
+        videos[c]["Video"] = [data?.Video[idx1]];
+        videos[c]["title"] = data?.Video[idx1]?.title;
+        c = c + 1;
+      });
+    });
+    console.log(videos);
+    setVideoData(videos);
+    setSearchList(videos);
+  }, [AssignedVideos]);
 
-      db.collection("workouts")
-        .where("assignedToId", "==", userData?.id)
-        .where("completed", "==", true)
-        // .limit(4)
+  React.useEffect(() => {
+    if (userData) {
+      db.collection("WorkoutVideo")
+        .where("AssignedToId", "array-contains", userData?.id)
+        //.where("selectedDays", "array-contains", formatDate())
+
         .orderBy("timestamp", sorting)
-        .onSnapshot((snapshot) => {
-          setPastWorkouts(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              data: doc.data(),
-            }))
-          );
+        .get()
+        .then((snap) => {
+          let data = [];
+
+          snap.docs.forEach((s) => {
+            data.push(s.data());
+            console.log("ss", s.data());
+          });
+          setAssignedVideos(data);
         });
     }
   }, [userData?.id, sorting]);
@@ -92,7 +95,7 @@ function PastWorkouts() {
 
   return (
     <div style={{ minHeight: "99.7vh" }}>
-      <WorkoutScreenHeader name="Past Workouts" />
+      <WorkoutScreenHeader name="Assigned Videos" />
       <div
         style={{
           display: "flex",
@@ -209,7 +212,6 @@ function PastWorkouts() {
             </div>
           </div>
         </div>
-
         {/* <div
           style={{
             width: 150,
@@ -237,36 +239,38 @@ function PastWorkouts() {
       )}
       <div style={{ width: "50%", marginLeft: 20 }}>
         {SearchList?.length > 0 ? (
-          SearchList?.map((workout, i) => (
-            <WorkoutCard
-              key={workout.id}
-              workouts={workouts}
-              item={workout}
-              idx={i}
-              type={"non-editable"}
-              completed={true}
-            />
+          SearchList?.map((video, idx) => (
+            <div style={{}}>
+              {video?.Video?.map((Id, idx) => (
+                <div class="iframe_container">
+                  <iframe
+                    style={{ borderRadius: 10 }}
+                    src={"https://player.vimeo.com/video/" + `${Id?.videoId}`}
+                    width="400px"
+                    height="200px"
+                    frameborder="0"
+                    webkitallowfullscreen
+                    mozallowfullscreen
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              ))}
+            </div>
           ))
         ) : (
           <div
             style={{
+              fontSize: "13px",
               backgroundColor: "#fff",
-              width: "100%",
-              height: 90,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              width: "90%",
+              padding: "10px 20px",
+              textAlign: "center",
               borderRadius: "5px",
+              fontWeight: "normal",
+              marginLeft: 10,
             }}
           >
-            <h5
-              style={{
-                fontSize: "12px",
-                fontWeight: "normal",
-              }}
-            >
-              There are no Past Workouts for now
-            </h5>
+            <h5> There are no assigned videos for now </h5>
           </div>
         )}
       </div>
@@ -274,4 +278,4 @@ function PastWorkouts() {
   );
 }
 
-export default PastWorkouts;
+export default AthleteAssignedVideos;

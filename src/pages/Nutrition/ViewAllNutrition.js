@@ -23,6 +23,13 @@ function ViewAllNutrition() {
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
 
+  const [showFilter, setShowFilter] = React.useState(false);
+
+  document.addEventListener("mouseup", function (e) {
+    if (showFilter) {
+      setShowFilter(false);
+    }
+  });
   const [sorting, setsorting] = React.useState("desc");
   React.useEffect(() => {
     if (userData) {
@@ -30,7 +37,7 @@ function ViewAllNutrition() {
         db.collection("Food")
           .where("assignedTo_id", "==", userData?.id)
           .where("saved", "==", false)
-          //.orderBy("date", sorting)
+          .orderBy("timestamp", sorting)
           .onSnapshot((snapshot) => {
             if (snapshot) {
               setNutrition(
@@ -59,10 +66,12 @@ function ViewAllNutrition() {
               }
             });
         } else {
+          console.log("sni");
           db.collection("Food")
             .where("from_id", "==", userData?.id)
             .where("saved", "==", false)
-            // .orderBy("timestamp", sorting)
+            .orderBy("timestamp", sorting)
+
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 setNutrition(
@@ -79,9 +88,16 @@ function ViewAllNutrition() {
   }, [userData?.id, athleteId, sorting]);
 
   React.useEffect(() => {
-    setSearchList(assignedMealplans);
-    console.log(assignedMealplans);
-  }, [assignedMealplans]);
+    setSearchList(nutrition);
+    setassignedMealplans(nutrition);
+
+    // nutrition?.forEach((d) => {
+    //   if (d.data.isLongTerm) {
+    //     console.log(d);
+    //   }
+    // });
+    console.log(nutrition);
+  }, [nutrition]);
 
   React.useEffect(async () => {
     if (search?.length > 0) {
@@ -99,21 +115,28 @@ function ViewAllNutrition() {
     }
   }, [search, assignedMealplans]);
 
-  React.useEffect(async () => {
-    let data = {};
-    var data1 = [];
-    if (nutrition) {
-      nutrition.forEach((item) => {
-        item.data.selectedDays.forEach((val) => {
-          let temp = [];
-          temp = { ...item };
-          temp["currentdate"] = val;
-          data1.push(temp);
-        });
-      });
-    }
-    setassignedMealplans(data1);
-  }, [nutrition]);
+  // React.useEffect(async () => {
+  //   if (userType == "athlete") {
+  //     let data = {};
+  //     var data1 = [];
+
+  //     if (nutrition) {
+  //       nutrition.forEach((item) => {
+  //         item.data.selectedDays.forEach((val) => {
+  //           let temp = [];
+  //           temp = { ...item };
+  //           temp["currentdate"] = val;
+  //           data1.push(temp);
+  //         });
+  //       });
+  //     }
+  //     setassignedMealplans(data1);
+  //     setSearchList(data1);
+  //   } else {
+  //     setSearchList(nutrition);
+  //   }
+  //   console.log(nutrition)
+  // }, [nutrition]);
 
   const options = [
     { value: "asc", label: "Recent" },
@@ -176,8 +199,69 @@ function ViewAllNutrition() {
             </div>
           )}
         </div>
-
         <div
+          style={{
+            display: "flex",
+            position: "relative",
+            width: "100px",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <div className="filter_icon">
+            <img
+              onClick={() => {
+                setShowFilter(!showFilter);
+              }}
+              src="/assets/filter.png"
+              width="35px"
+              height="35px"
+            />
+          </div>
+          <div
+            className="filter"
+            style={{
+              position: "absolute",
+              marginTop: 40,
+              display: showFilter ? "block" : "none",
+              border: "1px solid black",
+              fontSize: 12,
+              borderRadius: 10,
+            }}
+          >
+            <div
+              onClick={() => {
+                setsorting("desc");
+                setShowFilter(false);
+              }}
+              style={{
+                padding: 10,
+                borderBottom: "1px solid black",
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
+              }}
+            >
+              Recent
+            </div>
+            <div
+              onClick={() => {
+                setsorting("asc");
+                setShowFilter(false);
+              }}
+              style={{
+                padding: 10,
+                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
+
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}
+            >
+              oldest to new
+            </div>
+          </div>
+        </div>
+        {/* <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -190,7 +274,7 @@ function ViewAllNutrition() {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search.length > 0 && (
         <div
@@ -225,8 +309,6 @@ function ViewAllNutrition() {
             alignItems: "center",
           }}
         >
-          {console.log(nutrition)}
-
           {SearchList?.length > 0 ? (
             SearchList?.map((food, idx) => (
               <NutritionCard

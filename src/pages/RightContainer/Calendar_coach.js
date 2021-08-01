@@ -144,6 +144,7 @@ const Calendar_coach = (props) => {
       var d = moment();
     }
 
+    console.log(d);
     setSelectedDay({
       year: d.year(),
       month: d.month() + 1,
@@ -276,9 +277,9 @@ const Calendar_coach = (props) => {
         </span>
       </div>
       {console.log("ssd", selectedDay)}
-      {selectedDay && selectedDay != null && (
+      {selectedDay && Object.keys(selectedDay).length == 3 && (
         <Calendar
-          value={selectedDay && selectedDay}
+          value={selectedDay}
           onChange={setSelectedDay}
           colorPrimary="#fcd54a" // added this
           calendarClassName="custom-calendar" // and this

@@ -10,11 +10,12 @@ import { auth } from "../../utils/firebase";
 import "./Sidebar.css";
 import SidebarComponent from "./SidebarComponent";
 
-function Sidebar() {
+function Sidebar({ show_menu }) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const dispatch = useDispatch();
   const history = useHistory();
+  console.log(show_menu);
 
   return (
     <div className="sidebar">
@@ -25,7 +26,7 @@ function Sidebar() {
           width="100px"
           height="100px"
           onClick={() => history.push("/profile")}
-          style={{cursor:"pointer"}}
+          style={{ cursor: "pointer" }}
         />
         <h1>{userData?.data.name}</h1>
         {userType === "coach" && <h3>Strength and Conditioning Coach</h3>}
@@ -33,27 +34,39 @@ function Sidebar() {
           className="view-link"
           to="/profile"
           // to={userType === "athlete" ? "/profile" : "/profile"}
-          style={{fontFamily: 'Montserrat'}}
+          style={{ fontFamily: "Montserrat" }}
         >
           {" "}
           View Profile
         </Link>
         {userType === "coach" ? (
-          <div>
-            <SidebarComponent logo="Home" name="Home" path="" />
-            
-            <SidebarComponent logo="dumbell" name="Workouts" path="workouts" />
-            <SidebarComponent
-              logo="hamburger"
-              name="Nutrition"
-              path="nutrition"
-            />
-            <SidebarComponent logo="user" name="Athletes" path="all-athletes" />
-            {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar" /> */}
-            <SidebarComponent logo="message" name="Messaging" path="chat" />
-            <SidebarComponent logo="rupee" name="Payments" path="payments" />
-            <SidebarComponent logo="settings" name="Support" />
-          </div>
+          show_menu && (
+            <div>
+              <SidebarComponent logo="Home" name="Home" path="" />
+
+              <SidebarComponent
+                logo="dumbell"
+                name="Workouts"
+                path="workouts"
+              />
+              <SidebarComponent
+                disabled={true}
+                logo="hamburger"
+                name="Nutrition"
+                path="nutrition"
+              />
+              <SidebarComponent logo="play" name="VOD" path="vod" />
+              <SidebarComponent
+                logo="user"
+                name="Athletes"
+                path="all-athletes"
+              />
+              {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar" /> */}
+              <SidebarComponent logo="message" name="Messaging" path="chat" />
+              <SidebarComponent logo="rupee" name="Payments" path="payments" />
+              <SidebarComponent logo="settings" name="Support" />
+            </div>
+          )
         ) : (
           <div>
             <SidebarComponent logo="Home" name="Home" path="" />
@@ -64,7 +77,7 @@ function Sidebar() {
               path="nutrition"
             />
             <SidebarComponent logo="user" name="Coaches" path="coachProfile" />
-            <SidebarComponent logo="rupee" name="Payments" path="payments"/>
+            <SidebarComponent logo="rupee" name="Payments" path="payments" />
             {/* <SidebarComponent logo="calendar" name="Calendar" path="calendar"/> */}
             <SidebarComponent
               logo="message"

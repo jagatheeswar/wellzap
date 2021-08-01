@@ -56,7 +56,7 @@
 .coachProfile__header {
   display: flex;
   align-items: center;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   width: 100%;
 }
 
@@ -102,7 +102,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
@@ -111,7 +111,7 @@
 }
 
 .coachProfileForm {
-  width: 97%;
+  width: 95%;
 }
 
 .coachProfileForm > form > h4 {
@@ -139,7 +139,7 @@
   border: none;
   outline: gray;
   height: 80px;
-  width: 97%;
+  width: 95%;
 }
 
 .coachProfileForm__Button,
@@ -150,7 +150,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
@@ -177,7 +177,7 @@
 }
 
 .athleteMeasurements {
-  width: 97%;
+  width: 95%;
 }
 
 .athleteMeasurements__container > form > h4,
@@ -213,7 +213,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 14px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;
@@ -257,7 +257,7 @@
 }
 
 .athleteAssessment {
-  width: 97%;
+  width: 95%;
 }
 
 .athleteAssessments {
@@ -388,7 +388,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 14px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 40%;
   margin: 10px 0;
@@ -417,7 +417,7 @@
   justify-content: center;
   padding: 5px;
   padding-right: 20px;
-  background-color: #fcd13f;
+  background-color: #ffe486;
   height: 30px;
   width: 150px;
   margin: 10px 0;

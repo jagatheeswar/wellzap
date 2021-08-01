@@ -19,7 +19,13 @@ function ViewAllSavedNutrition(props) {
   const [SearchLoading, SetSearhLoading] = React.useState(false);
 
   const [sorting, setsorting] = React.useState("desc");
+  const [showFilter, setShowFilter] = React.useState(false);
 
+  document.addEventListener("mouseup", function (e) {
+    if (showFilter) {
+      setShowFilter(false);
+    }
+  });
   React.useEffect(() => {
     if (userData) {
       db.collection("Food")
@@ -118,8 +124,69 @@ function ViewAllSavedNutrition(props) {
             </div>
           )}
         </div>
-
         <div
+          style={{
+            display: "flex",
+            position: "relative",
+            width: "100px",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <div className="filter_icon">
+            <img
+              onClick={() => {
+                setShowFilter(!showFilter);
+              }}
+              src="/assets/filter.png"
+              width="35px"
+              height="35px"
+            />
+          </div>
+          <div
+            className="filter"
+            style={{
+              position: "absolute",
+              marginTop: 40,
+              display: showFilter ? "block" : "none",
+              border: "1px solid black",
+              fontSize: 12,
+              borderRadius: 10,
+            }}
+          >
+            <div
+              onClick={() => {
+                setsorting("desc");
+                setShowFilter(false);
+              }}
+              style={{
+                padding: 10,
+                borderBottom: "1px solid black",
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
+              }}
+            >
+              Recent
+            </div>
+            <div
+              onClick={() => {
+                setsorting("asc");
+                setShowFilter(false);
+              }}
+              style={{
+                padding: 10,
+                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
+
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}
+            >
+              oldest to new
+            </div>
+          </div>
+        </div>
+        {/* <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -132,7 +199,7 @@ function ViewAllSavedNutrition(props) {
               setsorting(s.value);
             }}
           />
-        </div>
+        </div> */}
       </div>
       {search.length > 0 && (
         <div

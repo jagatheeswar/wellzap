@@ -1,25 +1,32 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
-import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
-import { selectUserData, selectUserType } from "../../features/userSlice";
+import React from "react";
 import { db } from "../../utils/firebase";
+import { useSelector } from "react-redux";
+import { selectUserData, selectUserType } from "../../features/userSlice";
+import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
-import SearchIcon from "@material-ui/icons/Search";
 
+import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
+
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-function ViewAllWorkouts() {
+import { formatDate } from "../../functions/formatDate";
+function AthleteWorkoutsList() {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
-  const [type, setType] = React.useState("");
+  const [pastWorkouts, setPastWorkouts] = React.useState([]);
 
-  const [athleteId, setAthleteId] = React.useState("");
-  const [completed, setCompleted] = React.useState(false);
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
+  const [AthleteWorkouts, setAthleteWorkouts] = React.useState([]);
+
+  const [sorting, setsorting] = React.useState("desc");
+
+  React.useEffect(() => {
+    setSearchList(pastWorkouts);
+  }, [pastWorkouts]);
 
   const [showFilter, setShowFilter] = React.useState(false);
 
@@ -29,28 +36,11 @@ function ViewAllWorkouts() {
     }
   });
 
-  const [sorting, setsorting] = React.useState("desc");
-  // React.useEffect(() => {
-  //   workouts?.filter((coach) => {
-  //     return coach.data.name.toLowerCase().includes(search);
-  //   });
-  // }, [search]);
-
-  React.useEffect(() => {
-    setSearchList(workouts);
-    console.log(workouts);
-    workouts.forEach((workout) => {
-      if (workout?.data?.isLongTerm) {
-        console.log("d", workout);
-      }
-    });
-  }, [workouts]);
-
   React.useEffect(async () => {
     SetSearhLoading(true);
 
     if (search?.length > 0) {
-      const names = await workouts?.filter((workout) => {
+      const names = await pastWorkouts?.filter((workout) => {
         return workout.data.preWorkout.workoutName
           .toLowerCase()
           .includes(search.toLowerCase());
@@ -59,65 +49,43 @@ function ViewAllWorkouts() {
       setSearchList(names);
       SetSearhLoading(false);
     } else {
-      setSearchList(workouts);
+      setSearchList(pastWorkouts);
       SetSearhLoading(false);
     }
   }, [search]);
 
   React.useEffect(() => {
     if (userData) {
-      if (userType !== "coach") {
-        db.collection("workouts")
-          .where("assignedToId", "==", userData?.id)
-          .where("completed", "==", false)
+      // db.collection("workouts")
+      //   .where("assignedToId", "==", userData?.id)
+      //   .orderBy("timestamp", sorting)
+      //   .where("completed", "==", false)
+      //   // .limit(4)
+      //   .onSnapshot((snapshot) => {
+      //     setWorkouts(
+      //       snapshot.docs.map((doc) => ({
+      //         id: doc.id,
+      //         data: doc.data(),
+      //       }))
+      //     );
+      //   });
 
-          .orderBy("timestamp", sorting)
-          .onSnapshot((snapshot) => {
-            setWorkouts(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                data: doc.data(),
-              }))
-            );
-          });
-      } else {
-        if (type && athleteId) {
-          db.collection("workouts")
-            .where("assignedToId", "==", athleteId)
-            .where("saved", "==", false)
-            .where("completed", "==", completed)
-            .orderBy("timestamp", sorting)
-            .onSnapshot((snapshot) => {
-              if (snapshot) {
-                console.log("Inside snapshot");
-                setWorkouts(
-                  snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data(),
-                  }))
-                );
-              } else {
-                console.log("outside snapshot");
-                setWorkouts([]);
-              }
-            });
-        } else {
-          db.collection("CoachWorkouts")
-            .where("assignedById", "==", userData?.id)
-            .where("saved", "==", false)
-            .orderBy("timestamp", sorting)
-            .onSnapshot((snapshot) => {
-              setWorkouts(
-                snapshot.docs.map((doc) => ({
-                  id: doc.id,
-                  data: doc.data(),
-                }))
-              );
-            });
-        }
-      }
+      db.collection("AthleteWorkouts")
+        .doc(userData?.id)
+        //.where("selectedDays", "array-contains", formatDate())
+        .collection(formatDate())
+        .orderBy("timestamp", sorting)
+
+        .onSnapshot((snapshot) => {
+          setAthleteWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
     }
-  }, [userData?.id, athleteId, sorting]);
+  }, [userData?.id, sorting]);
 
   const options = [
     { value: "asc", label: "Recent" },
@@ -126,7 +94,7 @@ function ViewAllWorkouts() {
 
   return (
     <div style={{ minHeight: "99.7vh" }}>
-      <WorkoutScreenHeader name="Upcoming Workouts" />
+      <WorkoutScreenHeader name="Past Workouts" />
       <div
         style={{
           display: "flex",
@@ -218,9 +186,10 @@ function ViewAllWorkouts() {
               style={{
                 padding: 10,
                 borderBottom: "1px solid black",
+                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
+
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
-                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
               }}
             >
               Recent
@@ -232,16 +201,17 @@ function ViewAllWorkouts() {
               }}
               style={{
                 padding: 10,
-                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
 
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
+                backgroundColor: sorting == "asc" ? "#fcd11c" : "white",
               }}
             >
               oldest to new
             </div>
           </div>
         </div>
+
         {/* <div
           style={{
             width: 150,
@@ -257,80 +227,53 @@ function ViewAllWorkouts() {
           />
         </div> */}
       </div>
-      {search.length > 0 && (
+      {search?.length > 0 && (
         <div
           style={{
             fontSize: 13,
             marginLeft: 20,
           }}
         >
-          {SearchList?.length} search results loaded
+          {SearchList?.length} results found
         </div>
       )}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          width: "100%",
-          marginLeft: "10px",
-          marginRight: "10px",
-          marginTop: "15px",
-        }}
-      >
-        <div
-          style={{
-            width: "50%",
-            marginTop: "20px",
-            paddingLeft: "15px",
-            paddingRight: "15px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {SearchList?.length > 0 ? (
-            SearchList?.map((item, idx) => (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexWrap: "wrap",
-                }}
-              >
-                <WorkoutCard
-                  key={idx}
-                  workouts={workouts}
-                  item={item}
-                  idx={idx}
-                  navigation={"ViewAllWorkouts"}
-                  showDate={true}
-                  type="non-editable"
-                  completed={completed === true ? true : false}
-                />
-              </div>
-            ))
-          ) : (
-            <div
+      <div style={{ width: "50%", marginLeft: 20 }}>
+        {AthleteWorkouts?.length > 0 ? (
+          AthleteWorkouts?.map((workout, i) => (
+            <WorkoutCard
+              key={workout.id}
+              workouts={AthleteWorkouts}
+              item={workout}
+              idx={i}
+              type={"non-editable"}
+              completed={true}
+            />
+          ))
+        ) : (
+          <div
+            style={{
+              backgroundColor: "#fff",
+              width: "100%",
+              height: 90,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "5px",
+            }}
+          >
+            <h5
               style={{
-                backgroundColor: "#fff",
-                width: "100%",
-                height: 90,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "5px",
+                fontSize: "12px",
+                fontWeight: "normal",
               }}
             >
-              <h5>There are no workouts for now</h5>
-            </div>
-          )}
-        </div>
+              There are no Workouts for now
+            </h5>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default ViewAllWorkouts;
+export default AthleteWorkoutsList;

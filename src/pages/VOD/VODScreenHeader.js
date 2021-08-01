@@ -5,7 +5,7 @@ import { selectUserType } from "../../features/userSlice";
 import { Typography } from "@material-ui/core";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 
-const WorkoutScreenHeader = ({ name, navigation }) => {
+const VODScreenHeader = ({ name, navigation }) => {
   const userType = useSelector(selectUserType);
   const history = useHistory();
 
@@ -24,53 +24,27 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
           </Typography>
         </div>
       </div>
-      {userType == "coach" && name === "Workouts" && (
-        <div
-          className="addWorkout__button"
-          onClick={() =>
-            history.push({
-              pathname: "/long-term-training",
-            })
-          }
-        >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>ADD LONG TERM Workout</h5>
-        </div>
-      )}
 
-      {userType == "athlete" && name === "Workouts" && (
+      {userType === "coach" && name === "Video on Demand" && (
         <div
           className="addWorkout__button"
-          onClick={() =>
-            history.push({
-              pathname: "/create-workout",
-            })
-          }
+          onClick={() => history.push("assignvideo")}
         >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>Add Workout</h5>
+          <h5>Assign Video</h5>
         </div>
       )}
-      {userType === "coach" && name === "Workouts" && (
+      {userType === "coach" && name === "Video on Demand" && (
         <div
           className="addWorkout__button"
-          onClick={() => history.push("create-workout")}
+          onClick={() => history.push("uploadvideo")}
         >
           <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>CREATE WORKOUT</h5>
-        </div>
-      )}
-      {userType === "coach" && name === "Workouts" && (
-        <div
-          className="addWorkout__button"
-          onClick={() => history.push("add-own-workout")}
-        >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>ADD OWN WORKOUT</h5>
+          <h5>Upload Video</h5>
         </div>
       )}
     </div>
   );
 };
 
-export default WorkoutScreenHeader;
+export default VODScreenHeader;

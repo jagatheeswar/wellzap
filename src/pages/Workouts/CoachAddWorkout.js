@@ -1042,7 +1042,7 @@ function CoachAddWorkout() {
                       display: idx1 == 0 ? "none" : "block",
                       marginTop: 20,
                       fontSize: 16,
-                      backgroundColor: "rgb(252, 209, 28)",
+                      backgroundColor: "#FFE486",
                       width: 150,
                       borderRadius: 10,
                       padding: 10,
@@ -2525,29 +2525,33 @@ function CoachAddWorkout() {
                   padding: "5px 20px",
                 }}
                 onClick={() => {
-                  db.collection("CoachWorkouts")
-                    .add({
-                      assignedById: userData?.id,
-                      assignedToId: "",
-                      date: formatDate(),
-                      timestamp:
-                        firebase.firestore.FieldValue.serverTimestamp(),
-                      preWorkout: {
-                        workoutName,
-                        workoutDescription,
-                        equipmentsNeeded,
-                        targetedMuscleGroup,
-                        workoutDuration,
-                        caloriesBurnEstimate,
-                        workoutDifficulty,
-                        selectedExercises,
-                      },
-                    })
-                    .then(() => {
-                      setModal(false);
-                      setModal1(true);
-                    })
-                    .catch((e) => console.error(e));
+                  if (workoutName) {
+                    db.collection("CoachWorkouts")
+                      .add({
+                        assignedById: userData?.id,
+                        assignedToId: "",
+                        date: formatDate(),
+                        timestamp:
+                          firebase.firestore.FieldValue.serverTimestamp(),
+                        preWorkout: {
+                          workoutName,
+                          workoutDescription,
+                          equipmentsNeeded,
+                          targetedMuscleGroup,
+                          workoutDuration,
+                          caloriesBurnEstimate,
+                          workoutDifficulty,
+                          selectedExercises,
+                        },
+                      })
+                      .then(() => {
+                        setModal(false);
+                        setModal1(true);
+                      })
+                      .catch((e) => console.error(e));
+                  } else {
+                    alert("please fill all required feilds");
+                  }
                 }}
               >
                 SAVE

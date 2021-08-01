@@ -98,6 +98,8 @@ export default function PostWorkoutDetails() {
         },
       ]);
       setPostWorkout(location.state?.workout?.data?.preWorkout);
+      if (location?.state?.workout?.data) {
+      }
       setPreWorkout(location.state?.workout?.data?.preWorkout);
       setWorkout(location.state?.workout);
 
@@ -116,7 +118,9 @@ export default function PostWorkoutDetails() {
     console.log(location.state);
     if (location.state?.completed && location.state?.workout) {
       setGroup(location.state?.workout?.data?.postWorkout?.group);
-      setPostWorkout(location.state?.workout?.data?.postWorkout);
+      if (location.state?.workout?.data?.postWorkout) {
+        setPostWorkout(location.state?.workout?.data?.postWorkout);
+      }
     }
   }, [location.state?.completed, location.state?.workout]);
 
@@ -1091,6 +1095,7 @@ export default function PostWorkoutDetails() {
             width: "100%",
           }}
         >
+          {console.log("pta", location.state, postWorkout)}
           <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
           <input
             style={{
@@ -1106,7 +1111,11 @@ export default function PostWorkoutDetails() {
               boxSizing: "border-box",
             }}
             disabled={completed}
-            value={postWorkout?.description}
+            value={
+              postWorkout?.description
+                ? postWorkout?.description
+                : postWorkout?.workoutDescription
+            }
             onChange={(newValue) => {
               let temp = { ...postWorkout };
               temp.description = newValue.target.value;
@@ -1195,7 +1204,7 @@ export default function PostWorkoutDetails() {
                   style={{
                     fill: `${
                       postWorkout?.fatigue === "moderately-sore"
-                        ? "rgb(252, 213, 74)"
+                        ? "#ffe486"
                         : "black"
                     }`,
                     height: 70,

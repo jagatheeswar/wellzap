@@ -126,7 +126,7 @@ function AthleteAddMeal() {
       />
       <div
         className="athleteFoodCard__submitMealButton"
-        style={{marginBottom: 20}}
+        style={{ marginBottom: 20 }}
         onClick={() => {
           if (type === "non-editable") {
             history.goBack();
@@ -141,6 +141,7 @@ function AthleteAddMeal() {
               alert("Please select a meal");
             } else {
               console.log("id", entireFood);
+
               db.collection("AthleteNutrition")
                 .doc(userData?.id)
                 .collection("nutrition")

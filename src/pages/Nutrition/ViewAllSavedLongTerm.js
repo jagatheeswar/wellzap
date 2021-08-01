@@ -1,26 +1,32 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
-import WorkoutScreenHeader from "./WorkoutScreenHeader";
+import NutritionScreenHeader from "./NutritionScreenHeader";
 import SearchIcon from "@material-ui/icons/Search";
-
 import ClearIcon from "@material-ui/icons/Clear";
+
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-function ViewAllWorkouts() {
+import NutritionCard from "../../Components/NutritionCard/NutritionCard";
+
+function SavedLongTermNutrition(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
+  const [savedWorkouts, setsavedWorkouts] = useState([]);
   const [type, setType] = React.useState("");
-
   const [athleteId, setAthleteId] = React.useState("");
   const [completed, setCompleted] = React.useState(false);
+
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
+  const [LongTermNutrition, setLongTermNutrition] = React.useState([]);
 
+  const [sorting, setsorting] = React.useState("desc");
+  const [openSearch, setopenSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
 
   document.addEventListener("mouseup", function (e) {
@@ -29,49 +35,13 @@ function ViewAllWorkouts() {
     }
   });
 
-  const [sorting, setsorting] = React.useState("desc");
-  // React.useEffect(() => {
-  //   workouts?.filter((coach) => {
-  //     return coach.data.name.toLowerCase().includes(search);
-  //   });
-  // }, [search]);
-
-  React.useEffect(() => {
-    setSearchList(workouts);
-    console.log(workouts);
-    workouts.forEach((workout) => {
-      if (workout?.data?.isLongTerm) {
-        console.log("d", workout);
-      }
-    });
-  }, [workouts]);
-
-  React.useEffect(async () => {
-    SetSearhLoading(true);
-
-    if (search?.length > 0) {
-      const names = await workouts?.filter((workout) => {
-        return workout.data.preWorkout.workoutName
-          .toLowerCase()
-          .includes(search.toLowerCase());
-      });
-
-      setSearchList(names);
-      SetSearhLoading(false);
-    } else {
-      setSearchList(workouts);
-      SetSearhLoading(false);
-    }
-  }, [search]);
-
   React.useEffect(() => {
     if (userData) {
-      if (userType !== "coach") {
+      if (userType === "athlete") {
         db.collection("workouts")
           .where("assignedToId", "==", userData?.id)
-          .where("completed", "==", false)
-
-          .orderBy("timestamp", sorting)
+          .where("completed", "==", true)
+          //.orderBy("date","desc")
           .onSnapshot((snapshot) => {
             setWorkouts(
               snapshot.docs.map((doc) => ({
@@ -84,9 +54,8 @@ function ViewAllWorkouts() {
         if (type && athleteId) {
           db.collection("workouts")
             .where("assignedToId", "==", athleteId)
-            .where("saved", "==", false)
+            .where("assignedTo", "==", false)
             .where("completed", "==", completed)
-            .orderBy("timestamp", sorting)
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 console.log("Inside snapshot");
@@ -102,31 +71,70 @@ function ViewAllWorkouts() {
               }
             });
         } else {
-          db.collection("CoachWorkouts")
-            .where("assignedById", "==", userData?.id)
-            .where("saved", "==", false)
-            .orderBy("timestamp", sorting)
-            .onSnapshot((snapshot) => {
-              setWorkouts(
-                snapshot.docs.map((doc) => ({
-                  id: doc.id,
-                  data: doc.data(),
-                }))
-              );
-            });
+          // db.collection("CoachWorkouts")
+          //   .where("assignedById", "==", userData?.id)
+          //   .where("saved", "==", false)
+          //   .onSnapshot((snapshot) => {
+          //     setWorkouts(
+          //       snapshot.docs.map((doc) => ({
+          //         id: doc.id,
+          //         data: doc.data(),
+          //       }))
+          //     );
+          //   });
         }
       }
     }
-  }, [userData?.id, athleteId, sorting]);
+  }, [userData?.id, athleteId]);
+  useEffect(() => {
+    if (userType == "coach") {
+      db.collection("longTermMeal")
+        .where("assignedById", "==", userData?.id)
+        .where("assignedToId", "==", "")
+
+        .orderBy("timestamp", sorting)
+        .onSnapshot((snapshot) => {
+          setLongTermNutrition(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+    }
+  }, [userData?.id, sorting, userType]);
+
+  React.useEffect(() => {
+    setSearchList(LongTermNutrition);
+    console.log(LongTermNutrition);
+  }, [LongTermNutrition]);
+
+  React.useEffect(async () => {
+    SetSearhLoading(true);
+
+    if (search?.length > 0) {
+      const names = await LongTermNutrition?.filter((workout) => {
+        return workout.data.preWorkout.workoutName
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      });
+
+      setSearchList(names);
+      SetSearhLoading(false);
+    } else {
+      setSearchList(LongTermNutrition);
+      SetSearhLoading(false);
+    }
+  }, [search]);
 
   const options = [
     { value: "asc", label: "Recent" },
     { value: "desc", label: "old" },
   ];
-
   return (
-    <div style={{ minHeight: "99.7vh" }}>
-      <WorkoutScreenHeader name="Upcoming Workouts" />
+    <div style={{ minHeight: "99.6vh" }}>
+      <NutritionScreenHeader name="Assigned LongTerm Meal" />
+
       <div
         style={{
           display: "flex",
@@ -135,13 +143,15 @@ function ViewAllWorkouts() {
       >
         <div
           style={{
-            margin: 20,
-            backgroundColor: "white",
+            marginTop: 20,
+            marginLeft: 20,
+            backgroundColor: openSearch && "white",
             padding: 5,
             display: "flex",
             alignItems: "center",
-            border: "1px solid black",
-            width: "500px",
+            border: openSearch && "1px solid black",
+            width: openSearch ? "500px" : "35px",
+            transition: "all 0.5s",
             borderRadius: 10,
           }}
         >
@@ -149,6 +159,7 @@ function ViewAllWorkouts() {
             value={search}
             style={{
               width: "100%",
+              display: openSearch ? "block" : "none",
 
               fontSize: 20,
               outline: "none",
@@ -159,12 +170,19 @@ function ViewAllWorkouts() {
             }}
           />
           {search?.length == 0 ? (
-            <SearchIcon
-              style={{
-                width: 30,
-                height: 30,
+            <div
+              onClick={() => {
+                setopenSearch(true);
+                setsearch("");
               }}
-            />
+            >
+              <SearchIcon
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </div>
           ) : (
             <div
               onClick={() => {
@@ -257,14 +275,14 @@ function ViewAllWorkouts() {
           />
         </div> */}
       </div>
-      {search.length > 0 && (
+      {search?.length > 0 && (
         <div
           style={{
             fontSize: 13,
             marginLeft: 20,
           }}
         >
-          {SearchList?.length} search results loaded
+          {SearchList?.length} results found
         </div>
       )}
       <div
@@ -292,7 +310,7 @@ function ViewAllWorkouts() {
           }}
         >
           {SearchList?.length > 0 ? (
-            SearchList?.map((item, idx) => (
+            SearchList?.map((food, idx) => (
               <div
                 style={{
                   display: "flex",
@@ -300,31 +318,30 @@ function ViewAllWorkouts() {
                   flexWrap: "wrap",
                 }}
               >
-                <WorkoutCard
+                <NutritionCard
                   key={idx}
-                  workouts={workouts}
-                  item={item}
+                  weeks={food.data.weeks}
+                  isLongTerm={true}
                   idx={idx}
-                  navigation={"ViewAllWorkouts"}
-                  showDate={true}
-                  type="non-editable"
-                  completed={completed === true ? true : false}
+                  selectedWeekNum={food.data.weeks[0].weeknum}
+                  navigate={true}
+                  type="edit"
                 />
               </div>
             ))
           ) : (
             <div
               style={{
+                fontSize: "13px",
                 backgroundColor: "#fff",
                 width: "100%",
-                height: 90,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                padding: "10px 20px",
+                textAlign: "center",
                 borderRadius: "5px",
+                fontWeight: "normal",
               }}
             >
-              <h5>There are no workouts for now</h5>
+              <h5> There are no saved LongTerm workouts for now </h5>
             </div>
           )}
         </div>
@@ -333,4 +350,4 @@ function ViewAllWorkouts() {
   );
 }
 
-export default ViewAllWorkouts;
+export default SavedLongTermNutrition;

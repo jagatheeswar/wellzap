@@ -14,7 +14,6 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import { auth, db } from "../../utils/firebase";
 
-
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address format")
@@ -36,7 +35,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const loginUser = (values) => {
-    console.log("Logging on ...",values.email,values.password);
+    console.log("Logging on ...", values.email, values.password);
     auth
       .signInWithEmailAndPassword(values.email, values.password)
       .then((auth) => {
@@ -45,33 +44,29 @@ function Login() {
           .get()
           .then((snap) => {
             if (!snap.empty) {
-              setLoading(true)
-              setTimeout(() =>{
-              dispatch(setUserType("coach"));
-              dispatch(login(auth.user.email));
-              },1000);
+              setLoading(true);
+              setTimeout(() => {
+                dispatch(setUserType("coach"));
+                dispatch(login(auth.user.email));
+              }, 1000);
             } else {
               db.collection("athletes")
                 .where("email", "==", values.email)
                 .get()
                 .then((snap) => {
                   if (!snap.empty) {
-                    setLoading(true)
+                    setLoading(true);
 
-                    setTimeout(() =>{
+                    setTimeout(() => {
                       snap.forEach(function (doc) {
                         dispatch(setUserVerified(doc.data().verified));
                       });
 
                       dispatch(setUserType("athlete"));
                       dispatch(login(auth.user.email));
-                    },1000)
-                   
-                   
+                    }, 1000);
                   } else {
-                    alert(
-                      "Check your email and password",
-                    )
+                    alert("Check your email and password");
                   }
                 });
             }
@@ -86,6 +81,7 @@ function Login() {
 
   return (
     <div className="login__container">
+      <img />
       <h1>Login</h1>
       <h3>Welcome Back!</h3>
 
@@ -95,9 +91,8 @@ function Login() {
         onSubmit={(values, { setSubmitting }) => {
           // alert("Form is validated! Submitting the form...");
           values.email = values.email.toLowerCase();
-          loginUser(values)
-         setSubmitting(false)
-         
+          loginUser(values);
+          setSubmitting(false);
         }}
       >
         {({ touched, errors, isSubmitting }) => (
@@ -136,19 +131,19 @@ function Login() {
               />
             </div>
 
-
-                <h6 className="login__heading">Forgot password?</h6>               
+            <h6 className="login__heading">Forgot password?</h6>
 
             <button
               type="submit"
               className="login__button"
               disabled={isSubmitting}
-              
             >
               Login
             </button>
-                  <h6 className="login__heading">New to Wellzap?</h6>
-            <Link className="signup-link" to="/signup">Create Account</Link>
+            <h6 className="login__heading">New to Wellzap?</h6>
+            <Link className="signup-link" to="/signup">
+              Create Account
+            </Link>
           </Form>
         )}
       </Formik>

@@ -1,26 +1,32 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
-import SearchIcon from "@material-ui/icons/Search";
 
+import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
+
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-function ViewAllWorkouts() {
+
+function ViewAllAssignedLongTermWorkouts(props) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
+  const [savedWorkouts, setsavedWorkouts] = useState([]);
   const [type, setType] = React.useState("");
-
   const [athleteId, setAthleteId] = React.useState("");
   const [completed, setCompleted] = React.useState(false);
+
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
+  const [LongTermWorkouts, setLongTermWorkouts] = React.useState([]);
 
+  const [sorting, setsorting] = React.useState("desc");
+  const [openSearch, setopenSearch] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
 
   document.addEventListener("mouseup", function (e) {
@@ -29,49 +35,13 @@ function ViewAllWorkouts() {
     }
   });
 
-  const [sorting, setsorting] = React.useState("desc");
-  // React.useEffect(() => {
-  //   workouts?.filter((coach) => {
-  //     return coach.data.name.toLowerCase().includes(search);
-  //   });
-  // }, [search]);
-
-  React.useEffect(() => {
-    setSearchList(workouts);
-    console.log(workouts);
-    workouts.forEach((workout) => {
-      if (workout?.data?.isLongTerm) {
-        console.log("d", workout);
-      }
-    });
-  }, [workouts]);
-
-  React.useEffect(async () => {
-    SetSearhLoading(true);
-
-    if (search?.length > 0) {
-      const names = await workouts?.filter((workout) => {
-        return workout.data.preWorkout.workoutName
-          .toLowerCase()
-          .includes(search.toLowerCase());
-      });
-
-      setSearchList(names);
-      SetSearhLoading(false);
-    } else {
-      setSearchList(workouts);
-      SetSearhLoading(false);
-    }
-  }, [search]);
-
   React.useEffect(() => {
     if (userData) {
-      if (userType !== "coach") {
+      if (userType === "athlete") {
         db.collection("workouts")
           .where("assignedToId", "==", userData?.id)
-          .where("completed", "==", false)
-
-          .orderBy("timestamp", sorting)
+          .where("completed", "==", true)
+          //.orderBy("date","desc")
           .onSnapshot((snapshot) => {
             setWorkouts(
               snapshot.docs.map((doc) => ({
@@ -86,7 +56,6 @@ function ViewAllWorkouts() {
             .where("assignedToId", "==", athleteId)
             .where("saved", "==", false)
             .where("completed", "==", completed)
-            .orderBy("timestamp", sorting)
             .onSnapshot((snapshot) => {
               if (snapshot) {
                 console.log("Inside snapshot");
@@ -102,31 +71,71 @@ function ViewAllWorkouts() {
               }
             });
         } else {
-          db.collection("CoachWorkouts")
-            .where("assignedById", "==", userData?.id)
-            .where("saved", "==", false)
-            .orderBy("timestamp", sorting)
-            .onSnapshot((snapshot) => {
-              setWorkouts(
-                snapshot.docs.map((doc) => ({
-                  id: doc.id,
-                  data: doc.data(),
-                }))
-              );
-            });
+          // db.collection("CoachWorkouts")
+          //   .where("assignedById", "==", userData?.id)
+          //   .where("saved", "==", false)
+          //   .onSnapshot((snapshot) => {
+          //     setWorkouts(
+          //       snapshot.docs.map((doc) => ({
+          //         id: doc.id,
+          //         data: doc.data(),
+          //       }))
+          //     );
+          //   });
         }
       }
     }
-  }, [userData?.id, athleteId, sorting]);
+  }, [userData?.id, athleteId]);
+  useEffect(() => {
+    if (userType == "coach") {
+      db.collection("longTermWorkout")
+        .where("assignedById", "==", userData?.id)
+        .where("saved", "==", false)
+        .where("isLongTerm", "==", true)
+        // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
+        .orderBy("timestamp", sorting)
+        .onSnapshot((snapshot) => {
+          setLongTermWorkouts(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        });
+    }
+  }, [userData?.id, sorting, userType]);
+
+  React.useEffect(() => {
+    setSearchList(LongTermWorkouts);
+    console.log(LongTermWorkouts);
+  }, [LongTermWorkouts]);
+
+  React.useEffect(async () => {
+    SetSearhLoading(true);
+
+    if (search?.length > 0) {
+      const names = await LongTermWorkouts?.filter((workout) => {
+        return workout.data.preWorkout.workoutName
+          .toLowerCase()
+          .includes(search.toLowerCase());
+      });
+
+      setSearchList(names);
+      SetSearhLoading(false);
+    } else {
+      setSearchList(LongTermWorkouts);
+      SetSearhLoading(false);
+    }
+  }, [search]);
 
   const options = [
     { value: "asc", label: "Recent" },
     { value: "desc", label: "old" },
   ];
-
   return (
-    <div style={{ minHeight: "99.7vh" }}>
-      <WorkoutScreenHeader name="Upcoming Workouts" />
+    <div style={{ minHeight: "99.6vh" }}>
+      <WorkoutScreenHeader name="Assigned Templates" />
+
       <div
         style={{
           display: "flex",
@@ -135,13 +144,15 @@ function ViewAllWorkouts() {
       >
         <div
           style={{
-            margin: 20,
+            marginTop: 20,
+            marginLeft: 20,
             backgroundColor: "white",
             padding: 5,
             display: "flex",
             alignItems: "center",
             border: "1px solid black",
             width: "500px",
+            transition: "all 0.5s",
             borderRadius: 10,
           }}
         >
@@ -149,6 +160,7 @@ function ViewAllWorkouts() {
             value={search}
             style={{
               width: "100%",
+              display: openSearch ? "block" : "none",
 
               fontSize: 20,
               outline: "none",
@@ -159,12 +171,19 @@ function ViewAllWorkouts() {
             }}
           />
           {search?.length == 0 ? (
-            <SearchIcon
-              style={{
-                width: 30,
-                height: 30,
+            <div
+              onClick={() => {
+                setopenSearch(true);
+                setsearch("");
               }}
-            />
+            >
+              <SearchIcon
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </div>
           ) : (
             <div
               onClick={() => {
@@ -213,6 +232,7 @@ function ViewAllWorkouts() {
             <div
               onClick={() => {
                 setsorting("desc");
+                console.log("c");
                 setShowFilter(false);
               }}
               style={{
@@ -220,7 +240,7 @@ function ViewAllWorkouts() {
                 borderBottom: "1px solid black",
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
-                backgroundColor: sorting == "desc" ? "#fcd11c" : "white",
+                backgroundColor: sorting == "desc" ? "yellow" : "white",
               }}
             >
               Recent
@@ -242,7 +262,8 @@ function ViewAllWorkouts() {
             </div>
           </div>
         </div>
-        {/* <div
+        {/* 
+        <div
           style={{
             width: 150,
             marginLeft: "auto",
@@ -257,14 +278,14 @@ function ViewAllWorkouts() {
           />
         </div> */}
       </div>
-      {search.length > 0 && (
+      {search?.length > 0 && (
         <div
           style={{
             fontSize: 13,
             marginLeft: 20,
           }}
         >
-          {SearchList?.length} search results loaded
+          {SearchList?.length} results found
         </div>
       )}
       <div
@@ -292,7 +313,7 @@ function ViewAllWorkouts() {
           }}
         >
           {SearchList?.length > 0 ? (
-            SearchList?.map((item, idx) => (
+            SearchList?.map((workout, idx) => (
               <div
                 style={{
                   display: "flex",
@@ -301,30 +322,29 @@ function ViewAllWorkouts() {
                 }}
               >
                 <WorkoutCard
-                  key={idx}
-                  workouts={workouts}
-                  item={item}
+                  key={workout.id}
+                  weeks={workout.data.weeks}
+                  item={workout}
                   idx={idx}
-                  navigation={"ViewAllWorkouts"}
-                  showDate={true}
-                  type="non-editable"
-                  completed={completed === true ? true : false}
+                  isLongTerm={true}
+                  type="view"
+                  navigate={true}
                 />
               </div>
             ))
           ) : (
             <div
               style={{
+                fontSize: "13px",
                 backgroundColor: "#fff",
                 width: "100%",
-                height: 90,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                padding: "10px 20px",
+                textAlign: "center",
                 borderRadius: "5px",
+                fontWeight: "normal",
               }}
             >
-              <h5>There are no workouts for now</h5>
+              <h5> There are no saved LongTerm workouts for now </h5>
             </div>
           )}
         </div>
@@ -333,4 +353,4 @@ function ViewAllWorkouts() {
   );
 }
 
-export default ViewAllWorkouts;
+export default ViewAllAssignedLongTermWorkouts;

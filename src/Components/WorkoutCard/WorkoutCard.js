@@ -19,7 +19,8 @@ function WorkoutCard({
   weeks,
   handleCloseworkout,
   setWeeks,
-  selectedDay
+  selectedDay,
+  navigate,
 }) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -27,6 +28,20 @@ function WorkoutCard({
   const [workout, setWorkout] = useState([]);
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const history = useHistory();
+  const [workoutName, setworkoutName] = useState("");
+  const [Weeks, setWeeks_data] = useState([]);
+  useEffect(() => {
+    if (weeks) {
+      let week = weeks[0]?.days;
+      let days = Object.keys(weeks[0]?.days);
+      weeks &&
+        days.forEach((day) => {
+          if (week[day] != "") {
+            setworkoutName(week[day]?.preWorkout?.workoutName);
+          }
+        });
+    }
+  }, [weeks]);
 
   useEffect(() => {
     if (userData) {
@@ -71,82 +86,111 @@ function WorkoutCard({
     <div
       className="workoutCard"
       onClick={() => {
-        if(isLongTerm){
-          var lweeks = weeks;
-          var lselectedWeekNum = selectedWeekNum;
-          var lselectedDay = selectedDay;
-          lweeks[lselectedWeekNum - 1].days[lselectedDay] = item?.data;
-          setWeeks(lweeks);
-          handleCloseworkout();
-        }else{
-        if (userType === "coach") {
-          if (type === "non-editable" && !completed) {
-            console.log("clicked 1");
-            history.push({
-              pathname: "/assign-workout",
-              state: {
-                workout: workouts[idx],
-                workoutName: item?.data?.preWorkout?.workoutName,
-                assignType: "non-editable",
-              },
-            });
-          } else if (completed === true) {
-            console.log("clicked 2");
-            history.push({
-              pathname: "/post-workout",
-              state: {
-                workout: item,
-                workoutName: item?.data?.preWorkout?.workoutName,
-                completed: true,
-              },
-            });
-          } else {
-            if (item?.data?.assignedToId) {
-              console.log("clicked 3");
+        if (isLongTerm) {
+          if (navigate) {
+            if (navigate) {
               history.push({
-                pathname: "/assign-workout",
+                pathname: "/long-term-training",
                 state: {
-                  workout: workouts[idx],
+                  workout: workouts,
                   workoutName: item?.data?.preWorkout?.workoutName,
-                  assignType: "update",
-                  athlete_id: athlete_id,
-                },
-              });
-            } else {
-              console.log("clicked 4");
-              history.push({
-                pathname: "/assign-workout",
-                state: {
-                  workout: workouts[idx],
-                  workoutName: item?.data?.preWorkout?.workoutName,
-                  assignType: "create",
+                  weeks: weeks,
+                  assignType: type,
                 },
               });
             }
+          } else {
+            var lweeks = weeks;
+            var lselectedWeekNum = selectedWeekNum;
+            var lselectedDay = selectedDay;
+            lweeks[lselectedWeekNum - 1].days[lselectedDay] = item?.data;
+
+            setWeeks_data(lweeks);
+
+            handleCloseworkout();
           }
         } else {
-          if (completed === true) {
-            history.push({
-              pathname: "/post-workout",
-              state: {
-                workout: item,
-                workoutName: item?.data?.preWorkout?.workoutName,
-                completed: true,
-              },
-            });
+          if (userType === "coach") {
+            if (type === "non-editable" && !completed) {
+              console.log("clicked 1");
+              history.push({
+                pathname: "/assign-workout",
+                state: {
+                  workout: workouts[idx],
+                  workoutName: item?.data?.preWorkout?.workoutName,
+                  assignType: "non-editable",
+                },
+              });
+            } else if (completed === true) {
+              console.log("nak", item);
+              history.push({
+                pathname: "/post-workout",
+                state: {
+                  workout: item,
+                  workoutName: item?.data?.preWorkout?.workoutName,
+                  completed: true,
+                },
+              });
+            } else {
+              if (item?.data?.assignedToId) {
+                console.log("clicked 3");
+                history.push({
+                  pathname: "/assign-workout",
+                  state: {
+                    workout: workouts[idx],
+                    workoutName: item?.data?.preWorkout?.workoutName,
+                    assignType: "update",
+                    athlete_id: athlete_id,
+                  },
+                });
+              } else {
+                console.log("clicked 4");
+                history.push({
+                  pathname: "/assign-workout",
+                  state: {
+                    workout: workouts[idx],
+                    workoutName: item?.data?.preWorkout?.workoutName,
+                    assignType: "create",
+                  },
+                });
+              }
+            }
           } else {
-            console.log("opening past workouts")
-            history.push({
-              pathname: "/post-workout",
-              state: {
-                workout: workouts[idx],
-                workoutName: item?.data?.preWorkout?.workoutName,
-                assignType: "view",
-              },
-            });
+            console.log("nssjsnji", navigate);
+            if (navigate == "create-workout") {
+              history.push({
+                pathname: "/create-workout",
+                state: {
+                  workout: item,
+                  workoutName: item?.data?.preWorkout?.workoutName,
+                  completed: true,
+                },
+              });
+            } else {
+              if (completed === true) {
+                console.log("nak", item);
+                history.push({
+                  pathname: "/post-workout",
+                  state: {
+                    workout: item,
+                    workoutName: item?.data?.preWorkout?.workoutName,
+                    completed: true,
+                  },
+                });
+              } else {
+                console.log("opening past workouts");
+                history.push({
+                  pathname: "/post-workout",
+                  state: {
+                    workout: workouts[idx],
+                    workoutName: item?.data?.preWorkout?.workoutName,
+                    assignType: "view",
+                  },
+                });
+              }
+            }
           }
         }
-      }
       }}
     >
       <img
@@ -156,7 +200,9 @@ function WorkoutCard({
         height="110px"
       />
       <div className="workoutCard__info">
-        <h1>{item?.data?.preWorkout?.workoutName}</h1>
+        <h1>
+          {isLongTerm ? workoutName : item?.data?.preWorkout?.workoutName}
+        </h1>
         <div className="workoutCard__macroNutrients">
           <h3>Calories</h3>
           <h3>{item?.data?.preWorkout?.caloriesBurnEstimate}</h3>

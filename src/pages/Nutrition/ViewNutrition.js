@@ -751,7 +751,7 @@ function CreateNutrition(props) {
                     }}
                     style={{
                       backgroundColor:
-                        athlete?.id == show_data[0]?.id ? "#fcd13f" : "white",
+                        athlete?.id == show_data[0]?.id ? "#FFE486" : "white",
                     }}
                     className="selectedAthletes_item"
                   >
