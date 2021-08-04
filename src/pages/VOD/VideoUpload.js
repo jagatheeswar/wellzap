@@ -167,7 +167,8 @@ function VideoUpload({ navigation }) {
           body: formData,
         };
 
-        let url1 = "http://localhost:3001/api/upload/video";
+        let url1 =
+          "https://nameless-savannah-17836.herokuapp.com/api/upload/video";
         console.log(formData);
         setTimeout(() => {
           fetch(url1, obj) // put your API URL here

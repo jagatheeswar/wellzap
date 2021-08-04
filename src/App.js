@@ -249,7 +249,7 @@ function App() {
                   </div>
                 </div>
 
-                <div
+                {/* <div
                   onClick={() => {
                     setdeviceMobile(!deviceMobile);
                   }}
@@ -258,7 +258,7 @@ function App() {
                   <p style={{ textDecoration: "underline" }}>
                     Continue to Website
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           ) : (
