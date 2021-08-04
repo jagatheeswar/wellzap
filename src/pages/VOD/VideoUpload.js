@@ -362,6 +362,7 @@ function VideoUpload({ navigation }) {
               type="text"
               class="vod_input"
               onChange={(val) => {
+                console.log(userData);
                 let temp = [...videoData];
                 if (!temp[0]) {
                   temp[0] = {};

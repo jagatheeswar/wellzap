@@ -18,7 +18,7 @@ function Test() {
         label: "Fully Compliant",
         categoryPercentage: 1,
         data: [0, 0, 0, 0, 0, 0, 0],
-        backgroundColor: "#fcd54a",
+        backgroundColor: "#ffe486",
       },
       {
         label: "Partially Compliant",
@@ -44,7 +44,7 @@ function Test() {
         label: "Fully Compliant",
         categoryPercentage: 0.1,
         data: [1, 7, 4, 1, 6, 2, 6],
-        backgroundColor: "#fcd54a",
+        backgroundColor: "#ffe486",
       },
       {
         label: "Partially Compliant",

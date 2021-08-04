@@ -265,7 +265,7 @@ const Calendar_coach = (props) => {
               });
             }}
             style={{
-              backgroundColor: "#fcd54a",
+              backgroundColor: "#ffe486",
               borderRadius: 5,
               padding: 10,
               cursor: "pointer",
@@ -281,7 +281,7 @@ const Calendar_coach = (props) => {
         <Calendar
           value={selectedDay}
           onChange={setSelectedDay}
-          colorPrimary="#fcd54a" // added this
+          colorPrimary="#ffe486" // added this
           calendarClassName="custom-calendar" // and this
           calendarTodayClassName="custom-today-day" // also this
         />

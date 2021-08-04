@@ -61,7 +61,7 @@ function SidebarComponent({ logo, name, path }) {
             style={{
               outline: "none",
               border: "none",
-              backgroundColor: "#fcd54a",
+              backgroundColor: "#ffe486",
               padding: "8px 30px",
               marginRight: 30,
               borderRadius: 10,

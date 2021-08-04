@@ -8,7 +8,7 @@ import {
   setUserData,
 } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
-import { ChevronRightRounded } from '@material-ui/icons'
+import { ChevronRightRounded } from "@material-ui/icons";
 
 function Notification({ route }) {
   const userData = useSelector(selectUserData);
@@ -23,8 +23,6 @@ function Notification({ route }) {
       setDocId(route.params.docId);
     }
   }, [route?.params?.docId]);
-
-
 
   React.useEffect(() => {
     if (docId) {
@@ -111,11 +109,11 @@ function Notification({ route }) {
             style={{
               transform: show ? "rotate(90deg)" : "rotate(0deg)",
               transition: "transform 0.2s",
-              marginTop: 5
+              marginTop: 5,
             }}
             // class="arrow-right"
           >
-            <ChevronRightRounded style={{height: 30, width: 30}} />
+            <ChevronRightRounded style={{ height: 30, width: 30 }} />
           </div>
           <h3>Notifications</h3>
         </div>
@@ -163,7 +161,14 @@ function Notification({ route }) {
               // });
             }}
           >
-            <p style={{ textAlign: "center", marginRight: 20,opacity: show?1:0, transition:"all 0.1s" }}>
+            <p
+              style={{
+                textAlign: "center",
+                marginRight: 20,
+                opacity: show ? 1 : 0,
+                transition: "all 0.1s",
+              }}
+            >
               Mark All as Read
             </p>
           </div>
@@ -185,7 +190,7 @@ function Notification({ route }) {
         >
           <div
             style={{
-              backgroundColor: switchScreen === false ? "#fcd54a" : "#fff",
+              backgroundColor: switchScreen === false ? "#ffe486" : "#fff",
               borderRadius: 5,
               paddingHorizontal: 4,
               paddingVertical: 8,
@@ -199,7 +204,7 @@ function Notification({ route }) {
           </div>
           <div
             style={{
-              backgroundColor: switchScreen === true ? "#fcd54a" : "#fff",
+              backgroundColor: switchScreen === true ? "#ffe486" : "#fff",
               borderRadius: 5,
               paddingHorizontal: 4,
               paddingVertical: 8,

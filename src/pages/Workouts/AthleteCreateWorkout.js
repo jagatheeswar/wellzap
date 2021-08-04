@@ -447,7 +447,7 @@ export default function AthleteCreateWorkout() {
       )}
       <button
         style={{
-          backgroundColor: "#fcd54a",
+          backgroundColor: "#ffe486",
           padding: 10,
           borderRadius: 15,
           width: 300,

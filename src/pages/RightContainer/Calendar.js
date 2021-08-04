@@ -239,7 +239,7 @@ const Calendar_ = (props) => {
         <Calendar
           value={selectedDay ? selectedDay : defaultValue}
           onChange={setSelectedDay}
-          colorPrimary="#fcd54a" // added this
+          colorPrimary="#ffe486" // added this
           calendarClassName="custom-calendar" // and this
           calendarTodayClassName="custom-today-day" // also this
         />

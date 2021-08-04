@@ -310,26 +310,31 @@ function CoachAddMeal(props) {
                   padding: "5px 20px",
                 }}
                 onClick={() => {
-                  db.collection("Food")
-                    .add({
-                      from_id: userData?.id,
-                      assignedTo_id: "",
-                      nutrition: {
-                        nutritionName: nutritionName,
-                        entireFood,
-                        timestamp:firebase.firestore.FieldValue.serverTimestamp(),
-                      },
-                    })
-                    .then(() => {
-                      // navigation.navigate("CreateNutrition", {
-                      //   nutrition: {
-                      //     nutritionName: foodName,
-                      //     plan,
-                      //   },
-                      // });
-                      setModal(false);
-                      setModal1(true);
-                    });
+                  if (nutritionName) {
+                    db.collection("Food")
+                      .add({
+                        from_id: userData?.id,
+                        assignedTo_id: "",
+                        nutrition: {
+                          nutritionName: nutritionName,
+                          entireFood,
+                          timestamp:
+                            firebase.firestore.FieldValue.serverTimestamp(),
+                        },
+                      })
+                      .then(() => {
+                        // navigation.navigate("CreateNutrition", {
+                        //   nutrition: {
+                        //     nutritionName: foodName,
+                        //     plan,
+                        //   },
+                        // });
+                        setModal(false);
+                        setModal1(true);
+                      });
+                  } else {
+                    alert("Please choose a name for nutrition");
+                  }
                 }}
               >
                 SAVE

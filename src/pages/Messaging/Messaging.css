@@ -70,9 +70,7 @@
   align-items: center;
   background-color: #ffe486;
   border-radius: 10px;
-  height: 25px;
-  padding: 5px 20px;
-  margin-left: 550px;
+
   cursor: pointer;
   align-self: flex-end;
 }

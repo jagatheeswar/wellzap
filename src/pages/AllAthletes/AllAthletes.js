@@ -92,7 +92,7 @@ function AllAthletes() {
           className="allAthletes__inviteAthletesButton"
           onClick={() => history.push("/invite-athlete")}
         >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
+          <img src="/assets/fab.png" alt="" width="32px" height="32px" />
         </div>
       </div>
 
@@ -236,7 +236,7 @@ function AllAthletes() {
 
         <div
           style={{
-            backgroundColor: "#fcd11c",
+            backgroundColor: "#ffe486",
             padding: "8px 10px",
             borderRadius: 10,
             marginLeft: "auto",

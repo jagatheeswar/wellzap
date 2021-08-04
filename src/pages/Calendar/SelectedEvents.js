@@ -8,7 +8,7 @@ import {
   selectUserType,
   setUserData,
 } from "../../features/userSlice";
-import firebase from "firebase"
+import firebase from "firebase";
 
 function SelectedEvents(props) {
   const userData = useSelector(selectUserData);
@@ -22,7 +22,7 @@ function SelectedEvents(props) {
   }
   console.log("sss,", events, dates);
   return (
-    <div style={{width:"100%"}}>
+    <div style={{ width: "100%" }}>
       {dates.map((item) => {
         return (
           <div style={{}}>
@@ -34,13 +34,14 @@ function SelectedEvents(props) {
                 flexDirection: "row",
                 marginTop: 20,
                 justifyContent: "space-between",
-                cursor:"pointer"
+                cursor: "pointer",
               }}
-              onClick={()=>{
+              onClick={() => {
                 props.setEventInfoData(events[item]);
                 props.setsidebarfunc("goals");
-                setTimeout(function(){ props.setsidebarfunc("eventInfo"); }, 500);
-                
+                setTimeout(function () {
+                  props.setsidebarfunc("eventInfo");
+                }, 500);
               }}
             >
               <div
@@ -50,7 +51,6 @@ function SelectedEvents(props) {
                   alignItems: "center",
                 }}
               >
-
                 <div
                   style={{
                     display: "flex",
@@ -67,13 +67,16 @@ function SelectedEvents(props) {
                       borderColor: "red",
                     }}
                   >
-                  <i
-                  class="fa fa-circle"
-                  style={{ fontSize: 10, marginRight: 8 }}
-                ></i>
+                    <i
+                      class="fa fa-circle"
+                      style={{ fontSize: 10, marginRight: 8 }}
+                    ></i>
                     {events[item].eventName && events[item].eventName}
                   </div>
-                  <div className="upcoming_event_time" style={{ fontSize: 13,marginLeft:20 }}>
+                  <div
+                    className="upcoming_event_time"
+                    style={{ fontSize: 13, marginLeft: 20 }}
+                  >
                     {events[item].eventDate &&
                       moment(events[item].eventDate).format("LL")}
                   </div>
@@ -83,46 +86,72 @@ function SelectedEvents(props) {
                 <button
                   style={{
                     height: 25,
-                    backgroundColor: "#fcd54a",
+                    backgroundColor: "#ffe486",
                     color: "black",
                   }}
                 >
-                  {events[item].eventDate && moment(events[item].eventDate).format("LT")}
+                  {events[item].eventDate &&
+                    moment(events[item].eventDate).format("LT")}
                 </button>
-                {moment(new Date()).valueOf() > events[item].eventDate - 60000*20 && moment(new Date()).format("DD-MM-YYYY") == moment(events[item].eventDate).format("DD-MM-YYYY")? 
-                <a style={{cursor:"pointer"}} href={events[item].showVideoLink && events[item].videolink}> 
-                <button
-                  style={{
-                    height: 25,
-                    backgroundColor: "#fcd54a",
-                    color: "black",
-                    cursor:"pointer"
-                  }}
-                  onClick={()=>   { 
-                    if(userType == "athlete"){
-                      db.collection("events").doc(events[item].id).update({
-                        attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
-                      })
-                    }}}
-                >
-                  Join now
-                </button> </a>:null}
+                {moment(new Date()).valueOf() >
+                  events[item].eventDate - 60000 * 20 &&
+                moment(new Date()).format("DD-MM-YYYY") ==
+                  moment(events[item].eventDate).format("DD-MM-YYYY") ? (
+                  <a
+                    style={{ cursor: "pointer" }}
+                    href={events[item].showVideoLink && events[item].videolink}
+                  >
+                    <button
+                      style={{
+                        height: 25,
+                        backgroundColor: "#ffe486",
+                        color: "black",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        if (userType == "athlete") {
+                          db.collection("events")
+                            .doc(events[item].id)
+                            .update({
+                              attendance:
+                                firebase.firestore.FieldValue.arrayUnion(
+                                  userData.id
+                                ),
+                            });
+                        }
+                      }}
+                    >
+                      Join now
+                    </button>{" "}
+                  </a>
+                ) : null}
               </div>
-
             </div>
             <div style={{ marginLeft: 20 }}>
-            {moment(new Date()).valueOf() > events[item].eventDate - 60000*20 && moment(new Date()).format("DD-MM-YYYY") == moment(events[item].eventDate).format("DD-MM-YYYY")?
-              <a style={{textDecoration:"none"}} 
-                onClick={()=>   { 
-                  if(userType == "athlete"){
-                    db.collection("events").doc(events[item].id).update({
-                      attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
-                    })
-                  }}} href={events[item].showVideoLink && events[item].videolink}>
-                {events[item].showVideoLink && events[item].videolink}
-              </a> : 
-              events[item].showVideoLink && events[item].videolink
-              }
+              {moment(new Date()).valueOf() >
+                events[item].eventDate - 60000 * 20 &&
+              moment(new Date()).format("DD-MM-YYYY") ==
+                moment(events[item].eventDate).format("DD-MM-YYYY") ? (
+                <a
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    if (userType == "athlete") {
+                      db.collection("events")
+                        .doc(events[item].id)
+                        .update({
+                          attendance: firebase.firestore.FieldValue.arrayUnion(
+                            userData.id
+                          ),
+                        });
+                    }
+                  }}
+                  href={events[item].showVideoLink && events[item].videolink}
+                >
+                  {events[item].showVideoLink && events[item].videolink}
+                </a>
+              ) : (
+                events[item].showVideoLink && events[item].videolink
+              )}
             </div>
           </div>
         );

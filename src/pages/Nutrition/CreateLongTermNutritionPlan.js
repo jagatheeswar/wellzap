@@ -652,7 +652,7 @@ const CreateLongTermNutritionPlan = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    // backgroundColor: "#fcd54a",
+                    // backgroundColor: "#ffe486",
                     borderRadius: "10px",
                     height: "45px",
                   }}
@@ -779,7 +779,7 @@ const CreateLongTermNutritionPlan = () => {
                         style={
                           athlete?.selectedDays?.includes(specificDates[idx])
                             ? {
-                                backgroundColor: "#fcd54a",
+                                backgroundColor: "#ffe486",
                                 color: "#fff",
                                 width: "85px",
                                 height: "25px",
@@ -2472,7 +2472,7 @@ const CreateLongTermNutritionPlan = () => {
               <Calendar
                 value={selectedDate}
                 onChange={setSelectedDate}
-                colorPrimary="#fcd54a" // added this
+                colorPrimary="#ffe486" // added this
                 colorPrimaryLight="blue"
                 calendarClassName="customcalendarScreen" // and this
                 calendarTodayClassName="custom-today-day" // also this

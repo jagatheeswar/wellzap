@@ -25,27 +25,29 @@ function AthleteGoals() {
         .doc(userData?.id)
         .get()
         .then((snapshot) => {
-          console.log(snapshot.data().goals);
-          snapshot.data().goals.forEach((item) => {
-            if (typeof item.date == "string") {
-              console.log(formatDate(item.date));
-              let date = new Date(formatDate(item.date));
-              console.log(date, new Date());
-              console.log(date > new Date());
-              if (!temp && date > new Date()) {
-                temp = date;
-                data = item;
+          if (snapshot.data()?.goals) {
+            console.log(snapshot.data().goals);
+            snapshot.data()?.goals.forEach((item) => {
+              if (typeof item.date == "string") {
+                console.log(formatDate(item.date));
+                let date = new Date(formatDate(item.date));
+                console.log(date, new Date());
+                console.log(date > new Date());
+                if (!temp && date > new Date()) {
+                  temp = date;
+                  data = item;
+                }
+                if (date < temp && date > new Date()) {
+                  data = item;
+                }
               }
-              if (date < temp && date > new Date()) {
-                data = item;
-              }
-            }
-          });
-          setgoal(data);
-          console.log(goal);
+            });
+            setgoal(data);
+            console.log(goal);
+          }
         });
     }
-  }, [userData?.id, userData?.data?.goals]);
+  }, [userData?.id, userData?.data]);
 
   return (
     <div className="athleteGoals">

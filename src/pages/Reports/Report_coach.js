@@ -301,7 +301,7 @@ function Report_coach(props) {
             label: "Fully Compliant",
             categoryPercentage: 0.6,
             data: d1.length == 0 ? [0, 0, 0, 0, 0, 0, 0] : d1,
-            backgroundColor: "#fcd54a",
+            backgroundColor: "#ffe486",
           },
           {
             label: "Partially Compliant",
@@ -424,7 +424,7 @@ function Report_coach(props) {
     let data = [
       {
         label: "Fully Compliant",
-        color: "#fcd54a",
+        color: "#ffe486",
       },
       {
         label: "Partially Compliant",

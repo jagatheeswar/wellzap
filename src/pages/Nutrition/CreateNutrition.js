@@ -427,7 +427,7 @@ function CreateNutrition() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                backgroundColor: "#fcd54a",
+                backgroundColor: "#ffe486",
                 borderRadius: "10px",
                 height: "45px",
                 width: "350px",
@@ -553,7 +553,7 @@ function CreateNutrition() {
                     style={
                       athlete?.selectedDays?.includes(specificDates[idx])
                         ? {
-                            backgroundColor: "#fcd54a",
+                            backgroundColor: "#ffe486",
                             color: "#fff",
                             width: "85px",
                             height: "25px",
@@ -758,7 +758,11 @@ function CreateNutrition() {
                       });
                     });
 
-                    if (selectedAthletes && tempDate1.length > 0) {
+                    if (
+                      selectedAthletes &&
+                      tempDate1.length > 0 &&
+                      nutritionName
+                    ) {
                       selectedAthletes.map((athlete, idx) => {
                         // sendPushNotification(
                         //   athlete.token,

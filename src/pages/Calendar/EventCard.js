@@ -8,7 +8,7 @@ import {
   selectUserType,
   setUserData,
 } from "../../features/userSlice";
-import firebase from "firebase"
+import firebase from "firebase";
 
 function EventCard(props) {
   const userData = useSelector(selectUserData);
@@ -21,9 +21,8 @@ function EventCard(props) {
     var events = events.slice(0, props.count);
   }
 
-
   return (
-    <div style={{width:"100%"}}>
+    <div style={{ width: "100%" }}>
       {events.map((item) => {
         return (
           <div style={{}}>
@@ -35,14 +34,15 @@ function EventCard(props) {
                 justifyContent: "space-between",
                 alignItems: "center",
                 marginTop: 20,
-                cursor:"pointer"
+                cursor: "pointer",
               }}
-              onClick={()=>{
+              onClick={() => {
                 props.setEventInfoData(item);
                 props.setsidebarfunc("goals");
-                setTimeout(function(){ props.setsidebarfunc("eventInfo"); }, 500);
+                setTimeout(function () {
+                  props.setsidebarfunc("eventInfo");
+                }, 500);
               }}
-
             >
               <div
                 style={{
@@ -65,13 +65,16 @@ function EventCard(props) {
                       marginBottom: 3,
                     }}
                   >
-                  <i
-                  class="fa fa-circle"
-                  style={{ fontSize: 10, marginRight: 8 }}
-                ></i>
+                    <i
+                      class="fa fa-circle"
+                      style={{ fontSize: 10, marginRight: 8 }}
+                    ></i>
                     {item.eventName && item.eventName}
                   </div>
-                  <div className="upcoming_event_time" style={{ fontSize: 13,marginLeft:20 }}>
+                  <div
+                    className="upcoming_event_time"
+                    style={{ fontSize: 13, marginLeft: 20 }}
+                  >
                     {item.eventDate && moment(item.eventDate).format("LL")}
                   </div>
                 </div>
@@ -81,45 +84,65 @@ function EventCard(props) {
                 <button
                   style={{
                     height: 25,
-                    backgroundColor: "#fcd54a",
+                    backgroundColor: "#ffe486",
                     color: "black",
                   }}
                 >
                   {item.eventDate && moment(item.eventDate).format("LT")}
                 </button>
-                {moment(new Date()).valueOf() > item.eventDate - 60000*20 ? 
-                <a style={{cursor:"pointer"}} href={item.showVideoLink && item.videolink}> 
-                <button
-                  style={{
-                    height: 25,
-                    backgroundColor: "#fcd54a",
-                    color: "black",
-                    cursor:"pointer"
-                  }}
-                  onClick={()=>   { 
-                    if(userType == "athlete"){
-                      db.collection("events").doc(item.id).update({
-                        attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
-                      })
-                    }}}
-                >
-                  Join now
-                </button> </a>:null}
+                {moment(new Date()).valueOf() > item.eventDate - 60000 * 20 ? (
+                  <a
+                    style={{ cursor: "pointer" }}
+                    href={item.showVideoLink && item.videolink}
+                  >
+                    <button
+                      style={{
+                        height: 25,
+                        backgroundColor: "#ffe486",
+                        color: "black",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        if (userType == "athlete") {
+                          db.collection("events")
+                            .doc(item.id)
+                            .update({
+                              attendance:
+                                firebase.firestore.FieldValue.arrayUnion(
+                                  userData.id
+                                ),
+                            });
+                        }
+                      }}
+                    >
+                      Join now
+                    </button>{" "}
+                  </a>
+                ) : null}
               </div>
             </div>
             <div style={{ marginLeft: 20 }}>
-            {moment(new Date()).valueOf() > item.eventDate - 60000*20 ?
-              <a style={{textDecoration:"none"}} 
-                onClick={()=>   { 
-                  if(userType == "athlete"){
-                    db.collection("events").doc(item.id).update({
-                      attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
-                    })
-                  }}} href={item.showVideoLink && item.videolink}>
-                {item.showVideoLink && item.videolink}
-              </a> : 
-              item.showVideoLink && item.videolink
-              }
+              {moment(new Date()).valueOf() > item.eventDate - 60000 * 20 ? (
+                <a
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    if (userType == "athlete") {
+                      db.collection("events")
+                        .doc(item.id)
+                        .update({
+                          attendance: firebase.firestore.FieldValue.arrayUnion(
+                            userData.id
+                          ),
+                        });
+                    }
+                  }}
+                  href={item.showVideoLink && item.videolink}
+                >
+                  {item.showVideoLink && item.videolink}
+                </a>
+              ) : (
+                item.showVideoLink && item.videolink
+              )}
             </div>
           </div>
         );

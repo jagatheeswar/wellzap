@@ -3,8 +3,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
-import {Typography} from "@material-ui/core";
-import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
+import { Typography } from "@material-ui/core";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import ChatCard from "./ChatCard";
 import { useHistory } from "react-router";
 
@@ -102,27 +102,46 @@ function ChatHomeScreen({ navigation }) {
       <div>
         <div
           style={{
-            display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-          <div onClick={() => history.goBack()} style={{marginTop: 20, display: "flex", alignItems: 'center'}} >
-          <ArrowBackIosRoundedIcon style={{height: 18, width: 18, padding: 5, cursor: "pointer"}} />
-          <Typography variant="h6" style={{fontSize: 25, marginLeft: 5}}>Chats</Typography>
-        </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginRight: 20,
+            }}
+          >
+            <div
+              onClick={() => history.goBack()}
+              style={{ marginTop: 20, display: "flex", alignItems: "center" }}
+            >
+              <ArrowBackIosRoundedIcon
+                style={{ height: 18, width: 18, padding: 5, cursor: "pointer" }}
+              />
+              <Typography variant="h6" style={{ fontSize: 25, marginLeft: 5 }}>
+                Chats
+              </Typography>
+            </div>
             <div
               className="athlete_list"
               onClick={() => {
                 history.push("/all-athletes");
               }}
+              style={{
+                borderRadius: 16,
+              }}
             >
               <img
-                src="/assets/plus_thin.png"
+                src="/assets/fab.png"
                 alt=""
-                width="15px"
-                height="15px"
+                width="32px"
+                height="32px"
+                style={{
+                  borderRadius: 10,
+                }}
               />
             </div>
           </div>

@@ -280,7 +280,7 @@ function CoachAddWorkout() {
       {sectionId == 1 && (
         <div
           style={{
-            minHeight: "99vh",
+            minHeight: "99.99vh",
           }}
         >
           <div className="Workouts_body">
@@ -441,6 +441,7 @@ function CoachAddWorkout() {
               display: "flex",
               height: 30,
               marginTop: 30,
+              marginBottom: 30,
             }}
           >
             <button
@@ -1110,6 +1111,8 @@ function CoachAddWorkout() {
               style={{
                 display: "flex",
                 height: 30,
+                marginTop: 30,
+                marginBottom: 30,
               }}
             >
               <button
@@ -1250,8 +1253,8 @@ function CoachAddWorkout() {
                                 //disabled={completed ? true : false}
                                 //checked={workout?.completed}
                                 tintColors={{
-                                  true: "#fcd54a",
-                                  false: "#fcd54a",
+                                  true: "#ffe486",
+                                  false: "#ffe486",
                                 }}
                                 // onValueChange={(newValue) => {
                                 //   let temp = [...selectedExercises];
@@ -1717,8 +1720,8 @@ function CoachAddWorkout() {
                                 //disabled={completed}
                                 //checked={workout?.completed}
                                 tintColors={{
-                                  true: "#fcd54a",
-                                  false: "#fcd54a",
+                                  true: "#ffe486",
+                                  false: "#ffe486",
                                 }}
                                 // onChange={(newValue) => {
                                 //   let temp = [...selectedExercises];

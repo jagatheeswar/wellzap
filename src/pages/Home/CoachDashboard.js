@@ -6,7 +6,6 @@ import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import { formatDate } from "../../functions/formatDate";
-import CoachCreateWorkout from "../Workouts/CoachCreateWorkout";
 import CoachWorkouts from "../Workouts/CoachWorkouts";
 import "./Home.css";
 import { Grid } from "@material-ui/core";
@@ -165,7 +164,11 @@ function CoachDashboard(props) {
   }, [nutrition]);
 
   return (
-    <Grid container style={{marginBottom: 30}} className="coachDashboard__container">
+    <Grid
+      container
+      style={{ marginBottom: 30 }}
+      className="coachDashboard__container"
+    >
       <Grid item xs={6} className="coachDashboard__leftContainer">
         <div
           style={{
@@ -176,22 +179,22 @@ function CoachDashboard(props) {
           }}
         >
           {" "}
-          <div style={{
-            display: "flex",
+          <div
+            style={{
+              display: "flex",
               alignItems: "center",
               justifyContent: "center",
-          }}>
-          <h2
-            style={{
-              fontSize: 19,
-              fontWeight: 500,
-              
             }}
           >
-            Workout Plans on
-            
-          </h2>
-          <p
+            <h2
+              style={{
+                fontSize: 19,
+                fontWeight: 500,
+              }}
+            >
+              Workout Plans on
+            </h2>
+            <p
               style={{
                 fontSize: 18,
                 fontWeight: 400,

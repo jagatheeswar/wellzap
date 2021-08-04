@@ -8,8 +8,7 @@ import {
   selectUserType,
   setUserData,
 } from "../../features/userSlice";
-import firebase from "firebase"
-
+import firebase from "firebase";
 
 function Event_card(props) {
   const userData = useSelector(selectUserData);
@@ -74,48 +73,73 @@ function Event_card(props) {
                 <button
                   style={{
                     height: 25,
-                    backgroundColor: "#fcd54a",
+                    backgroundColor: "#ffe486",
                     color: "black",
                   }}
                 >
                   {item.eventDate && moment(item.eventDate).format("LT")}
                 </button>
-                {moment(new Date()).valueOf() > item.eventDate - 60000*20 ? 
-                <a style={{cursor:"pointer"}} href={item.showVideoLink && item.videolink}> 
-                <button
-                  style={{
-                    height: 25,
-                    backgroundColor: "#fcd54a",
-                    color: "black",
-                    cursor:"pointer"
-                  }}
-                  onClick={()=>   { 
-                    if(userType == "athlete"){
-                      db.collection("events").doc(item.id).update({
-                        attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
-                      })
-                    }}}
-                >
-                  Join now
-                </button> </a>:null}
+                {moment(new Date()).valueOf() > item.eventDate - 60000 * 20 ? (
+                  <a
+                    style={{ cursor: "pointer" }}
+                    href={item.showVideoLink && item.videolink}
+                  >
+                    <button
+                      style={{
+                        height: 25,
+                        backgroundColor: "#ffe486",
+                        color: "black",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        if (userType == "athlete") {
+                          db.collection("events")
+                            .doc(item.id)
+                            .update({
+                              attendance:
+                                firebase.firestore.FieldValue.arrayUnion(
+                                  userData.id
+                                ),
+                            });
+                        }
+                      }}
+                    >
+                      Join now
+                    </button>{" "}
+                  </a>
+                ) : null}
               </div>
             </div>
             <div style={{ marginLeft: 20 }}>
-            {moment(new Date()).valueOf() > item.eventDate - 60000*20 ?
-              <a style={{textDecoration:"none"}} 
-                onClick={()=>   { 
-                  if(userType == "athlete"){
-                    db.collection("events").doc(item.id).update({
-                      attendance:firebase.firestore.FieldValue.arrayUnion(userData.id)
-                    })
-                  }}} href={item.showVideoLink && item.videolink}>
-                {item.showVideoLink && item.videolink}
-              </a> : 
-              <span style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={() => window.open(item.showVideoLink && item.videolink)}>{item.showVideoLink && item.videolink}</span>
-              
-              }
+              {moment(new Date()).valueOf() > item.eventDate - 60000 * 20 ? (
+                <a
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    if (userType == "athlete") {
+                      db.collection("events")
+                        .doc(item.id)
+                        .update({
+                          attendance: firebase.firestore.FieldValue.arrayUnion(
+                            userData.id
+                          ),
+                        });
+                    }
+                  }}
+                  href={item.showVideoLink && item.videolink}
+                >
+                  {item.showVideoLink && item.videolink}
+                </a>
+              ) : (
+                <span
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  onClick={() =>
+                    window.open(item.showVideoLink && item.videolink)
+                  }
+                >
+                  {item.showVideoLink && item.videolink}
+                </span>
+              )}
             </div>
-
           </div>
         );
       })}

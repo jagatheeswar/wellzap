@@ -134,7 +134,7 @@
   border-radius: 10px !important;
 }
 .Calendar__day:not(.-blank):not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween):not(.-selected):hover {
-  border: 1px solid #fcd54a !important;
+  border: 1px solid #ffe486 !important;
   background-color: white !important;
   color: black !important;
 }
@@ -179,7 +179,7 @@
   font-weight: 400;
 }
 .add_event {
-  background-color: #fcd54a;
+  background-color: #ffe486;
   border: none;
   font-size: 25px;
   margin: 10px;
@@ -223,7 +223,7 @@
 
 .upcoming_event_right button {
   border: none;
-  background-color: #fcd54a;
+  background-color: #ffe486;
   margin: 2px;
   font-size: 12px;
   font-weight: 100;

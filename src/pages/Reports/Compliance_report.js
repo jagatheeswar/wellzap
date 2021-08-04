@@ -120,7 +120,7 @@ const Compliance_report = (props) => {
               bar_color.push("red");
               compliance.push(1);
             } else if (total == 8) {
-              bar_color.push("#fcd54a");
+              bar_color.push("#ffe486");
               compliance.push(1);
             } else {
               compliance.push(0);
@@ -432,7 +432,7 @@ const Compliance_report = (props) => {
     let data = [
       {
         label: "Fully Compliant",
-        color: "#fcd54a",
+        color: "#ffe486",
       },
       {
         label: "Partially Compliant",

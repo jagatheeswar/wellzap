@@ -447,7 +447,7 @@ function CreateNutrition(props) {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    backgroundColor: "#fcd54a",
+                    backgroundColor: "#ffe486",
                     borderRadius: "10px",
                     height: "45px",
                     width: "350px",
@@ -579,7 +579,7 @@ function CreateNutrition(props) {
                         style={
                           athlete?.selectedDays?.includes(specificDates[idx])
                             ? {
-                                backgroundColor: "#fcd54a",
+                                backgroundColor: "#ffe486",
                                 color: "#fff",
                                 width: "85px",
                                 height: "25px",
@@ -797,7 +797,7 @@ function CreateNutrition(props) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      // backgroundColor: "#fcd54a",
+                      // backgroundColor: "#ffe486",
                       borderRadius: "10px",
                       height: "45px",
                     }}
@@ -926,7 +926,7 @@ function CreateNutrition(props) {
                           style={
                             athlete?.selectedDays?.includes(specificDates[idx])
                               ? {
-                                  backgroundColor: "#fcd54a",
+                                  backgroundColor: "#ffe486",
                                   color: "#fff",
                                   width: "85px",
                                   height: "25px",
@@ -1087,7 +1087,7 @@ function CreateNutrition(props) {
               style={{
                 display: "flex",
                 alignItems: "center",
-                backgroundColor: "#fcd54a",
+                backgroundColor: "#ffe486",
                 borderRadius: "10px",
                 height: "45px",
                 width: "350px",
@@ -1212,7 +1212,7 @@ function CreateNutrition(props) {
                     style={
                       athlete?.selectedDays?.includes(specificDates[idx])
                         ? {
-                            backgroundColor: "#fcd54a",
+                            backgroundColor: "#ffe486",
                             color: "#fff",
                             width: "85px",
                             height: "25px",

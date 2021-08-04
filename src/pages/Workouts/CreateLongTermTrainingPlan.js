@@ -28,7 +28,6 @@ import Select from "@material-ui/core/Select";
 import { Calendar, utils } from "react-modern-calendar-datepicker";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import "date-fns";
-import CoachCreateWorkout from "./CoachCreateWorkout";
 import AssignWorkout from "./AssignWorkout";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -544,7 +543,7 @@ const CreateLongTermTrainingPlan = () => {
               console.log(addDays(local_date, 7 * idx + idx2));
               db.collection("workouts")
                 .add({
-                  workoutName: "workoutName",
+                  workoutName: dat2[id2].preWorkout.workoutName,
                   assignedById: userData?.id,
                   assignedToId: ath.id,
                   date: formatDate(addDays(local_date, 7 * idx + idx2)),
@@ -663,7 +662,7 @@ const CreateLongTermTrainingPlan = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    // backgroundColor: "#fcd54a",
+                    // backgroundColor: "#ffe486",
                     borderRadius: "10px",
                     height: "45px",
                   }}
@@ -790,7 +789,7 @@ const CreateLongTermTrainingPlan = () => {
                         style={
                           athlete?.selectedDays?.includes(specificDates[idx])
                             ? {
-                                backgroundColor: "#fcd54a",
+                                backgroundColor: "#ffe486",
                                 color: "#fff",
                                 width: "85px",
                                 height: "25px",
@@ -2494,7 +2493,7 @@ const CreateLongTermTrainingPlan = () => {
               <Calendar
                 value={selectedDate}
                 onChange={setSelectedDate}
-                colorPrimary="#fcd54a" // added this
+                colorPrimary="#ffe486" // added this
                 colorPrimaryLight="blue"
                 calendarClassName="customcalendarScreen" // and this
                 calendarTodayClassName="custom-today-day" // also this

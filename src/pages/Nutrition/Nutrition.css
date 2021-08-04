@@ -29,11 +29,11 @@
 }
 
 .custom-today-day {
-  color: #fcd54a !important;
+  color: #ffe486 !important;
   background-color: black !important;
   border: none;
   margin-bottom: none;
-  box-shadow: 1px solid #fcd54a !important;
+  box-shadow: 1px solid #ffe486 !important;
   font-style: none;
 }
 .custom-today-day::after {
@@ -274,7 +274,7 @@
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
 }
 .react-datepicker__day--selected {
-  background-color: #fcd54a;
+  background-color: #ffe486;
   border-radius: 10px;
   height: 2.7rem;
 
@@ -329,14 +329,14 @@
 
 .custom-today-day {
   color: black !important;
-  background-color: #fcd54a;
-  border: 1px solid #fcd54a;
-  box-shadow: 1px solid #fcd54a !important;
+  background-color: #ffe486;
+  border: 1px solid #ffe486;
+  box-shadow: 1px solid #ffe486 !important;
 }
 .custom-today-day:hover {
   color: black !important;
   background-color: #ccad3b;
-  border: 1px solid #fcd54a !important;
+  border: 1px solid #ffe486 !important;
 }
 .Calendar__day:hover {
   color: black !important;
@@ -392,11 +392,11 @@
 }
 
 .custom-today-day {
-  color: #fcd54a !important;
+  color: #ffe486 !important;
   background-color: black !important;
   border: none;
   margin-bottom: none;
-  box-shadow: 1px solid #fcd54a !important;
+  box-shadow: 1px solid #ffe486 !important;
   font-style: none;
 }
 .custom-today-day::after {
@@ -453,7 +453,7 @@
   font-weight: 400;
 }
 .add_event {
-  background-color: #fcd54a;
+  background-color: #ffe486;
   border: none;
   font-size: 25px;
   margin: 10px;
@@ -498,7 +498,7 @@
 
 .upcoming_event_right button {
   border: none;
-  background-color: #fcd54a;
+  background-color: #ffe486;
   margin: 2px;
   font-size: 12px;
   font-weight: 100;

@@ -215,7 +215,7 @@ function AthleteTrainingAssessment_coach({ route, navigation }) {
             style={
               color.includes(idx)
                 ? {
-                    backgroundColor: "#fcd54a",
+                    backgroundColor: "#ffe486",
                     justifyContent: "center",
                     alignItems: "center",
                     position: "relative",

@@ -326,8 +326,8 @@ export default function PostWorkoutDetails() {
                                 disabled={completed ? true : false}
                                 checked={workout?.completed}
                                 tintColors={{
-                                  true: "#fcd54a",
-                                  false: "#fcd54a",
+                                  true: "#ffe486",
+                                  false: "#ffe486",
                                 }}
                                 onValueChange={(newValue) => {
                                   let temp = [...group];
@@ -515,7 +515,7 @@ export default function PostWorkoutDetails() {
                                         height: 20,
                                         borderWidth: 1,
                                         borderColor: "#DBE2EA",
-                                        backgroundColor: "#fcd54a",
+                                        backgroundColor: "#ffe486",
                                         padding: 7,
                                         borderRadius: 8,
                                         textAlign: "center",
@@ -646,8 +646,8 @@ export default function PostWorkoutDetails() {
                                 disabled={completed}
                                 checked={workout?.completed}
                                 tintColors={{
-                                  true: "#fcd54a",
-                                  false: "#fcd54a",
+                                  true: "#ffe486",
+                                  false: "#ffe486",
                                 }}
                                 onChange={(newValue) => {
                                   let temp = [...group];
@@ -1289,7 +1289,7 @@ export default function PostWorkoutDetails() {
       )}
       <button
         style={{
-          backgroundColor: "#fcd54a",
+          backgroundColor: "#ffe486",
           padding: 10,
           borderRadius: 15,
           width: 300,

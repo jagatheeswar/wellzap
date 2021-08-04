@@ -222,7 +222,6 @@
 }
 
 .athleteProfile__container {
-  display: flex;
   align-items: flex-start;
   height: 100%;
   width: 100%;

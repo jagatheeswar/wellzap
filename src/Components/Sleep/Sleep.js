@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PrettoSlider = withStyles({
   root: {
-    color: "#fcd54a",
+    color: "#ffe486",
     height: 1,
     width: "90%",
     marginLeft: 15,
@@ -92,7 +92,7 @@ function Sleep(props) {
         .then((doc) => {
           // console.log(doc.data());
 
-          if (doc.data().metrics) {
+          if (doc.data()?.metrics) {
             if (doc.data().metrics[requestDate]) {
               if (doc.data().metrics[requestDate]?.sleep) {
                 setUpdatedSleep(true);

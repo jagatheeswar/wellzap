@@ -923,7 +923,7 @@ function InviteScreen({ route, navigation }) {
           <div
             onClick={() => accept()}
             style={{
-              backgroundColor: "#fcd54a",
+              backgroundColor: "#ffe486",
               borderRadius: 10,
               padding: 10,
               width: 120,

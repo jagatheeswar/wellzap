@@ -445,7 +445,7 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
                   style={
                     color1.includes(idx)
                       ? {
-                          backgroundColor: "#fcd54a",
+                          backgroundColor: "#ffe486",
                           justifyContent: "center",
                           alignItems: "center",
                           position: "relative",
@@ -511,7 +511,7 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
                 style={
                   color.includes(idx)
                     ? {
-                        backgroundColor: "#fcd54a",
+                        backgroundColor: "#ffe486",
                         justifyContent: "center",
                         alignItems: "center",
                         position: "relative",

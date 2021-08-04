@@ -110,7 +110,6 @@ const Graph3_ = (props) => {
   const [mindate, setmindate] = useState(new Date());
   const [maxdate, setmaxdate] = useState(null);
 
-
   const min_date = {
     year: 2021,
     month: "05",
@@ -178,19 +177,19 @@ const Graph3_ = (props) => {
       let a = moment(new Date());
       let b = moment(mindate);
       let diff = a.diff(b, "days");
-      setendDate(new Date())
+      setendDate(new Date());
 
       if (diff > 32) {
         setCurrentStartWeek(
           moment(new Date()).subtract(30, "days").utc().format("DD-MM-YYYY")
         );
-       
-        setstartDate( new Date().setDate(new Date().getDate() - 30))
+
+        setstartDate(new Date().setDate(new Date().getDate() - 30));
       } else {
         setCurrentStartWeek(
           moment(new Date()).subtract(diff, "days").utc().format("DD-MM-YYYY")
         );
-        setstartDate( new Date().setDate(new Date().getDate() - diff))
+        setstartDate(new Date().setDate(new Date().getDate() - diff));
       }
     }
   }, [mindate]);
@@ -589,7 +588,7 @@ const Graph3_ = (props) => {
     } else if (graph3Options == "fat") {
       var data1 = {
         labels: labels,
-        datasets: [{ label: "1", data: graph3Data2, borderColor: "#fcd54a" }],
+        datasets: [{ label: "1", data: graph3Data2, borderColor: "#ffe486" }],
       };
       setchart_data2(data1);
     } else if (graph3Options == "muscle") {
@@ -606,7 +605,7 @@ const Graph3_ = (props) => {
           {
             label: "2",
             data: graph3Data2,
-            borderColor: "#fcd54a",
+            borderColor: "#ffe486",
           },
           {
             label: "3",
@@ -690,7 +689,7 @@ const Graph3_ = (props) => {
     let data = [
       {
         label: "Fat",
-        color: "#fcd54a",
+        color: "#ffe486",
       },
       {
         label: "Muscle",
@@ -781,21 +780,26 @@ const Graph3_ = (props) => {
           minimumDate={min_date}
           maximumDate={max_date}
         /> */}
-        <div style={{textAlign:'center', marginTop: 15, display:'flex',justifyContent:'center',alignItems:'center' }}>
-         
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 15,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <DatePicker
-      selected={startDate}
-      onChange={(date) => setstartDate(date)}
-      minDate={mindate}
-    
-    />
-    <span>and</span>
-    <DatePicker
-      selected={endDate}
-      maxDate={new Date()}
-      onChange={(date) => setendDate(date)}
-      
-    />
+            selected={startDate}
+            onChange={(date) => setstartDate(date)}
+            minDate={mindate}
+          />
+          <span>and</span>
+          <DatePicker
+            selected={endDate}
+            maxDate={new Date()}
+            onChange={(date) => setendDate(date)}
+          />
         </div>
         <div className="chart_header"></div>
         {graph3Options !== "all" ? "" : labels()}

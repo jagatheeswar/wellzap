@@ -262,7 +262,7 @@ function LogWeight({ route, navigation }) {
 
   return (
     <div className="athleteMeasurements">
-      <div style={{width: "98%"}} className="athleteProfile__leftContainer">
+      <div style={{ width: "98%" }} className="athleteProfile__leftContainer">
         <Header />
         <h2>Log Weight</h2>
         <div
@@ -277,7 +277,7 @@ function LogWeight({ route, navigation }) {
             <Calendar
               value={selectedDay}
               onChange={setSelectedDay}
-              colorPrimary="#fcd54a" // added this
+              colorPrimary="#ffe486" // added this
               colorPrimaryLight="blue"
               calendarClassName="customcalendarScreen" // and this
               calendarTodayClassName="custom-today-day" // also this
