@@ -73,6 +73,7 @@ import AthleteMealHistory from "./pages/Nutrition/AthleteMealHistory";
 import ViewAllPastWorkouts from "./pages/Workouts/ViewAllPastWorkouts";
 import AthleteHistory from "./pages/AllAthletes/AthleteHistory";
 import PrintPreview from "./pages/Reports/PrintPreview";
+import CreateOwnWorkout from './pages/Workouts/CreateOwnWorkout';
 import ViewAllSavedLongTermWorkouts from "./pages/Workouts/ViewAllSavedLongTermWorkouts";
 import ViewAllAssignedLongTermWorkouts from "./pages/Workouts/ViewAllAssignedLongTermWorkouts";
 import LongTermNutrition from "./pages/Nutrition/ViewAllLongTerm";
@@ -501,6 +502,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthleteCreateWorkout />}
                 CoachComp={<CoachAddWorkout />}
+              />
+            </Route>
+            <Route path="/add-own-workout">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<CreateOwnWorkout />}
               />
             </Route>
             <Route path="/assign-workout">
