@@ -42,13 +42,15 @@ const AddFoodCard = (props) => {
     <div className="athleteFoodCard">
       {open ? (
         <div className="athleteFoodCard__open">
-          <div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row-reverse",
+            }}
+          >
             <div className="athleteFoodCard__openContainer">
-              <h4>
-                {props.type === "non-editable"
-                  ? "Food Name"
-                  : "Search Food Name"}
-              </h4>
+              <h4>{props.type === "non-editable" ? "Food Name" : ""}</h4>
               {props.type !== "non-editable" && (
                 <div
                   onClick={() => {
@@ -99,7 +101,7 @@ const AddFoodCard = (props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Combo box"
+                      label="Search Food"
                       onChange={({ target }) => {
                         let foodData = [...props.entireFood];
                         let temp = [...props.ent.food];
@@ -185,9 +187,18 @@ const AddFoodCard = (props) => {
             </div>
             <div className="foodCard__servingsInputContainer">
               <FormControl className={classes.formControl}>
-                <InputLabel id="servings-select-label">
-                  Select Servings
-                </InputLabel>
+                <h4
+                  style={{
+                    margin: "10px 0",
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                >
+                  {props.type === "non-editable"
+                    ? "Servings"
+                    : "Select Servings"}
+                </h4>
+                {console.log(props.item.units)}
                 <Select
                   labelId="servings-select-label"
                   id="servings-select-label"
@@ -246,7 +257,9 @@ const AddFoodCard = (props) => {
             </div>
           </div>
           <div className="foodCard__macroNutrients">
-            <h4>Macro Nutrients</h4>
+            <div style={{ marginTop: 20, fontWeight: 600 }}>
+              Macro Nutrients
+            </div>
             <div className="foodCard__macroNutrientsContainer">
               <div className="foodCard__macroNutrient">
                 <h4>Proteins</h4>
@@ -369,7 +382,7 @@ const AddFoodCard = (props) => {
           className="foodCard__checkAlternative"
           style={{
             height: 30,
-
+            display: "flex",
             backgroundColor: "white",
           }}
         >
@@ -387,11 +400,19 @@ const AddFoodCard = (props) => {
               type="font-awesome-5"
               size={20}
             /> */}
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
               {item.units === "Grams"
                 ? item.quantity + " Grams"
                 : item.quantity + " " + item.units}{" "}
               , Total Calories: {item.calories}
+              <div>
+                <img
+                  style={{ marginLeft: 20, marginTop: 7 }}
+                  src="/assets/down.png"
+                  width="32px"
+                  height="32px"
+                />
+              </div>
             </div>
           </div>
         </div>

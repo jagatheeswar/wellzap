@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { formatDate } from "../../functions/formatDate";
 import { useLocation } from "react-router-dom";
 import firebase from "firebase";
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -43,11 +44,28 @@ function AthleteAddMeal() {
       ],
     },
   ]);
+  const [requestDate, setRequestDate] = useState(formatDate());
   const [foodId, setFoodId] = useState("");
   const [type, setType] = useState("");
   const history = useHistory();
   const [todaysFoodId, setTodaysFoodId] = useState("");
-  const [CoachMeal, setCoachMeal] = useState([]);
+  const [CoachMeal, setCoachMeal] = useState([
+    {
+      meal: "",
+      description: "",
+      food: [
+        {
+          foodName: "",
+          proteins: 0,
+          carbs: 0,
+          fat: 0,
+          calories: 0,
+          quantity: 1,
+        },
+      ],
+    },
+  ]);
+  const [showCoachMeal, setShowCoachMeal] = useState(false);
 
   useEffect(() => {
     getInitialData();
@@ -69,22 +87,44 @@ function AthleteAddMeal() {
         console.log("Error getting documents: ", error);
       });
   };
+
   useEffect(() => {
-    db.collection("AthleteNutrition")
-      .doc(userData?.id)
-      .collection("nutrition")
-      .doc(formatDate())
-      .get()
-      .then((doc) => {
-        if (doc.data()?.entireFood) {
-          setEntireFood(doc.data()?.entireFood);
-          setTodaysFoodId(doc.id);
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
-  });
+    if (userData) {
+      db.collection("Food")
+        .where("assignedTo_id", "==", userData?.id)
+        .where("selectedDays", "array-contains", foodId)
+        .get()
+        .then((snapshot) => {
+          setCoachMeal(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          );
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
+    }
+  }, [requestDate, userData]);
+  useEffect(() => {
+    if (userData) {
+      db.collection("AthleteNutrition")
+        .doc(userData?.id)
+        .collection("nutrition")
+        .doc(formatDate())
+        .get()
+        .then((doc) => {
+          if (doc.data()?.entireFood) {
+            setEntireFood(doc.data()?.entireFood);
+            setTodaysFoodId(doc.id);
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
+    }
+  }, [userData]);
   useEffect(() => {
     if (location.state?.nutrition) {
       console.log(location.state?.nutrition.data.nutrition.plan);
@@ -130,61 +170,111 @@ function AthleteAddMeal() {
   return (
     <div className="athleteAddMeal">
       <NutritionScreenHeader
-        name="Add Meal"
+        name={"Food Logs for " + foodId ? foodId : todaysFoodId}
         entireFood={entireFood}
         todaysFoodId={todaysFoodId}
       />
-      <AddMeal
-        serverData={serverData}
-        entireFood={entireFood}
-        setEntireFood={setEntireFood}
-        type={type}
-        classes={classes}
-      />
       <div
-        className="athleteFoodCard__submitMealButton"
-        style={{ marginBottom: 20 }}
-        onClick={() => {
-          if (type === "non-editable") {
-            history.goBack();
-          } else {
-            var save = true;
-            entireFood.forEach((id) => {
-              if (id.meal == "Select the type of meal" || id.meal == "") {
-                save = false;
-              }
-            });
-            if (!save) {
-              alert("Please select a meal");
-            } else {
-              console.log("id", entireFood);
-
-              db.collection("AthleteNutrition")
-                .doc(userData?.id)
-                .collection("nutrition")
-                .doc(foodId ? foodId : formatDate())
-                .set(
-                  {
-                    entireFood,
-                    date: new Date(foodId ? foodId : formatDate()),
-
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                  },
-
-                  { merge: true }
-                )
-                .then(() => {
-                  history.push("/nutrition");
-                })
-                .catch((error) => {
-                  console.error("Error updating document: ", error);
-                });
-            }
-          }
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
         }}
       >
-        <h3> {type === "non-editable" ? "Return" : "Complete Nutrition"}</h3>
+        <div onClick={() => {}}>Your Meal</div>
+        <Switch
+          checked={showCoachMeal}
+          onChange={(event) => {
+            setShowCoachMeal(!showCoachMeal);
+          }}
+          name="Show Coach Meal"
+          value={showCoachMeal}
+          inputProps={{ "aria-label": "primary checkbox" }}
+          color="#ffe486"
+        />
+        <div onClick={() => {}}>Assigned Meal</div>
       </div>
+      {console.log(entireFood)}
+      {!showCoachMeal && (
+        <AddMeal
+          serverData={serverData}
+          entireFood={entireFood}
+          setEntireFood={setEntireFood}
+          type={type}
+          classes={classes}
+        />
+      )}
+
+      {showCoachMeal &&
+        (CoachMeal && CoachMeal[0]?.data?.nutrition?.entireFood ? (
+          <AddMeal
+            serverData={serverData}
+            entireFood={CoachMeal[0]?.data?.nutrition?.entireFood}
+            setEntireFood={setEntireFood}
+            type={type}
+            classes={classes}
+          />
+        ) : (
+          <div
+            style={{
+              margin: 20,
+              marginTop: 40,
+              textAlign: "center",
+            }}
+          >
+            There are no assigned meals for selected day
+          </div>
+        ))}
+
+      {/* */}
+      {console.log(CoachMeal[0]?.data?.nutrition?.entireFood)}
+      {!showCoachMeal && (
+        <div
+          className="athleteFoodCard__submitMealButton"
+          style={{ marginBottom: 20 }}
+          onClick={() => {
+            if (type === "non-editable") {
+              history.goBack();
+            } else {
+              var save = true;
+              entireFood.forEach((id) => {
+                if (id.meal == "Select the type of meal" || id.meal == "") {
+                  save = false;
+                }
+              });
+              if (!save) {
+                alert("Please select a meal");
+              } else {
+                console.log("id", entireFood);
+
+                db.collection("AthleteNutrition")
+                  .doc(userData?.id)
+                  .collection("nutrition")
+                  .doc(foodId ? foodId : formatDate())
+                  .set(
+                    {
+                      entireFood,
+                      date: new Date(foodId ? foodId : formatDate()),
+
+                      timestamp:
+                        firebase.firestore.FieldValue.serverTimestamp(),
+                    },
+
+                    { merge: true }
+                  )
+                  .then(() => {
+                    history.push("/nutrition");
+                  })
+                  .catch((error) => {
+                    console.error("Error updating document: ", error);
+                  });
+              }
+            }
+          }}
+        >
+          <h3> {type === "non-editable" ? "Return" : "Complete Nutrition"}</h3>
+        </div>
+      )}
     </div>
   );
 }

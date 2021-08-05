@@ -15,31 +15,41 @@ function AddMeal({ serverData, entireFood, setEntireFood, type, classes }) {
             <FormControl className={classes.formControl}>
               <div
                 style={{
-                  fontWeight: 500,
-                  fontSize: 18,
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                Select Meal Type
+                <span
+                  style={{
+                    fontWeight: 500,
+                    fontSize: 18,
+                    marginRight: 20,
+                  }}
+                >
+                  Select Meal Type
+                </span>
+                <div>
+                  <Select
+                    labelId="meal-select-label"
+                    id="meal-select-label"
+                    value={ent.meal}
+                    onChange={(e) => {
+                      let temp = [...entireFood];
+                      temp[index].meal = e.target.value;
+                      setEntireFood(temp);
+                    }}
+                    placeholder="select meal type"
+                  >
+                    <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                    <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                    <MenuItem value={"Snack"}>Snack</MenuItem>
+                    <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
+                    <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
+                    <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                    <MenuItem value={"Supplements"}>Supplements</MenuItem>
+                  </Select>
+                </div>
               </div>
-              <InputLabel id="meal-select-label"></InputLabel>
-              <Select
-                labelId="meal-select-label"
-                id="meal-select-label"
-                value={ent.meal}
-                onChange={(e) => {
-                  let temp = [...entireFood];
-                  temp[index].meal = e.target.value;
-                  setEntireFood(temp);
-                }}
-              >
-                <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-                <MenuItem value={"Lunch"}>Lunch</MenuItem>
-                <MenuItem value={"Snack"}>Snack</MenuItem>
-                <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
-                <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
-                <MenuItem value={"Dinner"}>Dinner</MenuItem>
-                <MenuItem value={"Supplements"}>Supplements</MenuItem>
-              </Select>
             </FormControl>
 
             {ent.food?.map((item, idx) => {
