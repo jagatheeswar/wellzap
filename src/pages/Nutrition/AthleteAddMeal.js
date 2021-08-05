@@ -47,6 +47,7 @@ function AthleteAddMeal() {
   const [type, setType] = useState("");
   const history = useHistory();
   const [todaysFoodId, setTodaysFoodId] = useState("");
+  const [CoachMeal, setCoachMeal] = useState([]);
 
   useEffect(() => {
     getInitialData();
@@ -68,6 +69,22 @@ function AthleteAddMeal() {
         console.log("Error getting documents: ", error);
       });
   };
+  useEffect(() => {
+    db.collection("AthleteNutrition")
+      .doc(userData?.id)
+      .collection("nutrition")
+      .doc(formatDate())
+      .get()
+      .then((doc) => {
+        if (doc.data()?.entireFood) {
+          setEntireFood(doc.data()?.entireFood);
+          setTodaysFoodId(doc.id);
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  });
   useEffect(() => {
     if (location.state?.nutrition) {
       console.log(location.state?.nutrition.data.nutrition.plan);

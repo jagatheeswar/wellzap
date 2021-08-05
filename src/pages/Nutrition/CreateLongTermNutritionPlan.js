@@ -316,25 +316,15 @@ const CreateLongTermNutritionPlan = () => {
     setSelectedDate(today_date);
     var temp = [];
     for (var i = 0; i < 90; i++) {
-      if (
-        moment(new Date())
-          .add(i + 1, "days")
-          .isoWeekday() != 1
-      ) {
+      if (moment(new Date()).add(i, "days").isoWeekday() != 1) {
         temp.push({
-          year: moment(new Date())
-            .add(i + 1, "days")
-            .get("year"),
-          month:
-            moment(new Date())
-              .add(i + 1, "days")
-              .get("month") + 1,
-          day: moment(new Date())
-            .add(i + 1, "days")
-            .get("date"),
+          year: moment(new Date()).add(i, "days").get("year"),
+          month: moment(new Date()).add(i, "days").get("month") + 1,
+          day: moment(new Date()).add(i, "days").get("date"),
         });
       }
     }
+    console.log(temp);
     setDisabledDays(temp);
     const dayINeed = 1;
     const today = moment().isoWeekday();
@@ -587,33 +577,6 @@ const CreateLongTermNutritionPlan = () => {
   return (
     <div>
       <NutritionScreenHeader name="Create Long-Term Nutrition Plan" />
-
-      {editable && (
-        <div
-          style={{
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-            width: "100%",
-            display: "flex",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#FFE486",
-              borderRadius: 20,
-              cursor: "pointer",
-              padding: 10,
-              width: 170,
-              marginRight: 20,
-            }}
-            onClick={saveLongTermMeal}
-          >
-            <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
-              SAVE LONG TERM MEAL
-            </h5>
-          </div>
-        </div>
-      )}
 
       <div
         style={{
@@ -1037,8 +1000,8 @@ const CreateLongTermNutritionPlan = () => {
           }
         >
           <img
-            style={{ objectFit: "contain" }}
-            src="/assets/right__arrow.png"
+            style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+            src="/assets/left_arrow.png"
             alt=""
             width="15px"
             height="15px"
@@ -1049,15 +1012,15 @@ const CreateLongTermNutritionPlan = () => {
           style={{ marginLeft: 20, cursor: "pointer" }}
         >
           <img
-            style={{ objectFit: "contain" }}
-            src="/assets/right__arrow.png"
+            style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+            src="/assets/left_arrow.png"
             alt=""
             width="15px"
             height="15px"
           />
           <img
-            style={{ objectFit: "contain" }}
-            src="/assets/right__arrow.png"
+            style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+            src="/assets/left_arrow.png"
             alt=""
             width="15px"
             height="15px"
@@ -1093,9 +1056,7 @@ const CreateLongTermNutritionPlan = () => {
             </div>
           ) : null}
           {selectedWeeks.map((index, idx) => (
-            <div
-              style={{ flexDirection: "column", width: "45%", marginLeft: 20 }}
-            >
+            <div style={{ flexDirection: "column", width: "45%" }}>
               <p>Week {index.weeknum}</p>
               <div
                 style={{
@@ -2156,14 +2117,40 @@ const CreateLongTermNutritionPlan = () => {
             }
           >
             <img
-              style={{ objectFit: "contain" }}
-              src="/assets/right__arrow.png"
+              style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+              src="/assets/left_arrow.png"
               alt=""
               width="15px"
               height="15px"
             />{" "}
           </div>
         </div>
+
+        {editable && (
+          <div
+            style={{
+              display: "flex",
+              margin: 40,
+              borderRadius: 10,
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "#FFE486",
+                borderRadius: 10,
+                cursor: "pointer",
+                padding: 15,
+                width: 170,
+                marginRight: 20,
+              }}
+              onClick={saveLongTermMeal}
+            >
+              <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
+                SAVE LONG TERM MEAL
+              </h5>
+            </div>
+          </div>
+        )}
       </div>
       <Dialog
         open={openDialog}
@@ -2335,8 +2322,8 @@ const CreateLongTermNutritionPlan = () => {
       </Dialog>
       <Modal
         visible={modal}
-        width="80%"
-        height="300"
+        width="450px"
+        height="250"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
@@ -2346,8 +2333,11 @@ const CreateLongTermNutritionPlan = () => {
             <div
               className="createWorkout__modalButton"
               onClick={() => setModal(false)}
+              style={{
+                backgroundColor: "transparent",
+              }}
             >
-              RETURN
+              CANCEL
             </div>
 
             <div
@@ -2361,6 +2351,10 @@ const CreateLongTermNutritionPlan = () => {
                 onClick={() => {
                   setModal(false);
                   setModal1(true);
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
                 }}
               >
                 DON'T SAVE
@@ -2380,6 +2374,10 @@ const CreateLongTermNutritionPlan = () => {
                   setModal(false);
                   setModal1(true);
                 }}
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
               >
                 SAVE
               </div>
@@ -2390,7 +2388,7 @@ const CreateLongTermNutritionPlan = () => {
       <Modal
         visible={modal1}
         width="450px"
-        height="300"
+        height="250"
         effect="fadeInUp"
         onClickaway={() => setModal(false)}
       >
@@ -2419,6 +2417,10 @@ const CreateLongTermNutritionPlan = () => {
                 onClick={() => {
                   setModal1(false);
                 }}
+                style={{
+                  backgroundColor: "transparent",
+                  fontWeight: 600,
+                }}
               >
                 NO
               </div>
@@ -2427,6 +2429,10 @@ const CreateLongTermNutritionPlan = () => {
                 onClick={() => {
                   setModal1(false);
                   setOpenAssignNutrition(true);
+                }}
+                style={{
+                  borderRadius: 10,
+                  padding: "5px 20px",
                 }}
               >
                 YES
@@ -2443,7 +2449,7 @@ const CreateLongTermNutritionPlan = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <div style={{ width: 600, height: 500 }}>
+          <div style={{ width: 800, height: 500, display: "flex" }}>
             <div style={{ marginBottom: 20 }} {...getRootProps()}>
               <Label {...getInputLabelProps()}>Search for Athletes</Label>
               <InputWrapper
@@ -2477,7 +2483,11 @@ const CreateLongTermNutritionPlan = () => {
                 calendarClassName="customcalendarScreen" // and this
                 calendarTodayClassName="custom-today-day" // also this
                 minimumDate={utils().getToday()}
-                maximumDate={{ year: 2021, month: 9, day: 17 }}
+                maximumDate={{
+                  year: addDays(new Date(), 90).getFullYear(),
+                  month: addDays(new Date(), 90).getMonth(),
+                  day: addDays(new Date(), 90).getDate(),
+                }}
                 disabledDays={disabledDays}
               />
             </div>

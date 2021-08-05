@@ -375,21 +375,12 @@ function CreateNutrition() {
     <div className="createNutrition">
       <NutritionScreenHeader name="Create Nutrition" />
       <img src="/assets/nutrition.jpeg" alt="" />
-      <div className="createNutrition__input">
-        <h4>Nutrition Plan Name</h4>
-        <input
-          type="text"
-          placeholder="Enter Nutrition Plan Name"
-          value={nutritionName}
-          onChange={(e) => {
-            setNutritionName(e.target.value);
-          }}
-        />
-      </div>
 
       <div>
         <div {...getRootProps()}>
-          <Label {...getInputLabelProps()}>Search for Athletes</Label>
+          {/* <Label {...getInputLabelProps()}>Search for Athletes</Label> */}
+          <h3 style={{ marginLeft: 30 }}>Search For Athletes</h3>
+
           <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
             {value.map((option, index) => (
               <Tag label={option.name} {...getTagProps({ index })} />
@@ -668,14 +659,24 @@ function CreateNutrition() {
           </div>
         ))}
       </div>
+
+      <div className="createNutrition__input">
+        <h4>Nutrition Plan Name</h4>
+        <input
+          type="text"
+          placeholder="Enter Nutrition Plan Name"
+          value={nutritionName}
+          onChange={(e) => {
+            setNutritionName(e.target.value);
+          }}
+        />
+      </div>
       <div className="coachAddMeal__form">
         <div className="athleteAddMeal__typeOfMeal">
           {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
               <FormControl className={classes.formControl}>
-                <InputLabel id="meal-select-label">
-                  Select the type of meal
-                </InputLabel>
+                <h4>Select the type of meal</h4>
                 <Select
                   labelId="meal-select-label"
                   id="meal-select-label"

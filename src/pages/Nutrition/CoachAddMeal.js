@@ -251,6 +251,7 @@ function CoachAddMeal(props) {
           {userType !== "athlete" && (
             <div
               className="coachFoodCard__submitMealButton"
+              style={{ padding: 5 }}
               onClick={() => {
                 if (props.isLongTerm) {
                   AddLongTermMeal();
@@ -259,7 +260,7 @@ function CoachAddMeal(props) {
                 }
               }}
             >
-              <h3>Add Plan</h3>
+              <h3>Confirm</h3>
             </div>
           )}
         </div>

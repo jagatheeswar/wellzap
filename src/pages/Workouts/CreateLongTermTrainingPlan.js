@@ -323,22 +323,11 @@ const CreateLongTermTrainingPlan = () => {
     setSelectedDate(today_date);
     var temp = [];
     for (var i = 0; i < 90; i++) {
-      if (
-        moment(new Date())
-          .add(i + 1, "days")
-          .isoWeekday() != 1
-      ) {
+      if (moment(new Date()).add(i, "days").isoWeekday() != 1) {
         temp.push({
-          year: moment(new Date())
-            .add(i + 1, "days")
-            .get("year"),
-          month:
-            moment(new Date())
-              .add(i + 1, "days")
-              .get("month") + 1,
-          day: moment(new Date())
-            .add(i + 1, "days")
-            .get("date"),
+          year: moment(new Date()).add(i, "days").get("year"),
+          month: moment(new Date()).add(i, "days").get("month") + 1,
+          day: moment(new Date()).add(i, "days").get("date"),
         });
       }
     }
@@ -449,9 +438,30 @@ const CreateLongTermTrainingPlan = () => {
 
   function addDays(date, days) {
     var result = new Date(date);
+    console.log(result);
     result.setDate(result.getDate() + days);
+
+    //console.log(result.getDate(), result.getFullYear(), result.getMonth());
     return result;
   }
+  function getMaxdate(days) {
+    return new Promise((resolve, reject) => {
+      var result = new Date();
+      result.setDate(result.getDate() + days);
+
+      //console.log(result.getDate(), , result.getMonth());
+      resolve({
+        year: result.getFullYear(),
+        month: result.getMonth(),
+        day: result.getDate(),
+      });
+    });
+  }
+  console.log(
+    getMaxdate(90).then((d) => {
+      console.log(d);
+    })
+  );
 
   function formatDate(date) {
     var d = new Date(date),
@@ -598,32 +608,6 @@ const CreateLongTermTrainingPlan = () => {
   return (
     <div>
       <WorkoutScreenHeader name="Create Long-Term Workout Plan" />
-      {editable && (
-        <div
-          style={{
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-            width: "100%",
-            display: "flex",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#FFE486",
-              borderRadius: 20,
-              cursor: "pointer",
-              padding: 10,
-              width: 200,
-              marginRight: 20,
-            }}
-            onClick={saveLongTermworkout}
-          >
-            <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
-              SAVE LONG TERM WORKOUT
-            </h5>
-          </div>
-        </div>
-      )}
 
       <div
         style={{
@@ -1047,8 +1031,8 @@ const CreateLongTermTrainingPlan = () => {
           }
         >
           <img
-            style={{ objectFit: "contain" }}
-            src="/assets/right__arrow.png"
+            style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+            src="/assets/left_arrow.png"
             alt=""
             width="15px"
             height="15px"
@@ -1059,15 +1043,15 @@ const CreateLongTermTrainingPlan = () => {
           style={{ marginLeft: 20, cursor: "pointer" }}
         >
           <img
-            style={{ objectFit: "contain" }}
-            src="/assets/right__arrow.png"
+            style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+            src="/assets/left_arrow.png"
             alt=""
             width="15px"
             height="15px"
           />
           <img
-            style={{ objectFit: "contain" }}
-            src="/assets/right__arrow.png"
+            style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+            src="/assets/left_arrow.png"
             alt=""
             width="15px"
             height="15px"
@@ -1103,9 +1087,7 @@ const CreateLongTermTrainingPlan = () => {
             </div>
           ) : null}
           {selectedWeeks.map((index, idx) => (
-            <div
-              style={{ flexDirection: "column", width: "45%", marginLeft: 20 }}
-            >
+            <div style={{ flexDirection: "column", width: "45%" }}>
               <p>Week {index.weeknum}</p>
               <div
                 style={{
@@ -2155,14 +2137,33 @@ const CreateLongTermTrainingPlan = () => {
             }
           >
             <img
-              style={{ objectFit: "contain" }}
-              src="/assets/right__arrow.png"
+              style={{ objectFit: "contain", transform: "rotate(180deg)" }}
+              src="/assets/left_arrow.png"
               alt=""
               width="15px"
               height="15px"
             />{" "}
           </div>
         </div>
+        {editable && (
+          <div style={{ margin: 40 }}>
+            <div
+              style={{
+                backgroundColor: "#FFE486",
+                borderRadius: 10,
+                cursor: "pointer",
+                padding: 15,
+                width: 200,
+                marginRight: 20,
+              }}
+              onClick={saveLongTermworkout}
+            >
+              <h5 style={{ padding: 0, margin: 0, textAlign: "center" }}>
+                SAVE LONG TERM WORKOUT
+              </h5>
+            </div>
+          </div>
+        )}
       </div>
       <Dialog
         open={openDialog}
@@ -2464,7 +2465,14 @@ const CreateLongTermTrainingPlan = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <div style={{ width: 600, height: 500 }}>
+          <div
+            style={{
+              width: 800,
+              height: 500,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <div style={{ marginBottom: 20 }} {...getRootProps()}>
               <Label {...getInputLabelProps()}>Search for Athletes</Label>
               <InputWrapper
@@ -2490,6 +2498,7 @@ const CreateLongTermTrainingPlan = () => {
             ) : null}
             <div style={{ marginLeft: 25 }}>
               <p>Select Start Date</p>
+
               <Calendar
                 value={selectedDate}
                 onChange={setSelectedDate}
@@ -2498,9 +2507,14 @@ const CreateLongTermTrainingPlan = () => {
                 calendarClassName="customcalendarScreen" // and this
                 calendarTodayClassName="custom-today-day" // also this
                 minimumDate={utils().getToday()}
-                maximumDate={{ year: 2021, month: 9, day: 17 }}
+                maximumDate={{
+                  year: addDays(new Date(), 90).getFullYear(),
+                  month: addDays(new Date(), 90).getMonth(),
+                  day: addDays(new Date(), 90).getDate(),
+                }}
                 disabledDays={disabledDays}
               />
+              {console.log(addDays(new Date(), 90).getMonth())}
             </div>
           </div>
         </DialogContent>
