@@ -109,7 +109,26 @@ function CoachAddWorkout() {
   useEffect(() => {
     Axios.get("https://rongoeirnet.herokuapp.com/getexercise")
       .then((res) => {
-        setObjs(res.data.data);
+        let temp = res.data.data;
+        console.log(res.data.data);
+        db.collection("coaches")
+          .doc(userData?.id)
+          .collection("ownWorkout")
+          .get()
+          .then((doc) => {
+            doc.forEach((w) => {
+              let tmp = w.data();
+              tmp["_id"] = w.id;
+
+              console.log(tmp);
+              temp.push(tmp);
+              //setObjs(temp);
+            });
+          })
+          .then(() => {
+            setObjs(temp);
+          });
+
         let data1 = [];
         let data2 = [];
         res.data.data.map((item, idx) => {
@@ -135,6 +154,17 @@ function CoachAddWorkout() {
   }, []);
 
   useEffect(() => {
+    if (userData) {
+      db.collection("coaches")
+        .doc(userData?.id)
+        .collection("ownWorkouts")
+        .get()
+        .then((doc) => {
+          doc.forEach((w) => {
+            console.log(w.data());
+          });
+        });
+    }
     objs?.map((item, idx) => {
       item.name = item.workoutName;
       item.value = item._id;
@@ -143,7 +173,12 @@ function CoachAddWorkout() {
     //   console.log(objs);
     setExercises(objs);
     console.log(objs);
-  }, [objs]);
+  }, [objs, userData]);
+
+  useEffect(() => {
+    if (userData) {
+    }
+  }, []);
 
   useEffect(() => {
     setSelectedWorkoutEdit("");
@@ -502,6 +537,7 @@ function CoachAddWorkout() {
                         <SelectSearch
                           options={exercises}
                           onChange={(d, f) => {
+                            console.log(d, f);
                             let temp = selectedExercises;
                             temp[idx1] = f;
                             temp[idx1].sets = [];
@@ -608,10 +644,12 @@ function CoachAddWorkout() {
                       <div
                         style={{ cursor: "pointer" }}
                         onClick={() => {
-                          console.log(workout.videoUrl);
-                          setWorkoutVideoUrl(workout.videoUrl);
-                          setOpenDialog(true);
-                          setVideoLoading(true);
+                          console.log(workout);
+                          if (workout?.videoUrl) {
+                            setWorkoutVideoUrl(workout.videoUrl);
+                            setOpenDialog(true);
+                            setVideoLoading(true);
+                          }
                         }}
                       >
                         <img
