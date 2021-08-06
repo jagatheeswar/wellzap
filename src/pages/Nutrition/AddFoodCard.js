@@ -186,7 +186,7 @@ const AddFoodCard = (props) => {
               />
             </div>
             <div className="foodCard__servingsInputContainer">
-              <FormControl className={classes.formControl}>
+              <FormControl required className={classes.formControl}>
                 <h4
                   style={{
                     margin: "10px 0",
@@ -200,6 +200,7 @@ const AddFoodCard = (props) => {
                 </h4>
                 {console.log(props.item.units)}
                 <Select
+                  required
                   labelId="servings-select-label"
                   id="servings-select-label"
                   value={String(props.item.units)}
