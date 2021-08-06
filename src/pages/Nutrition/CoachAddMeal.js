@@ -136,17 +136,32 @@ function CoachAddMeal(props) {
           type="text"
           placeholder="Enter Nutrition Plan Name"
           value={nutritionName}
+          style={{width: "95%", borderRadius:10}}
           onChange={(e) => setNutritionName(e.target.value)}
         />
       </div>
 
-      <div className="coachAddMeal__form">
+      <div style={{marginLeft: 10}} className="coachAddMeal__form">
         <div className="athleteAddMeal__typeOfMeal">
           {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
-              <FormControl className={classes.formControl}>
-                <b style={{ marginBottom: 10 }}>Select the type of meal</b>
+              <FormControl required className={classes.formControl}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: 500,
+                    fontSize: 18,
+                    marginRight: 20,
+                  }}
+                >Select Meal Type</span>
+                <div>
                 <Select
+                  required
                   labelId="meal-select-label"
                   id="meal-select-label"
                   value={item.meal}
@@ -155,7 +170,7 @@ function CoachAddMeal(props) {
                     temp[idx].meal = e.target.value;
                     setEntireFood(temp);
                   }}
-                  style={{ width: "97%" }}
+                  style={{ width: 150 }}
                 >
                   <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
                   <MenuItem value={"Lunch"}>Lunch</MenuItem>
@@ -164,6 +179,8 @@ function CoachAddMeal(props) {
                   <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
                   <MenuItem value={"Dinner"}>Dinner</MenuItem>
                 </Select>
+                </div>
+                </div>
               </FormControl>
               {addFood ? (
                 <div>
@@ -210,6 +227,7 @@ function CoachAddMeal(props) {
                     type="text"
                     placeholder="Enter Meal Description"
                     value={item.description}
+                    style={{width: "95%", borderRadius: 10}}
                     onChange={(e) => {
                       let temp = [...entireFood];
                       temp[idx].description = e.target.value;

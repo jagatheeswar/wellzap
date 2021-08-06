@@ -4,7 +4,20 @@
   font-weight: 600;
 }
 
-.coachFoodCard__addmealButton,
+.coachFoodCard__addmealButton {
+  height: 45px;
+  width: 200px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffe486;
+  border-radius: 8px;
+  cursor: pointer;
+}
 .coachFoodCard__submitMealButton {
   height: 40px;
   width: 270px;
