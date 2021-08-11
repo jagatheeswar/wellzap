@@ -149,7 +149,6 @@ function NutritionWeekGoal() {
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             maxDate={mindate}
-            dateFormat="DD-MM-YYYY"
           />
         </div>
         <div

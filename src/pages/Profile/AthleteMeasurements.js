@@ -47,7 +47,6 @@ function AthleteMeasurements({ route, navigation }) {
           console.log("Error getting documents: ", error);
         });
     } else {
-      setEditable(true);
       db.collection("athletes")
         .where("email", "==", user)
         .get()
@@ -203,6 +202,19 @@ function AthleteMeasurements({ route, navigation }) {
                 <h3>SAVE PROFILE</h3>
               </div>
             ))}{" "}
+          {/* {userType !== "coach" && !editable && (
+            <div
+              className="athleteTrainingAssessment__editProfileButton"
+              style={{
+                position: "absolute",
+                top: 100,
+                right: 120,
+              }}
+              onClick={() => setEditable(true)}
+            >
+              <h3>EDIT PROFILE</h3>
+            </div>
+          )} */}
         </div>
       </div>
     </div>

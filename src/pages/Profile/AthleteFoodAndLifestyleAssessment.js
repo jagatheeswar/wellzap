@@ -81,7 +81,6 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
           console.log("Error getting documents: ", error);
         });
     } else {
-      setEditable(true);
       db.collection("athletes")
         .where("email", "==", user)
         .get()
@@ -286,7 +285,14 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
   };
   const classes = useStyles();
   return (
-    <div className="athleteFoodAndLifestyleAssessment">
+    <div
+      className="athleteFoodAndLifestyleAssessment"
+      style={{
+        width: "95%",
+        position: "relative",
+        marginBottom: 50,
+      }}
+    >
       <div className="athleteProfile__leftContainer">
         <Header Id={temperoryId} />
         <div className="athleteFoodAndLifestyleAssessment__container">
@@ -553,19 +559,27 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
             type="text"
             placeholder="Please provide additional details if any"
           />
-          {userType !== "coach" &&
-            (!editable ? (
-              <div
-                className="editProfileButton"
-                onClick={() => setEditable(true)}
-              >
-                <h3>EDIT PROFILE</h3>
-              </div>
-            ) : (
-              <div className="saveProfileButton" onClick={() => saveDetails()}>
-                <h3>SAVE PROFILE</h3>
-              </div>
-            ))}{" "}
+          {userType !== "coach" && editable && (
+            <div
+              className="editProfileButton"
+              onClick={() => setEditable(false)}
+            >
+              <h3>SAVE PROFILE</h3>
+            </div>
+          )}{" "}
+          {userType !== "coach" && !editable && (
+            <div
+              className="athleteTrainingAssessment__editProfileButton"
+              style={{
+                position: "absolute",
+                top: 100,
+                right: 0,
+              }}
+              onClick={() => setEditable(true)}
+            >
+              <h3>EDIT PROFILE</h3>
+            </div>
+          )}
         </div>
       </div>
     </div>

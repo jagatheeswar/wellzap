@@ -72,7 +72,6 @@ function AthleteTrainingAssessment({ route, navigation }) {
           console.log("Error getting documents: ", error);
         });
     } else {
-      setEditable(true);
       db.collection("athletes")
         .where("email", "==", user)
         .get()
@@ -174,9 +173,25 @@ function AthleteTrainingAssessment({ route, navigation }) {
   };
 
   return (
-    <div className="athleteTrainingAssessment" style={{ minHeight: "99.9vh" }}>
+    <div
+      className="athleteTrainingAssessment"
+      style={{ minHeight: "99.9vh", width: "100%", position: "relative" }}
+    >
       <Header Id={temperoryId} />
       <h2>Training Assessment</h2>
+      {userType !== "coach" && !editable && (
+        <div
+          className="athleteTrainingAssessment__editProfileButton"
+          style={{
+            position: "absolute",
+            top: 100,
+            right: 0,
+          }}
+          onClick={() => setEditable(true)}
+        >
+          <h3>EDIT PROFILE</h3>
+        </div>
+      )}
       <h4>Select Days you wish to train</h4>
       <h5>Select days</h5>
       <div className="athleteTrainingAssessment__container">
@@ -298,22 +313,23 @@ function AthleteTrainingAssessment({ route, navigation }) {
           />
         </div>
       </div>
-      {userType !== "coach" &&
-        (!editable ? (
-          <div
-            className="athleteTrainingAssessment__editProfileButton"
-            onClick={() => setEditable(true)}
-          >
-            <h3>EDIT PROFILE</h3>
-          </div>
-        ) : (
-          <div
-            className="athleteTrainingAssessment__saveProfileButton"
-            onClick={() => saveDetails()}
-          >
-            <h3>SAVE PROFILE</h3>
-          </div>
-        ))}{" "}
+      {userType !== "coach" && editable && (
+        <div
+          className="athleteTrainingAssessment__editProfileButton"
+          onClick={() => setEditable(false)}
+        >
+          <h3>SAVE PROFILE</h3>
+        </div>
+        //:
+        //  (
+        //   <div
+        //     className="athleteTrainingAssessment__saveProfileButton"
+        //     onClick={() => saveDetails()}
+        //   >
+        //     <h3>SAVE PROFILE</h3>
+        //   </div>
+        // )
+      )}{" "}
     </div>
   );
 }

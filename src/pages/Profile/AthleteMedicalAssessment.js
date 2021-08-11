@@ -80,7 +80,6 @@ function AthleteMedicalAssessment({ route, navigation }) {
           console.log("Error getting documents: ", error);
         });
     } else {
-      setEditable(true);
       db.collection("athletes")
         .where("email", "==", user)
         .get()
@@ -303,7 +302,14 @@ function AthleteMedicalAssessment({ route, navigation }) {
   console.log(selectedApplicableAilments);
 
   return (
-    <div className="AthleteMedicalAssessment">
+    <div
+      className="AthleteMedicalAssessment"
+      style={{
+        position: "relative",
+        width: "100%",
+        marginBottom: 50,
+      }}
+    >
       <div className="athleteProfile__container">
         <div className="athleteProfile__leftContainer">
           <Header Id={temperoryId} />
@@ -490,24 +496,29 @@ function AthleteMedicalAssessment({ route, navigation }) {
                 type="text"
                 placeholder="Please list any medication you are currently taking."
               />
-              {userType !== "coach" &&
-                (!editable ? (
-                  <div
-                    className="editProfileButton"
-                    onClick={() => setEditable(true)}
-                  >
-                    <h3>EDIT PROFILE</h3>
-                  </div>
-                ) : (
-                  <div
-                    className="saveProfileButton"
-                    onClick={() => saveDetails()}
-                  >
-                    <h3>SAVE PROFILE</h3>
-                  </div>
-                ))}{" "}
+              {userType !== "coach" && editable && (
+                <div
+                  className="editProfileButton"
+                  onClick={() => setEditable(false)}
+                >
+                  <h3>SAVE PROFILE</h3>
+                </div>
+              )}{" "}
             </form>
           </div>
+          {userType !== "coach" && !editable && (
+            <div
+              className="athleteTrainingAssessment__editProfileButton"
+              style={{
+                position: "absolute",
+                top: 100,
+                right: 120,
+              }}
+              onClick={() => setEditable(true)}
+            >
+              <h3>EDIT PROFILE</h3>
+            </div>
+          )}
         </div>
       </div>
     </div>

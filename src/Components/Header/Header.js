@@ -3,7 +3,7 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import { useSelector } from "react-redux";
 import "./Header.css";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 
 function Header(props) {
@@ -14,6 +14,8 @@ function Header(props) {
   const [name, setname] = useState(null);
   const [img, setimg] = useState(null);
   const [coachName, setCoachName] = useState("");
+  const [CoachData, setCoachData] = useState(null);
+  const location = useLocation();
   console.log(Id);
   useEffect(() => {
     if (props.Id) {
@@ -41,15 +43,61 @@ function Header(props) {
       //   .then(function(snap) {
       //     setCoachName(snap.data()?.name)
       //   })
-      db.collection("athletes")
-        .doc(userData?.id)
-        .get()
-        .then(function (snap) {
-          setCoachName(snap.data()?.name);
-        });
+      if (props.coachProfile) {
+        db.collection("coaches")
+          .doc(userData?.data?.listOfCoaches[0])
+          .get()
+          .then(function (snap) {
+            setCoachData(snap.data());
+          });
+      } else {
+        db.collection("athletes")
+          .doc(userData?.id)
+          .get()
+          .then(function (snap) {
+            setCoachName(snap.data()?.name);
+          });
+      }
     }
   }, []);
+  console.log(props.coachProfile);
 
+  if (props.coachProfile) {
+    return (
+      <div className="header">
+        <div className="coachProfile__header">
+          <div className="coachProfile__img">
+            <img
+              className="leftarrow"
+              src="/assets/left_arrow.png"
+              alt=""
+              onClick={() => history.push("/")}
+            />
+            <img
+              className="image"
+              src={CoachData?.imageUrl && CoachData?.imageUrl}
+              alt={CoachData?.name && CoachData?.name}
+              width="100px"
+              height="100px"
+            />
+          </div>
+          <div className="coachProfile__content">
+            {
+              userType === "coach" ? (
+                <h1>{CoachData?.name && CoachData?.name}</h1>
+              ) : (
+                // : props.athlete ?
+                <h1>{CoachData?.name && CoachData?.name}</h1>
+              )
+              // : (
+              //   <h1>{coachName}</h1>
+              // )
+            }
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="header">
       <div className="coachProfile__header">
@@ -58,7 +106,9 @@ function Header(props) {
             className="leftarrow"
             src="/assets/left_arrow.png"
             alt=""
-            onClick={() => history.goBack()}
+            onClick={() => {
+              history.goBack();
+            }}
           />
           <img
             className="image"
