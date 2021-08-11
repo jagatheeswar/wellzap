@@ -248,10 +248,10 @@ function AthletePayments() {
           });
 
           setData([
-            { title: "Due Today", value: today.length, color: "#FFE66D" },
-            { title: "Pending", value: pending.length, color: "#00B1C0" },
+            { title: "Due Today", value: today.length, color: "red" },
+            { title: "Pending", value: pending.length, color: "green" },
             { title: "Due Soon", value: upcoming.length, color: "#FF6B6B" },
-            { title: "Completed", value: completed.length, color: "red" },
+            { title: "Completed", value: completed.length, color: "#ffe486" },
           ]);
 
           setPending(pending);

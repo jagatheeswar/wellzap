@@ -23,6 +23,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { useHistory, useLocation } from "react-router";
 import firebase from "firebase";
 import "./CoachNutrition.css";
+import AddFoodCard from "./AddFoodCard";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -235,7 +236,7 @@ function CreateNutrition() {
 
   useEffect(() => {
     if (location.state?.nutrition) {
-      console.log(location.state.nutrition.nutritionName);
+      console.log(location.state);
       setNutritionName(location.state?.nutrition?.nutritionName);
       if (location.state?.type === "update") {
         setType(location.state?.type);
@@ -243,7 +244,7 @@ function CreateNutrition() {
         setNutritionId(location.state.nutrition.id);
         setEntireFood(location.state?.nutrition.data.nutrition?.entireFood);
         setAddFood(
-          location.state?.nutrition.data.nutrition?.entireFood[0]?.addFood
+          location.state?.nutrition.data.nutrition?.entireFood[0]?.food
         );
         setSelectedAthletes(location.state?.nutrition.data.selectedAthletes);
       } else if (location.state?.type === "create") {
@@ -252,7 +253,7 @@ function CreateNutrition() {
         setNutritionId(location.state.nutrition.id);
         setEntireFood(location.state?.nutrition.data.nutrition?.entireFood);
         setAddFood(
-          location.state?.nutrition.data.nutrition?.entireFood[0]?.addFood
+          location.state?.nutrition.data.nutrition?.entireFood[0]?.food
         );
       } else if (location.state?.type === "view") {
         setType(location.state?.type);
@@ -260,13 +261,13 @@ function CreateNutrition() {
         setNutritionId(location.state.nutrition.id);
         setEntireFood(location.state?.nutrition.data.nutrition?.entireFood);
         setAddFood(
-          location.state?.nutrition.data.nutrition?.entireFood[0]?.addFood
+          location.state?.nutrition.data.nutrition?.entireFood[0]?.food
         );
         setSelectedAthletes(location.state?.nutrition.data.selectedAthletes);
       } else {
         setNutrition(location.state?.nutrition);
         setEntireFood(location.state?.nutrition?.entireFood);
-        setAddFood(location.state?.nutrition?.entireFood[0]?.addFood);
+        setAddFood(location.state?.nutrition?.entireFood[0]?.food);
       }
     }
   }, [location.state?.nutrition]);
@@ -580,11 +581,11 @@ function CreateNutrition() {
                           width: "80%",
                           textAlign: "center",
                           padding: "5px",
-                          color: athlete?.selectedDays?.includes(
-                            specificDates[idx]
-                          )
-                            ? "black"
-                            : "black",
+                          color:
+                            new Date(specificDates[idx]) <
+                            new Date(formatDate())
+                              ? "grey"
+                              : "black",
                         }}
                       >
                         {day}
@@ -648,6 +649,10 @@ function CreateNutrition() {
                         paddingRight: "5px",
                         paddingBottom: "5px",
                         textAlign: "center",
+                        color:
+                          new Date(specificDates[idx]) < new Date(formatDate())
+                            ? "grey"
+                            : "black",
                       }}
                     >
                       {formatSpecificDate1(tempDate)}
@@ -695,6 +700,62 @@ function CreateNutrition() {
                   <MenuItem value={"Dinner"}>Dinner</MenuItem>
                 </Select>
               </FormControl>
+              {addFood ? (
+                <div>
+                  {item.food?.map((item2, idx2) => {
+                    return (
+                      <AddFoodCard
+                        type={type}
+                        item={item2}
+                        idx={idx2}
+                        key={idx2}
+                        ent={item}
+                        entireFood={entireFood}
+                        index={idx}
+                        serverData={serverData}
+                        setEntireFood={setEntireFood}
+                      />
+                    );
+                  })}
+                  {/* {props.isLongTerm ? null : (
+                    <div
+                      className="foodCard__addfoodButton"
+                      onClick={() => {
+                        let foodData = [...entireFood];
+                        let temp = [...item.food];
+                        temp.push({
+                          foodName: "",
+                          proteins: 0,
+                          carbs: 0,
+                          fat: 0,
+                          calories: 0,
+                          quantity: 1,
+                        });
+                        foodData[idx].food = temp;
+
+                        setEntireFood(foodData);
+                      }}
+                    >
+                      <h3>Add Food</h3>
+                    </div>
+                  )} */}
+                </div>
+              ) : (
+                <div className="coachAddMeal__textArea">
+                  <h4 style={{ margin: 0, marginBottom: 10 }}>Description</h4>
+                  <textarea
+                    type="text"
+                    placeholder="Enter Meal Description"
+                    value={item.description}
+                    readOnly={type === "view" ? true : false}
+                    onChange={(e) => {
+                      let temp = [...entireFood];
+                      temp[idx].description = e.target.value;
+                      setEntireFood(temp);
+                    }}
+                  />
+                </div>
+              )}
               <div className="coachAddMeal__textArea">
                 <h4>Description</h4>
                 <textarea
@@ -780,6 +841,8 @@ function CreateNutrition() {
                           },
                           saved: false,
                           selectedAthletes,
+                          timestamp:
+                            firebase.firestore.FieldValue.serverTimestamp(),
                         });
                       });
 

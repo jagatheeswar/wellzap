@@ -62,3 +62,7 @@ hr {
   height: 187px !important;
   border-radius: 10px;
 }
+
+.MuiInputBase-input .MuiFilledInput-input {
+  background-color: white;
+}

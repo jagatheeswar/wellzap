@@ -99,7 +99,7 @@ export default function CreateEvent(props) {
   //     let code = queryURL.get("code");
   //     win?.close();
   //     await Axios.post(
-  //       "https://nameless-savannah-17836.herokuapp.com/api/getToken",
+  //       "http://localhost:3000/api/getToken",
   //       {
   //         code: code,
   //       },
@@ -181,201 +181,31 @@ export default function CreateEvent(props) {
 
       if (props?.id) {
         alert(eventName);
-        db.collection("secrets")
-          .doc(userData?.id)
-          .get()
-          .then(async (snap) => {
-            if (!snap.exists) {
-              console.log(11222);
-              const data = Axios.get(
-                "https://nameless-savannah-17836.herokuapp.com/api/gmeet"
-              ).then((res) => {
-                console.log(res.data.url);
-                if (res?.data?.url) {
-                  let url = res?.data?.url;
 
-                  // window.location.href = url;
-                  // win?.close();
-                  win = window.open(url, "win1", "width = 500, height = 300");
-                  var pollTimer = window.setInterval(async function () {
-                    try {
-                      console.log(win.document.URL);
-
-                      const queryURL = new URL(win.document.URL);
-
-                      var url = queryURL.searchParams.get("code");
-                      if (queryURL.searchParams.get("code")) {
-                        window.clearInterval(pollTimer);
-                        let axiosConfig = {
-                          headers: {
-                            "Content-Type": "application/json;charset=UTF-8",
-                            "Access-Control-Allow-Origin": "*",
-                          },
-                        };
-
-                        let code = url;
-                        console.log(code);
-                        win?.close();
-                        await Axios.post(
-                          "https://nameless-savannah-17836.herokuapp.com/api/getToken",
-                          {
-                            code: code.toString(),
-                          },
-
-                          axiosConfig
-                        ).then((res) => {
-                          console.log(res);
-                          if (res.data.success) {
-                            db.collection("secrets")
-                              .doc(userData?.id)
-                              .set({ tokens: res.data.tokens });
-                          }
-                        });
-                        win.close();
-                      }
-                    } catch (err) {
-                      console.log(err);
-                    }
-                  }, 1000);
-
-                  //history.push();
-                }
-              });
-            } else {
-              let data = snap.data().tokens;
-
-              let axiosConfig = {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                  "Access-Control-Allow-Origin": "*",
-                },
-              };
-
-              console.log(data);
-              await Axios.post(
-                "https://nameless-savannah-17836.herokuapp.com/api/gmeet/getLink",
-                {
-                  tokens: data,
-                  eventdata: {
-                    eventname: eventName,
-                    description: description,
-                    date: firebase.firestore.Timestamp.fromDate(
-                      new Date(
-                        selectedDay.year,
-                        selectedDay.month - 1,
-                        selectedDay.day,
-                        eventTime.substring(0, 2),
-                        eventTime.substring(3, 5),
-                        0,
-                        0
-                      )
-                    ),
-                    start: firebase.firestore.Timestamp.fromDate(
-                      new Date(
-                        selectedDay.year,
-                        selectedDay.month - 1,
-                        selectedDay.day,
-                        eventTime.substring(0, 2) + 1,
-                        eventTime.substring(3, 5),
-                        0,
-                        0
-                      )
-                    ),
-                  },
-                },
-
-                axiosConfig
-              ).then((res) => {
-                console.log(res);
-                if (res.data.success) {
-                  console.log(res);
-                  setmeetURL(res.data.event.data.hangoutLink);
-                  //setShowVideoLink(!showVideoLink);
-                  db.collection("events")
-                    .doc(props.id)
-                    .update({
-                      eventName,
-                      date: firebase.firestore.Timestamp.fromDate(
-                        new Date(
-                          selectedDay.year,
-                          selectedDay.month - 1,
-                          selectedDay.day,
-                          eventTime.substring(0, 2),
-                          eventTime.substring(3, 5),
-                          0,
-                          0
-                        )
-                      ),
-                      description,
-                      athletes: local_athletes,
-                      coachID: userData.id,
-                      showVideoLink,
-                      videolink: res.data.event.data.hangoutLink,
-                    })
-                    .then(() => {
-                      props.setAddedEventFunc();
-                      alert("Event Updated");
-                    });
-                } else {
-                  const data = Axios.get(
-                    "https://nameless-savannah-17836.herokuapp.com/api/gmeet"
-                  ).then((res) => {
-                    console.log(res.data);
-                    if (res?.data?.url) {
-                      let url = res?.data?.url;
-                      win = window.open(
-                        url,
-                        "win1",
-                        "width = 500, height = 300"
-                      );
-                      var pollTimer = window.setInterval(async function () {
-                        try {
-                          console.log(win.document.URL);
-
-                          const queryURL = new URL(win.document.URL);
-
-                          var url = queryURL.searchParams.get("code");
-                          if (queryURL.searchParams.get("code")) {
-                            window.clearInterval(pollTimer);
-                            let axiosConfig = {
-                              headers: {
-                                "Content-Type":
-                                  "application/json;charset=UTF-8",
-                                "Access-Control-Allow-Origin": "*",
-                              },
-                            };
-
-                            let code = url;
-                            console.log(code);
-                            win?.close();
-                            await Axios.post(
-                              "https://nameless-savannah-17836.herokuapp.com/api/getToken",
-                              {
-                                code: code.toString(),
-                              },
-
-                              axiosConfig
-                            ).then((res) => {
-                              console.log(res);
-                              if (res.data.success) {
-                                db.collection("secrets")
-                                  .doc(userData?.id)
-                                  .set({ tokens: res.data.tokens });
-                              }
-                            });
-                            win.close();
-                          }
-                        } catch (err) {
-                          console.log(err);
-                          alert("please try again later");
-                        }
-                      }, 1000);
-                      //history.push();
-                    }
-                  });
-                }
-              });
-            }
+        db.collection("events")
+          .doc(props.id)
+          .update({
+            eventName,
+            date: firebase.firestore.Timestamp.fromDate(
+              new Date(
+                selectedDay.year,
+                selectedDay.month - 1,
+                selectedDay.day,
+                eventTime.substring(0, 2),
+                eventTime.substring(3, 5),
+                0,
+                0
+              )
+            ),
+            description,
+            athletes: local_athletes,
+            coachID: userData.id,
+            showVideoLink,
+            videolink: userData?.data?.videolink,
+          })
+          .then(() => {
+            props.setAddedEventFunc();
+            alert("Event Updated");
           });
       } else {
         db.collection("secrets")
@@ -384,275 +214,49 @@ export default function CreateEvent(props) {
           .then(async (snap) => {
             if (!snap.exists) {
               console.log(11222);
-              const data = Axios.get(
-                "https://nameless-savannah-17836.herokuapp.com/api/gmeet"
-              ).then((res) => {
-                console.log(res.data.url);
-                if (res?.data?.url) {
-                  let url = res?.data?.url;
+              const data = Axios.get("http://localhost:3000/api/gmeet").then(
+                (res) => {
+                  console.log(res.data.url);
+                  if (res?.data?.url) {
+                    let url = res?.data?.url;
 
-                  // window.location.href = url;
-                  // win?.close();
-                  win = window.open(url, "win1", "width = 500, height = 300");
-                  var pollTimer = window.setInterval(async function () {
-                    try {
-                      console.log(win.document.URL);
+                    // window.location.href = url;
+                    // win?.close();
+                    win = window.open(url, "win1", "width = 500, height = 300");
+                    var pollTimer = window.setInterval(async function () {
+                      try {
+                        console.log(win.document.URL);
 
-                      const queryURL = new URL(win.document.URL);
+                        const queryURL = new URL(win.document.URL);
 
-                      var url = queryURL.searchParams.get("code");
-                      if (queryURL.searchParams.get("code")) {
-                        window.clearInterval(pollTimer);
-                        let axiosConfig = {
-                          headers: {
-                            "Content-Type": "application/json;charset=UTF-8",
-                            "Access-Control-Allow-Origin": "*",
-                          },
-                        };
+                        var url = queryURL.searchParams.get("code");
+                        if (queryURL.searchParams.get("code")) {
+                          window.clearInterval(pollTimer);
+                          let axiosConfig = {
+                            headers: {
+                              "Content-Type": "application/json;charset=UTF-8",
+                              "Access-Control-Allow-Origin": "*",
+                            },
+                          };
 
-                        let code = url;
-                        console.log(code);
-                        win?.close();
-                        await Axios.post(
-                          "https://nameless-savannah-17836.herokuapp.com/api/getToken",
-                          {
-                            code: code.toString(),
-                          },
+                          let code = url;
+                          console.log(code);
+                          win?.close();
+                          await Axios.post(
+                            "http://localhost:3000/api/getToken",
+                            {
+                              code: code.toString(),
+                            },
 
-                          axiosConfig
-                        ).then(async (res) => {
-                          console.log(res);
-                          if (res.data.success) {
-                            db.collection("secrets")
-                              .doc(userData?.id)
-                              .set({ tokens: res.data.tokens })
-                              .then(async () => {
-                                let data = res.data.tokens;
-
-                                let axiosConfig = {
-                                  headers: {
-                                    "Content-Type":
-                                      "application/json;charset=UTF-8",
-                                    "Access-Control-Allow-Origin": "*",
-                                  },
-                                };
-
-                                console.log(data);
-                                await Axios.post(
-                                  "https://nameless-savannah-17836.herokuapp.com/api/gmeet/getLink",
-                                  {
-                                    tokens: data,
-                                    eventdata: {
-                                      eventname: eventName,
-                                      description: description,
-                                      date: firebase.firestore.Timestamp.fromDate(
-                                        new Date(
-                                          selectedDay.year,
-                                          selectedDay.month - 1,
-                                          selectedDay.day,
-                                          eventTime.substring(0, 2),
-                                          eventTime.substring(3, 5),
-                                          0,
-                                          0
-                                        )
-                                      ),
-                                      start:
-                                        firebase.firestore.Timestamp.fromDate(
-                                          new Date(
-                                            selectedDay.year,
-                                            selectedDay.month - 1,
-                                            selectedDay.day,
-                                            eventTime.substring(0, 2) + 1,
-                                            eventTime.substring(3, 5),
-                                            0,
-                                            0
-                                          )
-                                        ),
-                                    },
-                                  },
-
-                                  axiosConfig
-                                ).then(async (out) => {
-                                  console.log(out);
-                                  if (out.data.success) {
-                                    setmeetURL(out.data.event.data.hangoutLink);
-                                    //setShowVideoLink(!showVideoLink);
-                                    const newCityRef = db
-                                      .collection("events")
-                                      .doc();
-                                    const res = await newCityRef
-                                      .set({
-                                        name: eventName,
-                                        date: firebase.firestore.Timestamp.fromDate(
-                                          new Date(
-                                            selectedDay.year,
-                                            selectedDay.month - 1,
-                                            selectedDay.day,
-                                            eventTime.substring(0, 2),
-                                            eventTime.substring(3, 5),
-                                            0,
-                                            0
-                                          )
-                                        ),
-                                        description: description,
-                                        athletes: local_athletes,
-                                        coachID: userData.id,
-                                        showVideoLink: showVideoLink,
-
-                                        videolink:
-                                          out.data.event.data.hangoutLink,
-                                      })
-                                      .then(() => {
-                                        props.setAddedEventFunc();
-                                        alert("Event Added");
-                                        setEventName("");
-                                        setEventTime("17:30");
-                                        setAthletes([]);
-                                        setDescription("");
-                                      });
-                                  } else {
-                                    alert("pleas try again later");
-                                  }
-                                });
-                              });
-                          }
-                        });
-                        win.close();
-                      }
-                    } catch (err) {
-                      console.log(err);
-                    }
-                  }, 1000);
-
-                  //history.push();
-                }
-              });
-            } else {
-              let data = snap.data().tokens;
-
-              let axiosConfig = {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                  "Access-Control-Allow-Origin": "*",
-                },
-              };
-
-              console.log(data);
-              await Axios.post(
-                "https://nameless-savannah-17836.herokuapp.com/api/gmeet/getLink",
-                {
-                  tokens: data,
-                  eventdata: {
-                    eventname: eventName,
-                    description: description,
-                    date: firebase.firestore.Timestamp.fromDate(
-                      new Date(
-                        selectedDay.year,
-                        selectedDay.month - 1,
-                        selectedDay.day,
-                        eventTime.substring(0, 2),
-                        eventTime.substring(3, 5),
-                        0,
-                        0
-                      )
-                    ),
-                    start: firebase.firestore.Timestamp.fromDate(
-                      new Date(
-                        selectedDay.year,
-                        selectedDay.month - 1,
-                        selectedDay.day,
-                        eventTime.substring(0, 2) + 1,
-                        eventTime.substring(3, 5),
-                        0,
-                        0
-                      )
-                    ),
-                  },
-                },
-
-                axiosConfig
-              ).then(async (res) => {
-                console.log(res);
-                if (res.data.success) {
-                  console.log(res);
-                  setmeetURL(res.data.event.data.hangoutLink);
-                  //setShowVideoLink(!showVideoLink);
-                  const newCityRef = db.collection("events").doc();
-                  const out = await newCityRef
-                    .set({
-                      name: eventName,
-                      date: firebase.firestore.Timestamp.fromDate(
-                        new Date(
-                          selectedDay.year,
-                          selectedDay.month - 1,
-                          selectedDay.day,
-                          eventTime.substring(0, 2),
-                          eventTime.substring(3, 5),
-                          0,
-                          0
-                        )
-                      ),
-                      description: description,
-                      athletes: local_athletes,
-                      coachID: userData.id,
-                      showVideoLink: showVideoLink,
-
-                      videolink: res.data.event.data.hangoutLink,
-                    })
-                    .then(() => {
-                      props.setAddedEventFunc();
-                      alert("Event Added");
-                      setEventName("");
-                      setEventTime("17:30");
-                      setAthletes([]);
-                      setDescription("");
-                    });
-                } else {
-                  const data = Axios.get(
-                    "https://nameless-savannah-17836.herokuapp.com/api/gmeet"
-                  ).then((res) => {
-                    console.log(res.data);
-                    if (res?.data?.url) {
-                      let url = res?.data?.url;
-                      win = window.open(
-                        url,
-                        "win1",
-                        "width = 500, height = 300"
-                      );
-                      var pollTimer = window.setInterval(async function () {
-                        try {
-                          console.log(win.document.URL);
-
-                          const queryURL = new URL(win.document.URL);
-
-                          var url = queryURL.searchParams.get("code");
-                          if (queryURL.searchParams.get("code")) {
-                            window.clearInterval(pollTimer);
-                            let axiosConfig = {
-                              headers: {
-                                "Content-Type":
-                                  "application/json;charset=UTF-8",
-                                "Access-Control-Allow-Origin": "*",
-                              },
-                            };
-
-                            let code = url;
-                            console.log(code);
-                            win?.close();
-                            await Axios.post(
-                              "https://nameless-savannah-17836.herokuapp.com/api/getToken",
-                              {
-                                code: code.toString(),
-                              },
-
-                              axiosConfig
-                            ).then((res) => {
-                              console.log(res);
-                              if (res.data.success) {
-                                db.collection("secrets")
-                                  .doc(userData?.id)
-                                  .set({ tokens: res.data.tokens })
-                                  .then(async () => {
+                            axiosConfig
+                          ).then(async (res) => {
+                            console.log(res);
+                            if (res.data.success) {
+                              db.collection("secrets")
+                                .doc(userData?.id)
+                                .set({ tokens: res.data.tokens })
+                                .then(async () => {
+                                  if (eventName && selectedAthletes != []) {
                                     let data = res.data.tokens;
 
                                     let axiosConfig = {
@@ -665,12 +269,13 @@ export default function CreateEvent(props) {
 
                                     console.log(data);
                                     await Axios.post(
-                                      "https://nameless-savannah-17836.herokuapp.com/api/gmeet/getLink",
+                                      "http://localhost:3000/api/gmeet/getLink",
                                       {
                                         tokens: data,
                                         eventdata: {
                                           eventname: eventName,
                                           description: description,
+                                          videoConference: showVideoLink,
                                           date: firebase.firestore.Timestamp.fromDate(
                                             new Date(
                                               selectedDay.year,
@@ -727,8 +332,10 @@ export default function CreateEvent(props) {
                                             coachID: userData.id,
                                             showVideoLink: showVideoLink,
 
-                                            videolink:
-                                              out.data.event.data.hangoutLink,
+                                            videolink: showVideoLink
+                                              ? out.data.event?.data
+                                                  ?.hangoutLink
+                                              : "",
                                           })
                                           .then(() => {
                                             props.setAddedEventFunc();
@@ -742,21 +349,260 @@ export default function CreateEvent(props) {
                                         alert("pleas try again later");
                                       }
                                     });
-                                  });
-                              }
-                            });
-                            win.close();
-                          }
-                        } catch (err) {
-                          console.log(err);
-                          // alert("please try again later");
+                                  }
+                                });
+                            }
+                          });
+                          win.close();
                         }
-                      }, 1000);
-                      //history.push();
-                    }
-                  });
+                      } catch (err) {
+                        console.log(err);
+                      }
+                    }, 1000);
+
+                    //history.push();
+                  }
                 }
-              });
+              );
+            } else {
+              let data = snap.data().tokens;
+              if (eventName && selectedAthletes != []) {
+                let axiosConfig = {
+                  headers: {
+                    "Content-Type": "application/json;charset=UTF-8",
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                };
+
+                console.log(data);
+                await Axios.post(
+                  "http://localhost:3000/api/gmeet/getLink",
+                  {
+                    tokens: data,
+                    eventdata: {
+                      eventname: eventName,
+                      description: description,
+                      videoConference: showVideoLink,
+
+                      date: firebase.firestore.Timestamp.fromDate(
+                        new Date(
+                          selectedDay.year,
+                          selectedDay.month - 1,
+                          selectedDay.day,
+                          eventTime.substring(0, 2),
+                          eventTime.substring(3, 5),
+                          0,
+                          0
+                        )
+                      ),
+                      start: firebase.firestore.Timestamp.fromDate(
+                        new Date(
+                          selectedDay.year,
+                          selectedDay.month - 1,
+                          selectedDay.day,
+                          eventTime.substring(0, 2) + 1,
+                          eventTime.substring(3, 5),
+                          0,
+                          0
+                        )
+                      ),
+                    },
+                  },
+
+                  axiosConfig
+                ).then(async (res) => {
+                  console.log(res);
+                  if (res.data.success) {
+                    console.log(res);
+                    setmeetURL(res.data.event.data.hangoutLink);
+                    //setShowVideoLink(!showVideoLink);
+                    const newCityRef = db.collection("events").doc();
+                    const out = await newCityRef
+                      .set({
+                        name: eventName,
+                        date: firebase.firestore.Timestamp.fromDate(
+                          new Date(
+                            selectedDay.year,
+                            selectedDay.month - 1,
+                            selectedDay.day,
+                            eventTime.substring(0, 2),
+                            eventTime.substring(3, 5),
+                            0,
+                            0
+                          )
+                        ),
+                        description: description,
+                        athletes: local_athletes,
+                        coachID: userData.id,
+                        showVideoLink: showVideoLink,
+
+                        videolink: showVideoLink
+                          ? res?.data?.event?.data?.hangoutLink
+                          : "",
+                      })
+                      .then(() => {
+                        props.setAddedEventFunc();
+                        alert("Event Added");
+                        setEventName("");
+                        setEventTime("17:30");
+                        setAthletes([]);
+                        setDescription("");
+                      });
+                  } else {
+                    const data = Axios.get(
+                      "http://localhost:3000/api/gmeet"
+                    ).then((res) => {
+                      console.log(res.data);
+                      if (res?.data?.url) {
+                        let url = res?.data?.url;
+                        win = window.open(
+                          url,
+                          "win1",
+                          "width = 500, height = 300"
+                        );
+                        var pollTimer = window.setInterval(async function () {
+                          try {
+                            console.log(win.document.URL);
+
+                            const queryURL = new URL(win.document.URL);
+
+                            var url = queryURL.searchParams.get("code");
+                            if (queryURL.searchParams.get("code")) {
+                              window.clearInterval(pollTimer);
+                              let axiosConfig = {
+                                headers: {
+                                  "Content-Type":
+                                    "application/json;charset=UTF-8",
+                                  "Access-Control-Allow-Origin": "*",
+                                },
+                              };
+
+                              let code = url;
+                              console.log(code);
+                              win?.close();
+                              await Axios.post(
+                                "http://localhost:3000/api/getToken",
+                                {
+                                  code: code.toString(),
+                                },
+
+                                axiosConfig
+                              ).then((res) => {
+                                console.log(res);
+                                if (res.data.success) {
+                                  db.collection("secrets")
+                                    .doc(userData?.id)
+                                    .set({ tokens: res.data.tokens })
+                                    .then(async () => {
+                                      let data = res.data.tokens;
+
+                                      let axiosConfig = {
+                                        headers: {
+                                          "Content-Type":
+                                            "application/json;charset=UTF-8",
+                                          "Access-Control-Allow-Origin": "*",
+                                        },
+                                      };
+
+                                      console.log(data);
+                                      await Axios.post(
+                                        "http://localhost:3000/api/gmeet/getLink",
+                                        {
+                                          tokens: data,
+                                          eventdata: {
+                                            eventname: eventName,
+                                            description: description,
+                                            videoConference: showVideoLink,
+
+                                            date: firebase.firestore.Timestamp.fromDate(
+                                              new Date(
+                                                selectedDay.year,
+                                                selectedDay.month - 1,
+                                                selectedDay.day,
+                                                eventTime.substring(0, 2),
+                                                eventTime.substring(3, 5),
+                                                0,
+                                                0
+                                              )
+                                            ),
+                                            start:
+                                              firebase.firestore.Timestamp.fromDate(
+                                                new Date(
+                                                  selectedDay.year,
+                                                  selectedDay.month - 1,
+                                                  selectedDay.day,
+                                                  eventTime.substring(0, 2) + 1,
+                                                  eventTime.substring(3, 5),
+                                                  0,
+                                                  0
+                                                )
+                                              ),
+                                          },
+                                        },
+
+                                        axiosConfig
+                                      ).then(async (out) => {
+                                        console.log(out);
+                                        if (out.data.success) {
+                                          setmeetURL(
+                                            out.data.event.data.hangoutLink
+                                          );
+                                          //setShowVideoLink(!showVideoLink);
+                                          const newCityRef = db
+                                            .collection("events")
+                                            .doc();
+                                          const res = await newCityRef
+                                            .set({
+                                              name: eventName,
+                                              date: firebase.firestore.Timestamp.fromDate(
+                                                new Date(
+                                                  selectedDay.year,
+                                                  selectedDay.month - 1,
+                                                  selectedDay.day,
+                                                  eventTime.substring(0, 2),
+                                                  eventTime.substring(3, 5),
+                                                  0,
+                                                  0
+                                                )
+                                              ),
+                                              description: description,
+                                              athletes: local_athletes,
+                                              coachID: userData.id,
+                                              showVideoLink: showVideoLink,
+
+                                              videolink: showVideoLink
+                                                ? out.data?.event?.data
+                                                    ?.hangoutLink
+                                                : "",
+                                            })
+                                            .then(() => {
+                                              props.setAddedEventFunc();
+                                              alert("Event Added");
+                                              setEventName("");
+                                              setEventTime("17:30");
+                                              setAthletes([]);
+                                              setDescription("");
+                                            });
+                                        } else {
+                                          alert("pleas try again later");
+                                        }
+                                      });
+                                    });
+                                }
+                              });
+                              win.close();
+                            }
+                          } catch (err) {
+                            console.log(err);
+                            // alert("please try again later");
+                          }
+                        }, 1000);
+                        //history.push();
+                      }
+                    });
+                  }
+                });
+              }
             }
           });
       }
@@ -856,7 +702,7 @@ export default function CreateEvent(props) {
           //   .then(async (snap) => {
           //     if (!snap.exists) {
           //       console.log(11222);
-          //       const data = Axios.get("https://nameless-savannah-17836.herokuapp.com/api/gmeet").then(
+          //       const data = Axios.get("http://localhost:3000/api/gmeet").then(
           //         (res) => {
           //           console.log(res.data.url);
           //           if (res?.data?.url) {
@@ -886,7 +732,7 @@ export default function CreateEvent(props) {
           //                   console.log(code);
           //                   win?.close();
           //                   await Axios.post(
-          //                     "https://nameless-savannah-17836.herokuapp.com/api/getToken",
+          //                     "http://localhost:3000/api/getToken",
           //                     {
           //                       code: code.toString(),
           //                     },
@@ -919,7 +765,7 @@ export default function CreateEvent(props) {
           //       };
           //       console.log(data);
           //       await Axios.post(
-          //         "https://nameless-savannah-17836.herokuapp.com/api/gmeet/getLink",
+          //         "http://localhost:3000/api/gmeet/getLink",
           //         {
           //           tokens: data,
           //         },
@@ -932,7 +778,7 @@ export default function CreateEvent(props) {
           //           setShowVideoLink(!showVideoLink);
           //         } else {
           //           const data = Axios.get(
-          //             "https://nameless-savannah-17836.herokuapp.com/api/gmeet"
+          //             "http://localhost:3000/api/gmeet"
           //           ).then((res) => {
           //             console.log(res.data);
           //             if (res?.data?.url) {
@@ -954,7 +800,8 @@ export default function CreateEvent(props) {
           borderColor: "black",
           padding: 10,
           width: "100%",
-          backgroundColor: "white",
+          backgroundColor: showVideoLink && "#ffde46",
+
           cursor: "pointer",
         }}
       >
@@ -965,6 +812,9 @@ export default function CreateEvent(props) {
             textAlign: "center",
             margin: 0,
             padding: 0,
+          }}
+          onClick={() => {
+            setShowVideoLink(!showVideoLink);
           }}
         >
           {!showVideoLink
@@ -1012,24 +862,6 @@ export default function CreateEvent(props) {
           {props?.id ? "Edit Event" : "Add Event"}
         </p>
       </div>
-
-      <button
-        onClick={() => {
-          const data = Axios.get(
-            "https://nameless-savannah-17836.herokuapp.com/api/gmeet"
-          ).then((res) => {
-            console.log(res.data.url);
-            if (res?.data?.url) {
-              let url = res?.data?.url;
-
-              window.location.href = url;
-              //history.push();
-            }
-          });
-        }}
-      >
-        ssss
-      </button>
     </div>
   );
 }

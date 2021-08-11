@@ -275,6 +275,7 @@ const Calendar_ = (props) => {
               {moment(moment(selectedDate).valueOf()).format("ll")}
             </div>
           )}
+          {console.log(selectedevents)}
           <div className="events_today_list">
             {selectedevents.length !== 0 ? (
               <Selected_events

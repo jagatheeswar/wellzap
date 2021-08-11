@@ -832,6 +832,7 @@ function AssignWorkout(props) {
                             }
                           >
                             <div>
+                              {console.log(specificDates[idx])}
                               <div
                                 style={{
                                   fontSize: "12px",
@@ -840,11 +841,11 @@ function AssignWorkout(props) {
                                   width: "80%",
                                   textAlign: "center",
                                   padding: "5px",
-                                  color: athlete?.selectedDays?.includes(
-                                    specificDates[idx]
-                                  )
-                                    ? "black"
-                                    : "black",
+                                  color:
+                                    new Date(specificDates[idx]) <
+                                    new Date(formatDate())
+                                      ? "grey"
+                                      : "black",
                                 }}
                               >
                                 {day}
@@ -910,6 +911,11 @@ function AssignWorkout(props) {
                                 paddingRight: "5px",
                                 paddingBottom: "5px",
                                 textAlign: "center",
+                                color:
+                                  new Date(specificDates[idx]) <
+                                  new Date(formatDate())
+                                    ? "grey"
+                                    : "black",
                               }}
                             >
                               {formatSpecificDate1(tempDate)}
@@ -1126,6 +1132,7 @@ function AssignWorkout(props) {
                           }
                         >
                           <div>
+                            {console.log(specificDates[idx])}
                             <div
                               style={{
                                 fontSize: "12px",
@@ -1134,11 +1141,11 @@ function AssignWorkout(props) {
                                 width: "80%",
                                 textAlign: "center",
                                 padding: "5px",
-                                color: athlete?.selectedDays?.includes(
-                                  specificDates[idx]
-                                )
-                                  ? "black"
-                                  : "black",
+                                color:
+                                  new Date(specificDates[idx]) <
+                                  new Date(formatDate())
+                                    ? "grey"
+                                    : "black",
                               }}
                             >
                               {day}
@@ -1204,6 +1211,11 @@ function AssignWorkout(props) {
                               paddingRight: "5px",
                               paddingBottom: "5px",
                               textAlign: "center",
+                              color:
+                                new Date(specificDates[idx]) <
+                                new Date(formatDate())
+                                  ? "grey"
+                                  : "black",
                             }}
                           >
                             {formatSpecificDate1(tempDate)}
@@ -1401,13 +1413,22 @@ function AssignWorkout(props) {
                                         >
                                           {workout?.sets?.map((s, i) => (
                                             <div
-                                              key={i}
                                               style={{
-                                                fontSize: 13,
-                                                fontWeight: 500,
+                                                display: "flex",
+                                                alignItems: "center",
                                               }}
                                             >
-                                              {s[set_] ? s[set_] : 12}
+                                              <div
+                                                key={i}
+                                                style={{
+                                                  fontSize: 13,
+                                                  fontWeight: 500,
+                                                  width: 30,
+                                                  textAlign: "center",
+                                                }}
+                                              >
+                                                {s[set_] ? s[set_] : 12}
+                                              </div>
                                               {i < workout.sets.length - 1
                                                 ? "  -  "
                                                 : null}
@@ -1552,6 +1573,7 @@ function AssignWorkout(props) {
                                       {set_}
                                     </div>
                                     <input
+                                      maxLength="3"
                                       style={{
                                         width: "50px",
                                         height: "20px",

@@ -615,11 +615,11 @@ function CreateNutrition(props) {
                               width: "80%",
                               textAlign: "center",
                               padding: "5px",
-                              color: athlete?.selectedDays?.includes(
-                                specificDates[idx]
-                              )
-                                ? "black"
-                                : "black",
+                              color:
+                                new Date(specificDates[idx]) <
+                                new Date(formatDate())
+                                  ? "grey"
+                                  : "black",
                             }}
                           >
                             {day}
@@ -685,6 +685,11 @@ function CreateNutrition(props) {
                             paddingRight: "5px",
                             paddingBottom: "5px",
                             textAlign: "center",
+                            color:
+                              new Date(specificDates[idx]) <
+                              new Date(formatDate())
+                                ? "grey"
+                                : "black",
                           }}
                         >
                           {formatSpecificDate1(tempDate)}

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import CoachPayments from "../Payments/CoachPayments";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function CoachHomeReports() {
   const history = useHistory();
@@ -20,10 +20,10 @@ function CoachHomeReports() {
   const [pendingOpen, setPendingOpen] = useState(false);
 
   const [data, setData] = useState([
-    { title: "Due Soon", value: 10, color: "#FFE66D" },
-    { title: "Pending", value: 15, color: "#00B1C0" },
-    { title: "Due Soon", value: 20, color: "#FF6B6B" },
-    { title: "Completed", value: 20, color: "red" },
+    { title: "Due today", value: 10, color: "red" },
+    { title: "Pending", value: 15, color: "green" },
+    { title: "Due Soon", value: 20, color: "#00B1C0" },
+    { title: "Completed", value: 20, color: "#ffe486" },
   ]);
   useEffect(() => {
     if (userData) {
@@ -182,10 +182,10 @@ function CoachHomeReports() {
           });
 
           setData([
-            { title: "Due Today", value: today.length, color: "#FFE66D" },
-            { title: "Pending", value: pending.length, color: "#00B1C0" },
-            { title: "Due Soon", value: upcoming.length, color: "#FF6B6B" },
-            { title: "Completed", value: completed.length, color: "red" },
+            { title: "Due Today", value: today.length, color: "red" },
+            { title: "Pending", value: pending.length, color: "green" },
+            { title: "Due Soon", value: upcoming.length, color: "#00B1C0" },
+            { title: "Completed", value: completed.length, color: "#ffe486" },
           ]);
 
           setPending(pending);
@@ -201,7 +201,7 @@ function CoachHomeReports() {
       <h1 onClick={() => history.push("/reports")}>Reports</h1>
       <div className="home__reportsMainContainer">
         <div className="home__reportsLeftContainer">
-          <h1 style={{cursor: "auto"}}>Compliance</h1>
+          <h1 style={{ cursor: "auto" }}>Compliance</h1>
           <div style={{ width: "100%" }}>
             <Report_coach height={150} />
           </div>
@@ -228,12 +228,12 @@ function CoachHomeReports() {
                   radius={35}
                   labelStyle={{
                     fontSize: 6,
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     backgroundColor: "grey",
                     borderRadius: "50%",
                     border: "1px solid #727272",
                   }}
-                  label= {({dataEntry}) => dataEntry.value}
+                  label={({ dataEntry }) => dataEntry.value}
                   // {() => (
                   //   <div
                   //     style={{
@@ -250,61 +250,13 @@ function CoachHomeReports() {
               </div>
 
               <div>
-                <div style={{ display: "flex", alignItems: "center", marginRight: 20 }}>
-                  <div
-                    style={{
-                      height: 10,
-                      width: 10,
-                      backgroundColor: "#FFE66D",
-                      borderRadius: 100,
-                      alignSelf: "center",
-                      alignItems: "center",
-                      marginRight: 10,
-                      marginTop: 5,
-                    }}
-                  ></div>
-                  <p>
-                    {/* {today.length} -  */}
-                    Due Today</p>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
-                    style={{
-                      height: 10,
-                      width: 10,
-                      backgroundColor: "#00B1C0",
-                      borderRadius: 100,
-                      alignSelf: "center",
-                      alignItems: "center",
-                      marginRight: 10,
-                      marginTop: 5,
-                    }}
-                  ></div>
-                  <p>
-                    {/* {pending.length} -  */}
-                    Pending</p>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
-                    style={{
-                      height: 10,
-                      width: 10,
-                      backgroundColor: "#FF6B6B",
-                      borderRadius: 100,
-                      alignSelf: "center",
-                      alignItems: "center",
-                      marginRight: 10,
-                      marginTop: 5,
-                    }}
-                  ></div>
-                  <p>
-                    {/* {upcoming.length} -  */}
-                    Due Soon</p>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginRight: 20,
+                  }}
+                >
                   <div
                     style={{
                       height: 10,
@@ -318,8 +270,66 @@ function CoachHomeReports() {
                     }}
                   ></div>
                   <p>
+                    {/* {today.length} -  */}
+                    Due Today
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div
+                    style={{
+                      height: 10,
+                      width: 10,
+                      backgroundColor: "green",
+                      borderRadius: 100,
+                      alignSelf: "center",
+                      alignItems: "center",
+                      marginRight: 10,
+                      marginTop: 5,
+                    }}
+                  ></div>
+                  <p>
+                    {/* {pending.length} -  */}
+                    Pending
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div
+                    style={{
+                      height: 10,
+                      width: 10,
+                      backgroundColor: "rgb(0, 177, 192)",
+                      borderRadius: 100,
+                      alignSelf: "center",
+                      alignItems: "center",
+                      marginRight: 10,
+                      marginTop: 5,
+                    }}
+                  ></div>
+                  <p>
+                    {/* {upcoming.length} -  */}
+                    Due Soon
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div
+                    style={{
+                      height: 10,
+                      width: 10,
+                      backgroundColor: "#ffe486",
+                      borderRadius: 100,
+                      alignSelf: "center",
+                      alignItems: "center",
+                      marginRight: 10,
+                      marginTop: 5,
+                    }}
+                  ></div>
+                  <p>
                     {/* {completed.length} -  */}
-                    Completed</p>
+                    Completed
+                  </p>
                 </div>
               </div>
             </div>

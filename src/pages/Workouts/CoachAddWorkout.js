@@ -95,10 +95,6 @@ function CoachAddWorkout() {
     setOpenDialog(false);
   };
 
-  console.log({
-    workoutDescription,
-  });
-
   var ID = function () {
     // Math.random should be unique because of its seeding algorithm.
     // Convert it to base 36 (numbers + letters), and grab the first 9 characters
@@ -110,7 +106,6 @@ function CoachAddWorkout() {
     Axios.get("https://rongoeirnet.herokuapp.com/getexercise")
       .then((res) => {
         let temp = res.data.data;
-        console.log(res.data.data);
         db.collection("coaches")
           .doc(userData?.id)
           .collection("ownWorkout")
@@ -120,7 +115,6 @@ function CoachAddWorkout() {
               let tmp = w.data();
               tmp["_id"] = w.id;
 
-              console.log(tmp);
               temp.push(tmp);
               //setObjs(temp);
             });
@@ -160,9 +154,7 @@ function CoachAddWorkout() {
         .collection("ownWorkouts")
         .get()
         .then((doc) => {
-          doc.forEach((w) => {
-            console.log(w.data());
-          });
+          doc.forEach((w) => {});
         });
     }
     objs?.map((item, idx) => {
@@ -181,6 +173,10 @@ function CoachAddWorkout() {
   }, []);
 
   useEffect(() => {
+    console.log("eq", equipmentsNeeded);
+  }, [equipmentsNeeded]);
+
+  useEffect(() => {
     setSelectedWorkoutEdit("");
     let temp = selectedExercises;
     if (sectionId == 3) {
@@ -196,6 +192,7 @@ function CoachAddWorkout() {
       // }
     }
   }, [sectionId]);
+
   // useEffect(() => {
   //   if (selectedExercises.length > 0) {
   //     let temp = tempexercises;
@@ -351,7 +348,7 @@ function CoachAddWorkout() {
             >
               <label>Equipment Needed</label>
               <br />
-
+              {console.log(equipmentsNeeded)}
               <SearchableDropdown
                 name=""
                 list={listOfEquipments}
@@ -537,7 +534,6 @@ function CoachAddWorkout() {
                         <SelectSearch
                           options={exercises}
                           onChange={(d, f) => {
-                            console.log(d, f);
                             let temp = selectedExercises;
                             temp[idx1] = f;
                             temp[idx1].sets = [];
@@ -567,7 +563,7 @@ function CoachAddWorkout() {
                       <SelectSearch
                         options={[
                           {
-                            name: "Reps/Weight/Sets/Rest",
+                            name: "Reps/Weight/Rest",
                             value: 1,
                           },
                           {
@@ -733,13 +729,22 @@ function CoachAddWorkout() {
                                     >
                                       {workout?.sets?.map((s, i) => (
                                         <div
-                                          key={i}
                                           style={{
-                                            fontSize: 13,
-                                            fontWeight: 500,
+                                            display: "flex",
+                                            alignItems: "center",
                                           }}
                                         >
-                                          {s[set_] ? s[set_] : 12}
+                                          <div
+                                            key={i}
+                                            style={{
+                                              fontSize: 13,
+                                              fontWeight: 500,
+                                              width: 30,
+                                              textAlign: "center",
+                                            }}
+                                          >
+                                            {s[set_] ? s[set_] : 12}
+                                          </div>
                                           {i < workout.sets.length - 1
                                             ? "  -  "
                                             : null}
@@ -868,6 +873,7 @@ function CoachAddWorkout() {
                                   {set_}
                                 </div>
                                 <input
+                                  maxLength="3"
                                   style={{
                                     width: "50px",
                                     height: "20px",
@@ -1094,7 +1100,7 @@ function CoachAddWorkout() {
                     Delete Workout
                   </div> */}
 
-                  <div
+                  {/* <div
                     style={{
                       width: "100%",
                       marginTop: 20,
@@ -1102,7 +1108,7 @@ function CoachAddWorkout() {
                         selectedExercises.length - 1 == idx1 ? "none" : "block",
                     }}
                     className="Dotted_line"
-                  ></div>
+                  ></div> */}
                 </div>
               ))}
             </div>
@@ -1111,9 +1117,10 @@ function CoachAddWorkout() {
                 display: "flex",
                 alignItems: "center",
                 margin: 20,
+                justifyContent: "flex-end",
               }}
             >
-              <div className="Dotted_line"></div>
+              {/* <div className="Dotted_line"></div> */}
               <div
                 style={{
                   display: "flex",
@@ -1513,6 +1520,7 @@ function CoachAddWorkout() {
                                         {set_}
                                       </div>
                                       <input
+                                        maxLength="3"
                                         style={{
                                           width: "50px",
                                           height: "20px",
@@ -1849,13 +1857,22 @@ function CoachAddWorkout() {
                                           >
                                             {workout?.sets?.map((s, i) => (
                                               <div
-                                                key={i}
                                                 style={{
-                                                  fontSize: 13,
-                                                  fontWeight: 500,
+                                                  display: "flex",
+                                                  alignItems: "center",
                                                 }}
                                               >
-                                                {s[set_] ? s[set_] : 12}
+                                                <div
+                                                  key={i}
+                                                  style={{
+                                                    fontSize: 13,
+                                                    fontWeight: 500,
+                                                    width: 30,
+                                                    textAlign: "center",
+                                                  }}
+                                                >
+                                                  {s[set_] ? s[set_] : 12}
+                                                </div>
                                                 {i < workout.sets.length - 1
                                                   ? "  -  "
                                                   : null}
@@ -2208,6 +2225,7 @@ function CoachAddWorkout() {
                                         {set_}
                                       </div>
                                       <input
+                                        maxLength="3"
                                         style={{
                                           width: "50px",
                                           height: "20px",
@@ -2413,14 +2431,14 @@ function CoachAddWorkout() {
                   </div>
                 </div>
               </div>
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                 }}
               >
                 <div style={{ width: "100%" }} className="Dotted_line"></div>
-              </div>
+              </div> */}
               <div
                 style={{
                   marginTop: 20,

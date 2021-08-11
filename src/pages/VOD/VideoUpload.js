@@ -23,7 +23,7 @@ import { useHistory } from "react-router-dom";
 
 //const defaultimg = require("../../../public/assets/illustration.jpeg");
 
-function VideoUpload({ navigation }) {
+function VideoUpload({ navigation, videoStatus, videoLink }) {
   const [userDetails, setUserDetails] = useState(null);
   const [athleteDetails, setAthleteDetails] = useState([]);
   const user = useSelector(selectUser);
@@ -211,6 +211,8 @@ function VideoUpload({ navigation }) {
                     UploadedById: userData?.id,
                   });
                 console.log("wt", json);
+                videoStatus && videoStatus(true);
+                videoLink && videoLink("https://vimeo.com/" + json.uri);
               } else {
                 setisUploading(false);
 
@@ -356,29 +358,33 @@ function VideoUpload({ navigation }) {
               }}
             />
           </div>
-          <div style={{ marginTop: 20 }}>
-            <h3 style={{ fontSize: 15, color: "black" }}>Video Description</h3>
-            <input
-              type="text"
-              class="vod_input"
-              onChange={(val) => {
-                console.log(userData);
-                let temp = [...videoData];
-                if (!temp[0]) {
-                  temp[0] = {};
-                }
-                temp[0]["description"] = val.target.value;
-                setVideoData(temp);
-              }}
-              placeholder="Enter Video Description"
-              style={{
-                borderWidth: 0.5,
-                marginTop: 10,
+          {!videoStatus && (
+            <div style={{ marginTop: 20 }}>
+              <h3 style={{ fontSize: 15, color: "black" }}>
+                Video Description
+              </h3>
+              <input
+                type="text"
+                class="vod_input"
+                onChange={(val) => {
+                  console.log(userData);
+                  let temp = [...videoData];
+                  if (!temp[0]) {
+                    temp[0] = {};
+                  }
+                  temp[0]["description"] = val.target.value;
+                  setVideoData(temp);
+                }}
+                placeholder="Enter Video Description"
+                style={{
+                  borderWidth: 0.5,
+                  marginTop: 10,
 
-                backgroundColor: "white",
-              }}
-            />
-          </div>
+                  backgroundColor: "white",
+                }}
+              />
+            </div>
+          )}
           <h3 style={{ marginTop: 30, fontSize: 15, color: "black" }}>
             Upload Video Thumbnail
           </h3>
@@ -506,6 +512,7 @@ function VideoUpload({ navigation }) {
           )}
         </Formik> */}
       </div>
+
       <Modal
         width="450px"
         height="200"
@@ -531,7 +538,11 @@ function VideoUpload({ navigation }) {
           {!isError && !isUploading && (
             <div>
               <h3 style={{ fontSize: 20 }}>Video succesfully uploaded</h3>
-              <h3 style={{ fontSize: 20 }}>Do you want to assign the video</h3>
+              {!videoStatus && (
+                <h3 style={{ fontSize: 20 }}>
+                  Do you want to assign the video
+                </h3>
+              )}
             </div>
           )}
         </div>
@@ -562,26 +573,28 @@ function VideoUpload({ navigation }) {
               CLOSE
             </div>
 
-            <div
-              onClick={() => {
-                setModal(false);
-                history.push({
-                  pathname: "/assignvideo",
-                  state: { videoData: videoData },
-                });
-              }}
-              style={{
-                backgroundColor: "rgb(252, 209, 63)",
-                fontWeight: 600,
+            {!videoStatus && (
+              <div
+                onClick={() => {
+                  setModal(false);
+                  history.push({
+                    pathname: "/assignvideo",
+                    state: { videoData: videoData },
+                  });
+                }}
+                style={{
+                  backgroundColor: "rgb(252, 209, 63)",
+                  fontWeight: 600,
 
-                textAlign: "center",
+                  textAlign: "center",
 
-                borderRadius: 10,
-                padding: "5px 20px",
-              }}
-            >
-              ASSIGN VIDEO
-            </div>
+                  borderRadius: 10,
+                  padding: "5px 20px",
+                }}
+              >
+                ASSIGN VIDEO
+              </div>
+            )}
           </div>
         ) : (
           <div

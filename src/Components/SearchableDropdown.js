@@ -136,7 +136,7 @@ const Listbox = styled("ul")`
     }
   }
 `;
-function EquipmentsDropdown({ name, idx, list, state, setState,cardio }) {
+function EquipmentsDropdown({ name, idx, list, state, setState, cardio }) {
   const classes = useStyles();
   const {
     getRootProps,
@@ -155,12 +155,13 @@ function EquipmentsDropdown({ name, idx, list, state, setState,cardio }) {
     options: list || [],
     getOptionLabel: (option) => option.name,
   });
-
   useEffect(() => {
+    console.log(value, state);
     if (name === "Search for Exercise") {
+      console.log(1);
       let len = value.length;
       if (len !== 0) {
-        if(cardio){
+        if (cardio) {
           value[len - 1].sets = [
             {
               reps: 12,
@@ -168,7 +169,7 @@ function EquipmentsDropdown({ name, idx, list, state, setState,cardio }) {
               weights: 0,
             },
           ];
-        }else{
+        } else {
           value[len - 1].sets = [
             {
               reps: 12,
@@ -196,7 +197,12 @@ function EquipmentsDropdown({ name, idx, list, state, setState,cardio }) {
       });
       setState(value);
     } else {
-      setState(value);
+      console.log(value, state);
+      if (state.len == 0) {
+        setState(value);
+      } else {
+        setState(state);
+      }
     }
   }, [value]);
 

@@ -29,6 +29,7 @@ const AddFoodCard = (props) => {
   const [index, setIndex] = useState(props.index);
   const [item, setItem] = useState(props.item);
   const [idx, setIdx] = useState(props.idx);
+  const [servings, setservings] = useState("");
 
   useEffect(() => {
     setIndex(props.index);
@@ -39,7 +40,7 @@ const AddFoodCard = (props) => {
   }, [props.index, props.item, props.idx]);
 
   return (
-    <div className="athleteFoodCard">
+    <div className="athleteFoodCard" style={{ margin: 8 }}>
       {open ? (
         <div className="athleteFoodCard__open">
           <div
@@ -203,7 +204,7 @@ const AddFoodCard = (props) => {
                   required
                   labelId="servings-select-label"
                   id="servings-select-label"
-                  value={String(props.item.units)}
+                  value={String(props.item?.foodDetails?.units)}
                   onChange={(e) => {
                     let foodData = [...props.entireFood];
                     let temp = [...props.ent.food];
@@ -345,7 +346,14 @@ const AddFoodCard = (props) => {
 
             <CheckBoxOutlinedIcon
               onClick={() => {
-                setOpen(false);
+                let foodData = [...props.entireFood];
+                let temp = [...props.ent.food];
+
+                if (temp[idx].foodName) {
+                  setOpen(false);
+                } else {
+                  alert("please add a food");
+                }
               }}
               style={{
                 cursor: "pointer",

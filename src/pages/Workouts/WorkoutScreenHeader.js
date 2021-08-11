@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { selectUserType } from "../../features/userSlice";
 import { Typography } from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
-
+import CloseIcon from "@material-ui/icons/Close";
 const WorkoutScreenHeader = ({ name, navigation }) => {
   const userType = useSelector(selectUserType);
   const history = useHistory();
+  const [showMore, setshowMore] = useState(false);
 
   return (
     <div className="workoutsHeader">
@@ -62,11 +64,40 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
       )}
       {userType === "coach" && name === "Workouts" && (
         <div
-          className="addWorkout__button"
-          onClick={() => history.push("add-own-workout")}
+          style={{
+            display: "flex",
+            position: "relative",
+          }}
         >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>ADD OWN WORKOUT</h5>
+          <div
+            style={{
+              padding: "5px 20px",
+              marginTop: 20,
+              marginRight: 20,
+            }}
+            onClick={() => {
+              setshowMore(!showMore);
+            }}
+          >
+            {showMore ? <CloseIcon /> : <MoreVertIcon />}
+          </div>
+          {showMore && (
+            <div>
+              <div
+                className="addWorkout__button"
+                onClick={() => history.push("add-own-workout")}
+                style={{ position: "absolute", top: 50, right: 10, width: 150 }}
+              >
+                <img
+                  src="/assets/plus_thin.png"
+                  alt=""
+                  width="15px"
+                  height="15px"
+                />
+                <h5>ADD OWN WORKOUT</h5>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
