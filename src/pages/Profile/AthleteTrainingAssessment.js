@@ -174,8 +174,8 @@ function AthleteTrainingAssessment({ route, navigation }) {
   };
 
   return (
-    <div className="athleteTrainingAssessment">
-      <Header />
+    <div className="athleteTrainingAssessment" style={{ minHeight: "99.9vh" }}>
+      <Header Id={temperoryId} />
       <h2>Training Assessment</h2>
       <h4>Select Days you wish to train</h4>
       <h5>Select days</h5>
@@ -244,7 +244,7 @@ function AthleteTrainingAssessment({ route, navigation }) {
             ? {
                 borderWidth: 1,
                 borderColor: "grey",
-                width: "97%",
+                width: "95%",
                 borderRadius: 5,
                 padding: 15,
                 marginLeft: 10,
@@ -252,7 +252,7 @@ function AthleteTrainingAssessment({ route, navigation }) {
             : {
                 borderColor: "grey",
                 borderWidth: 0,
-                width: "97%",
+                width: "95%",
                 borderRadius: 5,
                 padding: 15,
                 marginLeft: 10,

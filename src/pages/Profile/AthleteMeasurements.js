@@ -132,9 +132,14 @@ function AthleteMeasurements({ route, navigation }) {
     setEditable(false);
   };
   return (
-    <div className="athleteMeasurements">
+    <div
+      className="athleteMeasurements"
+      style={{
+        minHeight: "99.99vh",
+      }}
+    >
       <div className="athleteProfile__leftContainer">
-        <Header />
+        <Header Id={temperoryId} />
         <h2>Anthropometric Measurements</h2>
         <div className="athleteMeasurements__container">
           <form>

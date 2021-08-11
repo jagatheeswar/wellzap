@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CheckboxesGroups from "../../Components/Buttons/Checkboxs";
 import Header from "../../Components/Header/Header";
 import {
@@ -11,7 +11,7 @@ import {
 import { db } from "../../utils/firebase";
 import "./Profile.css";
 
-function AthleteTrainingAssessment_coach({ route, navigation }) {
+function AthleteTrainingAssessment_coach({ route, navigation, Id }) {
   const user = useSelector(selectUser);
   const [userData, setUserData] = useState(null);
   const userType = useSelector(selectUserType);
@@ -19,10 +19,15 @@ function AthleteTrainingAssessment_coach({ route, navigation }) {
   const [editable, setEditable] = useState(false);
   const [trainingHours, setTrainingHours] = useState("");
   const [otherEquipments, setOtherEquipments] = useState("");
-  var params = useParams();
+  const location = useLocation;
 
-  var Id = params.AthleteId;
-  window.history.pushState(null, "", "/Athlete/training-assessment");
+  useEffect(() => {
+    alert(temperoryId);
+    console.log("tid", temperoryId);
+  }, [temperoryId]);
+
+  // var Id = params.AthleteId;
+  // window.history.pushState(null, "", "/Athlete/training-assessment");
 
   const dispatch = useDispatch();
 
@@ -71,7 +76,7 @@ function AthleteTrainingAssessment_coach({ route, navigation }) {
         .get()
         .then(function (snap) {
           setUserData({
-            id: Id,
+            id: temperoryId,
             data: snap.data(),
           });
         })
@@ -98,7 +103,7 @@ function AthleteTrainingAssessment_coach({ route, navigation }) {
   }, [user]);
 
   useEffect(() => {
-    if (userData) {
+    if (userType == "athlete") {
       let temp1 = [];
       db.collection("athletes")
         .doc(userData?.id)
@@ -182,7 +187,7 @@ function AthleteTrainingAssessment_coach({ route, navigation }) {
 
   return (
     <div className="athleteTrainingAssessment">
-      <Header Id={Id} />
+      {temperoryId && <Header Id={temperoryId} />}
       <h2>Training Assessment</h2>
       <h4>Select Days you wish to train</h4>
       <h5>Select days</h5>

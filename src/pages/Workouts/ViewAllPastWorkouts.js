@@ -10,17 +10,18 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { useLocation } from "react-router-dom";
 
 function PastWorkouts() {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
   const [pastWorkouts, setPastWorkouts] = React.useState([]);
-
+  const location = useLocation();
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
-
+  const [AthleteId, setAthleteId] = React.useState(null);
   const [sorting, setsorting] = React.useState("desc");
 
   React.useEffect(() => {
@@ -34,6 +35,9 @@ function PastWorkouts() {
       setShowFilter(false);
     }
   });
+  React.useEffect(() => {
+    setAthleteId(location?.state?.AthleteId);
+  }, [location?.state]);
 
   React.useEffect(async () => {
     SetSearhLoading(true);
@@ -70,7 +74,7 @@ function PastWorkouts() {
       //   });
 
       db.collection("workouts")
-        .where("assignedToId", "==", userData?.id)
+        .where("assignedToId", "==", AthleteId ? AthleteId : userData?.id)
         .where("completed", "==", true)
         // .limit(4)
         .orderBy("timestamp", sorting)
@@ -83,7 +87,7 @@ function PastWorkouts() {
           );
         });
     }
-  }, [userData?.id, sorting]);
+  }, [userData?.id, AthleteId, sorting]);
 
   const options = [
     { value: "asc", label: "Recent" },

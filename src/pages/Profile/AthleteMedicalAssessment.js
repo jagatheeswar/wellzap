@@ -306,7 +306,7 @@ function AthleteMedicalAssessment({ route, navigation }) {
     <div className="AthleteMedicalAssessment">
       <div className="athleteProfile__container">
         <div className="athleteProfile__leftContainer">
-          <Header />
+          <Header Id={temperoryId} />
           <h2>Medical Assessment</h2>
           <div className="athleteMedicalAssessment__container">
             <form className="athleteMedicalAssessment__form">

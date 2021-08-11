@@ -11,6 +11,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import { formatDate } from "../../functions/formatDate";
+import { useLocation } from "react-router-dom";
 function AthleteWorkoutsList() {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -21,7 +22,8 @@ function AthleteWorkoutsList() {
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
   const [AthleteWorkouts, setAthleteWorkouts] = React.useState([]);
-
+  const [AthleteId, setAthleteId] = React.useState(null);
+  const location = useLocation();
   const [sorting, setsorting] = React.useState("desc");
 
   React.useEffect(() => {
@@ -35,6 +37,9 @@ function AthleteWorkoutsList() {
       setShowFilter(false);
     }
   });
+  React.useEffect(() => {
+    setAthleteId(location?.state?.AthleteId);
+  }, [location?.state]);
 
   React.useEffect(async () => {
     SetSearhLoading(true);
@@ -71,7 +76,7 @@ function AthleteWorkoutsList() {
       //   });
 
       db.collection("AthleteWorkouts")
-        .doc(userData?.id)
+        .doc(AthleteId ? AthleteId : userData?.id)
         //.where("selectedDays", "array-contains", formatDate())
         .collection(formatDate())
         .orderBy("timestamp", sorting)
@@ -85,7 +90,7 @@ function AthleteWorkoutsList() {
           );
         });
     }
-  }, [userData?.id, sorting]);
+  }, [userData?.id, sorting, AthleteId]);
 
   const options = [
     { value: "asc", label: "Recent" },
@@ -94,7 +99,7 @@ function AthleteWorkoutsList() {
 
   return (
     <div style={{ minHeight: "99.7vh" }}>
-      <WorkoutScreenHeader name="Past Workouts" />
+      <WorkoutScreenHeader name="Your Workouts" />
       <div
         style={{
           display: "flex",

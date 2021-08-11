@@ -69,11 +69,11 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
   useEffect(() => {
     if (userType == "coach") {
       db.collection("athletes")
-        .doc(temperoryId)
+        .doc(temperoryId ? temperoryId : 1)
         .get()
         .then(function (snap) {
           setUserData({
-            id: temperoryId,
+            id: snap.id,
             data: snap.data(),
           });
         })
@@ -288,7 +288,7 @@ function AthleteFoodAndLifestyleAssessment({ route, navigation }) {
   return (
     <div className="athleteFoodAndLifestyleAssessment">
       <div className="athleteProfile__leftContainer">
-        <Header />
+        <Header Id={temperoryId} />
         <div className="athleteFoodAndLifestyleAssessment__container">
           <h2>Food and Lifestyle Assessment</h2>
           <h4>What is your diet?</h4>

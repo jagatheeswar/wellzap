@@ -14,9 +14,9 @@ function Header(props) {
   const [name, setname] = useState(null);
   const [img, setimg] = useState(null);
   const [coachName, setCoachName] = useState("");
-
+  console.log(Id);
   useEffect(() => {
-    if (Id) {
+    if (props.Id) {
       if (userType === "coach") {
         db.collection("athletes")
           .doc(Id ? Id : "1")

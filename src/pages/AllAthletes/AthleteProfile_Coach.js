@@ -7,6 +7,7 @@ import {
   selectUserData,
   selectUserType,
   setUserData,
+  setTemperoryID,
 } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import Header from "../../Components/Header/Header";
@@ -14,7 +15,7 @@ import "./Profile.css";
 import AthleteProfileForm from "./AthleteProfileForm";
 import AthleteAssessments from "./AthleteAssessments";
 import AthleteMeasurements from "../Profile/AthleteMeasurements";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 
 function AthleteProfile_coach() {
   const user = useSelector(selectUser);
@@ -23,17 +24,17 @@ function AthleteProfile_coach() {
   const dispatch = useDispatch();
   const [athleteDetails, setAthleteDetails] = useState([]);
   const history = useHistory();
+  const location = useLocation();
 
-  var params = useParams();
-  if (!params.AthleteId) {
+  if (!location?.state?.AthleteId) {
     history.push("/all-athletes");
     window.history.pushState(null, "", "/all-athletes");
   }
-  var Id = params.AthleteId;
-  console.log(params, Id);
+  var Id = location?.state?.AthleteId;
+  //console.log(params, Id);
 
   // var history = useHistory();
-  window.history.pushState(null, "", "/all-athletes/profile");
+  //window.history.pushState(null, "", "/all-athletes/profile");
 
   useEffect(() => {
     db.collection("coaches")
@@ -75,9 +76,9 @@ function AthleteProfile_coach() {
       <div className="athleteProfile__container">
         <div className="athleteProfile__leftContainer">
           <Header Id={Id} />
-          <AthleteProfileForm />
-          {console.log("at", athleteDetails)}
-          {params.AthleteId ? <AthleteAssessments Id={Id} /> : ""}
+          <AthleteProfileForm AthleteId={Id} />
+
+          {location?.state?.AthleteId ? <AthleteAssessments Id={Id} /> : ""}
         </div>
       </div>
     </div>

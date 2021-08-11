@@ -10,7 +10,7 @@ import {
 import { db } from "../../utils/firebase";
 import "./Profile.css";
 
-function AthleteProfileForm() {
+function AthleteProfileForm(props) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const userType = useSelector(selectUserType);
@@ -33,8 +33,9 @@ function AthleteProfileForm() {
   const [weight, setWeight] = useState(0);
   const [mealHistory, setMealHistory] = useState([]);
 
-  const params = useParams();
-  var Id = params.AthleteId;
+  //const params = useParams();
+
+  var Id = props.AthleteId;
   useEffect(() => {
     if (protein != 0 && carbs != 0 && fat != 0) {
       setCalories(

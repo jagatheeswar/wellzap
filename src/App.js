@@ -359,19 +359,31 @@ function App() {
                 CoachComp={<AthleteHistory selectedDate={selectedDate} />}
               />
             </Route>
-            <Route path="/Athlete/training-assessment/:AthleteId">
+            <Route path="/Athlete/reports">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteStats />}
+              />
+            </Route>
+            <Route path="/Athlete">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<AthleteProfile_coach selectedDate={selectedDate} />}
+              />
+            </Route>
+            <Route path="/Athlete/training-assessment">
               <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<AthleteTrainingAssessment_coach />}
               ></RoutesComp>
             </Route>
-            <Route path="/Athlete/food-and-lifestyle-assessment/:AthleteId">
+            <Route path="/Athlete/food-and-lifestyle-assessment">
               <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<AthleteFoodAndLifestyleAssessment_coach />}
               ></RoutesComp>
             </Route>
-            <Route path="/Athlete/anthropometric-measurements/:AthleteId">
+            <Route path="/Athlete/anthropometric-measurements">
               <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<AthleteMeasurements_coach />}
@@ -383,31 +395,13 @@ function App() {
                 CoachComp={<NotFound />}
               ></RoutesComp>
             </Route>
-            <Route path="/Athlete/medical-assessment/:AthleteId">
+            <Route path="/Athlete/medical-assessment">
               <RoutesComp
                 AthleteComp={<NotFound />}
                 CoachComp={<AthleteMedicalAssessment_coach />}
               ></RoutesComp>
-            </Route>
-            <Route path="/Athlete/reports/:AthleteId">
-              <RoutesComp
-                AthleteComp={<NotFound />}
-                CoachComp={<AthleteStats />}
-              />
             </Route>
 
-            <Route path="/Athlete/:AthleteId">
-              <RoutesComp
-                AthleteComp={<NotFound />}
-                CoachComp={<AthleteProfile_coach />}
-              />
-            </Route>
-            <Route path="/Athlete/medical-assessment/:AthleteId">
-              <RoutesComp
-                AthleteComp={<NotFound />}
-                CoachComp={<AthleteMedicalAssessment_coach />}
-              ></RoutesComp>
-            </Route>
             <Route path="/uploadvideo">
               <RoutesComp
                 AthleteComp={<NotFound />}
@@ -451,7 +445,7 @@ function App() {
             <Route path="/my-workouts">
               <RoutesComp
                 AthleteComp={<AthleteWorkoutsList />}
-                CoachComp={<NotFound />}
+                CoachComp={<AthleteWorkoutsList />}
               />
             </Route>
             <Route path="/view-all-saved-workouts">
@@ -488,7 +482,7 @@ function App() {
             <Route path="/view-all-past-workouts">
               <RoutesComp
                 AthleteComp={<ViewAllPastWorkouts />}
-                CoachComp={<NotFound />}
+                CoachComp={<ViewAllPastWorkouts />}
               />
             </Route>
             <Route path="/post-workout">
@@ -530,7 +524,7 @@ function App() {
             <Route path="/view-all-meal-history">
               <RoutesComp
                 AthleteComp={<AthleteMealHistory />}
-                CoachComp={<NotFound />}
+                CoachComp={<AthleteMealHistory />}
               />
             </Route>
             <Route path="/view-all-nutrition">

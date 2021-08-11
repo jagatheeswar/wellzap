@@ -229,7 +229,7 @@ function AthleteWorkouts() {
               style={{ width: "90%", marginLeft: 20 }}
               className="workoutHeading__row"
             >
-              <h1>Your Workouts</h1>
+              <h1>Video Workouts</h1>
               <div onClick={() => history.push("/my-workouts")}>View All</div>
             </div>
             <div style={{ width: "90%", paddingLeft: 20 }}>

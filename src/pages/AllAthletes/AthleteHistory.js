@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../utils/firebase";
-import { selectUserData, selectTemperoryId } from "../../features/userSlice";
+import {
+  selectUserData,
+  selectTemperoryId,
+  selectUserType,
+} from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import { Grid } from "@material-ui/core";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
@@ -21,6 +25,7 @@ function AthleteHistory(props) {
   const [mealHistory, setMealHistory] = useState([]);
   const [pastWorkouts, setPastWorkouts] = useState([]);
   const [AthleteWorkouts, setAthleteWorkouts] = React.useState([]);
+  const userType = useSelector(selectUserType);
 
   // function formatDate() {
   //   var d = new Date(),
@@ -204,7 +209,12 @@ function AthleteHistory(props) {
             </h2>{" "}
             <p
               onClick={() => {
-                history.push("/workouts");
+                history.push({
+                  pathname: "/view-all-workouts",
+                  state: {
+                    AthleteId: temperoryId,
+                  },
+                });
               }}
               style={{ fontFamily: "Montserrat", cursor: "pointer" }}
             >
@@ -268,7 +278,12 @@ function AthleteHistory(props) {
             </h2>{" "}
             <p
               onClick={() => {
-                history.push("/workouts");
+                history.push({
+                  pathname: "/view-all-past-workouts",
+                  state: {
+                    AthleteId: temperoryId,
+                  },
+                });
               }}
               style={{ fontFamily: "Montserrat", cursor: "pointer" }}
             >
@@ -334,7 +349,12 @@ function AthleteHistory(props) {
             </h2>{" "}
             <p
               onClick={() => {
-                history.push("/view-all-meal-history");
+                history.push({
+                  pathname: "/view-all-meal-history",
+                  state: {
+                    AthleteId: temperoryId,
+                  },
+                });
               }}
               style={{ fontFamily: "Montserrat", cursor: "pointer" }}
             >
@@ -454,27 +474,36 @@ function AthleteHistory(props) {
                 justifyContent: "center",
               }}
             >
-              Your Workouts
+              {userType === "athlete" ? "Your Workouts" : "self workouts"}
             </h2>{" "}
             <p
               onClick={() => {
                 // history.push("/athlete-workouts");
+                history.push({
+                  pathname: "/my-workouts",
+                  state: {
+                    AthleteId: temperoryId,
+                  },
+                });
               }}
               style={{ fontFamily: "Montserrat", cursor: "pointer" }}
             >
               See all
             </p>
           </div>
+
           {AthleteWorkouts?.length > 0 ? (
             AthleteWorkouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={AthleteWorkouts}
-                item={workout}
-                idx={i}
-                type={"non-editable"}
-                completed={true}
-              />
+              <div style={{ width: "90%" }}>
+                <WorkoutCard
+                  key={workout.id}
+                  workouts={AthleteWorkouts}
+                  item={workout}
+                  idx={i}
+                  type={"non-editable"}
+                  completed={true}
+                />
+              </div>
             ))
           ) : (
             <div

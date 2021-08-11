@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import { db } from "../../utils/firebase";
 import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 // import { formatDate } from "../../functions/formatDate";
-import moment from "moment"
+import moment from "moment";
 import "./AthleteNutrition.css";
-import { Typography } from '@material-ui/core';
+import { Typography } from "@material-ui/core";
 import DatePicker from "react-datepicker";
 
 function NutritionWeekGoal() {
@@ -19,7 +19,7 @@ function NutritionWeekGoal() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [mindate, setmindate] = useState(new Date());
-  
+
   var today = new Date();
 
   const min_date = {
@@ -130,52 +130,83 @@ function NutritionWeekGoal() {
     <div className="weekGoalMain">
       <div className="weekGoalContainer">
         {/* <Typography variant="h6" style={{fontWeight:"normal"}}>Average Macronutrients consumed</Typography> */}
-        <div style={{textAlign:'center', marginTop: 15, display:'flex',justifyContent:'center',alignItems:'center' }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 15,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <DatePicker
             selected={endDate}
             maxDate={new Date()}
             onChange={(date) => setEndDate(date)}
-            placeholderText="MM:DD:YYYY"
           />
           <span>and</span>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
-            minDate={mindate}
-            placeholderText="MM:DD:YYYY"
+            maxDate={mindate}
+            dateFormat="DD-MM-YYYY"
           />
         </div>
-        <div style={{display: "flex",flexDirection: "row",alignItems: "center",justifyContent:"center", width: '100%'}}>
-          <div 
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <div
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "flex-start",
-              width:"60%",
-            }}>
-              <Typography style={{alignSelf: "start"}}>Average Calories</Typography>
-              <Typography style={{alignSelf: "start"}}>Average Carbs</Typography>
-              <Typography style={{alignSelf: "start"}}>Average Fat</Typography>
-              <Typography style={{alignSelf: "start"}}>Average Protein</Typography>
-            </div>
-            <div 
+              width: "60%",
+            }}
+          >
+            <Typography style={{ alignSelf: "start" }}>
+              Average Calories
+            </Typography>
+            <Typography style={{ alignSelf: "start" }}>
+              Average Carbs
+            </Typography>
+            <Typography style={{ alignSelf: "start" }}>Average Fat</Typography>
+            <Typography style={{ alignSelf: "start" }}>
+              Average Protein
+            </Typography>
+          </div>
+          <div
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "flex-start",
-              width:"20%"
-            }}>
-              <Typography style={{alignSelf: "flex-start"}}>{calories} kcal</Typography>
-              <Typography style={{alignSelf: "flex-start"}}>{carbs} grams</Typography>
-              <Typography style={{alignSelf: "flex-start"}}>{fat} grams</Typography>
-              <Typography style={{alignSelf: "flex-start"}}>{protein} grams</Typography>
-            </div>
+              width: "20%",
+            }}
+          >
+            <Typography style={{ alignSelf: "flex-start" }}>
+              {calories} kcal
+            </Typography>
+            <Typography style={{ alignSelf: "flex-start" }}>
+              {carbs} grams
+            </Typography>
+            <Typography style={{ alignSelf: "flex-start" }}>
+              {fat} grams
+            </Typography>
+            <Typography style={{ alignSelf: "flex-start" }}>
+              {protein} grams
+            </Typography>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default NutritionWeekGoal
+export default NutritionWeekGoal;

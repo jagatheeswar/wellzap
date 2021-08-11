@@ -185,7 +185,7 @@ function AthleteNutritionCard({
               }}
             >
               {" "}
-              <div style={{ width: 70 }}>proteins :</div>
+              <div style={{ width: 70 }}>Proteins :</div>
               {food.data?.proteins ? food.data?.proteins?.toFixed(2) : 0}
             </div>
           </div>

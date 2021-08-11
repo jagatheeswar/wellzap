@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { selectUserData } from "../../features/userSlice";
+import { selectUserData, setTemperoryID } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import "./AllAthletes.css";
 import { Typography } from "@material-ui/core";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
-
+import { useDispatch } from "react-redux";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
@@ -17,6 +17,7 @@ function AllAthletes() {
   const userData = useSelector(selectUserData);
   const [athletes, setAthletes] = useState([]);
 
+  const dispatch = useDispatch();
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
@@ -295,7 +296,16 @@ function AllAthletes() {
               style={{ cursor: "pointer" }}
             />
             <button
-              onClick={() => history.push("/Athlete/" + athlete.id)}
+              onClick={() => {
+                dispatch(setTemperoryID(athlete?.id));
+                console.log(athlete?.id);
+                history.push({
+                  pathname: "/Athlete",
+                  state: {
+                    AthleteId: athlete?.id,
+                  },
+                });
+              }}
               style={{
                 marginLeft: 20,
                 outline: "none",

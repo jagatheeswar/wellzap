@@ -8,18 +8,25 @@ import "./AthleteNutrition.css";
 import AthleteNutritionCard from "../../Components/NutritionCard/AthleteNutritionCard";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { useLocation } from "react-router-dom";
 
 function AthleteMealHistory() {
   const userData = useSelector(selectUserData);
   const [mealHistory, setMealHistory] = React.useState([]);
   const [sorting, setsorting] = React.useState("desc");
+  const location = useLocation();
+  const [athleteId, setAthleteId] = React.useState(null);
+
+  React.useEffect(() => {
+    setAthleteId(location?.state?.AthleteId);
+  }, [location?.state]);
 
   React.useEffect(() => {
     let temp = [];
 
     if (userData?.id) {
       db.collection("AthleteNutrition")
-        .doc(userData?.id)
+        .doc(athleteId ? athleteId : userData?.id)
         .collection("nutrition")
         .orderBy("date", sorting)
         .get()
@@ -50,7 +57,7 @@ function AthleteMealHistory() {
           setMealHistory(temp);
         });
     }
-  }, [userData?.id, sorting]);
+  }, [userData?.id, sorting, athleteId]);
   const options = [
     { value: "asc", label: "Recent" },
     { value: "desc", label: "old" },

@@ -11,7 +11,12 @@ function AthleteAssessment({ name, path, Id }) {
       className="athleteAssessment"
       onClick={() => {
         console.log(temp_path);
-        window.open("/Athlete/" + path + temp_path, "_blank");
+        history.push({
+          pathname: "/" + path,
+          state: {
+            AthleteId: Id,
+          },
+        });
       }}
     >
       <div className="athleteAssessment__features">

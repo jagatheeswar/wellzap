@@ -1,7 +1,11 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
-import { selectUserData, selectUserType } from "../../features/userSlice";
+import {
+  selectUserData,
+  selectUserType,
+  selectTemperoryId,
+} from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 import SearchIcon from "@material-ui/icons/Search";
@@ -9,20 +13,22 @@ import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-function ViewAllWorkouts() {
+import { useLocation } from "react-router-dom";
+function ViewAllWorkouts({ Id }) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
   const [workouts, setWorkouts] = React.useState([]);
   const [type, setType] = React.useState("");
+  const temperoryId = useSelector(selectTemperoryId);
 
-  const [athleteId, setAthleteId] = React.useState("");
+  const [athleteId, setAthleteId] = React.useState();
   const [completed, setCompleted] = React.useState(false);
   const [search, setsearch] = React.useState("");
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
 
   const [showFilter, setShowFilter] = React.useState(false);
-
+  const location = useLocation();
   document.addEventListener("mouseup", function (e) {
     if (showFilter) {
       setShowFilter(false);
@@ -35,6 +41,9 @@ function ViewAllWorkouts() {
   //     return coach.data.name.toLowerCase().includes(search);
   //   });
   // }, [search]);
+  React.useEffect(() => {
+    setAthleteId(location?.state?.AthleteId);
+  }, [location?.state]);
 
   React.useEffect(() => {
     setSearchList(workouts);
@@ -117,7 +126,7 @@ function ViewAllWorkouts() {
         }
       }
     }
-  }, [userData?.id, athleteId, sorting]);
+  }, [userData?.id, athleteId, sorting, location?.state?.AthleteId]);
 
   const options = [
     { value: "asc", label: "Recent" },
