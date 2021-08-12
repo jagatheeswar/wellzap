@@ -72,27 +72,39 @@ function NutritionWeekGoal() {
   }
 
   useEffect(() => {
+    console.log(startDate, endDate);
     db.collection("Food")
       .where("date", ">=", startDate)
       .where("date", "<=", endDate)
-      .orderBy("date")
+      //  .orderBy("date")
       .get()
       .then((querySnapshot) => {
         let data = querySnapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
         }));
-        data = data.filter((d) => d.user_id === userData?.id && d.entireFood);
+        console.log(querySnapshot.empty);
+        querySnapshot.docs.map((d) => {
+          console.log("aa", d.data());
+        });
+        console.log(1, userData?.id);
+
+        data = data.filter((d) => {
+          console.log(d.entireFood);
+          return d.from_id === userData?.id && d.nutrition;
+        });
+        console.log(data);
         setNutrition(data);
       })
       .catch(function (error) {
         console.log("Error getting documents: ", error);
       });
-  }, [startDate, endDate]);
+  }, [startDate, endDate, userData]);
 
   useEffect(() => {
     if (nutrition.length > 0) {
       let tDate = nutrition[0].date;
+
       let tempCount = 0;
       let tempCal = 0;
       let tempCarbs = 0;
@@ -105,7 +117,8 @@ function NutritionWeekGoal() {
       for (let i = 0; i < diff; i++) {
         let t1 = nutrition.filter((w) => w.date === tDate);
         t1.map((t) => {
-          t.entireFood.map((foodContainer) => {
+          console.log(t);
+          t.nutrition?.entireFood.map((foodContainer) => {
             foodContainer.food.map((f) => {
               tempCal = tempCal + f.calories;
               tempCarbs = tempCarbs + f.carbs;
@@ -115,10 +128,10 @@ function NutritionWeekGoal() {
           });
         });
 
-        tDate = incr_date(tDate);
+        tDate = incr_date(formatDate(tDate));
         tempCount = tempCount + 1;
       }
-
+      console.log(tempCal, tempCarbs, tempFat, tempProtein);
       setCalories((tempCal / tempCount).toFixed(1));
       setCarbs((tempCarbs / tempCount).toFixed(1));
       setFat((tempFat / tempCount).toFixed(1));
@@ -140,14 +153,14 @@ function NutritionWeekGoal() {
           }}
         >
           <DatePicker
-            selected={endDate}
+            selected={startDate}
             maxDate={new Date()}
-            onChange={(date) => setEndDate(date)}
+            onChange={(date) => setStartDate(date)}
           />
           <span>and</span>
           <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
             maxDate={mindate}
           />
         </div>
@@ -156,7 +169,7 @@ function NutritionWeekGoal() {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
+
             width: "100%",
           }}
         >
@@ -165,22 +178,57 @@ function NutritionWeekGoal() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "flex-start",
-              width: "60%",
+              //justifyContent: "flex-start",
+              width: "100%",
             }}
           >
-            <Typography style={{ alignSelf: "start" }}>
-              Average Calories
-            </Typography>
-            <Typography style={{ alignSelf: "start" }}>
-              Average Carbs
-            </Typography>
-            <Typography style={{ alignSelf: "start" }}>Average Fat</Typography>
-            <Typography style={{ alignSelf: "start" }}>
-              Average Protein
-            </Typography>
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <Typography style={{ alignSelf: "start", width: "170px" }}>
+                Average Calories
+              </Typography>
+
+              <Typography style={{}}>{calories} kcal</Typography>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <Typography style={{ alignSelf: "start", width: "170px" }}>
+                Average Carbs
+              </Typography>
+
+              <Typography style={{}}>{carbs} grams</Typography>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <Typography style={{ alignSelf: "start", width: "170px" }}>
+                Average Fat
+              </Typography>
+              <Typography style={{}}>{fat} grams</Typography>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <Typography style={{ alignSelf: "start", width: "170px" }}>
+                Average Protein
+              </Typography>
+              <Typography style={{}}>{protein} grams</Typography>
+            </div>
           </div>
-          <div
+          {/* <div
             style={{
               display: "flex",
               flexDirection: "column",
@@ -201,7 +249,7 @@ function NutritionWeekGoal() {
             <Typography style={{ alignSelf: "flex-start" }}>
               {protein} grams
             </Typography>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

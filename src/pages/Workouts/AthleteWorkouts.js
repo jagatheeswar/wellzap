@@ -230,7 +230,9 @@ function AthleteWorkouts() {
               className="workoutHeading__row"
             >
               <h1>Video Workouts</h1>
-              <div onClick={() => history.push("/my-workouts")}>View All</div>
+              <div onClick={() => history.push("/view-all-video-workouts")}>
+                View All
+              </div>
             </div>
             <div style={{ width: "90%", paddingLeft: 20 }}>
               {videoData?.length > 0 ? (

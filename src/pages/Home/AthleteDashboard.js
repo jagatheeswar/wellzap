@@ -6,6 +6,8 @@ import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import { selectUserData, selectUserType } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import { formatDate } from "../../functions/formatDate";
+import formatDate2 from "../../functions/formatDate2";
+
 import formatSpecificDate from "../../functions/formatSpecificDate";
 
 import AthleteGoals from "./AthleteGoals";
@@ -28,6 +30,7 @@ function AthleteDashboard(props) {
   const [mealHistory, setMealHistory] = useState([]);
   const [coachMealHistory, setCoachMealHistory] = useState([]);
   const [coachName, setCoachName] = useState("");
+  const [videoData, setVideoData] = useState([]);
 
   useEffect(() => {
     if (userData?.data?.metrics) {
@@ -155,7 +158,9 @@ function AthleteDashboard(props) {
 
       db.collection("Food")
         .where("assignedTo_id", "==", userData.id)
-        .where("selectedDays", "array-contains", "2021-05-20")
+        .where("selectedDays", "array-contains", formatDate())
+        .limit(3)
+
         .get()
         .then((snapshot) => {
           setNutrition(
@@ -167,6 +172,25 @@ function AthleteDashboard(props) {
         })
         .catch((error) => {
           console.log("Error getting documents: ", error);
+        });
+
+      db.collection("WorkoutVideo")
+        .where("AssignedToId", "array-contains", userData?.id)
+        //.where("selectedDays", "array-contains", formatDate())
+
+        //  .orderBy("timestamp")
+        .limit(3)
+        .get()
+        .then((snap) => {
+          let data = [];
+
+          snap.docs.forEach((s) => {
+            if (s.data().selectedDays.includes(formatDate())) {
+              data.push(s.data());
+              console.log("ss", s.data());
+            }
+            setVideoData(data);
+          });
         });
     }
   }, [userData]);
@@ -241,7 +265,7 @@ function AthleteDashboard(props) {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              width: "90%",
+              width: "95%",
             }}
           >
             {" "}
@@ -263,7 +287,7 @@ function AthleteDashboard(props) {
                 }}
               >
                 {" "}
-                {formatDate1(props?.selectedDate)}
+                {formatDate2(props?.selectedDate)}
               </p>
             </h2>{" "}
             <p
@@ -276,19 +300,21 @@ function AthleteDashboard(props) {
             </p>
           </div>
           {workouts.length > 0 ? (
-            workouts?.map((workout, i) => (
-              <WorkoutCard
-                key={workout.id}
-                workouts={workout}
-                item={workout}
-                idx={i}
-              />
-            ))
+            <div>
+              {workouts?.map((workout, i) => (
+                <WorkoutCard
+                  key={workout.id}
+                  workouts={workout}
+                  item={workout}
+                  idx={i}
+                />
+              ))}
+            </div>
           ) : (
             <div
               style={{
                 backgroundColor: "#fff",
-                width: "90%",
+                width: "95%",
                 height: 90,
                 display: "flex",
                 alignItems: "center",
@@ -313,7 +339,7 @@ function AthleteDashboard(props) {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              width: "93%",
+              width: "95%",
             }}
           >
             {" "}
@@ -335,7 +361,7 @@ function AthleteDashboard(props) {
                 }}
               >
                 {" "}
-                {formatDate1(props?.selectedDate)}
+                {formatDate2(props?.selectedDate)}
               </p>
             </h2>{" "}
             <p
@@ -352,41 +378,128 @@ function AthleteDashboard(props) {
             </p>
           </div>
           {console.log(nutrition)}
-          <div style={{ width: "93%" }}>
-            {upcomingMealHistory.length > 0 ? (
-              upcomingMealHistory?.map((food, idx) => (
-                <NutritionCard
-                  key={idx}
-                  nutrition={nutrition}
-                  food={food}
-                  idx={idx}
-                  navigation={"ViewAllNutrition"}
-                  type="view"
-                  date={formatDate1(props?.selectedDate)}
-                />
-              ))
-            ) : (
-              <div
+
+          {upcomingMealHistory.length > 0 ? (
+            upcomingMealHistory?.map((food, idx) => (
+              <NutritionCard
+                key={idx}
+                nutrition={nutrition}
+                food={food}
+                idx={idx}
+                navigation={"ViewAllNutrition"}
+                type="view"
+                selectedDate={formatDate1(props?.selectedDate)}
+              />
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "95%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5
                 style={{
-                  backgroundColor: "#fff",
-                  width: "100%",
-                  height: 90,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "5px",
+                  fontSize: "12px",
                 }}
               >
-                <h5
-                  style={{
-                    fontSize: "12px",
-                  }}
-                >
-                  There are no nutrition for now
-                </h5>
-              </div>
-            )}
+                There are no nutrition for now
+              </h5>
+            </div>
+          )}
+        </Grid>
+
+        <Grid item xs={6}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "95%",
+            }}
+          >
+            {" "}
+            <h2
+              style={{
+                fontSize: 19,
+                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Nutrition Plans on
+              <p
+                style={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  marginLeft: 10,
+                }}
+              >
+                {" "}
+                {formatDate2(props?.selectedDate)}
+              </p>
+            </h2>{" "}
+            <p
+              onClick={() => {
+                history.push("/view-all-video-workouts");
+              }}
+              style={{
+                marginLeft: 10,
+                fontFamily: "Montserrat",
+                cursor: "pointer",
+              }}
+            >
+              See all
+            </p>
           </div>
+
+          {videoData?.length > 0 ? (
+            videoData?.map((video, idx) => (
+              <div style={{}}>
+                {console.log("hh", videoData)}
+                {video?.Video?.map((Id, idx) => (
+                  <div class="iframe_container">
+                    <iframe
+                      style={{ borderRadius: 10 }}
+                      src={"https://player.vimeo.com/video/" + `${Id?.videoId}`}
+                      width="400px"
+                      height="200px"
+                      frameborder="0"
+                      webkitallowfullscreen
+                      mozallowfullscreen
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <div
+              style={{
+                backgroundColor: "#fff",
+                width: "95%",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "5px",
+              }}
+            >
+              <h5
+                style={{
+                  fontSize: "12px",
+                }}
+              >
+                There are no Video Workouts for now
+              </h5>
+            </div>
+          )}
         </Grid>
       </Grid>
     </div>

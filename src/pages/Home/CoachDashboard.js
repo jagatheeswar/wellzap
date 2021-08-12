@@ -8,6 +8,8 @@ import { db } from "../../utils/firebase";
 import { formatDate } from "../../functions/formatDate";
 import CoachWorkouts from "../Workouts/CoachWorkouts";
 import "./Home.css";
+import formatDate2 from "../../functions/formatDate2";
+
 import { Grid } from "@material-ui/core";
 
 function CoachDashboard(props) {
@@ -202,7 +204,7 @@ function CoachDashboard(props) {
               }}
             >
               {" "}
-              {formatDate1(props?.selectedDate)}
+              {formatDate2(props?.selectedDate)}
             </p>
           </div>{" "}
           <p
@@ -410,7 +412,7 @@ function CoachDashboard(props) {
               }}
             >
               {" "}
-              {formatDate1(props?.selectedDate)}
+              {formatDate2(props?.selectedDate)}
             </p>
           </h2>{" "}
           <p

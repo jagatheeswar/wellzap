@@ -1481,6 +1481,9 @@ function CreateNutrition(props) {
                           },
                           saved: false,
                           selectedAthletes,
+                          timestamp:
+                            firebase.firestore.FieldValue.serverTimestamp(),
+                          date: firebase.firestore.FieldValue.serverTimestamp(),
                         });
                       });
 

@@ -33,6 +33,14 @@ function Signup() {
       .matches(phoneRegExp, "Phone number is not valid")
       //.min(3, "Password must be 3 characters at minimum")
       .required("Phone number is required"),
+    height: Yup.string()
+      .matches(/^[0-9\b]+$/, "Phone number is not valid")
+      //.min(3, "Password must be 3 characters at minimum")
+      .required("Phone number is required"),
+    weight: Yup.string()
+      .matches(/^[0-9\b]+$/, "Phone number is not valid")
+      //.min(3, "Password must be 3 characters at minimum")
+      .required("Phone number is required"),
   });
   return (
     <div className="signup">
@@ -49,6 +57,8 @@ function Signup() {
           date: "",
           gender: "",
           userType: "",
+          height: 0,
+          weight: 0,
         }}
         validationSchema={SignupSchema}
         onSubmit={(values) => {
@@ -75,11 +85,21 @@ function Signup() {
                     imageUrl: "",
                     sports: [],
                     verified: false,
-                    height: "",
-                    weight: "weight",
+                    height: values.height,
+                    weight: values.weight,
                     completedWorkouts: 0,
                     averageWorkoutTime: 0,
                     goalsMet: 0,
+                    diet: {
+                      name: "weight maintainance",
+                      carbs: 3.5 * values.weight,
+                      protein: 1.5 * values.weight,
+                      fat: 1 * values.weight,
+                      calories:
+                        4 * 3.5 * values.weight +
+                        4 * 1.5 * values.weight +
+                        9 * 1 * values.weight,
+                    },
 
                     listOfAthletes: [],
                   })
@@ -250,6 +270,27 @@ function Signup() {
                 className="form-control input-field"
               />
             </div>
+            {values.userType == "athlete" && (
+              <div className="form-group">
+                <label htmlFor="height">Height</label>
+                <Field
+                  type="height"
+                  name="height"
+                  placeholder="Enter Height"
+                  className="form-control input-field"
+                />
+                {touched.height && errors.height}
+
+                <label htmlFor="weight">Weight</label>
+                <Field
+                  type="weight"
+                  name="weight"
+                  placeholder="Enter Weight"
+                  className="form-control input-field"
+                />
+                {touched.weight && errors.weight}
+              </div>
+            )}
 
             <div className="form-group">
               <label htmlFor="email">Email</label>
@@ -293,7 +334,7 @@ function Signup() {
                 console.log(values);
               }}
             >
-              {isSubmitting ? "Please wait..." : "Sign-in"}
+              {isSubmitting ? "Please wait..." : "Login"}
             </button>
           </Form>
         )}

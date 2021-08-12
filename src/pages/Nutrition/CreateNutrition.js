@@ -841,6 +841,7 @@ function CreateNutrition() {
                           },
                           saved: false,
                           selectedAthletes,
+                          date: firebase.firestore.FieldValue.serverTimestamp(),
                           timestamp:
                             firebase.firestore.FieldValue.serverTimestamp(),
                         });

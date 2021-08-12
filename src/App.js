@@ -88,6 +88,7 @@ import AthleteWorkoutsList from "./pages/Workouts/AthleteWorkoutsList";
 import DisabledHome from "./pages/Home/DisabledHome";
 import InvitesList from "./pages/Profile/InviteList";
 import InviteScreen from "./pages/Profile/InviteScreen";
+import ViewAllVideoWorkouts from "./pages/VOD/ViewAllVideoWorkouts";
 
 function App() {
   const user = useSelector(selectUser);
@@ -440,6 +441,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<ViewAllWorkouts />}
                 CoachComp={<ViewAllWorkouts />}
+              />
+            </Route>
+            <Route path="/view-all-video-workouts">
+              <RoutesComp
+                AthleteComp={<ViewAllVideoWorkouts />}
+                CoachComp={<ViewAllUploadedVideos />}
               />
             </Route>
             <Route path="/my-workouts">

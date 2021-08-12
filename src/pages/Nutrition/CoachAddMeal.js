@@ -136,50 +136,52 @@ function CoachAddMeal(props) {
           type="text"
           placeholder="Enter Nutrition Plan Name"
           value={nutritionName}
-          style={{width: "95%", borderRadius:10}}
+          style={{ width: "95%", borderRadius: 10 }}
           onChange={(e) => setNutritionName(e.target.value)}
         />
       </div>
 
-      <div style={{marginLeft: 10}} className="coachAddMeal__form">
+      <div style={{ marginLeft: 10 }} className="coachAddMeal__form">
         <div className="athleteAddMeal__typeOfMeal">
           {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
               <FormControl required className={classes.formControl}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <span
+                <div
                   style={{
-                    fontWeight: 500,
-                    fontSize: 18,
-                    marginRight: 20,
+                    display: "flex",
+                    alignItems: "center",
                   }}
-                >Select Meal Type</span>
-                <div>
-                <Select
-                  required
-                  labelId="meal-select-label"
-                  id="meal-select-label"
-                  value={item.meal}
-                  onChange={(e) => {
-                    let temp = [...entireFood];
-                    temp[idx].meal = e.target.value;
-                    setEntireFood(temp);
-                  }}
-                  style={{ width: 150 }}
                 >
-                  <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-                  <MenuItem value={"Lunch"}>Lunch</MenuItem>
-                  <MenuItem value={"Snack"}>Snack</MenuItem>
-                  <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
-                  <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
-                  <MenuItem value={"Dinner"}>Dinner</MenuItem>
-                </Select>
-                </div>
+                  <span
+                    style={{
+                      fontWeight: 500,
+                      fontSize: 18,
+                      marginRight: 20,
+                    }}
+                  >
+                    Select Meal Type
+                  </span>
+                  <div>
+                    <Select
+                      required
+                      labelId="meal-select-label"
+                      id="meal-select-label"
+                      value={item.meal}
+                      onChange={(e) => {
+                        let temp = [...entireFood];
+                        temp[idx].meal = e.target.value;
+                        setEntireFood(temp);
+                      }}
+                      style={{ width: 150 }}
+                    >
+                      <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                      <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                      <MenuItem value={"Snack"}>Snack</MenuItem>
+                      <MenuItem value={"Pre Workout"}>Pre Workout</MenuItem>
+                      <MenuItem value={"Post Workout"}>Post Workout</MenuItem>
+                      <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                    </Select>
+                  </div>
                 </div>
               </FormControl>
               {addFood ? (
@@ -227,7 +229,7 @@ function CoachAddMeal(props) {
                     type="text"
                     placeholder="Enter Meal Description"
                     value={item.description}
-                    style={{width: "95%", borderRadius: 10}}
+                    style={{ width: "95%", borderRadius: 10 }}
                     onChange={(e) => {
                       let temp = [...entireFood];
                       temp[idx].description = e.target.value;
@@ -337,9 +339,10 @@ function CoachAddMeal(props) {
                         nutrition: {
                           nutritionName: nutritionName,
                           entireFood,
-                          timestamp:
-                            firebase.firestore.FieldValue.serverTimestamp(),
                         },
+                        timestamp:
+                          firebase.firestore.FieldValue.serverTimestamp(),
+                        date: firebase.firestore.FieldValue.serverTimestamp(),
                       })
                       .then(() => {
                         // navigation.navigate("CreateNutrition", {
