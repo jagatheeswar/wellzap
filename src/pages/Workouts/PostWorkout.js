@@ -143,9 +143,6 @@ export default function PostWorkoutDetails() {
     return minutes;
   }
 
-  useEffect(() => {
-    console.log("pt", postWorkout);
-  }, [postWorkout]);
   return (
     <div className="Postworkout__container">
       {/* <div>
@@ -329,10 +326,11 @@ export default function PostWorkoutDetails() {
                                   true: "#ffe486",
                                   false: "#ffe486",
                                 }}
-                                onValueChange={(newValue) => {
+                                onChange={(newValue) => {
                                   let temp = [...group];
                                   let tmp = group[idx].exercises[idx1];
-                                  tmp.completed = newValue.target.value;
+                                  console.log(newValue.target.checked);
+                                  tmp.completed = newValue.target.checked;
                                   if (newValue.target.value === true) {
                                     tmp.sets.map((s) => {
                                       s.actualReps = s.reps;
@@ -644,18 +642,19 @@ export default function PostWorkoutDetails() {
                               <input
                                 type="checkbox"
                                 disabled={completed}
-                                checked={workout?.completed}
+                                // checked={workout?.completed}
                                 tintColors={{
                                   true: "#ffe486",
                                   false: "#ffe486",
                                 }}
-                                onChange={(newValue) => {
+                                onClick={(newValue) => {
+                                  newValue.stopPropagation();
                                   let temp = [...group];
                                   let tmp = group[idx].exercises[idx1];
-                                  tmp.completed = newValue.target.value;
-                                  if (newValue.target.value === true) {
+                                  tmp.completed = !newValue.target.checked;
+                                  if (newValue.target.checked === true) {
                                     tmp.sets.map((s) => {
-                                      s.actualReps = s.rest;
+                                      s.actualReps = s.reps ? s.reps : s.time;
                                     });
                                     console.log("checked value ", tmp.sets);
                                   } else {
@@ -667,7 +666,29 @@ export default function PostWorkoutDetails() {
                                   temp[idx].exercises[idx1] = tmp;
 
                                   setGroup(temp);
+                                  // return false;
                                 }}
+                                // onChange={(newValue) => {
+                                //   newValue.stopPropagation();
+                                //   let temp = [...group];
+                                //   let tmp = group[idx].exercises[idx1];
+                                //   tmp.completed = newValue.target.value;
+                                //   if (newValue.target.value === true) {
+                                //     tmp.sets.map((s) => {
+                                //       s.actualReps = s.rest;
+                                //     });
+                                //     console.log("checked value ", tmp.sets);
+                                //   } else {
+                                //     tmp.sets.map((s) => {
+                                //       s.actualReps = "";
+                                //     });
+                                //   }
+
+                                //   temp[idx].exercises[idx1] = tmp;
+
+                                //   setGroup(temp);
+                                //   return false;
+                                // }}
                               />
                               <div>
                                 <img
@@ -964,7 +985,9 @@ export default function PostWorkoutDetails() {
                                           textAlign: "center",
                                           color: "white",
                                         }}
-                                        value={String(set.reps)}
+                                        value={String(
+                                          set.reps ? set.reps : set.time
+                                        )}
                                         onChange={(newVal) => {
                                           let temp = [...group];
                                           let tmp =
@@ -1029,52 +1052,55 @@ export default function PostWorkoutDetails() {
                                         }
                                       />
                                     </div>
-                                    <div
-                                      style={{
-                                        marginHorizontal: 5,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "column",
-                                      }}
-                                    >
-                                      <h3
+                                    {set.weights && (
+                                      <div
                                         style={{
-                                          fontSize: 12,
-                                          marginBottom: 5,
+                                          marginHorizontal: 5,
+                                          display: "flex",
+                                          alignItems: "center",
+                                          flexDirection: "column",
                                         }}
                                       >
-                                        Weights
-                                      </h3>
-                                      <input
-                                        style={{
-                                          width: 50,
-                                          height: 20,
-                                          borderWidth: 1,
-                                          borderColor: "black",
-                                          backgroundColor: "white",
-                                          padding: 7,
-                                          borderRadius: 8,
-                                          textAlign: "center",
-                                        }}
-                                        disabled={completed}
-                                        value={String(set.weights)}
-                                        onChange={(newVal) => {
-                                          let temp = [...group];
-                                          let tmp =
-                                            group[idx].exercises[idx1].sets;
-                                          tmp[idx2].weights =
-                                            newVal.target.value;
+                                        <h3
+                                          style={{
+                                            fontSize: 12,
+                                            marginBottom: 5,
+                                          }}
+                                        >
+                                          Weights
+                                        </h3>
+                                        <input
+                                          style={{
+                                            width: 50,
+                                            height: 20,
+                                            borderWidth: 1,
+                                            borderColor: "black",
+                                            backgroundColor: "white",
+                                            padding: 7,
+                                            borderRadius: 8,
+                                            textAlign: "center",
+                                          }}
+                                          disabled={completed}
+                                          value={String(set.weights)}
+                                          onChange={(newVal) => {
+                                            let temp = [...group];
+                                            let tmp =
+                                              group[idx].exercises[idx1].sets;
+                                            tmp[idx2].weights =
+                                              newVal.target.value;
 
-                                          temp[idx].exercises[idx1].sets = tmp;
+                                            temp[idx].exercises[idx1].sets =
+                                              tmp;
 
-                                          setGroup(temp);
-                                        }}
-                                        keyboardType={"number-pad"}
-                                        selectedworkouteditable={
-                                          completed ? false : true
-                                        }
-                                      />
-                                    </div>
+                                            setGroup(temp);
+                                          }}
+                                          keyboardType={"number-pad"}
+                                          selectedworkouteditable={
+                                            completed ? false : true
+                                          }
+                                        />
+                                      </div>
+                                    )}
                                   </div>
                                 ))}
                               </div>
@@ -1095,7 +1121,6 @@ export default function PostWorkoutDetails() {
             width: "100%",
           }}
         >
-          {console.log("pta", location.state, postWorkout)}
           <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
           <input
             style={{

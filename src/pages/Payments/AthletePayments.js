@@ -41,6 +41,7 @@ function AthletePayments() {
             let appObj = { ...doc.data(), ["id"]: doc.id };
             payments_data.push(appObj);
           });
+          console.log(payments_data);
           payments_data.sort((a, b) => {
             return (
               new Date(a.date.seconds * 1000) - new Date(b.date.seconds * 1000)
@@ -208,6 +209,7 @@ function AthletePayments() {
                       alignItems: "center",
                     }}
                   >
+                    {console.log("ss", id)}
                     <div>
                       <p style={{ fontSize: 16, color: "black", margin: 0 }}>
                         {id.athleteName}
@@ -256,6 +258,7 @@ function AthletePayments() {
 
           setPending(pending);
           setUpcoming(upcoming);
+          console.log(upcoming);
           setCompleted(completed);
           setToday(today);
         });

@@ -59,7 +59,7 @@ function CoachProfile() {
   }, [user]);
   return (
     <div className="coachProfile">
-      <div className="coachProfile__container">
+      <div className="coachProfile__container" style={{ marginBottom: 50 }}>
         <div className="coachProfile__leftContainer">
           <Header coachProfile={true} />
           {/* <CoachMedicalAssessment /> */}

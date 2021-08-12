@@ -334,7 +334,7 @@ function Signup() {
                 console.log(values);
               }}
             >
-              {isSubmitting ? "Please wait..." : "Login"}
+              {isSubmitting ? "Please wait..." : "SignUp"}
             </button>
           </Form>
         )}

@@ -115,7 +115,10 @@ function AthleteWorkouts() {
     console.log(AthleteWorkouts, pastWorkouts);
   }, [AthleteWorkouts, pastWorkouts]);
   return (
-    <div style={{ minHeight: "100vh" }} className="workouts__home">
+    <div
+      style={{ minHeight: "100vh", marginBottom: 50 }}
+      className="workouts__home"
+    >
       <div className="coachDashboard__leftContainer">
         <WorkoutScreenHeader name="Workouts" />
 
@@ -234,7 +237,7 @@ function AthleteWorkouts() {
                 View All
               </div>
             </div>
-            <div style={{ width: "90%", paddingLeft: 20 }}>
+            <div style={{ width: "90%", paddingLeft: 20, height: 90 }}>
               {videoData?.length > 0 ? (
                 videoData?.map((video, idx) => (
                   <div style={{}}>
@@ -260,17 +263,19 @@ function AthleteWorkouts() {
               ) : (
                 <div
                   style={{
-                    fontSize: "13px",
                     backgroundColor: "#fff",
-
-                    padding: "10px 20px",
-                    textAlign: "center",
+                    width: "100%",
+                    height: 90,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     borderRadius: "5px",
-                    fontWeight: "normal",
-                    marginLeft: 10,
                   }}
                 >
-                  <h5> There are no assigned videos for now </h5>
+                  <h5 style={{ fontSize: 12, fontWeight: "normal" }}>
+                    {" "}
+                    There are no assigned videos for now{" "}
+                  </h5>
                 </div>
               )}
             </div>

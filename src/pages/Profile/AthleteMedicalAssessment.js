@@ -307,10 +307,14 @@ function AthleteMedicalAssessment({ route, navigation }) {
       style={{
         position: "relative",
         width: "100%",
-        marginBottom: 50,
       }}
     >
-      <div className="athleteProfile__container">
+      <div
+        className="athleteProfile__container"
+        style={{
+          marginBottom: 100,
+        }}
+      >
         <div className="athleteProfile__leftContainer">
           <Header Id={temperoryId} />
           <h2>Medical Assessment</h2>

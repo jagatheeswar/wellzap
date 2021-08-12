@@ -16,8 +16,11 @@ function NutritionWeekGoal() {
   const [fat, setFat] = useState("");
   const [protein, setProtein] = useState("");
   const [nutrition, setNutrition] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(
+    new Date(moment(new Date()).subtract(7, "days"))
+  );
+
+  const [endDate, setEndDate] = useState(new Date());
   const [mindate, setmindate] = useState(new Date());
 
   var today = new Date();
@@ -141,7 +144,15 @@ function NutritionWeekGoal() {
 
   return (
     <div className="weekGoalMain">
-      <div className="weekGoalContainer">
+      <div
+        className="weekGoalContainer"
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
         {/* <Typography variant="h6" style={{fontWeight:"normal"}}>Average Macronutrients consumed</Typography> */}
         <div
           style={{

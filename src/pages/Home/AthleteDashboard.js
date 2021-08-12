@@ -433,7 +433,7 @@ function AthleteDashboard(props) {
                 justifyContent: "center",
               }}
             >
-              Nutrition Plans on
+              Video Workouts on
               <p
                 style={{
                   fontSize: 18,

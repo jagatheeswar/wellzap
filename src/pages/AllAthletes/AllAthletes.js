@@ -75,7 +75,10 @@ function AllAthletes() {
   ];
 
   return (
-    <div style={{ minHeight: "99.7vh" }} className="allAthletes">
+    <div
+      style={{ minHeight: "99.7vh", marginBottom: 50 }}
+      className="allAthletes"
+    >
       <div className="allAthletes__info">
         <div
           onClick={() => history.goBack()}
