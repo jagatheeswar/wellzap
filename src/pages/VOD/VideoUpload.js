@@ -20,6 +20,7 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 import { Formik } from "formik";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router-dom";
+import VODScreenHeader from "./VODScreenHeader";
 
 //const defaultimg = require("../../../public/assets/illustration.jpeg");
 
@@ -279,12 +280,17 @@ function VideoUpload({ navigation, videoStatus, videoLink }) {
   return (
     <div
       style={{
-        margin: 20,
         boxSizing: "border-box",
         minHeight: "100vh",
       }}
     >
-      <div>
+      <VODScreenHeader name="Upload Video" />
+
+      <div
+        style={{
+          margin: 20,
+        }}
+      >
         <h3 style={{ fontSize: 17, color: "black" }}>Enter Video Details</h3>
         <div>
           <h3 style={{ fontSize: 15, color: "black", marginTop: 20 }}>

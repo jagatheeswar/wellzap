@@ -10,7 +10,11 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
   const userType = useSelector(selectUserType);
   const history = useHistory();
   const [showMore, setshowMore] = useState(false);
-
+  document.addEventListener("mouseup", function (e) {
+    if (showMore) {
+      setshowMore(false);
+    }
+  });
   return (
     <div className="workoutsHeader">
       <div className="workoutsHeader__info">
@@ -53,15 +57,9 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
           <h5>Add Workout</h5>
         </div>
       )}
-      {userType === "coach" && name === "Workouts" && (
-        <div
-          className="addWorkout__button"
-          onClick={() => history.push("create-workout")}
-        >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>CREATE WORKOUT</h5>
-        </div>
-      )}
+      {/* {userType === "coach" && name === "Workouts" && (
+        
+      )} */}
       {userType === "coach" && name === "Workouts" && (
         <div
           style={{
@@ -70,10 +68,23 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
           }}
         >
           <div
+            className="addWorkout__button"
+            onClick={() => history.push("create-workout")}
+          >
+            <img
+              src="/assets/plus_thin.png"
+              alt=""
+              width="15px"
+              height="15px"
+            />
+            <h5>CREATE WORKOUT</h5>
+          </div>
+          <div
             style={{
-              padding: "5px 20px",
+              padding: "0px 20px 0 0",
               marginTop: 20,
               marginRight: 20,
+              zIndex: 10,
             }}
             onClick={() => {
               setshowMore(!showMore);
@@ -82,11 +93,26 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
             {showMore ? <CloseIcon /> : <MoreVertIcon />}
           </div>
           {showMore && (
-            <div>
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: 10,
+
+                position: "absolute",
+                right: 40,
+                top: 20,
+                borderRadius: 10,
+                boxShadow: "0px 0px 5px 5px rgba(0,0,0,0.1)",
+                zIndex: 5,
+              }}
+            >
               <div
                 className="addWorkout__button"
+                style={{
+                  marginRight: 0,
+                }}
                 onClick={() => history.push("add-own-workout")}
-                style={{ position: "absolute", top: 50, right: 10, width: 150 }}
+                style={{ width: 150 }}
               >
                 <img
                   src="/assets/plus_thin.png"
