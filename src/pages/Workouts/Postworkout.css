@@ -22,6 +22,8 @@
   height: 30px;
   border: 1px solid grey;
   background-color: White;
+  padding: 7px;
+  border-radius: 10px;
 }
 .Planned_data {
   margin-top: 20px;

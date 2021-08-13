@@ -66,3 +66,8 @@ hr {
 .MuiInputBase-input .MuiFilledInput-input {
   background-color: white;
 }
+
+.select-search .sets {
+  width: 50%;
+  margin-left: 20px;
+}

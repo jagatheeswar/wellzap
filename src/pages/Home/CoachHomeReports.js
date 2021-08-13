@@ -7,6 +7,7 @@ import { selectUserData } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import CoachPayments from "../Payments/CoachPayments";
 import { useHistory } from "react-router-dom";
+import { Pie } from "react-chartjs-2";
 
 function CoachHomeReports() {
   const history = useHistory();
@@ -25,6 +26,8 @@ function CoachHomeReports() {
     { title: "Due Soon", value: 20, color: "#00B1C0" },
     { title: "Completed", value: 20, color: "#ffe486" },
   ]);
+
+  const [chart_data, setchart_data] = useState();
   useEffect(() => {
     if (userData) {
       db.collection("payments")
@@ -181,12 +184,26 @@ function CoachHomeReports() {
             }
           });
 
-          setData([
-            { title: "Due Today", value: today.length, color: "red" },
-            { title: "Pending", value: pending.length, color: "green" },
-            { title: "Due Soon", value: upcoming.length, color: "#00B1C0" },
-            { title: "Completed", value: completed.length, color: "#ffe486" },
-          ]);
+          // setData([
+          //   { title: "Due Today", value: today.length, color: "red" },
+          //   { title: "Pending", value: pending.length, color: "green" },
+          //   { title: "Due Soon", value: upcoming.length, color: "#00B1C0" },
+          //   { title: "Completed", value: completed.length, color: "#ffe486" },
+          // ]);
+          setchart_data({
+            labels: ["Due Soon", "Pending", "Due Today", "Completed"],
+            datasets: [
+              {
+                data: [
+                  upcoming.length,
+                  pending.length,
+                  today.length,
+                  completed.length,
+                ],
+                backgroundColor: ["#FF6B6B", "#34B334", "red", "#ffe486"],
+              },
+            ],
+          });
 
           setPending(pending);
           setUpcoming(upcoming);
@@ -212,7 +229,7 @@ function CoachHomeReports() {
             <div
               style={{
                 backgroundColor: "white",
-                justifyContent: "space-between",
+                justifyContent: "space-around",
                 alignItems: "center",
                 height: "340px",
                 borderRadius: 10,
@@ -220,32 +237,19 @@ function CoachHomeReports() {
                 width: 420,
               }}
             >
-              <div>
-                <PieChart
-                  data={data.filter((e) => e.value !== 0)}
-                  lineWidth={50}
-                  labelPosition={110}
-                  radius={35}
-                  labelStyle={{
-                    fontSize: 6,
-                    fontWeight: "bold",
-                    backgroundColor: "grey",
-                    borderRadius: "50%",
-                    border: "1px solid #727272",
+              <div style={{ width: 230 }}>
+                <Pie
+                  data={chart_data}
+                  options={{
+                    width: "100",
+                    height: "100",
+
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
                   }}
-                  label={({ dataEntry }) => dataEntry.value}
-                  // {() => (
-                  //   <div
-                  //     style={{
-                  //       backgroundColor: "white",
-                  //       borderRadius: 100,
-                  //       width: "20px",
-                  //       height: "20px",
-                  //     }}
-                  //   >
-                  //     <p>5</p>
-                  //   </div>
-                  // )}
                 />
               </div>
 
@@ -280,7 +284,7 @@ function CoachHomeReports() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "green",
+                      backgroundColor: "#34B334",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",

@@ -237,6 +237,7 @@ function AthleteWorkouts() {
                 View All
               </div>
             </div>
+
             <div style={{ width: "90%", paddingLeft: 20, height: 90 }}>
               {videoData?.length > 0 ? (
                 videoData?.map((video, idx) => (

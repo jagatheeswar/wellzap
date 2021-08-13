@@ -8,6 +8,60 @@ import { db } from "../../utils/firebase";
 import PaymentsScreenHeader from "./PaymentsScreenHeader";
 import { PieChart } from "react-minimal-pie-chart";
 import moment from "moment";
+import { Pie } from "react-chartjs-2";
+
+const options = {
+  scaleShowVerticalLines: false,
+  maintainAspectRatio: false,
+  labels: {
+    fontColor: "red",
+    display: "false",
+  },
+  plugins: {
+    legend: {
+      display: false,
+      labels: {
+        fontColor: "red",
+      },
+    },
+  },
+  scales: {
+    xAxes: {
+      scaleFontSize: 40,
+      fontSize: 20,
+      grid: {
+        display: false,
+        color: "rgba(0,0,0,0)",
+        lineWidth: 0,
+        borderWidth: 0,
+      },
+
+      ticks: {
+        color: "black",
+        display: false,
+        font: {
+          size: 14,
+        },
+        fontSize: 20,
+        beginAtZero: true,
+      },
+      borderWidth: 10,
+    },
+
+    yAxes: {
+      ticks: {
+        beginAtZero: true,
+      },
+
+      grid: {
+        display: false,
+        color: "rgba(0,0,0,0)",
+        lineWidth: 0,
+        borderWidth: 0,
+      },
+    },
+  },
+};
 
 function CoachPayments() {
   const userData = useSelector(selectUserData);
@@ -25,6 +79,16 @@ function CoachPayments() {
     { title: "Due Soon", value: 20, color: "red" },
     { title: "Completed", value: 20, color: "#ffe486" },
   ]);
+
+  const [chart_data, setchart_data] = useState({
+    labels: ["Due Soon", "Pending", "Due Today", "Completed"],
+    datasets: [
+      {
+        data: [10, 5, 10, 20],
+        backgroundColor: ["red", "green", "red", "ffe486"],
+      },
+    ],
+  });
 
   useEffect(() => {
     if (userData) {
@@ -189,6 +253,21 @@ function CoachPayments() {
             { title: "Completed", value: completed.length, color: "#ffe486" },
           ]);
 
+          setchart_data({
+            labels: ["Due Soon", "Pending", "Due Today", "Completed"],
+            datasets: [
+              {
+                data: [
+                  upcoming.length,
+                  pending.length,
+                  today.length,
+                  completed.length,
+                ],
+                backgroundColor: ["#FF6B6B", "#34B334", "red", "#ffe486"],
+              },
+            ],
+          });
+
           setPending(pending);
           setUpcoming(upcoming);
           setCompleted(completed);
@@ -269,10 +348,13 @@ function CoachPayments() {
                 height: "300px",
                 borderRadius: 10,
                 display: "flex",
+                alignItems: "center",
+                paddingLeft: 20,
+                paddingRight: 20,
               }}
             >
               <div style={{ flex: 0.65 }}>
-                <PieChart
+                {/* <PieChart
                   data={data}
                   lineWidth={50}
                   labelPosition={75}
@@ -289,10 +371,25 @@ function CoachPayments() {
                       <p>5</p>
                     </div>
                   )}
-                />
+                /> */}
+                <div style={{ width: 230 }}>
+                  <Pie
+                    data={chart_data}
+                    options={{
+                      width: "100",
+                      height: "100",
+
+                      plugins: {
+                        legend: {
+                          display: false,
+                        },
+                      },
+                    }}
+                  />
+                </div>
               </div>
 
-              <div style={{ flex: 0.35, paddingTop: 30 }}>
+              <div style={{ flex: 0.35 }}>
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <div
                     style={{
@@ -314,7 +411,7 @@ function CoachPayments() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "green",
+                      backgroundColor: "#34B334",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",

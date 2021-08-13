@@ -160,7 +160,8 @@ export default function PostWorkoutDetails() {
             color: "black",
             textAlign: "left",
             backgroundColor: "white",
-            padding: "10px 10px",
+            padding: "10px",
+            borderRadius: 10,
           }}
           // value={postWorkout?.workoutDuration}
           placeholder="Title"
@@ -929,15 +930,22 @@ export default function PostWorkoutDetails() {
                                     key={idx2}
                                     style={{
                                       width: "100%",
+
                                       display: "flex",
                                       flexDirection: "row",
                                       alignItems: "center",
                                       justifyContent: "space-between",
                                       marginVertical: 10,
+                                      height: 80,
                                     }}
                                   >
-                                    <div>
-                                      <h3
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                      }}
+                                    >
+                                      <div
                                         style={{
                                           marginTop: 8,
 
@@ -946,8 +954,8 @@ export default function PostWorkoutDetails() {
                                         }}
                                       >
                                         Set {idx2 + 1}
-                                      </h3>
-                                      <h3
+                                      </div>
+                                      <div
                                         style={{
                                           marginTop: 10,
 
@@ -955,110 +963,20 @@ export default function PostWorkoutDetails() {
                                         }}
                                       >
                                         Reps
-                                      </h3>
+                                      </div>
                                     </div>
                                     <div
                                       style={{
-                                        marginHorizontal: 5,
                                         display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "column",
                                       }}
                                     >
-                                      <h3
-                                        style={{
-                                          fontSize: 12,
-                                          marginBottom: 5,
-                                        }}
-                                      >
-                                        Coach
-                                      </h3>
-                                      <input
-                                        style={{
-                                          width: 50,
-                                          height: 20,
-                                          borderWidth: 1,
-                                          borderColor: "black",
-                                          backgroundColor: "black",
-                                          padding: 7,
-                                          borderRadius: 8,
-                                          textAlign: "center",
-                                          color: "white",
-                                        }}
-                                        value={String(
-                                          set.reps ? set.reps : set.time
-                                        )}
-                                        onChange={(newVal) => {
-                                          let temp = [...group];
-                                          let tmp =
-                                            group[idx].exercises[idx1].sets;
-                                          tmp[idx2].reps = newVal.target.value;
-
-                                          temp[idx].exercises[idx1].sets = tmp;
-
-                                          setGroup(temp);
-                                        }}
-                                        keyboardType={"number-pad"}
-                                        selectedworkouteditable={false}
-                                      />
-                                    </div>
-                                    <div
-                                      style={{
-                                        marginHorizontal: 5,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "column",
-                                      }}
-                                    >
-                                      <h3
-                                        style={{
-                                          fontSize: 12,
-                                          marginBottom: 5,
-                                        }}
-                                      >
-                                        Actual
-                                      </h3>
-                                      <input
-                                        style={{
-                                          width: 50,
-                                          height: 20,
-                                          borderWidth: 1,
-
-                                          backgroundColor: "white",
-                                          padding: 7,
-                                          borderRadius: 8,
-                                          borderWidth: 1,
-                                          borderColor: "rgba(0,0,0,0.8)",
-                                          textAlign: "center",
-                                        }}
-                                        disabled={completed}
-                                        value={String(
-                                          set.actualReps ? set.actualReps : ""
-                                        )}
-                                        onChange={(newVal) => {
-                                          let temp = [...group];
-                                          let tmp =
-                                            group[idx].exercises[idx1].sets;
-                                          tmp[idx2].actualReps =
-                                            newVal.target.value;
-
-                                          temp[idx].exercises[idx1].sets = tmp;
-
-                                          setGroup(temp);
-                                        }}
-                                        keyboardType={"number-pad"}
-                                        selectedworkouteditable={
-                                          completed ? false : true
-                                        }
-                                      />
-                                    </div>
-                                    {set.weights && (
                                       <div
                                         style={{
                                           marginHorizontal: 5,
                                           display: "flex",
                                           alignItems: "center",
                                           flexDirection: "column",
+                                          marginRight: 30,
                                         }}
                                       >
                                         <h3
@@ -1067,7 +985,7 @@ export default function PostWorkoutDetails() {
                                             marginBottom: 5,
                                           }}
                                         >
-                                          Weights
+                                          Coach
                                         </h3>
                                         <input
                                           style={{
@@ -1075,18 +993,71 @@ export default function PostWorkoutDetails() {
                                             height: 20,
                                             borderWidth: 1,
                                             borderColor: "black",
-                                            backgroundColor: "white",
+                                            backgroundColor: "black",
                                             padding: 7,
                                             borderRadius: 8,
                                             textAlign: "center",
+                                            color: "white",
                                           }}
-                                          disabled={completed}
-                                          value={String(set.weights)}
+                                          value={String(
+                                            set.reps ? set.reps : set.time
+                                          )}
                                           onChange={(newVal) => {
                                             let temp = [...group];
                                             let tmp =
                                               group[idx].exercises[idx1].sets;
-                                            tmp[idx2].weights =
+                                            tmp[idx2].reps =
+                                              newVal.target.value;
+
+                                            temp[idx].exercises[idx1].sets =
+                                              tmp;
+
+                                            setGroup(temp);
+                                          }}
+                                          keyboardType={"number-pad"}
+                                          selectedworkouteditable={false}
+                                        />
+                                      </div>
+                                      <div
+                                        style={{
+                                          marginHorizontal: 5,
+                                          display: "flex",
+                                          alignItems: "center",
+                                          flexDirection: "column",
+                                          marginRight: 30,
+                                          height: 50,
+                                        }}
+                                      >
+                                        <h3
+                                          style={{
+                                            fontSize: 12,
+                                            marginBottom: 5,
+                                          }}
+                                        >
+                                          Actual
+                                        </h3>
+                                        <input
+                                          style={{
+                                            width: 50,
+                                            height: 20,
+                                            borderWidth: 1,
+
+                                            backgroundColor: "white",
+                                            padding: 7,
+                                            borderRadius: 8,
+                                            borderWidth: 1,
+                                            borderColor: "rgba(0,0,0,0.8)",
+                                            textAlign: "center",
+                                          }}
+                                          disabled={completed}
+                                          value={String(
+                                            set.actualReps ? set.actualReps : ""
+                                          )}
+                                          onChange={(newVal) => {
+                                            let temp = [...group];
+                                            let tmp =
+                                              group[idx].exercises[idx1].sets;
+                                            tmp[idx2].actualReps =
                                               newVal.target.value;
 
                                             temp[idx].exercises[idx1].sets =
@@ -1100,7 +1071,56 @@ export default function PostWorkoutDetails() {
                                           }
                                         />
                                       </div>
-                                    )}
+                                      {set.weights && (
+                                        <div
+                                          style={{
+                                            marginHorizontal: 5,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            flexDirection: "column",
+                                          }}
+                                        >
+                                          <h3
+                                            style={{
+                                              fontSize: 12,
+                                              marginBottom: 5,
+                                            }}
+                                          >
+                                            Weights
+                                          </h3>
+                                          <input
+                                            style={{
+                                              width: 50,
+                                              height: 20,
+                                              borderWidth: 1,
+                                              borderColor: "black",
+                                              backgroundColor: "white",
+                                              padding: 7,
+                                              borderRadius: 8,
+                                              textAlign: "center",
+                                            }}
+                                            disabled={completed}
+                                            value={String(set.weights)}
+                                            onChange={(newVal) => {
+                                              let temp = [...group];
+                                              let tmp =
+                                                group[idx].exercises[idx1].sets;
+                                              tmp[idx2].weights =
+                                                newVal.target.value;
+
+                                              temp[idx].exercises[idx1].sets =
+                                                tmp;
+
+                                              setGroup(temp);
+                                            }}
+                                            keyboardType={"number-pad"}
+                                            selectedworkouteditable={
+                                              completed ? false : true
+                                            }
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
                                 ))}
                               </div>
