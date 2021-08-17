@@ -5,6 +5,9 @@ import { selectUserType } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import "./NutritionCard.css";
 
+import CloseIcon from "@material-ui/icons/Close";
+
+import { db } from "../../utils/firebase";
 export function formatDate1(date) {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
@@ -41,6 +44,7 @@ function NutritionCard({
   return (
     <div
       className="nutritionCard"
+      style={{ position: "relative" }}
       onClick={
         () => {
           if (isLongTerm) {
@@ -147,6 +151,66 @@ function NutritionCard({
         </div>
       </div>
       <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+
+      <div
+        style={{ position: "absolute", top: 10, right: 10 }}
+        onClick={(e) => {
+          e.stopPropagation();
+          var r = window.confirm("are you sure to delete!");
+          if (r == true) {
+            if (!isLongTerm) {
+              db.collection("Food")
+                .doc(food.id)
+                .delete()
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                })
+                .catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+            } else {
+              db.collection("longTermMeal")
+                .doc(food.id)
+                .delete()
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                })
+                .catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+
+              db.collection("Food")
+                .where("coachWorkoutId", "==", food.id)
+                .get()
+                .then(function (querySnapshot) {
+                  // Once we get the results, begin a batch
+                  var batch = db.batch();
+
+                  querySnapshot.forEach(function (doc) {
+                    // For each doc, add a delete operation to the batch
+                    batch.delete(doc.ref);
+                  });
+
+                  // Commit the batch
+                  return batch.commit();
+                })
+                .then(function () {
+                  // Delete completed!
+                  // ...
+
+                  console.log("Delete completed");
+                });
+            }
+          } else {
+          }
+        }}
+      >
+        <CloseIcon
+          style={{
+            width: 30,
+          }}
+        />
+      </div>
     </div>
   );
 }

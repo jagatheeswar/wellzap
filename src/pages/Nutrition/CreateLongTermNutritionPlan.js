@@ -234,6 +234,7 @@ const CreateLongTermNutritionPlan = () => {
   const [show_data, setshow_data] = useState([]);
   const history = useHistory();
 
+  const [workoutName, setWorkoutName] = useState(null);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
   const [athlete_selecteddays, setathlete_selecteddays] = useState({});
@@ -475,7 +476,7 @@ const CreateLongTermNutritionPlan = () => {
         tempDate1.push(d);
       });
     });
-    if (athlete?.length > 0 && selectedDate) {
+    if (athlete?.length > 0 && selectedDate && workoutName) {
       dat.forEach((id, idx) => {
         var dat2 = id.days;
         var keys = Object.keys(dat2);
@@ -504,51 +505,56 @@ const CreateLongTermNutritionPlan = () => {
           assignedById: userData?.id,
           isLongTerm: true,
           date: formatDate(new Date()),
+          workoutName: workoutName,
 
           saved: false,
           selectedAthletes: athlete,
           selectedDates: tempDate1,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         })
-        .then((e) => {
-          console.log(e);
+        .then((docRef) => {
+          dat.forEach((id, idx) => {
+            var dat2 = id.days;
+            var keys = Object.keys(dat2);
+            keys.forEach((id2, idx2) => {
+              if (dat2[id2] != "") {
+                console.log(dat2[id2]);
+                athlete.forEach((ath) => {
+                  db.collection("Food").add({
+                    workoutName:
+                      workoutName + " week-" + id.weeknum + ", day-" + idx2,
+                    from_id: userData?.id,
+                    assignedTo_id: ath.id,
+                    selectedDays: [
+                      formatDate(addDays(local_date, 7 * idx + idx2)),
+                    ],
+                    isLongTerm: true,
+                    nutrition: {
+                      nutritionName: dat2[id2].nutrition.nutritionName,
+                      entireFood: dat2[id2].nutrition,
+                    },
+                    saved: false,
+                    selectedAthletes: [ath],
+                    coachWorkoutId: docRef.id,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                  });
+                });
+              }
+            });
+            if (idx + 1 == dat.length) {
+              history.push("/workouts");
+            }
+          });
         })
         .catch((e) => {
           console.log(e);
         });
-      dat.forEach((id, idx) => {
-        var dat2 = id.days;
-        var keys = Object.keys(dat2);
-        keys.forEach((id2, idx2) => {
-          if (dat2[id2] != "") {
-            console.log(dat2[id2]);
-            athlete.forEach((ath) => {
-              db.collection("Food").add({
-                from_id: userData?.id,
-                assignedTo_id: ath.id,
-                selectedDays: [formatDate(addDays(local_date, 7 * idx + idx2))],
-                isLongTerm: true,
-                nutrition: {
-                  nutritionName: dat2[id2].nutrition.nutritionName,
-                  entireFood: dat2[id2].nutrition,
-                },
-                saved: false,
-                selectedAthletes: [ath],
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-              });
-            });
-          }
-        });
-        if (idx + 1 == dat.length) {
-          history.push("/workouts");
-        }
-      });
 
       if (dat.length == 0) {
         history.push("/workouts");
       }
     } else {
-      alert("please select atleast one athlete and date");
+      alert("select atleast one athlete and a workoutName to continue");
     }
   };
 
@@ -1026,6 +1032,31 @@ const CreateLongTermNutritionPlan = () => {
             height="15px"
           />{" "}
         </div>
+      </div>
+
+      <div
+        style={{
+          margin: 20,
+        }}
+      >
+        <label>Workout Name</label>
+        <br />
+        <input
+          style={{
+            width: "100%",
+            padding: "15px",
+            boxSizing: "border-box",
+            border: "none",
+            boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
+            borderRadius: 5,
+            marginTop: 10,
+          }}
+          placeholder="Workout Name"
+          value={workoutName}
+          onChange={(val) => {
+            setWorkoutName(val.target.value);
+          }}
+        />
       </div>
       <div
         className="weeksContainer"
@@ -2370,6 +2401,7 @@ const CreateLongTermNutritionPlan = () => {
                     assignedById: userData?.id,
                     date: formatDate(new Date()),
                     isLongTerm: true,
+                    saved: true,
                   });
                   setModal(false);
                   setModal1(true);

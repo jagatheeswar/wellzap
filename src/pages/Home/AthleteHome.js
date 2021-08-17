@@ -7,6 +7,7 @@ import {
   selectUserData,
   selectUserType,
   setUserData,
+  selectUserVerified,
 } from "../../features/userSlice";
 import { db } from "../../utils/firebase";
 import AthleteDashboard from "./AthleteDashboard";
@@ -14,8 +15,8 @@ import AthleteHomeReports from "./AthleteHomeReports";
 import "./Home.css";
 import Modal from "react-awesome-modal";
 import CloseIcon from "@material-ui/icons/Close";
-import '../../fonts/Open_Sans/OpenSans-Regular.ttf'
-import { Dialog, Grid } from '@material-ui/core'
+import "../../fonts/Open_Sans/OpenSans-Regular.ttf";
+import { Dialog, Grid } from "@material-ui/core";
 import { useHistory } from "react-router";
 
 function AthleteHome(props) {
@@ -26,7 +27,23 @@ function AthleteHome(props) {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [visible, setVisible] = useState(false);
+  const userVerified = useSelector(selectUserVerified);
 
+  useEffect(() => {
+    console.log(userVerified);
+    if (user && userData?.data) {
+      if (
+        userData?.data?.onboardAthlete == null ||
+        userData?.data?.onboardAthlete
+      ) {
+        //history.push("/onboarding");
+      } else {
+        if (!userVerified) {
+          history.push("/onboarding");
+        }
+      }
+    }
+  }, [userVerified, user, userData?.data?.onboardAthlete]);
 
   const openModal = () => {
     setVisible(true);
@@ -75,12 +92,17 @@ function AthleteHome(props) {
         <div className="home__leftContainer">
           <div className="home__header">
             <div className="home__headerFirst">
-              <h1 style={{fontFamily: 'Open_Sans'}}>Hello, {userData?.data?.name}</h1>
-              <h2 style={{fontFamily: 'Open_Sans'}}>Here’s your progress summary.</h2>
+              <h1 style={{ fontFamily: "Open_Sans" }}>
+                Hello, {userData?.data?.name}
+              </h1>
+              <h2 style={{ fontFamily: "Open_Sans" }}>
+                Here’s your progress summary.
+              </h2>
             </div>
-            <div className="fab__icon" 
-            // onClick={() => openModal()}
-            onClick={handleClickOpenDialog}
+            <div
+              className="fab__icon"
+              // onClick={() => openModal()}
+              onClick={handleClickOpenDialog}
             >
               <img src="/assets/fab.png" alt="" width="32px" height="32px" />
               {/* <Modal
@@ -146,14 +168,12 @@ function AthleteHome(props) {
             </div>
           </div>
           <AthleteHomeReports />
-          <AthleteDashboard selectedDate={props.selectedDate} />
+          <AthleteDashboard
+            selectedDate={props.selectedDate ? props.selectedDate : new Date()}
+          />
         </div>
       </div>
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        maxWidth="md"
-      >
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md">
         <div className="modal__athleteComponents">
           {/* <div onClick={() => history.push("/workouts") } style={{cursor:"pointer"}} className="modal__addWorkout">
             <div className="modal__addWorkoutImg">
@@ -165,15 +185,13 @@ function AthleteHome(props) {
             </div>
             <h3>Add Workout</h3>
           </div> */}
-          <div 
-            className="modal__addGoal"
-            style={{cursor:"pointer"}} 
-          >
-            <div className="modal__addGoalImg"
+          <div className="modal__addGoal" style={{ cursor: "pointer" }}>
+            <div
+              className="modal__addGoalImg"
               onClick={() => {
                 history.push({
-                  pathname:"/calendar"
-                })
+                  pathname: "/calendar",
+                });
               }}
             >
               {" "}
@@ -181,7 +199,11 @@ function AthleteHome(props) {
             </div>
             <h3>Add Goal</h3>
           </div>
-          <div onClick={() => history.push("/add-meal") } style={{cursor:"pointer"}} className="modal__addMeal">
+          <div
+            onClick={() => history.push("/add-meal")}
+            style={{ cursor: "pointer" }}
+            className="modal__addMeal"
+          >
             <div className="modal__addMealImg">
               <img
                 src="/assets/Icon awesome-hamburger.png"
@@ -192,14 +214,22 @@ function AthleteHome(props) {
             </div>
             <h3>Add Meal</h3>
           </div>
-          <div onClick={() => history.push("/log-weight") } style={{cursor:"pointer"}} className="modal__logWeight">
+          <div
+            onClick={() => history.push("/log-weight")}
+            style={{ cursor: "pointer" }}
+            className="modal__logWeight"
+          >
             <div className="modal__logWeightImg">
               <img src="/assets/Icon awesome-weight.png" alt="" />
             </div>
 
             <h3>Log Weight</h3>
           </div>
-          <div onClick={() => history.push("/reports")}style={{cursor:"pointer"}} className="modal__viewReport">
+          <div
+            onClick={() => history.push("/reports")}
+            style={{ cursor: "pointer" }}
+            className="modal__viewReport"
+          >
             <div className="modal__viewReportImg">
               {" "}
               <img src="/assets/Icon material-event.png" alt="" />
@@ -211,7 +241,7 @@ function AthleteHome(props) {
         <div
           className="modal__closeButton"
           onClick={handleCloseDialog}
-          style={{cursor:"pointer"}} 
+          style={{ cursor: "pointer" }}
         >
           {" "}
           <CloseIcon />

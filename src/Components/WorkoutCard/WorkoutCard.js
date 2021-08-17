@@ -5,11 +5,12 @@ import { db } from "../../utils/firebase";
 import { selectUserType, selectUserData } from "../../features/userSlice";
 import "./WorkoutCard.css";
 import { formatDate } from "../../functions/formatDate";
-
+import CloseIcon from "@material-ui/icons/Close";
 function WorkoutCard({
   workouts,
   idx,
   item,
+
   showDate,
   type,
   completed,
@@ -21,6 +22,7 @@ function WorkoutCard({
   setWeeks,
   selectedDay,
   navigate,
+  workoutName,
 }) {
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
@@ -28,20 +30,19 @@ function WorkoutCard({
   const [workout, setWorkout] = useState([]);
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const history = useHistory();
-  const [workoutName, setworkoutName] = useState("");
   const [Weeks, setWeeks_data] = useState([]);
-  useEffect(() => {
-    if (weeks) {
-      let week = weeks[0]?.days;
-      let days = Object.keys(weeks[0]?.days);
-      weeks &&
-        days.forEach((day) => {
-          if (week[day] != "") {
-            setworkoutName(week[day]?.preWorkout?.workoutName);
-          }
-        });
-    }
-  }, [weeks]);
+  // useEffect(() => {
+  //   if (weeks) {
+  //     let week = weeks[0]?.days;
+  //     let days = Object.keys(weeks[0]?.days);
+  //     weeks &&
+  //       days.forEach((day) => {
+  //         if (week[day] != "") {
+  //           setworkoutName(week[day]?.preWorkout?.workoutName);
+  //         }
+  //       });
+  //   }
+  // }, [weeks]);
 
   useEffect(() => {
     if (userData) {
@@ -84,6 +85,9 @@ function WorkoutCard({
 
   return (
     <div
+      style={{
+        position: "relative",
+      }}
       className="workoutCard"
       onClick={() => {
         if (isLongTerm) {
@@ -218,6 +222,88 @@ function WorkoutCard({
       </div>
 
       <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+      {isLongTerm && console.log(item.data)}
+      <div
+        style={{ position: "absolute", top: 10, right: 10 }}
+        onClick={(e) => {
+          e.stopPropagation();
+          var r = window.confirm("are you sure to delete!");
+          if (r == true) {
+            if (!isLongTerm) {
+              db.collection("CoachWorkouts")
+                .doc(item.id)
+                .delete()
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                })
+                .catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+
+              db.collection("workouts")
+                .where("coachWorkoutId", "==", item.id)
+                .get()
+                .then(function (querySnapshot) {
+                  // Once we get the results, begin a batch
+                  var batch = db.batch();
+
+                  querySnapshot.forEach(function (doc) {
+                    // For each doc, add a delete operation to the batch
+                    batch.delete(doc.ref);
+                  });
+
+                  // Commit the batch
+                  return batch.commit();
+                })
+                .then(function () {
+                  // Delete completed!
+                  // ...
+
+                  console.log("Delete completed");
+                });
+            } else {
+              db.collection("longTermWorkout")
+                .doc(item.id)
+                .delete()
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                })
+                .catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+
+              db.collection("workouts")
+                .where("coachWorkoutId", "==", item.id)
+                .get()
+                .then(function (querySnapshot) {
+                  // Once we get the results, begin a batch
+                  var batch = db.batch();
+
+                  querySnapshot.forEach(function (doc) {
+                    // For each doc, add a delete operation to the batch
+                    batch.delete(doc.ref);
+                  });
+
+                  // Commit the batch
+                  return batch.commit();
+                })
+                .then(function () {
+                  // Delete completed!
+                  // ...
+
+                  console.log("Delete completed");
+                });
+            }
+          } else {
+          }
+        }}
+      >
+        <CloseIcon
+          style={{
+            width: 30,
+          }}
+        />
+      </div>
     </div>
   );
 }

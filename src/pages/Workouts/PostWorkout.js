@@ -89,7 +89,7 @@ export default function PostWorkoutDetails() {
     return [year, month, day].join("-");
   }
   useEffect(() => {
-    console.log(location?.state?.workout.data);
+    console.log(location?.state?.workout?.data);
     if (location.state?.workout) {
       setGroup([
         {

@@ -22,7 +22,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     minWidth: 300,
   },
   selectEmpty: {
@@ -145,7 +145,11 @@ function CoachAddMeal(props) {
         <div className="athleteAddMeal__typeOfMeal">
           {entireFood?.map((item, idx) => (
             <div className="athleteAddMealfood__container">
-              <FormControl required className={classes.formControl}>
+              <FormControl
+                required
+                className={classes.formControl}
+                style={{ width: 150 }}
+              >
                 <div
                   style={{
                     display: "flex",

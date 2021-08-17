@@ -11,7 +11,7 @@ import {
 
 function AthleteAssessments(props) {
   const history = useHistory();
-  const Id = props.Id;
+
   const userType = useSelector(selectUserType);
   const dispatch = useDispatch();
   const temperoryId = useSelector(selectTemperoryId);
@@ -45,7 +45,7 @@ function AthleteAssessments(props) {
               history.push({
                 pathname: "/athlete-history/",
                 state: {
-                  id: props?.Id,
+                  id: temperoryId,
                 },
               })
             }
@@ -67,12 +67,31 @@ function AthleteAssessments(props) {
             history.push({
               pathname: "/Athlete/reports",
               state: {
-                AthleteId: props?.Id,
+                AthleteId: temperoryId,
               },
             });
           }}
         >
           View Report
+        </div>
+        <img src="/assets/white_right.png" alt="" />
+      </div>
+
+      <div className="viewReport">
+        <div
+          className="viewReport__button"
+          onClick={() => {
+            // window.open("/Athlete/reports/" + Id, "");
+
+            history.push({
+              pathname: "/editpayments",
+              state: {
+                AthleteId: temperoryId,
+              },
+            });
+          }}
+        >
+          View Payments
         </div>
         <img src="/assets/white_right.png" alt="" />
       </div>

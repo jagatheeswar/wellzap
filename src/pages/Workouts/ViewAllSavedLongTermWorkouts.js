@@ -93,6 +93,7 @@ function ViewAllSavedLongTermWorkouts(props) {
       db.collection("longTermWorkout")
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
+
         .orderBy("timestamp", sorting)
 
         .onSnapshot((snapshot) => {
@@ -342,6 +343,7 @@ function ViewAllSavedLongTermWorkouts(props) {
                   isLongTerm={true}
                   type="edit"
                   navigate={true}
+                  workoutName={workout?.data?.workoutName}
                 />
               </div>
             ))

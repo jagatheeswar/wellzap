@@ -40,7 +40,7 @@ const AddFoodCard = (props) => {
   }, [props.index, props.item, props.idx]);
 
   return (
-    <div className="athleteFoodCard" style={{ margin: 8 }}>
+    <div className="athleteFoodCard">
       {open ? (
         <div className="athleteFoodCard__open">
           <div
@@ -93,7 +93,8 @@ const AddFoodCard = (props) => {
                       item.calories * temp[idx].quantity || 0;
                     temp[idx].foodDetails = item;
                     temp[idx].serving = "";
-                    temp[idx].units = "";
+                    temp[idx].units = item?.units;
+                    console.log(item);
                     temp[idx].quantity = 1;
 
                     foodData[index].food = temp;
@@ -129,11 +130,15 @@ const AddFoodCard = (props) => {
               </h4>
               <input
                 className="foodCard__quantInput"
+                step="0.01"
+                min={0}
+                type="number"
                 value={String(props.item.quantity)}
                 onChange={(e) => {
                   let foodData = [...props.entireFood];
                   let temp = [...props.ent.food];
                   if (e.target.value) {
+                    console.log(e.target.value);
                     temp[idx].quantity = parseFloat(e.target.value);
                   } else {
                     temp[idx].quantity = "";
@@ -204,7 +209,7 @@ const AddFoodCard = (props) => {
                   required
                   labelId="servings-select-label"
                   id="servings-select-label"
-                  value={String(props.item?.foodDetails?.units)}
+                  value={String(props.item?.units)}
                   onChange={(e) => {
                     let foodData = [...props.entireFood];
                     let temp = [...props.ent.food];
@@ -413,7 +418,7 @@ const AddFoodCard = (props) => {
               {item.units === "Grams"
                 ? item.quantity + " Grams"
                 : item.quantity + " " + item.units}{" "}
-              , Total Calories: {item.calories}
+              , Total Calories: {item.calories.toFixed(1)}
               <div>
                 <img
                   style={{ marginLeft: 20, marginTop: 7 }}

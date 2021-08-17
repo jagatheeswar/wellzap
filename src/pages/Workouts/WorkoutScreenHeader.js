@@ -10,11 +10,7 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
   const userType = useSelector(selectUserType);
   const history = useHistory();
   const [showMore, setshowMore] = useState(false);
-  document.addEventListener("mouseup", function (e) {
-    if (showMore) {
-      setshowMore(false);
-    }
-  });
+
   return (
     <div className="workoutsHeader">
       <div className="workoutsHeader__info">
@@ -60,6 +56,28 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
       {/* {userType === "coach" && name === "Workouts" && (
         
       )} */}
+
+      {/* {userType == "coach" && name == "Create Long-Term Workout Plan" && (
+        <div
+          style={{
+            display: "flex",
+            position: "relative",
+          }}
+        >
+          <div
+            className="addWorkout__button"
+            onClick={() => history.push("/create-workout")}
+          >
+            <img
+              src="/assets/plus_thin.png"
+              alt=""
+              width="15px"
+              height="15px"
+            />
+            <h5>ADD OWN EXERCISE</h5>
+          </div>
+        </div>
+      )} */}
       {userType === "coach" && name === "Workouts" && (
         <div
           style={{
@@ -69,7 +87,7 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
         >
           <div
             className="addWorkout__button"
-            onClick={() => history.push("create-workout")}
+            onClick={() => history.push("/create-workout")}
           >
             <img
               src="/assets/plus_thin.png"
@@ -106,21 +124,23 @@ const WorkoutScreenHeader = ({ name, navigation }) => {
                 zIndex: 5,
               }}
             >
-              <div
-                className="addWorkout__button"
-                style={{
-                  marginRight: 0,
-                }}
-                onClick={() => history.push("add-own-workout")}
-                style={{ width: 150 }}
-              >
-                <img
-                  src="/assets/plus_thin.png"
-                  alt=""
-                  width="15px"
-                  height="15px"
-                />
-                <h5>ADD OWN WORKOUT</h5>
+              <div onClick={() => history.push("/add-own-workout")}>
+                <div
+                  className="addWorkout__button"
+                  style={{
+                    marginRight: 0,
+                  }}
+                  onClick={() => history.push("/add-own-workout")}
+                  style={{ width: 150 }}
+                >
+                  <img
+                    src="/assets/plus_thin.png"
+                    alt=""
+                    width="15px"
+                    height="15px"
+                  />
+                  <h5>ADD OWN WORKOUT</h5>
+                </div>
               </div>
             </div>
           )}

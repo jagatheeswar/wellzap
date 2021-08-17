@@ -62,7 +62,7 @@ const CreateOwnWorkout = () => {
               onChange={(event) => setVideoLink(event.target.value)}
             />
           )}
-          {videoLink == "" && (
+          {!uploadVideo && videoLink == "" ? (
             <Button
               style={{ marginTop: 30 }}
               onClick={() => {
@@ -70,6 +70,15 @@ const CreateOwnWorkout = () => {
               }}
             >
               Upload a video
+            </Button>
+          ) : (
+            <Button
+              style={{ marginTop: 30 }}
+              onClick={() => {
+                setUploadVideo(!uploadVideo);
+              }}
+            >
+              Enter video link
             </Button>
           )}
         </div>
@@ -86,11 +95,13 @@ const CreateOwnWorkout = () => {
                 .add({
                   workoutName: workoutName,
                   videoURL: videoLink,
+                  name: workoutName,
                 })
                 .then(() => {
                   console.log("successfully added own workout");
                   setWorkoutName("");
                   setVideoLink("");
+                  alert("successfully added own workout");
                 });
             } else {
               console.log("can't be empty");

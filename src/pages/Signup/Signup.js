@@ -73,6 +73,7 @@ function Signup() {
                 console.log(1);
                 dispatch(login(auth.user.email));
                 dispatch(setUserType("athlete"));
+                dispatch(setUserVerified(false));
 
                 db.collection("athletes")
                   .add({

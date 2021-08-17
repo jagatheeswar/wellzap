@@ -24,7 +24,7 @@ import VODScreenHeader from "./VODScreenHeader";
 
 //const defaultimg = require("../../../public/assets/illustration.jpeg");
 
-function VideoUpload({ navigation, videoStatus, videoLink }) {
+function VideoUpload({ videoStatus, videoLink }) {
   const [userDetails, setUserDetails] = useState(null);
   const [athleteDetails, setAthleteDetails] = useState([]);
   const user = useSelector(selectUser);
@@ -281,10 +281,10 @@ function VideoUpload({ navigation, videoStatus, videoLink }) {
     <div
       style={{
         boxSizing: "border-box",
-        minHeight: "100vh",
+        minHeight: videoStatus ? "" : "100vh",
       }}
     >
-      <VODScreenHeader name="Upload Video" />
+      {!videoStatus && <VODScreenHeader name="Upload Video" />}
 
       <div
         style={{

@@ -78,7 +78,7 @@ function AthleteProfile_coach() {
           <Header Id={Id} />
           <AthleteProfileForm AthleteId={Id} />
 
-          {location?.state?.AthleteId ? <AthleteAssessments Id={Id} /> : ""}
+          <AthleteAssessments />
         </div>
       </div>
     </div>

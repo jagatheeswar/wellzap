@@ -18,8 +18,8 @@ function Header(props) {
   const location = useLocation();
   console.log(Id);
   useEffect(() => {
-    if (props.Id) {
-      if (userType === "coach") {
+    if (userType === "coach") {
+      if (props.Id) {
         db.collection("athletes")
           .doc(Id ? Id : "1")
           .get()
@@ -31,7 +31,12 @@ function Header(props) {
           .catch(function (error) {
             console.log("Error getting documents: ", error);
           });
+      } else {
+        setimg(userData?.data.imageUrl);
+
+        setname(userData?.data.name);
       }
+    } else {
     }
   }, [userData, userType]);
 
@@ -49,6 +54,8 @@ function Header(props) {
           .get()
           .then(function (snap) {
             setCoachData(snap.data());
+            setimg(snap.data().imageUrl);
+            setname(snap.data().name);
           });
       } else {
         db.collection("athletes")
@@ -75,8 +82,8 @@ function Header(props) {
             />
             <img
               className="image"
-              src={CoachData?.imageUrl && CoachData?.imageUrl}
-              alt={CoachData?.name && CoachData?.name}
+              src={img && img}
+              alt={name && name}
               width="100px"
               height="100px"
             />
@@ -84,10 +91,10 @@ function Header(props) {
           <div className="coachProfile__content">
             {
               userType === "coach" ? (
-                <h1>{CoachData?.name && CoachData?.name}</h1>
+                <h1>{name && name}</h1>
               ) : (
                 // : props.athlete ?
-                <h1>{CoachData?.name && CoachData?.name}</h1>
+                <h1>{name && name}</h1>
               )
               // : (
               //   <h1>{coachName}</h1>

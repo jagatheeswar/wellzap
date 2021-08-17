@@ -184,26 +184,12 @@ function CoachHomeReports() {
             }
           });
 
-          // setData([
-          //   { title: "Due Today", value: today.length, color: "red" },
-          //   { title: "Pending", value: pending.length, color: "green" },
-          //   { title: "Due Soon", value: upcoming.length, color: "#00B1C0" },
-          //   { title: "Completed", value: completed.length, color: "#ffe486" },
-          // ]);
-          setchart_data({
-            labels: ["Due Soon", "Pending", "Due Today", "Completed"],
-            datasets: [
-              {
-                data: [
-                  upcoming.length,
-                  pending.length,
-                  today.length,
-                  completed.length,
-                ],
-                backgroundColor: ["#FF6B6B", "#34B334", "red", "#ffe486"],
-              },
-            ],
-          });
+          setData([
+            { title: "Due Today", value: today.length, color: "red" },
+            { title: "Pending", value: pending.length, color: "green" },
+            { title: "Due Soon", value: upcoming.length, color: "#00B1C0" },
+            { title: "Completed", value: completed.length, color: "#ffe486" },
+          ]);
 
           setPending(pending);
           setUpcoming(upcoming);
@@ -238,18 +224,23 @@ function CoachHomeReports() {
               }}
             >
               <div style={{ width: 230 }}>
-                <Pie
-                  data={chart_data}
-                  options={{
-                    width: "100",
-                    height: "100",
-
-                    plugins: {
-                      legend: {
-                        display: false,
-                      },
-                    },
-                  }}
+                <PieChart
+                  data={data}
+                  lineWidth={50}
+                  labelPosition={75}
+                  radius={35}
+                  label={() => (
+                    <div
+                      style={{
+                        backgroundColor: "white",
+                        borderRadius: 100,
+                        width: "20px",
+                        height: "20px",
+                      }}
+                    >
+                      <p>5</p>
+                    </div>
+                  )}
                 />
               </div>
 

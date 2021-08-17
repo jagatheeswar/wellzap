@@ -93,7 +93,7 @@ function ViewAllAssignedLongTermWorkouts(props) {
         .where("saved", "==", false)
         .where("isLongTerm", "==", true)
         // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
-        .orderBy("timestamp", sorting)
+        // .orderBy("timestamp", sorting)
         .onSnapshot((snapshot) => {
           setLongTermWorkouts(
             snapshot.docs.map((doc) => ({
@@ -329,6 +329,7 @@ function ViewAllAssignedLongTermWorkouts(props) {
                   isLongTerm={true}
                   type="view"
                   navigate={true}
+                  workoutName={workout?.data?.workoutName}
                 />
               </div>
             ))

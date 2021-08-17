@@ -36,12 +36,12 @@ function RightContainer(props) {
       {userType == "coach" ? (
         <Calendar_coach
           toggle_date={props.toggle_date}
-          selectedDate={props.selectedDate}
+          selectedDate={props.selectedDate ? props.selectedDate : new Date()}
         />
       ) : (
         <Calendar_
           toggle_date={props.toggle_date}
-          selectedDate={props.selectedDate}
+          selectedDate={props.selectedDate ? props.selectedDate : new Date()}
         />
       )}
 

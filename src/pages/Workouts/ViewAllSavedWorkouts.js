@@ -315,6 +315,7 @@ function ViewAllSavedWorkouts(props) {
                   flexWrap: "wrap",
                 }}
               >
+                {console.log(item?.data?.preWorkout)}
                 <WorkoutCard
                   key={idx}
                   workouts={workouts}
@@ -322,6 +323,7 @@ function ViewAllSavedWorkouts(props) {
                   idx={idx}
                   navigation={"ViewAllSavedWorkouts"}
                   isLongTerm={props?.isLongTerm}
+                  workoutName={item?.data?.preWorkout?.workoutName}
                   handleCloseworkout={props?.handleCloseworkout}
                   setWeeks={props?.setWeeks}
                   weeks={props?.weeks}

@@ -128,13 +128,17 @@ function VODHome({ navigation }) {
   return (
     <div
       style={{
-        margin: 20,
         boxSizing: "border-box",
         minHeight: "100vh",
       }}
     >
       <VODScreenHeader name="Video on Demand" />
-      <Grid container spacing={2} className="workouts__homeContainer">
+      <Grid
+        container
+        spacing={2}
+        style={{}}
+        className="workouts__homeContainer"
+      >
         <Grid item xs={6} className="workouts__homeLeftContainer">
           <div
             style={{

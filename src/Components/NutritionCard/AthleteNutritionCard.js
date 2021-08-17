@@ -1,9 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { selectUserType } from "../../features/userSlice";
+import { selectUserType, selectUserData } from "../../features/userSlice";
 import { formatDate } from "../../functions/formatDate";
 import "./NutritionCard.css";
+import { db } from "../../utils/firebase";
+import CloseIcon from "@material-ui/icons/Close";
 
 export function formatDate1(date) {
   var d = new Date(date),
@@ -34,11 +36,13 @@ function AthleteNutritionCard({
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
+  const userData = useSelector(selectUserData);
 
   // const isLongTerm = false;
   return (
     <div
       className="nutritionCard"
+      style={{ position: "relative" }}
       onClick={
         () => {
           if (isLongTerm) {
@@ -201,6 +205,36 @@ function AthleteNutritionCard({
         <h3>{food.id ? food.id : formatDate()}</h3>
         <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
       </div>
+      {userType === "athlete" && (
+        <div
+          style={{ position: "absolute", top: 10, right: 10 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            var r = window.confirm("are you sure to delete!");
+            if (r == true) {
+              db.collection("AthleteNutrition")
+                .doc(userData?.id)
+                .collection("nutrition")
+                .doc(food.id)
+                .delete()
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                })
+                .catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+            } else {
+            }
+          }}
+        >
+          delete
+          <CloseIcon
+            style={{
+              width: 30,
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

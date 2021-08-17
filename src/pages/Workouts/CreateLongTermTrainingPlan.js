@@ -36,7 +36,9 @@ import moment from "moment";
 import { useHistory, useLocation } from "react-router-dom";
 import incr_date from "../../functions/incr_date";
 import formatSpecificDate from "../../functions/formatSpecificDate";
+
 import formatSpecificDate1 from "../../functions/formatSpecificDate1";
+import CreateOwnWorkout from "./CreateOwnWorkout";
 const InputWrapper = styled("div")`
   width: 350px;
   border: 1px solid #d9d9d9;
@@ -204,6 +206,7 @@ const CreateLongTermTrainingPlan = () => {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogCopy, setOpenDialogCopy] = React.useState(false);
   const [openCreateworkout, setOpenCreateworkout] = React.useState(false);
+  const [openCreateExercise, setOpenCreateExercise] = React.useState(false);
   const [openSavedworkout, setOpenSavedworkout] = React.useState(false);
   const [openAssignworkout, setOpenAssignworkout] = React.useState(false);
   const [showworkout, setShowworkout] = React.useState(false);
@@ -237,6 +240,7 @@ const CreateLongTermTrainingPlan = () => {
   const [caloriesBurnEstimate, setcaloriesBurnEstimate] = useState(null);
   const [workoutDifficulty, setworkoutDifficulty] = useState(null);
   const [workoutDescription, setworkoutDescription] = useState(null);
+
   const [daysList, setDaysList] = useState([
     "Sun",
     "Mon",
@@ -248,6 +252,7 @@ const CreateLongTermTrainingPlan = () => {
   ]);
   const [specificDates, setSpecificDates] = useState([]);
   const location = useLocation();
+  const [workoutName, setWorkoutName] = useState(null);
 
   const {
     getRootProps,
@@ -273,8 +278,10 @@ const CreateLongTermTrainingPlan = () => {
       let temp = location.state.weeks;
       setWeeks(temp);
       let tmp = [];
-      tmp.push(location.state.workout?.selectedAthletes[0]);
-      setshow_data(tmp);
+      if (location?.state?.selectedAthletes) {
+        tmp.push(location.state.workout?.selectedAthletes[0]);
+        setshow_data(tmp);
+      }
 
       console.log(location.state.workout);
       seteditable(location.state.assignType === "view" ? false : true);
@@ -391,6 +398,7 @@ const CreateLongTermTrainingPlan = () => {
   const handleCloseworkout = () => {
     setOpenCreateworkout(false);
     setOpenSavedworkout(false);
+    setOpenCreateExercise(false);
   };
 
   const handleWeeksCopy = () => {
@@ -499,7 +507,7 @@ const CreateLongTermTrainingPlan = () => {
         tempDate1.push(d);
       });
     });
-    if (athlete?.length > 0 && selectedDate) {
+    if (athlete?.length > 0 && selectedDate && workoutName) {
       dat.forEach((id, idx) => {
         var dat2 = id.days;
         var keys = Object.keys(dat2);
@@ -527,60 +535,61 @@ const CreateLongTermTrainingPlan = () => {
           assignedById: userData?.id,
           isLongTerm: true,
           date: formatDate(new Date()),
-
+          workoutName: workoutName,
           saved: false,
           selectedAthletes: athlete,
           selectedDates: tempDate1,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         })
-        .then((e) => {
-          console.log(e);
-          if (dat.length == 0) {
-            history.push("/workouts");
-          }
+        .then((docRef) => {
+          dat.forEach((id, idx) => {
+            var dat2 = id.days;
+            var keys = Object.keys(dat2);
+            console.log(docRef.id);
+            keys.forEach((id2, idx2) => {
+              if (dat2[id2] != "") {
+                athlete.forEach((ath) => {
+                  // console.log(addDays(local_date, 7 * idx + idx2));
+                  // console.log(id, id2, idx, idx2);
+                  // console.log();
+                  db.collection("workouts")
+                    .add({
+                      workoutName:
+                        workoutName + " week-" + id.weeknum + ", day-" + idx2,
+                      assignedById: userData?.id,
+                      assignedToId: ath.id,
+                      date: formatDate(addDays(local_date, 7 * idx + idx2)),
+                      selectedAthletes: [ath],
+                      timestamp:
+                        firebase.firestore.FieldValue.serverTimestamp(),
+                      completed: false,
+                      preWorkout: dat2[id2].preWorkout,
+                      saved: false,
+                      coachWorkoutId: "",
+                      isLongTerm: true,
+                      coachWorkoutId: docRef.id,
+                    })
+                    .then((e) => {
+                      console.log(e);
+                      history.push("/workouts");
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                });
+              }
+            });
+            if (idx + 1 == dat.length) {
+              history.push("/workouts");
+            }
+          });
         })
         .catch((e) => {
+          alert(e);
           console.log(e);
         });
-
-      dat.forEach((id, idx) => {
-        var dat2 = id.days;
-        var keys = Object.keys(dat2);
-        console.log(dat);
-        keys.forEach((id2, idx2) => {
-          if (dat2[id2] != "") {
-            athlete.forEach((ath) => {
-              console.log(addDays(local_date, 7 * idx + idx2));
-              db.collection("workouts")
-                .add({
-                  workoutName: dat2[id2].preWorkout.workoutName,
-                  assignedById: userData?.id,
-                  assignedToId: ath.id,
-                  date: formatDate(addDays(local_date, 7 * idx + idx2)),
-                  selectedAthletes: [ath],
-                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                  completed: false,
-                  preWorkout: dat2[id2].preWorkout,
-                  saved: false,
-                  coachWorkoutId: "",
-                  isLongTerm: true,
-                })
-                .then((e) => {
-                  console.log(e);
-                  history.push("/workouts");
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            });
-          }
-        });
-        if (idx + 1 == dat.length) {
-          history.push("/workouts");
-        }
-      });
     } else {
-      alert("select atleast one athlete to continue");
+      alert("select atleast one athlete and a workoutName to continue");
     }
   };
 
@@ -595,20 +604,42 @@ const CreateLongTermTrainingPlan = () => {
 
   const saveLongTermworkout = () => {
     setModal(true);
-    /*
-    db.collection("longTermworkout").add({
-      weeks,
-      completed:false,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      assigned_to:[],
-      assigned_by:userData?.id,
-    })
-    */
+
+    // db.collection("longTermworkout")
+    //   .add({
+    //     weeks,
+    //     completed: false,
+    //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    //     assignedToId: "",
+    //     assignedById: userData?.id,
+    //     saved: true,
+    //     workoutName: workoutName,
+    //   })
+    //   .then(() => {
+    //     alert(2);
+    //   })
+    //   .catch((e) => {
+    //     alert(e);
+    //   });
   };
   return (
     <div>
-      <WorkoutScreenHeader name="Create Long-Term Workout Plan" />
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <WorkoutScreenHeader name="Create Long-Term Workout Plan" />
 
+        <div
+          className="addWorkout__button"
+          style={{ width: 180 }}
+          onClick={() => setOpenCreateExercise(true)}
+        >
+          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
+          <h5>ADD OWN EXERCISE</h5>
+        </div>
+      </div>
       <div
         style={{
           //  marginLeft: "4%",
@@ -1057,6 +1088,31 @@ const CreateLongTermTrainingPlan = () => {
             height="15px"
           />{" "}
         </div>
+      </div>
+
+      <div
+        style={{
+          margin: 20,
+        }}
+      >
+        <label>Workout Name</label>
+        <br />
+        <input
+          style={{
+            width: "100%",
+            padding: "15px",
+            boxSizing: "border-box",
+            border: "none",
+            boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.4)",
+            borderRadius: 5,
+            marginTop: 10,
+          }}
+          placeholder="Workout Name"
+          value={workoutName}
+          onChange={(val) => {
+            setWorkoutName(val.target.value);
+          }}
+        />
       </div>
       <div
         className="weeksContainer"
@@ -2285,7 +2341,27 @@ const CreateLongTermTrainingPlan = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent style={{ width: 800, height: 450 }}>
+        <DialogContent style={{ width: 1000, height: 600 }}>
+          <div
+            onClick={() => {
+              setOpenCreateworkout(false);
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              height: 30,
+              width: 30,
+              borderRadius: 15,
+              backgroundColor: "red",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              cursor: "pointer",
+            }}
+          >
+            <CloseIcon />
+          </div>
           <CoachAddWorkout
             isLongTerm={true}
             handleCloseworkout={handleCloseworkout}
@@ -2304,7 +2380,45 @@ const CreateLongTermTrainingPlan = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
+          <div
+            onClick={() => {
+              setOpenSavedworkout(false);
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              height: 30,
+              width: 30,
+              borderRadius: 15,
+              backgroundColor: "red",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              cursor: "pointer",
+            }}
+          >
+            <CloseIcon />
+          </div>
           <ViewAllSavedWorkouts
+            isLongTerm={true}
+            handleCloseworkout={handleCloseworkout}
+            setWeeks={setWeeks}
+            weeks={weeks}
+            selectedWeekNum={selectedWeekNum}
+            selectedDay={selectedDay}
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={openCreateExercise}
+        onClose={handleCloseworkout}
+        maxWidth="lg"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent style={{ width: 800, height: 600 }}>
+          <CreateOwnWorkout
             isLongTerm={true}
             handleCloseworkout={handleCloseworkout}
             setWeeks={setWeeks}
@@ -2388,7 +2502,7 @@ const CreateLongTermTrainingPlan = () => {
                     assignedToId: "",
                     assignedById: userData?.id,
                     date: formatDate(new Date()),
-
+                    workoutName: workoutName,
                     isLongTerm: true,
                   });
                   setModal(false);

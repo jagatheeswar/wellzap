@@ -49,6 +49,7 @@ function CoachWorkouts() {
         .where("assignedById", "==", userData?.id)
         .where("saved", "==", false)
         .where("isLongTerm", "==", true)
+        .orderBy("timestamp", "desc")
         // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
         .limit(3)
         .onSnapshot((snapshot) => {
@@ -60,8 +61,10 @@ function CoachWorkouts() {
           );
         });
       db.collection("longTermWorkout")
+
         .where("assignedById", "==", userData?.id)
         .where("assignedToId", "==", "")
+        .orderBy("timestamp", "desc")
 
         // .where("date", "==", formatDate()) // replace with formatDate() for realtime data
         .limit(3)
@@ -204,6 +207,7 @@ function CoachWorkouts() {
                     idx={i}
                     type="view"
                     navigate={true}
+                    workoutName={workout.data?.workoutName}
                   />
                 ))
               ) : (
@@ -256,6 +260,7 @@ function CoachWorkouts() {
                     isLongTerm={true}
                     type="edit"
                     navigate={true}
+                    workoutName={workout?.data?.workoutName}
                   />
                 ))
               ) : (

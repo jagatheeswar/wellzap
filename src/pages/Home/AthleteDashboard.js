@@ -307,6 +307,8 @@ function AthleteDashboard(props) {
                   workouts={workout}
                   item={workout}
                   idx={i}
+                  type={"non-editable"}
+                  completed={workout?.completed ? true : false}
                 />
               ))}
             </div>

@@ -27,7 +27,7 @@ import "./CoachNutrition.css";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     minWidth: 300,
   },
   selectEmpty: {
@@ -51,7 +51,6 @@ const InputWrapper = styled("div")`
   padding: 1px;
   display: flex;
   flex-wrap: wrap;
-  margin-left: 4%;
 
   &:hover {
     border-color: #40a9ff;
@@ -407,8 +406,13 @@ function CreateNutrition(props) {
       </div>
       {type !== "view" ? (
         <div>
-          <div {...getRootProps()}>
-            <Label {...getInputLabelProps()}>Search for Athletes</Label>
+          <div
+            {...getRootProps()}
+            style={{
+              marginLeft: 20,
+            }}
+          >
+            <h4>Search for Athletes</h4>
             <InputWrapper
               ref={setAnchorEl}
               className={focused ? "focused" : ""}

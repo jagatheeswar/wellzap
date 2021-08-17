@@ -195,7 +195,6 @@ function AthleteProfileForm() {
       .catch((e) => console.log(e));
   };
 
-  console.log(editable);
   return (
     <div className="coachProfileForm">
       <div className="coachProfile__info">

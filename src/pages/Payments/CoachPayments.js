@@ -75,7 +75,7 @@ function CoachPayments() {
 
   const [data, setData] = useState([
     { title: "Due Soon", value: 10, color: "red" },
-    { title: "Pending", value: 15, color: "green" },
+    { title: "Pending", value: 15, color: "#ffe486" },
     { title: "Due Soon", value: 20, color: "red" },
     { title: "Completed", value: 20, color: "#ffe486" },
   ]);
@@ -247,10 +247,10 @@ function CoachPayments() {
           });
 
           setData([
-            { title: "Due Today", value: today.length, color: "red" },
-            { title: "Pending", value: pending.length, color: "green" },
-            { title: "Due Soon", value: upcoming.length, color: "#FF6B6B" },
-            { title: "Completed", value: completed.length, color: "#ffe486" },
+            { title: "Due Today", value: today.length, color: "orange" },
+            { title: "Pending", value: pending.length, color: "red" },
+            { title: "Due Soon", value: upcoming.length, color: "#ffe486" },
+            { title: "Completed", value: completed.length, color: "#34B334" },
           ]);
 
           setchart_data({
@@ -299,7 +299,7 @@ function CoachPayments() {
                   }}
                 >
                   <p>
-                    <b>No pending payments today.</b>
+                    <b>No payments today.</b>
                   </p>
                 </div>
               ) : (
@@ -308,6 +308,22 @@ function CoachPayments() {
               <p>
                 <b>Pending</b>
               </p>
+              {pending.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 15,
+                    backgroundColor: "white",
+                    paddingRight: 20,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                >
+                  <p>
+                    <b>No Pending payments today.</b>
+                  </p>
+                </div>
+              )}
               {pendingOpen ? null : pending.slice(0, 4)}
               {pending.length > 4 ? (
                 pendingOpen ? (
@@ -324,6 +340,22 @@ function CoachPayments() {
               <p>
                 <b>Due Soon</b>
               </p>
+              {upcoming.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 15,
+                    backgroundColor: "white",
+                    paddingRight: 20,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                >
+                  <p>
+                    <b>No upcoming payments.</b>
+                  </p>
+                </div>
+              )}
               {upcomingOpen ? null : upcoming.slice(0, 4)}
               {upcoming.length > 4 ? (
                 upcomingOpen ? (
@@ -354,7 +386,7 @@ function CoachPayments() {
               }}
             >
               <div style={{ flex: 0.65 }}>
-                {/* <PieChart
+                <PieChart
                   data={data}
                   lineWidth={50}
                   labelPosition={75}
@@ -371,8 +403,8 @@ function CoachPayments() {
                       <p>5</p>
                     </div>
                   )}
-                /> */}
-                <div style={{ width: 230 }}>
+                />
+                {/* <div style={{ width: 230 }}>
                   <Pie
                     data={chart_data}
                     options={{
@@ -386,7 +418,7 @@ function CoachPayments() {
                       },
                     }}
                   />
-                </div>
+                </div> */}
               </div>
 
               <div style={{ flex: 0.35 }}>
@@ -395,7 +427,7 @@ function CoachPayments() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "red",
+                      backgroundColor: "orange",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -411,7 +443,7 @@ function CoachPayments() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "#34B334",
+                      backgroundColor: "red",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -427,7 +459,7 @@ function CoachPayments() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "#00B1C0",
+                      backgroundColor: "#ffe346",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -443,7 +475,7 @@ function CoachPayments() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "#ffe486",
+                      backgroundColor: "#34B334",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -459,6 +491,22 @@ function CoachPayments() {
               <p>
                 <b>Completed</b>
               </p>
+              {completed.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 15,
+                    backgroundColor: "white",
+                    paddingRight: 20,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                >
+                  <p>
+                    <b>No completed payments.</b>
+                  </p>
+                </div>
+              )}
               {completedOpen ? null : completed.slice(0, 4)}
               {completed.length > 4 ? (
                 completedOpen ? (

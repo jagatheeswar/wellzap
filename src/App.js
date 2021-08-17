@@ -89,6 +89,7 @@ import DisabledHome from "./pages/Home/DisabledHome";
 import InvitesList from "./pages/Profile/InviteList";
 import InviteScreen from "./pages/Profile/InviteScreen";
 import ViewAllVideoWorkouts from "./pages/VOD/ViewAllVideoWorkouts";
+import EditPayments from "./pages/Payments/EditPayments";
 
 function App() {
   const user = useSelector(selectUser);
@@ -581,6 +582,12 @@ function App() {
               <RoutesComp
                 AthleteComp={<AthletePayments />}
                 CoachComp={<CoachPayments />}
+              />
+            </Route>
+            <Route path="/editpayments">
+              <RoutesComp
+                AthleteComp={<NotFound />}
+                CoachComp={<EditPayments />}
               />
             </Route>
             <Route path="/calendar">

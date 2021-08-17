@@ -48,7 +48,7 @@ function AthleteAddMeal() {
   const [foodId, setFoodId] = useState("");
   const [type, setType] = useState("");
   const history = useHistory();
-  const [todaysFoodId, setTodaysFoodId] = useState("");
+  const [todaysFoodId, setTodaysFoodId] = useState(null);
   const [CoachMeal, setCoachMeal] = useState([
     {
       meal: "",
@@ -67,9 +67,11 @@ function AthleteAddMeal() {
   ]);
   const [showCoachMeal, setShowCoachMeal] = useState(false);
 
-  useEffect(() => {
-    getInitialData();
-  }, [userData?.id]);
+  // useEffect(() => {
+  //   if (!todaysFoodId) {
+  //     getInitialData();
+  //   }
+  // }, [userData?.id]);
 
   const getInitialData = async () => {
     db.collection("AthleteNutrition")
@@ -109,20 +111,22 @@ function AthleteAddMeal() {
   }, [requestDate, userData]);
   useEffect(() => {
     if (userData) {
-      db.collection("AthleteNutrition")
-        .doc(userData?.id)
-        .collection("nutrition")
-        .doc(formatDate())
-        .get()
-        .then((doc) => {
-          if (doc.data()?.entireFood) {
-            setEntireFood(doc.data()?.entireFood);
-            setTodaysFoodId(doc.id);
-          }
-        })
-        .catch((error) => {
-          console.log("Error getting documents: ", error);
-        });
+      if (!location?.state?.todaysFoodId) {
+        db.collection("AthleteNutrition")
+          .doc(userData?.id)
+          .collection("nutrition")
+          .doc(formatDate())
+          .get()
+          .then((doc) => {
+            if (doc.data()?.entireFood) {
+              setEntireFood(doc.data()?.entireFood);
+              setTodaysFoodId(doc.id);
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting documents: ", error);
+          });
+      }
     }
   }, [userData]);
   useEffect(() => {
@@ -143,6 +147,7 @@ function AthleteAddMeal() {
 
   useEffect(() => {
     if (location.state?.entireFood && location.state.entireFood.length > 0) {
+      console.log(16);
       setEntireFood(location.state.entireFood);
     }
   }, [location.state?.entireFood]);
@@ -195,7 +200,7 @@ function AthleteAddMeal() {
         <div onClick={() => {}}>Assigned Meal</div>
       </div>
       {console.log(entireFood)}
-      {!showCoachMeal && (
+      {!showCoachMeal && entireFood && (
         <AddMeal
           serverData={serverData}
           entireFood={entireFood}

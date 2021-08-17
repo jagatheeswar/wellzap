@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core";
 import Axios from "axios";
 import SearchableDropdown from "../../Components/SearchableDropdown";
 import AddIcon from "@material-ui/icons/Add";
+
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CloseIcon from "@material-ui/icons/Close";
 import Modal from "react-awesome-modal";
@@ -31,6 +32,7 @@ import {
   Slide,
   DialogContentText,
 } from "@material-ui/core";
+import CreateOwnWorkout from "./CreateOwnWorkout";
 
 // const useStyles = makeStyles((theme) => ({
 //   formControl: {
@@ -49,6 +51,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function CoachAddWorkout() {
   const userData = useSelector(selectUserData);
   const [workoutName, setWorkoutName] = useState("");
+  const [openCreateExercise, setOpenCreateExercise] = React.useState(false);
+
   const [workoutDescription, setWorkoutDescription] = useState("");
   const [equipmentsNeeded, setEquipmentsNeeded] = useState([]);
   const [targetedMuscleGroup, setTargetedMuscleGroup] = useState([]);
@@ -73,6 +77,7 @@ function CoachAddWorkout() {
   const [exercises, setExercises] = useState([]);
   const [objs, setObjs] = useState(null);
   const [additionalnotes, setadditionalnotes] = useState("");
+  const [reload, setreload] = useState(false);
   const [selectedExercises_list, setselectedExercises_list] = useState([
     {
       temp: null,
@@ -114,6 +119,7 @@ function CoachAddWorkout() {
             doc.forEach((w) => {
               let tmp = w.data();
               tmp["_id"] = w.id;
+              console.log(w.data());
 
               temp.push(tmp);
               //setObjs(temp);
@@ -145,18 +151,18 @@ function CoachAddWorkout() {
         setListOfEquipments(data2);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [reload]);
 
   useEffect(() => {
-    if (userData) {
-      db.collection("coaches")
-        .doc(userData?.id)
-        .collection("ownWorkouts")
-        .get()
-        .then((doc) => {
-          doc.forEach((w) => {});
-        });
-    }
+    // if (userData) {
+    //   db.collection("coaches")
+    //     .doc(userData?.id)
+    //     .collection("ownWorkouts")
+    //     .get()
+    //     .then((doc) => {
+    //       doc.forEach((w) => {});
+    //     });
+    // }
     objs?.map((item, idx) => {
       item.name = item.workoutName;
       item.value = item._id;
@@ -175,6 +181,10 @@ function CoachAddWorkout() {
   useEffect(() => {
     console.log("eq", equipmentsNeeded);
   }, [equipmentsNeeded]);
+  const handleCloseworkout = () => {
+    setreload(!reload);
+    setOpenCreateExercise(false);
+  };
 
   useEffect(() => {
     setSelectedWorkoutEdit("");
@@ -219,7 +229,22 @@ function CoachAddWorkout() {
         minHeight: "99vh",
       }}
     >
-      <WorkoutScreenHeader name="Create Workouts" />
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <WorkoutScreenHeader name="Create Workouts" />
+
+        <div
+          className="addWorkout__button"
+          style={{ width: 180 }}
+          onClick={() => setOpenCreateExercise(true)}
+        >
+          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
+          <h5>ADD OWN EXERCISE</h5>
+        </div>
+      </div>
 
       <div className="Createworkout_header">
         <div className="workouts_header">
@@ -540,13 +565,13 @@ function CoachAddWorkout() {
                       {exercises?.length > 0 && (
                         <div
                           style={{
-                            width: "60%",
+                            width: "50%",
                           }}
                         >
                           <SelectSearch
                             options={exercises}
                             onChange={(d, f) => {
-                              let temp = selectedExercises;
+                              let temp = [...selectedExercises];
                               temp[idx1] = f;
                               temp[idx1].sets = [];
 
@@ -616,6 +641,24 @@ function CoachAddWorkout() {
                             setSelectedExercises(temp);
                           }}
                         />
+                      </div>
+                      <div
+                        style={{
+                          marginLeft: 20,
+                          display: "flex",
+                          marginLeft: "auto",
+                          alignItems: "center",
+                        }}
+                        onClick={() => {
+                          let temp = [...selectedExercises];
+                          if (temp.length > 1) {
+                            temp.splice(idx1, 1);
+                            setSelectedExercises(temp);
+                          }
+                        }}
+                      >
+                        {" "}
+                        <CloseIcon />
                       </div>
                     </div>
                   </div>
@@ -812,14 +855,14 @@ function CoachAddWorkout() {
                               )}
                             </div>
                           </div>
-                          <div
+                          {/* <div
                             onClick={() => {
                               selectedExercises.splice(idx1, 1);
                             }}
                           >
                             {" "}
                             <CloseIcon />
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -2742,6 +2785,37 @@ function CoachAddWorkout() {
             {" "}
             <CloseIcon />
           </div>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={openCreateExercise}
+        onClose={handleCloseworkout}
+        maxWidth="lg"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent style={{ width: 1000, height: 600 }}>
+          <div
+            onClick={() => {
+              setOpenCreateExercise(false);
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              height: 30,
+              width: 30,
+              borderRadius: 15,
+              backgroundColor: "red",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              cursor: "pointer",
+            }}
+          >
+            <CloseIcon />
+          </div>
+          <CreateOwnWorkout />
         </DialogContent>
       </Dialog>
       {/* <Modal
