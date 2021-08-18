@@ -22,6 +22,7 @@ function CoachProfile() {
   const dispatch = useDispatch();
   const [athleteDetails, setAthleteDetails] = useState([]);
 
+  console.log("ud", userData);
   useEffect(() => {
     db.collection("coaches")
       .where("email", "==", user)

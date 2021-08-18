@@ -24,7 +24,8 @@ function CoachProfileForm() {
   const [certificates, setCertificates] = useState("");
   const [awards, setAwards] = useState("");
   const [editable, seteditable] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const userData = useSelector(selectUserData);
+  const [userData1, setUserData1] = useState();
 
   useEffect(() => {
     if (userType === "coach") {
@@ -34,7 +35,7 @@ function CoachProfileForm() {
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            setUserData({
+            setUserData1({
               id: doc.id,
               data: doc.data(),
             });
@@ -58,10 +59,13 @@ function CoachProfileForm() {
           console.log("Error getting documents: ", error);
         });
     } else {
+      console.log(userData?.data);
       db.collection("coaches")
         .doc(userData?.data?.listOfCoaches[0])
         .get()
-        .then(function (snap) {
+        .then((snap) => {
+          console.log(snap.id, snap.data()?.phone);
+
           setphone(snap.data()?.phone);
           setemail(snap.data()?.email);
           setgender(snap.data()?.gender);
@@ -71,7 +75,7 @@ function CoachProfileForm() {
           setAwards(snap.data()?.awards);
         });
     }
-  }, [user, temperoryId]);
+  }, [user, userData, temperoryId]);
   const saveprofile = () => {
     const dob1 = dob.split("-").reverse().join("-");
     db.collection("coaches")
@@ -130,7 +134,7 @@ function CoachProfileForm() {
             }}
             value={email}
             type="email"
-            placeholder="anishchandra@gmail.com"
+            placeholder="email"
           />
           <h4>Gender</h4>
           <input

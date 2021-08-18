@@ -9,13 +9,13 @@ if (!firebase.apps.length) {
     // messagingSenderId: "802693289796",
     // appId: "1:802693289796:web:b9155b444af6d47375a911",
     // measurementId: "G-TQ3DQYH4GN",
-    apiKey: "AIzaSyArXWZyHkjvAFvKkCzEPAQhTcuQC4eQF0E",
-    authDomain: "triden-workout-app.firebaseapp.com",
-    projectId: "triden-workout-app",
-    storageBucket: "triden-workout-app.appspot.com",
-    messagingSenderId: "112246491597",
-    appId: "1:112246491597:web:3e8ecd1d7d16bc25559c84",
-    measurementId: "G-N8TFNVM0CM",
+
+    apiKey: "AIzaSyAecztLDJbsGrd47BLfKsP0DSMHCTKCI9E",
+    authDomain: "wellzap-22b06.firebaseapp.com",
+    projectId: "wellzap-22b06",
+    storageBucket: "wellzap-22b06.appspot.com",
+    messagingSenderId: "270026129611",
+    appId: "1:270026129611:web:90f59d9c8e86c5c5c51b4e",
   });
 } else {
   firebase.app(); // if already initialized, use that one

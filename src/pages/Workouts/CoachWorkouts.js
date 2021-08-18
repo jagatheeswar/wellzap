@@ -128,7 +128,6 @@ function CoachWorkouts() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
-                    marginLeft: 10,
                   }}
                 >
                   <h5> There are no assigned workouts for now </h5>
@@ -220,10 +219,9 @@ function CoachWorkouts() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
-                    marginLeft: 10,
                   }}
                 >
-                  <h5> There are no assigned workouts for now </h5>
+                  <h5> There are no assigned LongTerm workouts for now </h5>
                 </div>
               )}
             </div>
@@ -273,10 +271,9 @@ function CoachWorkouts() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
-                    marginLeft: 10,
                   }}
                 >
-                  <h5> There are no assigned workouts for now </h5>
+                  <h5> There are no saved LongTerm workouts for now </h5>
                 </div>
               )}
             </div>

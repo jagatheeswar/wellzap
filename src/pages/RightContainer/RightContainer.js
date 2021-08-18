@@ -39,11 +39,10 @@ function RightContainer(props) {
           selectedDate={props.selectedDate ? props.selectedDate : new Date()}
         />
       ) : (
-        // <Calendar_
-        //   toggle_date={props.toggle_date}
-        //   selectedDate={props.selectedDate ? props.selectedDate : new Date()}
-        // />
-        <></>
+        <Calendar_
+          toggle_date={props.toggle_date}
+          selectedDate={props.selectedDate ? props.selectedDate : new Date()}
+        />
       )}
 
       {/* <CalendarComponent /> */}

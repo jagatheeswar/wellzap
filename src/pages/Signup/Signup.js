@@ -146,7 +146,7 @@ function Signup() {
                 });
 
                 db.collection("counter")
-                  .doc("nPT9xINm51aJYqU3UOqI")
+                  .doc("XaV3q3VyU8084X5vhCZq")
                   .update({
                     count: pin + 1,
                   });

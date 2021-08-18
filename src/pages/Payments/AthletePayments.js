@@ -288,7 +288,7 @@ function AthletePayments() {
                   }}
                 >
                   <p>
-                    <b>No pending payments today.</b>
+                    <b>No payments today.</b>
                   </p>
                 </div>
               ) : (
@@ -297,6 +297,22 @@ function AthletePayments() {
               <p>
                 <b>Pending</b>
               </p>
+              {pending.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 15,
+                    backgroundColor: "white",
+                    paddingRight: 20,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                >
+                  <p>
+                    <b>No pending payments.</b>
+                  </p>
+                </div>
+              )}
               {pendingOpen ? null : pending.slice(0, 4)}
               {pending.length > 4 ? (
                 pendingOpen ? (
@@ -317,6 +333,22 @@ function AthletePayments() {
               <p>
                 <b>Completed</b>
               </p>
+              {completed.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 15,
+                    backgroundColor: "white",
+                    paddingRight: 20,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                >
+                  <p>
+                    <b>No completed payments.</b>
+                  </p>
+                </div>
+              )}
               {completedOpen ? null : completed.slice(0, 4)}
               {completed.length > 4 ? (
                 completedOpen ? (
@@ -335,6 +367,22 @@ function AthletePayments() {
               <p>
                 <b>Due Soon</b>
               </p>
+              {upcoming.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: 15,
+                    backgroundColor: "white",
+                    paddingRight: 20,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                >
+                  <p>
+                    <b>No upcoming payments.</b>
+                  </p>
+                </div>
+              )}
               {upcomingOpen ? null : upcoming.slice(0, 4)}
               {upcoming.length > 4 ? (
                 upcomingOpen ? (
