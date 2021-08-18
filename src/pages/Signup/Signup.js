@@ -21,7 +21,15 @@ function Signup() {
   const history = useHistory();
   const phoneRegExp =
     /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-
+  React.useEffect(() => {
+    db.collection("counter")
+      .doc("XaV3q3VyU8084X5vhCZq")
+      .get()
+      .then((snap) => {
+        setPin(snap.data().count);
+        console.log(snap.data().count);
+      });
+  }, []);
   const SignupSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid nk email address format")
