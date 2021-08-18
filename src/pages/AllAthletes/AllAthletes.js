@@ -104,6 +104,7 @@ function AllAthletes() {
         style={{
           display: "flex",
           alignItems: "center",
+          marginTop: 20,
         }}
       >
         <div
@@ -263,6 +264,23 @@ function AllAthletes() {
         </div>
       )}
 
+      {SearchList?.length == 0 && (
+        <h1
+          style={{
+            marginLeft: 20,
+            fontSize: 18,
+            backgroundColor: "white",
+            textAlign: "center",
+            height: 90,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 10,
+          }}
+        >
+          There are no athletes now
+        </h1>
+      )}
       {SearchList?.map((athlete) => (
         <div className="allAthletes__athletes">
           <div style={{ display: "flex", alignItems: "center" }}>

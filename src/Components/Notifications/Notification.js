@@ -116,6 +116,9 @@ function Notification({ route }) {
             <ChevronRightRounded style={{ height: 30, width: 30 }} />
           </div>
           <h3>Notifications</h3>
+          {/* <div>
+            
+            {unreadMessages.length == 0 && unreadMessages.length}</div> */}
         </div>
 
         {switchScreen === false && (

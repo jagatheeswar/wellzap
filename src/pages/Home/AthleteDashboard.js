@@ -30,6 +30,8 @@ function AthleteDashboard(props) {
   const [mealHistory, setMealHistory] = useState([]);
   const [coachMealHistory, setCoachMealHistory] = useState([]);
   const [coachName, setCoachName] = useState("");
+  const [coachimg, setCoachimg] = useState("");
+
   const [videoData, setVideoData] = useState([]);
 
   useEffect(() => {
@@ -204,6 +206,7 @@ function AthleteDashboard(props) {
         .get()
         .then(function (snap) {
           setCoachName(snap.data()?.name);
+          setCoachimg(snap.data()?.imageUrl);
         });
     }
   }, [userData?.data]);
@@ -226,7 +229,11 @@ function AthleteDashboard(props) {
             <div className="athletes__card">
               <div className="athletes__cardInfo">
                 <img
-                  src={userData?.data.imageUrl}
+                  src={
+                    coachimg
+                      ? coachimg
+                      : "https://firebasestorage.googleapis.com/v0/b/wellzap-22b06.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=92ce4f61-3c75-421a-888f-df954a58c516"
+                  }
                   alt=""
                   width="40px"
                   height="40px"
@@ -327,7 +334,6 @@ function AthleteDashboard(props) {
               <h5
                 style={{
                   fontSize: "12px",
-                  fontWeight: "normal",
                 }}
               >
                 There are no Workouts for now

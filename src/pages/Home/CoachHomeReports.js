@@ -223,25 +223,44 @@ function CoachHomeReports() {
                 width: 420,
               }}
             >
+              {console.log(
+                upcoming.length == 0 &&
+                  pending.length == 0 &&
+                  today.length == 0 &&
+                  completed.length == 0
+              )}
               <div style={{ width: 230 }}>
-                <PieChart
-                  data={data}
-                  lineWidth={50}
-                  labelPosition={75}
-                  radius={35}
-                  label={() => (
-                    <div
-                      style={{
-                        backgroundColor: "white",
-                        borderRadius: 100,
-                        width: "20px",
-                        height: "20px",
-                      }}
-                    >
-                      <p>5</p>
-                    </div>
-                  )}
-                />
+                {upcoming.length != 0 ||
+                pending.length != 0 ||
+                today.length != 0 ||
+                completed.length != 0 ? (
+                  <PieChart
+                    data={data}
+                    lineWidth={50}
+                    labelPosition={75}
+                    radius={35}
+                    label={() => (
+                      <div
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: 100,
+                          width: "20px",
+                          height: "20px",
+                        }}
+                      >
+                        <p>5</p>
+                      </div>
+                    )}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
+                    No Payments
+                  </div>
+                )}
               </div>
 
               <div>

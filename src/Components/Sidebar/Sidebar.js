@@ -21,7 +21,11 @@ function Sidebar({ show_menu }) {
     <div className="sidebar">
       <div className="sidebar__container">
         <img
-          src={userData?.data?.imageUrl}
+          src={
+            userData?.data?.imageUrl
+              ? userData?.data?.imageUrl
+              : "https://firebasestorage.googleapis.com/v0/b/wellzap-22b06.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=92ce4f61-3c75-421a-888f-df954a58c516"
+          }
           alt={userData?.data.name}
           width="100px"
           height="100px"

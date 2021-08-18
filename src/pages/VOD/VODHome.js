@@ -126,45 +126,96 @@ function VODHome({ navigation }) {
   };
 
   return (
-    <div
-      style={{
-        boxSizing: "border-box",
-        minHeight: "100vh",
-      }}
-    >
+    <div>
       <VODScreenHeader name="Video on Demand" />
-      <Grid
-        container
-        spacing={2}
-        style={{}}
-        className="workouts__homeContainer"
+
+      <div
+        style={{
+          boxSizing: "border-box",
+          minHeight: "100vh",
+          margin: 10,
+        }}
       >
-        <Grid item xs={6} className="workouts__homeLeftContainer">
-          <div
-            style={{
-              width: "90%",
-              paddingLeft: 10,
-              display: "flex",
-              alignItems: "center",
-            }}
-            className="workoutHeading__row"
-          >
-            <h1>Assigned Videos</h1>
-            <p
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push("/assigned-videos")}
+        <Grid
+          container
+          spacing={2}
+          style={{}}
+          className="workouts__homeContainer"
+        >
+          <Grid item xs={6} className="workouts__homeLeftContainer">
+            <div
+              style={{ width: "90%", paddingLeft: 10 }}
+              className="workoutHeading__row"
             >
-              View All
-            </p>
-          </div>
-          {AssignedVideos?.length > 0 ? (
-            AssignedVideos?.map((video, idx) => (
-              <div style={{}}>
-                {video?.Video?.map((Id, idx) => (
+              <h1>Assigned Videos</h1>
+              <div onClick={() => history.push("/assigned-videos")}>
+                View All
+              </div>
+            </div>
+
+            {AssignedVideos?.length > 0 ? (
+              AssignedVideos?.map((video, idx) => (
+                <div style={{}}>
+                  {video?.Video?.map((Id, idx) => (
+                    <div class="iframe_container">
+                      <iframe
+                        style={{ borderRadius: 10 }}
+                        src={
+                          "https://player.vimeo.com/video/" + `${Id?.videoId}`
+                        }
+                        width="400px"
+                        height="200px"
+                        frameborder="0"
+                        webkitallowfullscreen
+                        mozallowfullscreen
+                        allowfullscreen
+                      ></iframe>
+                    </div>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  fontSize: "13px",
+                  backgroundColor: "#fff",
+                  width: "90%",
+                  padding: "10px 20px",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                  fontWeight: "normal",
+                  marginLeft: 10,
+                  boxSizing: "border-box",
+                }}
+              >
+                <h5> There are no assigned videos for now </h5>
+              </div>
+            )}
+          </Grid>
+          <Grid item xs={6} className="workouts__homeLeftContainer">
+            <div
+              style={{ width: "90%", paddingLeft: 10 }}
+              className="workoutHeading__row"
+            >
+              <h1>Uploaded Videos</h1>
+
+              <div onClick={() => history.push("/uploaded-videos")}>
+                View All
+              </div>
+            </div>
+
+            {console.log("b", videoData)}
+
+            {videoData?.length > 0 ? (
+              videoData?.map((video, idx) => (
+                <div>
                   <div class="iframe_container">
+                    {console.log("vi", videoData)}
                     <iframe
                       style={{ borderRadius: 10 }}
-                      src={"https://player.vimeo.com/video/" + `${Id?.videoId}`}
+                      src={
+                        "https://player.vimeo.com/video/" + `${video?.videoId}`
+                      }
                       width="400px"
                       height="200px"
                       frameborder="0"
@@ -173,85 +224,29 @@ function VODHome({ navigation }) {
                       allowfullscreen
                     ></iframe>
                   </div>
-                ))}
-              </div>
-            ))
-          ) : (
-            <div
-              style={{
-                fontSize: "13px",
-                backgroundColor: "#fff",
-                width: "90%",
-                padding: "10px 20px",
-                textAlign: "center",
-                borderRadius: "5px",
-                fontWeight: "normal",
-                marginLeft: 10,
-              }}
-            >
-              <h5> There are no assigned videos for now </h5>
-            </div>
-          )}
-        </Grid>
-        <Grid item xs={6} className="workouts__homeLeftContainer">
-          <div
-            style={{
-              width: "90%",
-              paddingLeft: 10,
-              display: "flex",
-              alignItems: "center",
-            }}
-            className="workoutHeading__row"
-          >
-            <h1>Uploaded Videos</h1>
-            <p
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push("/uploaded-videos")}
-            >
-              View All
-            </p>
-          </div>
-          {console.log("b", videoData)}
-
-          {videoData?.length > 0 ? (
-            videoData?.map((video, idx) => (
-              <div>
-                <div class="iframe_container">
-                  {console.log("vi", videoData)}
-                  <iframe
-                    style={{ borderRadius: 10 }}
-                    src={
-                      "https://player.vimeo.com/video/" + `${video?.videoId}`
-                    }
-                    width="400px"
-                    height="200px"
-                    frameborder="0"
-                    webkitallowfullscreen
-                    mozallowfullscreen
-                    allowfullscreen
-                  ></iframe>
                 </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  fontSize: "13px",
+                  backgroundColor: "#fff",
+                  width: "90%",
+                  padding: "10px 20px",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                  fontWeight: "normal",
+                  marginLeft: 10,
+                  boxSizing: "border-box",
+                }}
+              >
+                <h5> There are no uploaded videos for now </h5>
               </div>
-            ))
-          ) : (
-            <div
-              style={{
-                fontSize: "13px",
-                backgroundColor: "#fff",
-                width: "90%",
-                padding: "10px 20px",
-                textAlign: "center",
-                borderRadius: "5px",
-                fontWeight: "normal",
-                marginLeft: 10,
-              }}
-            >
-              <h5> There are no uploaded videos for now </h5>
-            </div>
-          )}
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-      <script src="https://player.vimeo.com/api/player.js"></script>
+        <script src="https://player.vimeo.com/api/player.js"></script>
+      </div>
     </div>
   );
 }

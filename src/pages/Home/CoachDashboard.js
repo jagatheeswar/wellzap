@@ -252,7 +252,7 @@ function CoachDashboard(props) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: "5px",
+                borderRadius: "10px",
               }}
             >
               <h5
@@ -304,12 +304,12 @@ function CoachDashboard(props) {
               height: 200,
               overflowY: "scroll",
               overflow: "scroll",
-              marginTop: 8,
+              marginTop: 10,
               backgroundColor: "white",
               overflowX: "hidden",
             }}
           >
-            {athletes.length > 0 &&
+            {athletes.length > 0 ? (
               athletes.map((item) => (
                 <div className="athletes__card" style={{ marginTop: 10 }}>
                   <div className="athletes__cardInfo">
@@ -354,7 +354,29 @@ function CoachDashboard(props) {
                     />
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  width: "100%",
+                  height: 90,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "10px",
+                }}
+              >
+                <h5
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "normal",
+                  }}
+                >
+                  You haven't had any athletes now
+                </h5>
+              </div>
+            )}
           </div>
           {/* {display_count < athletes.length ? (
           <p

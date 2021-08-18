@@ -85,28 +85,22 @@ function CoachWorkouts() {
 
   return (
     <div style={{ minHeight: "99vh" }} className="workouts__home">
-      <div className="coachDashboard__leftContainer">
-        <WorkoutScreenHeader name="Workouts" />
+      <WorkoutScreenHeader name="Workouts" />
 
+      <div className="coachDashboard__leftContainer" style={{ marginTop: 20 }}>
         <Grid container spacing={2} className="workouts__homeContainer">
           <Grid item xs={6} className="workouts__homeLeftContainer">
             <div
-              style={{
-                width: "90%",
-                paddingLeft: 10,
-                display: "flex",
-                alignItems: "center",
-              }}
+              style={{ width: "90%", marginLeft: 20 }}
               className="workoutHeading__row"
             >
               <h1>Assigned Workouts</h1>
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/view-all-workouts")}
-              >
+
+              <div onClick={() => history.push("/view-all-workouts")}>
                 View All
-              </p>
+              </div>
             </div>
+
             <div style={{ width: "90%", marginLeft: 20 }}>
               {workouts.length > 0 ? (
                 workouts?.map((workout, i) => (
@@ -137,18 +131,13 @@ function CoachWorkouts() {
           </Grid>
 
           <Grid item xs={6} className="workouts__homeRightContainer">
-            <div
-              style={{ width: "90%", display: "flex", alignItems: "center" }}
-              className="workoutHeading__row"
-            >
+            <div style={{ width: "90%" }} className="workoutHeading__row">
               <h1>Saved Templates</h1>
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/view-all-saved-workouts")}
-              >
+              <div onClick={() => history.push("/view-all-saved-workouts")}>
                 View All
-              </p>
+              </div>
             </div>
+
             <div style={{ width: "90%" }}>
               {savedWorkouts.length > 0 ? (
                 savedWorkouts?.map((workout, i) => (
@@ -178,22 +167,15 @@ function CoachWorkouts() {
           </Grid>
           <Grid item xs={6} className="workouts__homeLeftContainer">
             <div
-              style={{
-                width: "90%",
-                paddingLeft: 10,
-                display: "flex",
-                alignItems: "center",
-              }}
+              style={{ width: "90%", marginLeft: 20 }}
               className="workoutHeading__row"
             >
               <h1>Assigned LongTerm Workouts</h1>
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/all-LongTerm-workouts")}
-              >
+              <div onClick={() => history.push("/all-LongTerm-workouts")}>
                 View All
-              </p>
+              </div>
             </div>
+
             <div style={{ width: "90%", marginLeft: 20 }}>
               {LongTermWorkouts?.length > 0 ? (
                 LongTermWorkouts?.map((workout, i) => (
@@ -228,23 +210,13 @@ function CoachWorkouts() {
           </Grid>
 
           <Grid item xs={6} className="workouts__homeLeftContainer">
-            <div
-              style={{
-                width: "90%",
-                paddingLeft: 10,
-                display: "flex",
-                alignItems: "center",
-              }}
-              className="workoutHeading__row"
-            >
+            <div style={{ width: "90%" }} className="workoutHeading__row">
               <h1>Saved LongTerm Workouts</h1>
-              <p
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/all-saved-LongTerm-workouts")}
-              >
+              <div onClick={() => history.push("/all-saved-LongTerm-workouts")}>
                 View All
-              </p>
+              </div>
             </div>
+
             {console.log("ss", savedLongTermWorkouts)}
             <div style={{ width: "90%" }}>
               {savedLongTermWorkouts?.length > 0 ? (

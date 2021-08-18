@@ -99,127 +99,184 @@ function CoachNutritionHome() {
   return (
     <div style={{ minHeight: "99vh" }} className="coachNutritionHome">
       <NutritionScreenHeader name="Nutrition" />
-      <Grid container spacing={2} className="coachNutrition__homeContainer">
-        <Grid item xs={6} className="coachNutrition__homeLeftContainer">
-          <div
-            style={{ width: "90%", paddingLeft: 15 }}
-            className="coachNutrition__row"
-          >
-            <h1>Assigned Meal Plans</h1>
-            <div onClick={() => history.push("/view-all-nutrition")}>
-              View All
-            </div>
-          </div>
-          <div
-            style={{ width: "90%", paddingLeft: 15 }}
-            className="coachNutrition__list"
-          >
-            {nutrition.length > 0 ? (
-              nutrition?.map((food, idx) => (
-                <NutritionCard
-                  key={idx}
-                  nutrition={nutrition}
-                  food={food}
-                  idx={idx}
-                  type="view"
-                />
-              ))
-            ) : (
-              <h5 className="no-upcoming-food-text">
-                There are no assigned meal plans.
-              </h5>
-            )}
-          </div>
-        </Grid>
-        <Grid item xs={6} className="coachNutrition__homeRightContainer">
-          <div style={{ width: "90%" }} className="coachNutrition__row">
-            <h1>Saved Meal Plans</h1>
-            <div onClick={() => history.push("/view-all-saved-nutrition")}>
-              View All
-            </div>
-          </div>
-          <div style={{ width: "90%" }} className="coachNutrition__list">
-            {savedNutrition.length > 0 ? (
-              savedNutrition?.map((food, idx) => (
-                <NutritionCard
-                  key={idx}
-                  nutrition={nutrition}
-                  food={food}
-                  idx={idx}
-                />
-              ))
-            ) : (
-              <h5 className="no-upcoming-food-text">
-                There are no saved meal plans.
-              </h5>
-            )}
-          </div>
-        </Grid>
 
-        <Grid item xs={6} className="coachNutrition__homeRightContainer">
-          <div
-            style={{ width: "90%", marginLeft: 20 }}
-            className="coachNutrition__row"
-          >
-            <h1>Assigned LongTerm Plans</h1>
-            <div onClick={() => history.push("/all-LongTerm-Nutrition")}>
-              View All
+      <div
+        style={{
+          marginTop: 20,
+        }}
+      >
+        <Grid container spacing={2} className="coachNutrition__homeContainer">
+          <Grid item xs={6} className="coachNutrition__homeLeftContainer">
+            <div
+              style={{ width: "90%", paddingLeft: 20 }}
+              className="coachNutrition__row"
+            >
+              <h1>Assigned Meal Plans</h1>
+              <div onClick={() => history.push("/view-all-nutrition")}>
+                View All
+              </div>
             </div>
-          </div>
-          <div
-            style={{ width: "90%", marginLeft: 20 }}
-            className="coachNutrition__list"
-          >
-            {LongTermNutrition.length > 0 ? (
-              LongTermNutrition?.map((food, idx) => (
-                <NutritionCard
-                  key={idx}
-                  weeks={food.data.weeks}
-                  isLongTerm={true}
-                  idx={idx}
-                  food={food.data}
-                  selectedWeekNum={food.data.weeks[0].weeknum}
-                  navigate={true}
-                  type="view"
-                />
-              ))
-            ) : (
-              <h5 className="no-upcoming-food-text">
-                There are no saved meal plans.
-              </h5>
-            )}
-          </div>
-        </Grid>
+            <div
+              style={{ width: "90%", paddingLeft: 20 }}
+              className="coachNutrition__list"
+            >
+              {nutrition.length > 0 ? (
+                nutrition?.map((food, idx) => (
+                  <NutritionCard
+                    key={idx}
+                    nutrition={nutrition}
+                    food={food}
+                    idx={idx}
+                    type="view"
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
 
-        <Grid item xs={6} className="coachNutrition__homeRightContainer">
-          <div style={{ width: "90%" }} className="coachNutrition__row">
-            <h1>Saved LongTerm Plans</h1>
-            <div onClick={() => history.push("/all-saved-LongTerm-Nutrition")}>
-              View All
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <h5> There are no assigned Meals for now </h5>
+                </div>
+              )}
             </div>
-          </div>
-          <div style={{ width: "90%" }} className="coachNutrition__list">
-            {console.log("slt", savedLongTermNutrition)}
-            {savedLongTermNutrition.length > 0 ? (
-              savedLongTermNutrition?.map((food, idx) => (
-                <NutritionCard
-                  key={idx}
-                  weeks={food.data.weeks}
-                  isLongTerm={true}
-                  idx={idx}
-                  food={food.data}
-                  selectedWeekNum={food.data.weeks[0].weeknum}
-                  navigate={true}
-                />
-              ))
-            ) : (
-              <h5 className="no-upcoming-food-text">
-                There are no saved meal plans.
-              </h5>
-            )}
-          </div>
+          </Grid>
+          <Grid item xs={6} className="coachNutrition__homeRightContainer">
+            <div style={{ width: "90%" }} className="coachNutrition__row">
+              <h1>Saved Meal Plans</h1>
+              <div onClick={() => history.push("/view-all-saved-nutrition")}>
+                View All
+              </div>
+            </div>
+            <div style={{ width: "90%" }} className="coachNutrition__list">
+              {savedNutrition.length > 0 ? (
+                savedNutrition?.map((food, idx) => (
+                  <NutritionCard
+                    key={idx}
+                    nutrition={nutrition}
+                    food={food}
+                    idx={idx}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <h5> There are no Saved meals for now </h5>
+                </div>
+              )}
+            </div>
+          </Grid>
+
+          <Grid item xs={6} className="coachNutrition__homeLeftContainer">
+            <div
+              style={{ width: "90%", marginLeft: 20 }}
+              className="coachNutrition__row"
+            >
+              <h1>Assigned LongTerm Plans</h1>
+              <div onClick={() => history.push("/all-LongTerm-Nutrition")}>
+                View All
+              </div>
+            </div>
+            <div
+              style={{ width: "90%", marginLeft: 20 }}
+              className="coachNutrition__list"
+            >
+              {LongTermNutrition.length > 0 ? (
+                LongTermNutrition?.map((food, idx) => (
+                  <NutritionCard
+                    key={idx}
+                    weeks={food.data.weeks}
+                    isLongTerm={true}
+                    idx={idx}
+                    food={food.data}
+                    selectedWeekNum={food.data.weeks[0].weeknum}
+                    navigate={true}
+                    type="view"
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <h5> There are no Assigned LongTerm Meals for now </h5>
+                </div>
+              )}
+            </div>
+          </Grid>
+
+          <Grid item xs={6} className="coachNutrition__homeRightContainer">
+            <div style={{ width: "90%" }} className="coachNutrition__row">
+              <h1>Saved LongTerm Plans</h1>
+              <div
+                onClick={() => history.push("/all-saved-LongTerm-Nutrition")}
+              >
+                View All
+              </div>
+            </div>
+            <div style={{ width: "90%" }} className="coachNutrition__list">
+              {console.log("slt", savedLongTermNutrition)}
+              {savedLongTermNutrition.length > 0 ? (
+                savedLongTermNutrition?.map((food, idx) => (
+                  <NutritionCard
+                    key={idx}
+                    weeks={food.data.weeks}
+                    isLongTerm={true}
+                    idx={idx}
+                    food={food.data}
+                    selectedWeekNum={food.data.weeks[0].weeknum}
+                    navigate={true}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    backgroundColor: "#fff",
+
+                    padding: "10px 20px",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                    fontWeight: "normal",
+
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <h5> There are no Saved LongTerm meals for now </h5>
+                </div>
+              )}
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </div>
   );
 }

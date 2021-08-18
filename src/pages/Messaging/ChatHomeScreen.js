@@ -160,6 +160,26 @@ function ChatHomeScreen({ navigation }) {
         </div>
 
         {chats}
+        {chats.length == 0 && (
+          <h1
+            onClick={() => {
+              history.push("/all-athletes");
+            }}
+            style={{
+              marginLeft: 20,
+              fontSize: 18,
+              backgroundColor: "white",
+              textAlign: "center",
+              height: 90,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 10,
+            }}
+          >
+            No Conversions yet, Start a conversion
+          </h1>
+        )}
       </div>
     </div>
   );

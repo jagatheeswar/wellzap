@@ -21,7 +21,10 @@ function CoachProfileForm() {
   const [gender, setgender] = useState("");
   const [address, setaddress] = useState("");
   const [dob, setdob] = useState("");
+  const [pin, setPin] = useState("");
+
   const [certificates, setCertificates] = useState("");
+
   const [awards, setAwards] = useState("");
   const [editable, seteditable] = useState(false);
   const userData = useSelector(selectUserData);
@@ -73,6 +76,7 @@ function CoachProfileForm() {
           setdob(snap.data()?.dob);
           setCertificates(snap.data()?.certificates);
           setAwards(snap.data()?.awards);
+          setPin(snap.data()?.pin);
         });
     }
   }, [user, userData, temperoryId]);

@@ -10,12 +10,14 @@ function Header(props) {
   const history = useHistory();
   const userData = useSelector(selectUserData);
   const userType = useSelector(selectUserType);
+  const [pin, setPin] = useState(null);
   const Id = props.Id;
   const [name, setname] = useState(null);
   const [img, setimg] = useState(null);
   const [coachName, setCoachName] = useState("");
   const [CoachData, setCoachData] = useState(null);
   const location = useLocation();
+
   console.log(Id);
   useEffect(() => {
     if (userType === "coach") {
@@ -56,6 +58,7 @@ function Header(props) {
             setCoachData(snap.data());
             setimg(snap.data().imageUrl);
             setname(snap.data().name);
+            setPin(snap.data()?.pin);
           });
       } else {
         db.collection("athletes")
@@ -82,7 +85,11 @@ function Header(props) {
             />
             <img
               className="image"
-              src={img && img}
+              src={
+                img
+                  ? img
+                  : "https://firebasestorage.googleapis.com/v0/b/wellzap-22b06.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=92ce4f61-3c75-421a-888f-df954a58c516"
+              }
               alt={name && name}
               width="100px"
               height="100px"
@@ -91,10 +98,28 @@ function Header(props) {
           <div className="coachProfile__content">
             {
               userType === "coach" ? (
-                <h1>{name && name}</h1>
+                <div>
+                  <h1>{name && name}</h1>
+                  <h2
+                    style={{
+                      fontSize: 15,
+                    }}
+                  >
+                    Coach ID :{userData?.data?.pin && userData?.data?.pin}
+                  </h2>
+                </div>
               ) : (
                 // : props.athlete ?
-                <h1>{name && name}</h1>
+                <div>
+                  <h1>{name && name}</h1>
+                  <h2
+                    style={{
+                      fontSize: 15,
+                    }}
+                  >
+                    Coach ID :{pin && pin}
+                  </h2>
+                </div>
               )
               // : (
               //   <h1>{coachName}</h1>
@@ -119,7 +144,11 @@ function Header(props) {
           />
           <img
             className="image"
-            src={img ? img : userData?.data?.imageUrl}
+            src={
+              userData?.data?.imageUrl
+                ? userData?.data?.imageUrl
+                : "https://firebasestorage.googleapis.com/v0/b/wellzap-22b06.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=92ce4f61-3c75-421a-888f-df954a58c516"
+            }
             alt={name ? name : userData?.data.name}
             width="100px"
             height="100px"
@@ -131,7 +160,9 @@ function Header(props) {
               <h1>{name ? name : userData?.data.name}</h1>
             ) : (
               // : props.athlete ?
-              <h1>{userData?.data.name}</h1>
+              <div>
+                <h1>{userData?.data.name}1jk</h1>
+              </div>
             )
             // : (
             //   <h1>{coachName}</h1>
