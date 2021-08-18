@@ -24,7 +24,7 @@ function AthleteNutrition() {
   const [coachMealHistory, setCoachMealHistory] = useState([]);
 
   useEffect(() => {
-    if (userData?.data?.metrics[formatDate()]) {
+    if (userData?.data?.metrics) {
       if (userData?.data?.metrics[formatDate()]?.water) {
         setWater(userData?.data?.metrics[formatDate()]?.water);
       }
@@ -127,7 +127,15 @@ function AthleteNutrition() {
           >
             <h1>Nutrition Tracker</h1>
           </div>
-          <div onClick={() => history.push('/add-meal')}style={{ cursor: "pointer", width: "90%", marginTop: 11, marginLeft: 10 }}>
+          <div
+            onClick={() => history.push("/add-meal")}
+            style={{
+              cursor: "pointer",
+              width: "90%",
+              marginTop: 11,
+              marginLeft: 10,
+            }}
+          >
             <NutritionGoalProgress />
           </div>
           <div style={{ width: "90%", marginLeft: 10 }}>

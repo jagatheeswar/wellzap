@@ -8,6 +8,7 @@ import {
   setUserData,
   setUserType,
   setUserVerified,
+  selectUserVerified,
 } from "./features/userSlice";
 
 import { isMobile } from "react-device-detect";
@@ -90,6 +91,7 @@ import InvitesList from "./pages/Profile/InviteList";
 import InviteScreen from "./pages/Profile/InviteScreen";
 import ViewAllVideoWorkouts from "./pages/VOD/ViewAllVideoWorkouts";
 import EditPayments from "./pages/Payments/EditPayments";
+import AthleteOnBoarding from "./pages/Profile/AnthleteOnBoard";
 
 function App() {
   const user = useSelector(selectUser);
@@ -102,6 +104,7 @@ function App() {
   );
   const [deviceMobile, setdeviceMobile] = useState(isMobile);
   const [active, setActive] = useState(true);
+  const userVerified = useSelector(selectUserVerified);
 
   const toggle_date = (date) => {
     setselectedDate(date);
@@ -109,6 +112,9 @@ function App() {
   };
   console.log(12111, isMobile);
 
+  useEffect(() => {
+    console.log("nnnnnnnnnnnnnnnnnnnnnnnnn", userVerified, user);
+  }, [userVerified, user]);
   useEffect(() => {
     if (user) {
       db.collection("athletes")
@@ -124,11 +130,14 @@ function App() {
     }
 
     if (userType === "athlete") {
+      console.log(user);
       db.collection("athletes")
         .where("email", "==", user)
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
+            console.log("db", doc.data().verified);
+            dispatch(setUserVerified(doc.data().verified));
             dispatch(
               setUserData({
                 id: doc.id,
@@ -164,7 +173,7 @@ function App() {
           });
         });
     }
-  }, [user, checkactive]);
+  }, [user, checkactive, userVerified]);
 
   useEffect(() => {
     const getData = async () => {
@@ -180,14 +189,14 @@ function App() {
           dispatch(setUserType(userType));
         }
         if (userVerified != null) {
-          dispatch(setUserVerified(userVerified == "true" ? true : false));
+          dispatch(setUserVerified(userVerified));
         }
       } catch (e) {
         console.log("error" + e);
       }
     };
     getData();
-  }, []);
+  }, [checkactive]);
 
   const NotFound = () => {
     return <h4>404 Not Found</h4>;
@@ -310,6 +319,14 @@ function App() {
               <Signup />
             </Route>
             <Route component={NotFound} />
+          </Switch>
+        </Router>
+      ) : !userVerified && userType == "athlete" ? (
+        <Router>
+          <Switch>
+            <Route>
+              <AthleteOnBoarding />
+            </Route>
           </Switch>
         </Router>
       ) : active ? (

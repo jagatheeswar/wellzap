@@ -11,7 +11,7 @@ import {
   setUserVerified,
   logout,
 } from "../../features/userSlice";
-import { db } from "../../utils/firebase";
+import { db, auth } from "../../utils/firebase";
 import Header from "../../Components/Header/Header";
 import firebase from "firebase";
 import "./Profile.css";
@@ -75,7 +75,7 @@ function AthleteOnBoarding(props) {
             if (doc.data().verified) {
               dispatch(setUserVerified(true));
               history.push("/");
-              props.reload(!props.active);
+              //props.reload(!props.active);
 
               //setVerified(true);
               //navigation.navigate("AthleteFlow");
@@ -291,6 +291,8 @@ function AthleteOnBoarding(props) {
                 outline: "none",
                 width: 100,
                 height: 40,
+                marginRight: 50,
+
                 backgroundColor: "#fcd11c",
                 borderRadius: 7,
                 boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.2)",
@@ -300,6 +302,25 @@ function AthleteOnBoarding(props) {
               }}
             >
               Refresh
+            </button>
+
+            <button
+              style={{
+                border: "none",
+                outline: "none",
+                width: 100,
+                height: 40,
+                backgroundColor: "#fcd11c",
+                borderRadius: 7,
+                boxShadow: "0px 0px 2px 0px rgb(0,0,0,0.2)",
+              }}
+              onClick={() => {
+                auth.signOut();
+                dispatch(logout());
+                history.push("/");
+              }}
+            >
+              SignOut
             </button>
           </div>
         </div>

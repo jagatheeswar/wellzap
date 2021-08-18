@@ -7,12 +7,6 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import "date-fns";
 import Axios from "axios";
 
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import SearchableDropdown from "./SearchableDropdown";
 
 import {

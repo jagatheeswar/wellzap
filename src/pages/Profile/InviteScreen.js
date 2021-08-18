@@ -338,6 +338,7 @@ function InviteScreen({ route, navigation }) {
             .catch(function (error) {
               console.log("Error getting documents: ", error);
             });
+          alert("done");
         })
         .catch(function (error) {
           console.log("Error getting documents: ", error);

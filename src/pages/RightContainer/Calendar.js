@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
+
+import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import "./Calendar.css";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -112,6 +113,9 @@ const Calendar_ = (props) => {
     // console.log(Object.keys(events));
     setselectedevents(dates);
   }, [selectedDate]);
+  React.useEffect(() => {
+    console.log(selectedDay);
+  });
 
   React.useEffect(() => {
     var today_temp = [];
@@ -123,18 +127,12 @@ const Calendar_ = (props) => {
     let now = new Date();
     if (props?.selectedDate) {
       var d = moment(new Date(props?.selectedDate));
+      setSelectedDay({ year: d.year(), month: d.month() + 1, day: d.date() });
     } else {
       var d = moment();
+      setSelectedDay({ year: d.year(), month: d.month() + 1, day: d.date() });
     }
 
-    console.log(now);
-    let today_date = {
-      year: d.year(),
-      month: d.month() + 1,
-      day: d.date(),
-    };
-
-    setSelectedDay(today_date);
     if (userData) {
       db.collection("events")
         .where("athletes", "array-contains", userData.id)
