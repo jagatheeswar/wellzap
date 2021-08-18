@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
+import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import "./Calendar.css";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";

@@ -46,6 +46,7 @@ const InputWrapper = styled("div")`
   padding: 1px;
   display: flex;
   flex-wrap: wrap;
+  margin-left: 4%;
 
   &:hover {
     border-color: #40a9ff;
@@ -187,7 +188,6 @@ function AssignWorkout(props) {
     "Sat",
   ]);
   const [specificDates, setSpecificDates] = useState([]);
-  const [athlete_dates, setathlete_dates] = useState({});
   const [selectedWorkoutIndex, setSelectedWorkoutIndex] = useState("");
   const [selectedWorkoutEdit, setSelectedWorkoutEdit] = useState("");
   const [group, setGroup] = useState([]);
@@ -343,37 +343,6 @@ function AssignWorkout(props) {
     selectedAthletes.map((athlete, idx) => {
       if (athlete_selecteddays[athlete.id]) {
         temp[idx].selectedDays = athlete_selecteddays[athlete.id];
-      } else {
-        if (athlete_dates[athlete.id]) {
-          // temp[idx].selectedDays = athlete_selecteddays[athlete.id];
-        } else {
-          let tmp = { ...athlete_dates };
-
-          var curr = new Date(); // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the  day of the month - the day of the week \
-
-          var firstday = new Date(curr.setDate(first)).toUTCString();
-          var lastday = new Date(
-            curr.setDate(curr.getDate() + 6)
-          ).toUTCString();
-
-          temp[idx].currentStartWeek = formatSpecificDate(firstday);
-          temp[idx].currentEndWeek = formatSpecificDate(lastday);
-
-          let t1 = formatSpecificDate(firstday);
-
-          let datesCollection = [];
-
-          for (var i = 0; i < 7; i++) {
-            datesCollection.push(t1);
-            t1 = incr_date(t1);
-          }
-
-          tmp[athlete.id] = datesCollection;
-
-          console.log(athlete_dates);
-          setathlete_dates(tmp);
-        }
       }
 
       setSelectedAthletes1(temp);
@@ -428,6 +397,9 @@ function AssignWorkout(props) {
   useEffect(() => {
     if (currentStartWeek) {
       let temp = currentStartWeek;
+      let tmp = [...specificDates];
+      
+      
 
       let datesCollection = [];
 
@@ -438,7 +410,7 @@ function AssignWorkout(props) {
 
       setSpecificDates(datesCollection);
     }
-  }, []);
+  }, [currentStartWeek]);
 
   useEffect(() => {
     if (userData?.id) {
@@ -978,15 +950,7 @@ function AssignWorkout(props) {
           ) : (
             <div>
               <div {...getRootProps()}>
-                <Label
-                  style={{
-                    fontSize: 18,
-                    marginLeft: 0,
-                    fontWeight: 400,
-                  }}
-                >
-                  Search for Athletes
-                </Label>
+                <Label {...getInputLabelProps()}>Search for Athletes</Label>
                 <InputWrapper
                   ref={setAnchorEl}
                   className={focused ? "focused" : ""}
@@ -1091,7 +1055,7 @@ function AssignWorkout(props) {
                             alignItems: "center",
                           }}
                           onClick={() => {
-                            var curr = new Date(athlete.currentStartWeek); // get current date
+                            var curr = new Date(currentStartWeek); // get current date
                             var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
 
                             var firstday = new Date(
@@ -1100,36 +1064,14 @@ function AssignWorkout(props) {
                             var lastday = new Date(
                               curr.setDate(curr.getDate() + 6)
                             ).toUTCString();
-                            if (
-                              new Date(athlete.currentStartWeek) > new Date()
-                            ) {
-                              let temp = { ...athlete_dates };
-                              let tm = [...selectedAthletes1];
-                              tm[index].currentStartWeek =
-                                formatSpecificDate(firstday);
-
-                              tm[index].currentEndWeek =
-                                formatSpecificDate(lastday);
-                              setSelectedAthletes1(tm);
-
-                              let tmp = formatSpecificDate(firstday);
-
-                              let datesCollection = [];
-
-                              for (var i = 0; i < 7; i++) {
-                                datesCollection.push(tmp);
-                                tmp = incr_date(tmp);
-                              }
-
-                              temp[athlete.id] = datesCollection;
-
-                              setathlete_dates(temp);
+                            if (new Date(currentStartWeek) > new Date()) {
+                              setCurrentStartWeek(formatSpecificDate(firstday));
+                              setCurrentEndWeek(formatSpecificDate(lastday));
                             }
                           }}
                         >
                           <ChevronLeftIcon />
                         </IconButton>
-                        {console.log(athlete.currentStartWeek)}
                         {daysList.map((day, idx) => (
                           <div
                             key={idx}
@@ -1137,13 +1079,13 @@ function AssignWorkout(props) {
                               if (type !== "view") {
                                 if (
                                   athlete?.selectedDays?.includes(
-                                    athlete_dates[athlete.id][idx]
+                                    specificDates[idx]
                                   )
                                 ) {
                                   let selected =
                                     selectedAthletes[index].selectedDays;
                                   var index1 = selected.indexOf(
-                                    athlete_dates[athlete.id][idx]
+                                    specificDates[idx]
                                   );
                                   if (index1 !== -1) {
                                     selected.splice(index1, 1);
@@ -1155,10 +1097,8 @@ function AssignWorkout(props) {
                                   }
                                 } else {
                                   if (
-                                    new Date(athlete_dates[athlete.id][idx]) >
-                                      new Date() ||
-                                    athlete_dates[athlete.id][idx] ===
-                                      formatDate()
+                                    new Date(specificDates[idx]) > new Date() ||
+                                    specificDates[idx] === formatDate()
                                   ) {
                                     let selectedDays =
                                       selectedAthletes[index].selectedDays;
@@ -1166,7 +1106,7 @@ function AssignWorkout(props) {
                                       ...selectedAthletes[index],
                                       selectedDays: [
                                         ...selectedDays,
-                                        athlete_dates[athlete.id][idx],
+                                        specificDates[idx],
                                       ],
                                     };
                                     let temp = athlete_selecteddays;
@@ -1181,7 +1121,7 @@ function AssignWorkout(props) {
                             }}
                             style={
                               athlete?.selectedDays?.includes(
-                                athlete_dates[athlete.id][idx]
+                                specificDates[idx]
                               )
                                 ? {
                                     backgroundColor: "#ffe486",
@@ -1212,6 +1152,7 @@ function AssignWorkout(props) {
                             }
                           >
                             <div>
+                              {console.log(specificDates[idx])}
                               <div
                                 style={{
                                   fontSize: "12px",
@@ -1221,7 +1162,7 @@ function AssignWorkout(props) {
                                   textAlign: "center",
                                   padding: "5px",
                                   color:
-                                    new Date(athlete_dates[athlete.id][idx]) <
+                                    new Date(specificDates[idx]) <
                                     new Date(formatDate())
                                       ? "grey"
                                       : "black",
@@ -1240,7 +1181,7 @@ function AssignWorkout(props) {
                             alignItems: "center",
                           }}
                           onClick={() => {
-                            var curr = new Date(athlete.currentStartWeek); // get current date
+                            var curr = new Date(currentStartWeek); // get current date
                             var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
                             var firstday = new Date(
@@ -1249,28 +1190,6 @@ function AssignWorkout(props) {
                             var lastday = new Date(
                               curr.setDate(curr.getDate() + 6)
                             ).toUTCString();
-
-                            let temp = { ...athlete_dates };
-                            let tm = [...selectedAthletes1];
-                            tm[index].currentStartWeek =
-                              formatSpecificDate(firstday);
-
-                            tm[index].currentEndWeek =
-                              formatSpecificDate(lastday);
-                            setSelectedAthletes1(tm);
-
-                            let tmp = formatSpecificDate(firstday);
-
-                            let datesCollection = [];
-
-                            for (var i = 0; i < 7; i++) {
-                              datesCollection.push(tmp);
-                              tmp = incr_date(tmp);
-                            }
-
-                            temp[athlete.id] = datesCollection;
-
-                            setathlete_dates(temp);
 
                             setCurrentStartWeek(formatSpecificDate(firstday));
                             setCurrentEndWeek(formatSpecificDate(lastday));
@@ -1294,7 +1213,7 @@ function AssignWorkout(props) {
                           cursor: "pointer",
                         }}
                       >
-                        {athlete_dates[athlete.id]?.map((tempDate, idx) => (
+                        {specificDates?.map((tempDate, idx) => (
                           <div
                             style={{
                               width: "45px",
@@ -1313,7 +1232,7 @@ function AssignWorkout(props) {
                                 paddingBottom: "5px",
                                 textAlign: "center",
                                 color:
-                                  new Date(athlete_dates[athlete.id][idx]) <
+                                  new Date(specificDates[idx]) <
                                   new Date(formatDate())
                                     ? "grey"
                                     : "black",
@@ -1530,9 +1449,7 @@ function AssignWorkout(props) {
                               }
                             }}
                           >
-                            {selectedWorkoutEdit === idx1
-                              ? "close details"
-                              : "view details"}
+                            view details
                           </div>
                         </div>
                         <div>

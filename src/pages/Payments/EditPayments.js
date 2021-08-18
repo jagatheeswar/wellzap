@@ -19,7 +19,7 @@ import { Pie } from "react-chartjs-2";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
+import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import DatePicker from "react-datepicker";
 
 const options = {

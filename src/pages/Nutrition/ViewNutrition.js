@@ -187,6 +187,8 @@ function CreateNutrition(props) {
     "Sat",
   ]);
   const [specificDates, setSpecificDates] = useState([]);
+  const [athlete_dates, setathlete_dates] = useState({});
+
   const [type, setType] = useState("");
   const location = useLocation();
   const history = useHistory();
@@ -318,12 +320,43 @@ function CreateNutrition(props) {
   }, [selectedAthletes, userData, userType]);
 
   useEffect(() => {
-    console.log(athlete_selecteddays);
     let temp = [...selectedAthletes];
     selectedAthletes.map((athlete, idx) => {
       if (athlete_selecteddays[athlete.id]) {
         temp[idx].selectedDays = athlete_selecteddays[athlete.id];
+      } else {
+        if (athlete_dates[athlete.id]) {
+          // temp[idx].selectedDays = athlete_selecteddays[athlete.id];
+        } else {
+          let tmp = { ...athlete_dates };
+
+          var curr = new Date(); // get current date
+          var first = curr.getDate() - curr.getDay(); // First day is the  day of the month - the day of the week \
+
+          var firstday = new Date(curr.setDate(first)).toUTCString();
+          var lastday = new Date(
+            curr.setDate(curr.getDate() + 6)
+          ).toUTCString();
+
+          temp[idx].currentStartWeek = formatSpecificDate(firstday);
+          temp[idx].currentEndWeek = formatSpecificDate(lastday);
+
+          let t1 = formatSpecificDate(firstday);
+
+          let datesCollection = [];
+
+          for (var i = 0; i < 7; i++) {
+            datesCollection.push(t1);
+            t1 = incr_date(t1);
+          }
+
+          tmp[athlete.id] = datesCollection;
+
+          console.log(athlete_dates);
+          setathlete_dates(tmp);
+        }
       }
+
       setSelectedAthletes1(temp);
     });
   }, [selectedAthletes]);
@@ -362,7 +395,7 @@ function CreateNutrition(props) {
 
       setSpecificDates(datesCollection);
     }
-  }, [currentStartWeek]);
+  }, []);
 
   useEffect(() => {
     if (userData?.id && userType == "coach") {
@@ -517,7 +550,8 @@ function CreateNutrition(props) {
                         alignItems: "center",
                       }}
                       onClick={() => {
-                        var curr = new Date(currentStartWeek); // get current date
+                        var curr = new Date(athlete.currentStartWeek); // get current date
+                        // get current date
                         var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
 
                         var firstday = new Date(
@@ -526,9 +560,28 @@ function CreateNutrition(props) {
                         var lastday = new Date(
                           curr.setDate(curr.getDate() + 6)
                         ).toUTCString();
-                        if (new Date(currentStartWeek) > new Date()) {
-                          setCurrentStartWeek(formatSpecificDate(firstday));
-                          setCurrentEndWeek(formatSpecificDate(lastday));
+                        if (new Date(athlete.currentStartWeek) > new Date()) {
+                          let temp = { ...athlete_dates };
+                          let tm = [...selectedAthletes1];
+                          tm[index].currentStartWeek =
+                            formatSpecificDate(firstday);
+
+                          tm[index].currentEndWeek =
+                            formatSpecificDate(lastday);
+                          setSelectedAthletes1(tm);
+
+                          let tmp = formatSpecificDate(firstday);
+
+                          let datesCollection = [];
+
+                          for (var i = 0; i < 7; i++) {
+                            datesCollection.push(tmp);
+                            tmp = incr_date(tmp);
+                          }
+
+                          temp[athlete.id] = datesCollection;
+
+                          setathlete_dates(temp);
                         }
                       }}
                     >
@@ -542,12 +595,14 @@ function CreateNutrition(props) {
                           if (type !== "view") {
                             if (
                               athlete?.selectedDays?.includes(
-                                specificDates[idx]
+                                athlete_dates[athlete.id][idx]
                               )
                             ) {
                               let selected =
                                 selectedAthletes[index].selectedDays;
-                              var index1 = selected.indexOf(specificDates[idx]);
+                              var index1 = selected.indexOf(
+                                athlete_dates[athlete.id][idx]
+                              );
                               if (index1 !== -1) {
                                 selected.splice(index1, 1);
                                 selectedAthletes[index] = {
@@ -558,8 +613,9 @@ function CreateNutrition(props) {
                               }
                             } else {
                               if (
-                                new Date(specificDates[idx]) > new Date() ||
-                                specificDates[idx] === formatDate()
+                                new Date(athlete_dates[athlete.id][idx]) >
+                                  new Date() ||
+                                athlete_dates[athlete.id][idx] === formatDate()
                               ) {
                                 let selectedDays =
                                   selectedAthletes[index].selectedDays;
@@ -567,7 +623,7 @@ function CreateNutrition(props) {
                                   ...selectedAthletes[index],
                                   selectedDays: [
                                     ...selectedDays,
-                                    specificDates[idx],
+                                    athlete_dates[athlete.id][idx],
                                   ],
                                 };
                                 let temp = athlete_selecteddays;
@@ -581,7 +637,9 @@ function CreateNutrition(props) {
                           }
                         }}
                         style={
-                          athlete?.selectedDays?.includes(specificDates[idx])
+                          athlete?.selectedDays?.includes(
+                            athlete_dates[athlete.id][idx]
+                          )
                             ? {
                                 backgroundColor: "#ffe486",
                                 color: "#fff",
@@ -620,7 +678,7 @@ function CreateNutrition(props) {
                               textAlign: "center",
                               padding: "5px",
                               color:
-                                new Date(specificDates[idx]) <
+                                new Date(athlete_dates[athlete.id][idx]) <
                                 new Date(formatDate())
                                   ? "grey"
                                   : "black",
@@ -639,7 +697,7 @@ function CreateNutrition(props) {
                         alignItems: "center",
                       }}
                       onClick={() => {
-                        var curr = new Date(currentStartWeek); // get current date
+                        var curr = new Date(athlete.currentStartWeek); // get current date
                         var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
                         var firstday = new Date(
@@ -649,8 +707,26 @@ function CreateNutrition(props) {
                           curr.setDate(curr.getDate() + 6)
                         ).toUTCString();
 
-                        setCurrentStartWeek(formatSpecificDate(firstday));
-                        setCurrentEndWeek(formatSpecificDate(lastday));
+                        let temp = { ...athlete_dates };
+                        let tm = [...selectedAthletes1];
+                        tm[index].currentStartWeek =
+                          formatSpecificDate(firstday);
+
+                        tm[index].currentEndWeek = formatSpecificDate(lastday);
+                        setSelectedAthletes1(tm);
+
+                        let tmp = formatSpecificDate(firstday);
+
+                        let datesCollection = [];
+
+                        for (var i = 0; i < 7; i++) {
+                          datesCollection.push(tmp);
+                          tmp = incr_date(tmp);
+                        }
+
+                        temp[athlete.id] = datesCollection;
+
+                        setathlete_dates(temp);
                       }}
                     >
                       <ChevronRightIcon />
@@ -671,7 +747,7 @@ function CreateNutrition(props) {
                       cursor: "pointer",
                     }}
                   >
-                    {specificDates?.map((tempDate, idx) => (
+                    {athlete_dates[athlete.id]?.map((tempDate, idx) => (
                       <div
                         style={{
                           width: "45px",
@@ -690,7 +766,7 @@ function CreateNutrition(props) {
                             paddingBottom: "5px",
                             textAlign: "center",
                             color:
-                              new Date(specificDates[idx]) <
+                              new Date(athlete_dates[athlete.id][idx]) <
                               new Date(formatDate())
                                 ? "grey"
                                 : "black",
@@ -872,7 +948,8 @@ function CreateNutrition(props) {
                           alignItems: "center",
                         }}
                         onClick={() => {
-                          var curr = new Date(currentStartWeek); // get current date
+                          var curr = new Date(athlete.currentStartWeek); // get current date
+                          // get current date
                           var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
 
                           var firstday = new Date(
@@ -882,8 +959,27 @@ function CreateNutrition(props) {
                             curr.setDate(curr.getDate() + 6)
                           ).toUTCString();
                           if (new Date(currentStartWeek) > new Date()) {
-                            setCurrentStartWeek(formatSpecificDate(firstday));
-                            setCurrentEndWeek(formatSpecificDate(lastday));
+                            let temp = { ...athlete_dates };
+                            let tm = [...selectedAthletes1];
+                            tm[index].currentStartWeek =
+                              formatSpecificDate(firstday);
+
+                            tm[index].currentEndWeek =
+                              formatSpecificDate(lastday);
+                            setSelectedAthletes1(tm);
+
+                            let tmp = formatSpecificDate(firstday);
+
+                            let datesCollection = [];
+
+                            for (var i = 0; i < 7; i++) {
+                              datesCollection.push(tmp);
+                              tmp = incr_date(tmp);
+                            }
+
+                            temp[athlete.id] = datesCollection;
+
+                            setathlete_dates(temp);
                           }
                         }}
                       >
@@ -897,13 +993,13 @@ function CreateNutrition(props) {
                               console.log(day);
                               if (
                                 athlete?.selectedDays?.includes(
-                                  specificDates[idx]
+                                  athlete_dates[athlete.id][idx]
                                 )
                               ) {
                                 let selected =
                                   selectedAthletes[index].selectedDays;
                                 var index1 = selected.indexOf(
-                                  specificDates[idx]
+                                  athlete_dates[athlete.id][idx]
                                 );
                                 if (index1 !== -1) {
                                   selected.splice(index1, 1);
@@ -915,8 +1011,10 @@ function CreateNutrition(props) {
                                 }
                               } else {
                                 if (
-                                  new Date(specificDates[idx]) > new Date() ||
-                                  specificDates[idx] === formatDate()
+                                  new Date(athlete_dates[athlete.id][idx]) >
+                                    new Date() ||
+                                  athlete_dates[athlete.id][idx] ===
+                                    formatDate()
                                 ) {
                                   let selectedDays =
                                     selectedAthletes[index].selectedDays;
@@ -924,7 +1022,7 @@ function CreateNutrition(props) {
                                     ...selectedAthletes[index],
                                     selectedDays: [
                                       ...selectedDays,
-                                      specificDates[idx],
+                                      athlete_dates[athlete.id][idx],
                                     ],
                                   };
                                   setSelectedAthletes([...selectedAthletes]);
@@ -933,7 +1031,9 @@ function CreateNutrition(props) {
                             }
                           }}
                           style={
-                            athlete?.selectedDays?.includes(specificDates[idx])
+                            athlete?.selectedDays?.includes(
+                              athlete_dates[athlete.id][idx]
+                            )
                               ? {
                                   backgroundColor: "#ffe486",
                                   color: "#fff",
@@ -972,7 +1072,7 @@ function CreateNutrition(props) {
                                 textAlign: "center",
                                 padding: "5px",
                                 color: athlete?.selectedDays?.includes(
-                                  specificDates[idx]
+                                  athlete_dates[athlete.id][idx]
                                 )
                                   ? "black"
                                   : "black",
@@ -991,7 +1091,8 @@ function CreateNutrition(props) {
                           alignItems: "center",
                         }}
                         onClick={() => {
-                          var curr = new Date(currentStartWeek); // get current date
+                          var curr = new Date(athlete.currentStartWeek); // get current date
+                          // get current date
                           var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
                           var firstday = new Date(
@@ -1000,6 +1101,28 @@ function CreateNutrition(props) {
                           var lastday = new Date(
                             curr.setDate(curr.getDate() + 6)
                           ).toUTCString();
+
+                          let temp = { ...athlete_dates };
+                          let tm = [...selectedAthletes1];
+                          tm[index].currentStartWeek =
+                            formatSpecificDate(firstday);
+
+                          tm[index].currentEndWeek =
+                            formatSpecificDate(lastday);
+                          setSelectedAthletes1(tm);
+
+                          let tmp = formatSpecificDate(firstday);
+
+                          let datesCollection = [];
+
+                          for (var i = 0; i < 7; i++) {
+                            datesCollection.push(tmp);
+                            tmp = incr_date(tmp);
+                          }
+
+                          temp[athlete.id] = datesCollection;
+
+                          setathlete_dates(temp);
 
                           setCurrentStartWeek(formatSpecificDate(firstday));
                           setCurrentEndWeek(formatSpecificDate(lastday));
@@ -1023,7 +1146,7 @@ function CreateNutrition(props) {
                         cursor: "pointer",
                       }}
                     >
-                      {specificDates?.map((tempDate, idx) => (
+                      {athlete_dates[athlete.id]?.map((tempDate, idx) => (
                         <div
                           style={{
                             width: "43px",

@@ -185,10 +185,10 @@ function CoachHomeReports() {
           });
 
           setData([
-            { title: "Due Today", value: today.length, color: "red" },
-            { title: "Pending", value: pending.length, color: "green" },
-            { title: "Due Soon", value: upcoming.length, color: "#00B1C0" },
-            { title: "Completed", value: completed.length, color: "#ffe486" },
+            { title: "Due Today", value: today.length, color: "orange" },
+            { title: "Pending", value: pending.length, color: "red" },
+            { title: "Due Soon", value: upcoming.length, color: "#ffe486" },
+            { title: "Completed", value: completed.length, color: "green" },
           ]);
 
           setPending(pending);

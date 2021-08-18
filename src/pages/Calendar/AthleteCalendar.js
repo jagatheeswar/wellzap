@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { db } from "../../utils/firebase";
 import CalendarScreenHeader from "./CalendarScreenHeader";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
+import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {

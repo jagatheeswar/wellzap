@@ -10,7 +10,7 @@ import {
 import { db } from "../../utils/firebase";
 import "./profile.css";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
+import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import moment from "moment";
 import firebase from "firebase";
 

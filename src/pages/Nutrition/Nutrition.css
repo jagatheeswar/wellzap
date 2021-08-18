@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 95%;
 }
 
 .nutritionHeader__info {
@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20px;
+
   background-color: #ffe486;
   border-radius: 20px;
   height: 20px;
