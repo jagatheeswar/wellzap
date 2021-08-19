@@ -1141,7 +1141,7 @@ export default function PostWorkoutDetails() {
             width: "100%",
           }}
         >
-          <h3 style={{ fontSize: 14, marginVertical: 7 }}>Description</h3>
+          <h3 style={{ fontSize: 14, marginVertical: 7 }}>Workout Feedback</h3>
           <input
             style={{
               borderWidth: 1,
@@ -1169,7 +1169,7 @@ export default function PostWorkoutDetails() {
             multiline={true}
             underlineColorAndroid="transparent"
             numberOfLines={4}
-            placeholder="Enter Description"
+            placeholder="Enter Workout Feedback"
             editable={completed ? false : true}
           />
         </div>

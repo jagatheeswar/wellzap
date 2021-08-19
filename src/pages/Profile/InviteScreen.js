@@ -722,7 +722,7 @@ function InviteScreen({ route, navigation }) {
             color: "black",
           }}
         >
-          1Frequency of Payment
+          Frequency of Payment
         </div>
 
         <div style={{}}>
