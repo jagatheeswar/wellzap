@@ -35,6 +35,8 @@ function NutritionCard({
   selectedDay,
   selectedDate,
   navigate,
+  nutritionName,
+  foodId,
 }) {
   const userType = useSelector(selectUserType);
   const history = useHistory();
@@ -143,7 +145,12 @@ function NutritionCard({
         <img src="/assets/nutrition.jpeg" alt="" width="110px" height="110px" />
         <div className="nutritionCard__info">
           <div className="nutritionCard__macroNutrients">
-            <h1> {food?.data?.nutrition?.nutritionName}</h1>
+            <h1>
+              {" "}
+              {nutritionName
+                ? nutritionName
+                : food?.data?.nutrition?.nutritionName}
+            </h1>
           </div>
           <div className="nutritionCard__macroNutrients">
             <h3>{selectedDate ? selectedDate : formatDate()}</h3>
@@ -156,52 +163,55 @@ function NutritionCard({
         style={{ position: "absolute", top: 10, right: 10 }}
         onClick={(e) => {
           e.stopPropagation();
-          var r = window.confirm("are you sure to delete!");
-          if (r == true) {
-            if (!isLongTerm) {
-              db.collection("Food")
-                .doc(food.id)
-                .delete()
-                .then(() => {
-                  console.log("Document successfully deleted!");
-                })
-                .catch((error) => {
-                  console.error("Error removing document: ", error);
-                });
-            } else {
-              db.collection("longTermMeal")
-                .doc(food.id)
-                .delete()
-                .then(() => {
-                  console.log("Document successfully deleted!");
-                })
-                .catch((error) => {
-                  console.error("Error removing document: ", error);
-                });
-
-              db.collection("Food")
-                .where("coachWorkoutId", "==", food.id)
-                .get()
-                .then(function (querySnapshot) {
-                  // Once we get the results, begin a batch
-                  var batch = db.batch();
-
-                  querySnapshot.forEach(function (doc) {
-                    // For each doc, add a delete operation to the batch
-                    batch.delete(doc.ref);
+          if (foodId) {
+            var r = window.confirm("are you sure to delete!");
+            if (r == true) {
+              if (!isLongTerm) {
+                db.collection("Food")
+                  .doc(food.id)
+                  .delete()
+                  .then(() => {
+                    console.log("Document successfully deleted!");
+                  })
+                  .catch((error) => {
+                    console.error("Error removing document: ", error);
+                  });
+              } else {
+                console.log(foodId);
+                db.collection("longTermMeal")
+                  .doc(foodId)
+                  .delete()
+                  .then(() => {
+                    console.log("Document successfully deleted!");
+                  })
+                  .catch((error) => {
+                    console.error("Error removing document: ", error);
                   });
 
-                  // Commit the batch
-                  return batch.commit();
-                })
-                .then(function () {
-                  // Delete completed!
-                  // ...
+                db.collection("Food")
+                  .where("coachNutritionId", "==", foodId)
+                  .get()
+                  .then(function (querySnapshot) {
+                    // Once we get the results, begin a batch
+                    var batch = db.batch();
 
-                  console.log("Delete completed");
-                });
+                    querySnapshot.forEach(function (doc) {
+                      // For each doc, add a delete operation to the batch
+                      batch.delete(doc.ref);
+                    });
+
+                    // Commit the batch
+                    return batch.commit();
+                  })
+                  .then(function () {
+                    // Delete completed!
+                    // ...
+
+                    console.log("Delete completed");
+                  });
+              }
+            } else {
             }
-          } else {
           }
         }}
       >

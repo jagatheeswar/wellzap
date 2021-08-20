@@ -4,6 +4,8 @@ import NutritionScreenHeader from "./NutritionScreenHeader";
 import { makeStyles } from "@material-ui/core/styles";
 import AddMeal from "../../Components/AddMeal/AddMeal";
 import { useHistory } from "react-router";
+import DatePicker from "react-datepicker";
+
 import { db } from "../../utils/firebase";
 import { selectUserData } from "../../features/userSlice";
 import { useSelector } from "react-redux";
@@ -11,6 +13,7 @@ import { formatDate } from "../../functions/formatDate";
 import { useLocation } from "react-router-dom";
 import firebase from "firebase";
 import Switch from "@material-ui/core/Switch";
+import formatSpecificDate from "../../functions/formatSpecificDate";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -28,6 +31,7 @@ function AthleteAddMeal() {
   const userData = useSelector(selectUserData);
   const [serverData, setServerData] = useState([]);
   const [FoodName, setFoodName] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [entireFood, setEntireFood] = useState([
     {
       meal: "",
@@ -109,18 +113,42 @@ function AthleteAddMeal() {
         });
     }
   }, [requestDate, userData]);
+
   useEffect(() => {
     if (userData) {
+      console.log(selectedDate);
+      console.log(location.state);
       if (!location?.state?.todaysFoodId) {
         db.collection("AthleteNutrition")
           .doc(userData?.id)
           .collection("nutrition")
-          .doc(formatDate())
+          .doc(formatSpecificDate(selectedDate))
           .get()
           .then((doc) => {
+            console.log(formatSpecificDate(selectedDate));
             if (doc.data()?.entireFood) {
               setEntireFood(doc.data()?.entireFood);
               setTodaysFoodId(doc.id);
+              console.log(doc.data()?.entireFood);
+            } else {
+              console.log("niData");
+              setEntireFood([
+                {
+                  meal: "",
+                  description: "",
+                  food: [
+                    {
+                      foodName: "",
+                      proteins: 0,
+                      carbs: 0,
+                      fat: 0,
+                      calories: 0,
+                      quantity: 1,
+                    },
+                  ],
+                },
+              ]);
+              setTodaysFoodId(formatSpecificDate(selectedDate));
             }
           })
           .catch((error) => {
@@ -128,16 +156,15 @@ function AthleteAddMeal() {
           });
       }
     }
-  }, [userData]);
+  }, [userData, selectedDate]);
   useEffect(() => {
     if (location.state?.nutrition) {
-      console.log(location.state?.nutrition.data.nutrition.plan);
       // setCoachEntireFood(location.state?.nutrition.data.nutrition.plan);
       setFoodName(location.state?.nutrition.data.nutrition.nutritionName);
     }
   }, [location.state?.nutrition]);
 
-  console.log("total", location.state);
+  //console.log("total", location.state);
 
   useEffect(() => {
     if (location.state?.type) {
@@ -147,7 +174,6 @@ function AthleteAddMeal() {
 
   useEffect(() => {
     if (location.state?.entireFood && location.state.entireFood.length > 0) {
-      console.log(16);
       setEntireFood(location.state.entireFood);
     }
   }, [location.state?.entireFood]);
@@ -155,7 +181,6 @@ function AthleteAddMeal() {
   useEffect(() => {
     if (location.state?.todaysFoodId) {
       setFoodId(location.state.todaysFoodId);
-      console.log("Food id is", location.state?.todaysFoodId);
     }
   }, [location.state?.todaysFoodId]);
 
@@ -175,7 +200,7 @@ function AthleteAddMeal() {
   return (
     <div className="athleteAddMeal">
       <NutritionScreenHeader
-        name={"Food Logs for " + foodId ? foodId : todaysFoodId}
+        name={foodId ? foodId : todaysFoodId}
         entireFood={entireFood}
         todaysFoodId={todaysFoodId}
       />
@@ -184,6 +209,7 @@ function AthleteAddMeal() {
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
+          paddingRight: 20,
         }}
       >
         <div onClick={() => {}}>Your Meal</div>
@@ -199,7 +225,24 @@ function AthleteAddMeal() {
         />
         <div onClick={() => {}}>Assigned Meal</div>
       </div>
-      {console.log(entireFood)}
+      <div style={{ margin: 20 }}>
+        <h4 style={{ borderTop: 20 }}>Date</h4>
+
+        <div className="Datepicker__container" style={{ zIndex: 999 }}>
+          <DatePicker
+            placeholder="Set Date"
+            // dateFormat="YYYY-MM-DD"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            showIcon={false}
+            selected={selectedDate}
+            onChange={(date) => {
+              setSelectedDate(date);
+            }}
+            disabled={foodId ? true : false}
+          />
+        </div>
+      </div>
       {!showCoachMeal && entireFood && (
         <AddMeal
           serverData={serverData}
@@ -232,7 +275,6 @@ function AthleteAddMeal() {
         ))}
 
       {/* */}
-      {console.log(CoachMeal[0]?.data?.nutrition?.entireFood)}
       {!showCoachMeal && (
         <div
           className="athleteFoodCard__submitMealButton"
@@ -255,7 +297,7 @@ function AthleteAddMeal() {
                 db.collection("AthleteNutrition")
                   .doc(userData?.id)
                   .collection("nutrition")
-                  .doc(foodId ? foodId : formatDate())
+                  .doc(foodId ? foodId : formatSpecificDate(selectedDate))
                   .set(
                     {
                       entireFood,

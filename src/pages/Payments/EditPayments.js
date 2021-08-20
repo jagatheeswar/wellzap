@@ -110,6 +110,20 @@ function EditPayments() {
     { title: "Completed", value: 20, color: "#ffe486" },
   ]);
 
+  useEffect(() => {
+    db.collection("athletes")
+      .doc(temperoryId)
+      .get()
+      .then((snap) => {
+        setAmount(
+          snap.data()?.payments?.amount ? snap.data()?.payments?.amount : 0
+        );
+        if (snap.data()?.payments?.frequency) {
+          setFrequency(snap.data()?.payments?.frequency);
+        }
+      });
+  }, []);
+
   const [chart_data, setchart_data] = useState({
     labels: ["Due Soon", "Pending", "Due Today", "Completed"],
     datasets: [
@@ -636,6 +650,7 @@ function EditPayments() {
                       onChange={(item) => {
                         setFrequency(item.value);
                       }}
+                      value={frequency}
                     />
                   </div>
                   {/* {Platform.OS === "ios" ? (
@@ -754,6 +769,7 @@ function EditPayments() {
                       alignSelf: "center",
                       marginTop: 20,
                       justifyContent: "center",
+                      cursor: "pointer",
                     }}
                   >
                     <div
@@ -780,6 +796,7 @@ function EditPayments() {
                       alignSelf: "center",
                       marginTop: 20,
                       justifyContent: "center",
+                      cursor: "pointer",
                     }}
                   >
                     <div

@@ -13,9 +13,13 @@ import { selectUserData, selectUserType } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import Modal from "react-awesome-modal";
 import { useHistory } from "react-router";
+import formatSpecificDate from "../../functions/formatSpecificDate";
+
 import { db } from "../../utils/firebase";
 import firebase from "firebase";
 import Switch from "@material-ui/core/Switch";
+import DatePicker from "react-datepicker";
+
 import styled from "styled-components";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
 import CloseIcon from "@material-ui/icons/Close";
@@ -37,6 +41,8 @@ function CoachAddMeal(props) {
   const [nutritionName, setNutritionName] = useState("");
   const [addFood, setAddFood] = useState(false);
   const [serverData, setServerData] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const [entireFood, setEntireFood] = useState([
     {
       meal: "",
@@ -132,6 +138,27 @@ function CoachAddMeal(props) {
             </div>
           )}
         </div>
+
+        {props?.isLongTerm ? null : (
+          <div style={{ width: "95%" }}>
+            <h4 style={{ borderTop: 20 }}>Date</h4>
+
+            <div className="Datepicker__container" style={{ zIndex: 999 }}>
+              <DatePicker
+                placeholder="Set Date"
+                // dateFormat="YYYY-MM-DD"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                selected={selectedDate}
+                onChange={(date) => {
+                  setSelectedDate(date);
+                }}
+                disabled={foodId ? true : false}
+              />
+            </div>
+          </div>
+        )}
         <input
           type="text"
           placeholder="Enter Nutrition Plan Name"
@@ -167,6 +194,9 @@ function CoachAddMeal(props) {
                   </span>
                   <div>
                     <Select
+                      MenuProps={{
+                        disableScrollLock: true,
+                      }}
                       required
                       labelId="meal-select-label"
                       id="meal-select-label"
@@ -319,7 +349,11 @@ function CoachAddMeal(props) {
                 className="createWorkout__modalButton"
                 onClick={() => {
                   setModal(false);
-                  setModal1(true);
+                  if (props.isLongTerm) {
+                    AddLongTermMeal();
+                  } else {
+                    setModal1(true);
+                  }
                 }}
                 style={{
                   backgroundColor: "transparent",
@@ -356,7 +390,11 @@ function CoachAddMeal(props) {
                         //   },
                         // });
                         setModal(false);
-                        setModal1(true);
+                        if (props.isLongTerm) {
+                          AddLongTermMeal();
+                        } else {
+                          setModal1(true);
+                        }
                       });
                   } else {
                     alert("Please choose a name for nutrition");

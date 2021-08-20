@@ -234,7 +234,7 @@ const CreateLongTermNutritionPlan = () => {
   const [show_data, setshow_data] = useState([]);
   const history = useHistory();
 
-  const [workoutName, setWorkoutName] = useState(null);
+  const [nutritionName, setNutritionName] = useState(null);
   const [currentStartWeek, setCurrentStartWeek] = useState(null);
   const [currentEndWeek, setCurrentEndWeek] = useState(null);
   const [athlete_selecteddays, setathlete_selecteddays] = useState({});
@@ -476,7 +476,7 @@ const CreateLongTermNutritionPlan = () => {
         tempDate1.push(d);
       });
     });
-    if (athlete?.length > 0 && selectedDate && workoutName) {
+    if (athlete?.length > 0 && selectedDate && nutritionName) {
       dat.forEach((id, idx) => {
         var dat2 = id.days;
         var keys = Object.keys(dat2);
@@ -505,7 +505,7 @@ const CreateLongTermNutritionPlan = () => {
           assignedById: userData?.id,
           isLongTerm: true,
           date: formatDate(new Date()),
-          workoutName: workoutName,
+          nutritionName: nutritionName,
 
           saved: false,
           selectedAthletes: athlete,
@@ -521,8 +521,8 @@ const CreateLongTermNutritionPlan = () => {
                 console.log(dat2[id2]);
                 athlete.forEach((ath) => {
                   db.collection("Food").add({
-                    workoutName:
-                      workoutName + " week-" + id.weeknum + ", day-" + idx2,
+                    nutritionName:
+                      nutritionName + " week-" + id.weeknum + ", day-" + idx2,
                     from_id: userData?.id,
                     assignedTo_id: ath.id,
                     selectedDays: [
@@ -535,14 +535,14 @@ const CreateLongTermNutritionPlan = () => {
                     },
                     saved: false,
                     selectedAthletes: [ath],
-                    coachWorkoutId: docRef.id,
+                    coachNutritionId: docRef.id,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                   });
                 });
               }
             });
             if (idx + 1 == dat.length) {
-              history.push("/workouts");
+              history.push("/nutrition");
             }
           });
         })
@@ -551,7 +551,7 @@ const CreateLongTermNutritionPlan = () => {
         });
 
       if (dat.length == 0) {
-        history.push("/workouts");
+        history.push("/nutrition");
       }
     } else {
       alert("select atleast one athlete and a workoutName to continue");
@@ -1052,9 +1052,9 @@ const CreateLongTermNutritionPlan = () => {
             marginTop: 10,
           }}
           placeholder="Workout Name"
-          value={workoutName}
+          value={nutritionName}
           onChange={(val) => {
-            setWorkoutName(val.target.value);
+            setNutritionName(val.target.value);
           }}
         />
       </div>
@@ -2402,6 +2402,7 @@ const CreateLongTermNutritionPlan = () => {
                     date: formatDate(new Date()),
                     isLongTerm: true,
                     saved: true,
+                    nutritionName: nutritionName,
                   });
                   setModal(false);
                   setModal1(true);

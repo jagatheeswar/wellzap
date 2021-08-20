@@ -339,6 +339,7 @@ function InviteScreen({ route, navigation }) {
               console.log("Error getting documents: ", error);
             });
           alert("done");
+          history.push("/all-athletes");
         })
         .catch(function (error) {
           console.log("Error getting documents: ", error);
@@ -722,7 +723,7 @@ function InviteScreen({ route, navigation }) {
             color: "black",
           }}
         >
-          1Frequency of Payment
+          Frequency of Payment
         </div>
 
         <div style={{}}>
@@ -737,6 +738,7 @@ function InviteScreen({ route, navigation }) {
             onChange={(item) => {
               setFrequency(item);
             }}
+            value={frequency}
           />
         </div>
         {/* {Platform.OS === "ios" ? (

@@ -161,7 +161,6 @@ function ViewAllAssignedVideos({ navigation }) {
   return (
     <div
       style={{
-        margin: 20,
         boxSizing: "border-box",
         minHeight: "100vh",
       }}
@@ -224,7 +223,7 @@ function ViewAllAssignedVideos({ navigation }) {
           style={{
             display: "flex",
             position: "relative",
-            width: "100px",
+
             justifyContent: "center",
             textAlign: "center",
           }}

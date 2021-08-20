@@ -48,7 +48,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function CoachAddWorkout() {
+function CoachAddWorkout(props) {
   const userData = useSelector(selectUserData);
   const [workoutName, setWorkoutName] = useState("");
   const [openCreateExercise, setOpenCreateExercise] = React.useState(false);
@@ -616,7 +616,7 @@ function CoachAddWorkout() {
                             },
                           ]}
                           onChange={(val, dat) => {
-                            let temp = selectedExercises;
+                            let temp = [...selectedExercises];
                             temp[idx1].sets = [];
                             console.log(val);
                             if (val == 1) {
@@ -2615,7 +2615,35 @@ function CoachAddWorkout() {
                 className="createWorkout__modalButton"
                 onClick={() => {
                   setModal(false);
-                  setModal1(true);
+                  console.log(props);
+                  if (props.isLongTerm) {
+                    var lweeks = props.weeks;
+                    var lselectedWeekNum = props.selectedWeekNum;
+                    var lselectedDay = props.selectedDay;
+                    lweeks[lselectedWeekNum - 1].days[lselectedDay] = {
+                      assignedById: userData?.id,
+                      assignedToId: "",
+                      date: formatDate(),
+                      timestamp:
+                        firebase.firestore.FieldValue.serverTimestamp(),
+                      preWorkout: {
+                        workoutName,
+                        workoutDescription,
+                        equipmentsNeeded,
+                        targetedMuscleGroup,
+                        workoutDuration,
+                        caloriesBurnEstimate,
+                        workoutDifficulty,
+                        selectedExercises,
+                      },
+                    };
+
+                    props.setWeeks(lweeks);
+
+                    props.handleCloseworkout();
+                  } else {
+                    setModal1(true);
+                  }
                 }}
                 style={{
                   backgroundColor: "transparent",
@@ -2637,8 +2665,7 @@ function CoachAddWorkout() {
                         assignedById: userData?.id,
                         assignedToId: "",
                         date: formatDate(),
-                        timestamp:
-                          firebase.firestore.FieldValue.serverTimestamp(),
+
                         preWorkout: {
                           workoutName,
                           workoutDescription,
@@ -2652,7 +2679,34 @@ function CoachAddWorkout() {
                       })
                       .then(() => {
                         setModal(false);
-                        setModal1(true);
+                        console.log(props);
+                        if (props.isLongTerm) {
+                          var lweeks = props.weeks;
+                          var lselectedWeekNum = props.selectedWeekNum;
+                          var lselectedDay = props.selectedDay;
+                          lweeks[lselectedWeekNum - 1].days[lselectedDay] = {
+                            assignedById: userData?.id,
+                            assignedToId: "",
+                            date: formatDate(),
+
+                            preWorkout: {
+                              workoutName,
+                              workoutDescription,
+                              equipmentsNeeded,
+                              targetedMuscleGroup,
+                              workoutDuration,
+                              caloriesBurnEstimate,
+                              workoutDifficulty,
+                              selectedExercises,
+                            },
+                          };
+
+                          props.setWeeks(lweeks);
+
+                          props.handleCloseworkout();
+                        } else {
+                          setModal1(true);
+                        }
                       })
                       .catch((e) => console.error(e));
                   } else {

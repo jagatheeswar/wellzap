@@ -21,6 +21,8 @@ import Modal from "react-awesome-modal";
 import { getType } from "@reduxjs/toolkit";
 import SelectSearch from "react-select-search";
 import Switch from "@material-ui/core/Switch";
+
+import moment from "moment";
 import "./dropdown.css";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
 import styled from "styled-components";
@@ -73,7 +75,7 @@ const InputWrapper = styled("div")`
 const Listbox = styled("ul")`
   width: 350px;
   margin: 2px 0 0;
-  margin-left: 2.1%;
+  margin-left: 20px;
   padding: 0;
   position: absolute;
   list-style: none;
@@ -340,15 +342,18 @@ function AssignWorkout(props) {
 
   useEffect(() => {
     let temp = [...selectedAthletes];
+
+    let tmp = { ...athlete_dates };
+
+    console.log(selectedAthletes, athlete_dates);
     selectedAthletes.map((athlete, idx) => {
+      console.log(athlete);
       if (athlete_selecteddays[athlete.id]) {
         temp[idx].selectedDays = athlete_selecteddays[athlete.id];
       } else {
         if (athlete_dates[athlete.id]) {
           // temp[idx].selectedDays = athlete_selecteddays[athlete.id];
         } else {
-          let tmp = { ...athlete_dates };
-
           var curr = new Date(); // get current date
           var first = curr.getDate() - curr.getDay(); // First day is the  day of the month - the day of the week \
 
@@ -372,13 +377,16 @@ function AssignWorkout(props) {
           tmp[athlete.id] = datesCollection;
 
           console.log(athlete_dates);
-          setathlete_dates(tmp);
         }
       }
+      setathlete_dates(tmp);
 
       setSelectedAthletes1(temp);
     });
   }, [selectedAthletes]);
+  useEffect(() => {
+    console.log(athlete_dates);
+  }, [athlete_dates]);
 
   useEffect(() => {
     if (location.state?.workout && userType === "athlete") {
@@ -500,7 +508,11 @@ function AssignWorkout(props) {
         />
         <div className="assignWorkout__banner">
           <img
-            src={userData?.data?.imageUrl}
+            src={
+              userData?.data?.imageUrl
+                ? userData?.data?.imageUrl
+                : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+            }
             width="40px"
             height="40px"
             style={{ borderRadius: "40px", objectFit: "cover" }}
@@ -645,7 +657,7 @@ function AssignWorkout(props) {
                     overflowX: "hidden",
                   }}
                 >
-                  {selectedAthletes?.map((athlete, idx) => (
+                  {selectedAthletes1?.map((athlete, idx) => (
                     <div
                       onClick={() => {
                         let temp = [];
@@ -672,7 +684,11 @@ function AssignWorkout(props) {
                       >
                         <img
                           style={{ borderRadius: 18 }}
-                          src={athlete.imageUrl}
+                          src={
+                            athlete.imageUrl
+                              ? athlete.imageUrl
+                              : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                          }
                           alt=""
                           width="36"
                           height="36"
@@ -718,7 +734,11 @@ function AssignWorkout(props) {
                             marginLeft: "20px",
                             marginRight: "20px",
                           }}
-                          src={athlete.imageUrl ? athlete.imageUrl : null}
+                          src={
+                            athlete.imageUrl
+                              ? athlete.imageUrl
+                              : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                          }
                         />
                         <h2
                           style={{
@@ -766,12 +786,12 @@ function AssignWorkout(props) {
                           <IconButton
                             style={{
                               marginRight: "10px",
-                              marginLeft: "25%",
+
                               display: "flex",
                               alignItems: "center",
                             }}
                             onClick={() => {
-                              var curr = new Date(currentStartWeek); // get current date
+                              var curr = new Date(athlete.currentStartWeek); // get current date
                               var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
 
                               var firstday = new Date(
@@ -780,16 +800,37 @@ function AssignWorkout(props) {
                               var lastday = new Date(
                                 curr.setDate(curr.getDate() + 6)
                               ).toUTCString();
-                              if (new Date(currentStartWeek) > new Date()) {
-                                setCurrentStartWeek(
-                                  formatSpecificDate(firstday)
-                                );
-                                setCurrentEndWeek(formatSpecificDate(lastday));
+                              if (
+                                new Date(athlete.currentStartWeek) > new Date()
+                              ) {
+                                let temp = { ...athlete_dates };
+                                let tm = [...selectedAthletes1];
+                                tm[index].currentStartWeek =
+                                  formatSpecificDate(firstday);
+
+                                tm[index].currentEndWeek =
+                                  formatSpecificDate(lastday);
+                                setSelectedAthletes1(tm);
+
+                                let tmp = formatSpecificDate(firstday);
+
+                                let datesCollection = [];
+
+                                for (var i = 0; i < 7; i++) {
+                                  datesCollection.push(tmp);
+                                  tmp = incr_date(tmp);
+                                }
+
+                                temp[athlete.id] = datesCollection;
+
+                                setathlete_dates(temp);
                               }
                             }}
                           >
                             <ChevronLeftIcon />
                           </IconButton>
+                          {console.log(athlete_dates)}
+
                           {daysList.map((day, idx) => (
                             <div
                               key={idx}
@@ -800,13 +841,13 @@ function AssignWorkout(props) {
                                 ) {
                                   if (
                                     athlete?.selectedDays?.includes(
-                                      specificDates[idx]
+                                      athlete_dates[athlete.id][idx]
                                     )
                                   ) {
                                     let selected =
                                       selectedAthletes[index].selectedDays;
                                     var index1 = selected.indexOf(
-                                      specificDates[idx]
+                                      athlete_dates[athlete.id][idx]
                                     );
                                     if (index1 !== -1) {
                                       selected.splice(index1, 1);
@@ -820,9 +861,10 @@ function AssignWorkout(props) {
                                     }
                                   } else {
                                     if (
-                                      new Date(specificDates[idx]) >
+                                      new Date(athlete_dates[athlete.id][idx]) >
                                         new Date() ||
-                                      specificDates[idx] === formatDate()
+                                      athlete_dates[athlete.id][idx] ===
+                                        formatDate()
                                     ) {
                                       let selectedDays =
                                         selectedAthletes[index].selectedDays;
@@ -830,7 +872,7 @@ function AssignWorkout(props) {
                                         ...selectedAthletes[index],
                                         selectedDays: [
                                           ...selectedDays,
-                                          specificDates[idx],
+                                          athlete_dates[athlete.id][idx],
                                         ],
                                       };
                                       let temp = athlete_selecteddays;
@@ -847,48 +889,43 @@ function AssignWorkout(props) {
                               }}
                               style={
                                 athlete?.selectedDays?.includes(
-                                  specificDates[idx]
+                                  athlete_dates[athlete.id][idx]
                                 )
                                   ? {
                                       backgroundColor: "#ffe486",
                                       color: "#fff",
                                       width: "85px",
-                                      height: "25px",
+
                                       justifyContent: "center",
                                       alignItems: "center",
                                       position: "relative",
                                       borderRadius: "8px",
                                       marginRight: "2px",
-                                      marginBottom: "5px",
-                                      padding: "5px",
                                       cursor: "pointer",
                                     }
                                   : {
                                       width: "85px",
-                                      height: "25px",
+
                                       justifyContent: "center",
                                       alignItems: "center",
                                       position: "relative",
                                       borderRadius: "8px",
                                       marginRight: "2px",
-                                      marginBottom: "5px",
-                                      padding: "5px",
                                       cursor: "pointer",
                                     }
                               }
                             >
                               <div>
-                                {console.log(specificDates[idx])}
                                 <div
                                   style={{
                                     fontSize: "12px",
                                     fontWeight: "600",
                                     lineHeight: "20px",
-                                    width: "80%",
+
                                     textAlign: "center",
                                     padding: "5px",
                                     color:
-                                      new Date(specificDates[idx]) <
+                                      new Date(athlete_dates[athlete.id][idx]) <
                                       new Date(formatDate())
                                         ? "grey"
                                         : "black",
@@ -896,18 +933,47 @@ function AssignWorkout(props) {
                                 >
                                   {day}
                                 </div>
+
+                                <div
+                                  style={{
+                                    width: "45px",
+                                    height: "30px",
+                                  }}
+                                  key={idx}
+                                >
+                                  <div
+                                    style={{
+                                      fontSize: "10px",
+                                      fontWeight: "500",
+                                      lineHeight: "18px",
+                                      width: "100%",
+
+                                      paddingBottom: "5px",
+                                      textAlign: "center",
+                                      color:
+                                        new Date(
+                                          athlete_dates[athlete.id][idx]
+                                        ) < new Date(formatDate())
+                                          ? "grey"
+                                          : "black",
+                                    }}
+                                  >
+                                    {formatSpecificDate1(
+                                      athlete_dates[athlete.id][idx]
+                                    )}
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           ))}
 
                           <IconButton
                             style={{
-                              marginLeft: "10%",
                               display: "flex",
                               alignItems: "center",
                             }}
                             onClick={() => {
-                              var curr = new Date(currentStartWeek); // get current date
+                              var curr = new Date(athlete.currentStartWeek); // get current date
                               var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
                               var firstday = new Date(
@@ -916,9 +982,27 @@ function AssignWorkout(props) {
                               var lastday = new Date(
                                 curr.setDate(curr.getDate() + 6)
                               ).toUTCString();
+                              let temp = { ...athlete_dates };
+                              let tm = [...selectedAthletes1];
+                              tm[index].currentStartWeek =
+                                formatSpecificDate(firstday);
 
-                              setCurrentStartWeek(formatSpecificDate(firstday));
-                              setCurrentEndWeek(formatSpecificDate(lastday));
+                              tm[index].currentEndWeek =
+                                formatSpecificDate(lastday);
+                              setSelectedAthletes1(tm);
+
+                              let tmp = formatSpecificDate(firstday);
+
+                              let datesCollection = [];
+
+                              for (var i = 0; i < 7; i++) {
+                                datesCollection.push(tmp);
+                                tmp = incr_date(tmp);
+                              }
+
+                              temp[athlete.id] = datesCollection;
+
+                              setathlete_dates(temp);
                             }}
                           >
                             <ChevronRightIcon />
@@ -938,37 +1022,7 @@ function AssignWorkout(props) {
                             marginLeft: "45px",
                             cursor: "pointer",
                           }}
-                        >
-                          {specificDates?.map((tempDate, idx) => (
-                            <div
-                              style={{
-                                width: "43px",
-                                height: "30px",
-                              }}
-                              key={idx}
-                            >
-                              <div
-                                style={{
-                                  fontSize: "10px",
-                                  fontWeight: "500",
-                                  lineHeight: "18px",
-                                  width: "100%",
-                                  paddingLeft: "5px",
-                                  paddingRight: "5px",
-                                  paddingBottom: "5px",
-                                  textAlign: "center",
-                                  color:
-                                    new Date(specificDates[idx]) <
-                                    new Date(formatDate())
-                                      ? "grey"
-                                      : "black",
-                                }}
-                              >
-                                {formatSpecificDate1(tempDate)}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                        ></div>
                       </div>
                     </div>
                   ))}
@@ -981,13 +1035,14 @@ function AssignWorkout(props) {
                 <Label
                   style={{
                     fontSize: 18,
-                    marginLeft: 0,
+                    marginLeft: 20,
                     fontWeight: 400,
                   }}
                 >
                   Search for Athletes
                 </Label>
                 <InputWrapper
+                  style={{ marginLeft: 20 }}
                   ref={setAnchorEl}
                   className={focused ? "focused" : ""}
                 >
@@ -1008,17 +1063,28 @@ function AssignWorkout(props) {
                   ))}
                 </Listbox>
               ) : null}
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 {selectedAthletes1?.map((athlete, index) => (
                   <div
                     key={index}
                     style={{
-                      marginLeft: "4%",
                       marginTop: "25px",
                       display: "flex",
                       justifyContent: "center",
                       flexDirection: "column",
-                      alignItems: "flex-start",
+                      alignItems: "center",
+                      width: "95%",
+                      backgroundColor: "white",
+                      borderRadius: 5,
+                      padding: 5,
+                      boxSizing: "border-box",
                     }}
                   >
                     <div
@@ -1039,7 +1105,11 @@ function AssignWorkout(props) {
                           marginLeft: "20px",
                           marginRight: "20px",
                         }}
-                        src={athlete.imageUrl ? athlete.imageUrl : null}
+                        src={
+                          athlete.imageUrl
+                            ? athlete.imageUrl
+                            : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                        }
                       />
                       <h2
                         style={{
@@ -1069,14 +1139,10 @@ function AssignWorkout(props) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "flex-start",
-                        flexWrap: "wrap",
-                        marginBottom: "10px",
-                        width: "300px",
                       }}
                     >
                       <div
                         style={{
-                          marginLeft: "3%",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -1085,8 +1151,6 @@ function AssignWorkout(props) {
                       >
                         <IconButton
                           style={{
-                            marginRight: "10px",
-                            marginLeft: "25%",
                             display: "flex",
                             alignItems: "center",
                           }}
@@ -1129,7 +1193,6 @@ function AssignWorkout(props) {
                         >
                           <ChevronLeftIcon />
                         </IconButton>
-                        {console.log(athlete.currentStartWeek)}
                         {daysList.map((day, idx) => (
                           <div
                             key={idx}
@@ -1187,26 +1250,22 @@ function AssignWorkout(props) {
                                     backgroundColor: "#ffe486",
                                     color: "#fff",
                                     width: "85px",
-                                    height: "25px",
                                     justifyContent: "center",
                                     alignItems: "center",
                                     position: "relative",
                                     borderRadius: "8px",
                                     marginRight: "2px",
-                                    marginBottom: "5px",
-                                    padding: "5px",
+
                                     cursor: "pointer",
                                   }
                                 : {
                                     width: "85px",
-                                    height: "25px",
+
                                     justifyContent: "center",
                                     alignItems: "center",
                                     position: "relative",
                                     borderRadius: "8px",
                                     marginRight: "2px",
-                                    marginBottom: "5px",
-                                    padding: "5px",
                                     cursor: "pointer",
                                   }
                             }
@@ -1229,13 +1288,40 @@ function AssignWorkout(props) {
                               >
                                 {day}
                               </div>
+                              <div
+                                style={{
+                                  width: "45px",
+                                  height: "30px",
+                                }}
+                                key={idx}
+                              >
+                                <div
+                                  style={{
+                                    fontSize: "10px",
+                                    fontWeight: "500",
+                                    lineHeight: "18px",
+                                    width: "100%",
+
+                                    paddingBottom: "5px",
+                                    textAlign: "center",
+                                    color:
+                                      new Date(athlete_dates[athlete.id][idx]) <
+                                      new Date(formatDate())
+                                        ? "grey"
+                                        : "black",
+                                  }}
+                                >
+                                  {formatSpecificDate1(
+                                    athlete_dates[athlete.id][idx]
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         ))}
 
                         <IconButton
                           style={{
-                            marginLeft: "10%",
                             display: "flex",
                             alignItems: "center",
                           }}
@@ -1279,7 +1365,7 @@ function AssignWorkout(props) {
                           <ChevronRightIcon />
                         </IconButton>
                       </div>
-
+                      {/* 
                       <div
                         style={{
                           fontSize: "10px",
@@ -1323,7 +1409,7 @@ function AssignWorkout(props) {
                             </div>
                           </div>
                         ))}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))}
@@ -1341,7 +1427,7 @@ function AssignWorkout(props) {
                 {props.isLongTerm ||
                 userType == "athlete" ||
                 type == "non-editable" ? null : (
-                  <div style={{ width: "100%" }}>
+                  <div style={{ width: "100%", margin: 20 }}>
                     <SearchableDropdown
                       name="Search for Exercise"
                       list={cardio ? cardioExercise : exercises}
@@ -1352,7 +1438,14 @@ function AssignWorkout(props) {
                   </div>
                 )}
 
-                <div className="excercise__container">
+                <div
+                  className="excercise__container"
+                  style={{
+                    margin: 20,
+                    width: "95%",
+                    boxSizing: "border-box",
+                  }}
+                >
                   <div className="yellow"></div>
                   <div
                     style={{
@@ -1671,8 +1764,6 @@ function AssignWorkout(props) {
                                             selectedExercises[idx1].sets;
                                           tmp[idx2][set_] = e.target.value;
                                           temp[idx1].sets = tmp;
-
-                                          console.log(idx2, tmp[idx2][set_]);
 
                                           // temp[idx1].sets[idx4][set_] =
                                           //   e.target.value;

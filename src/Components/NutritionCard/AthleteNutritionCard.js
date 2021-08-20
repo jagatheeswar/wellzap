@@ -227,7 +227,6 @@ function AthleteNutritionCard({
             }
           }}
         >
-          delete
           <CloseIcon
             style={{
               width: 30,

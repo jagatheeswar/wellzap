@@ -128,6 +128,7 @@ function CoachNutritionHome() {
                     food={food}
                     idx={idx}
                     type="view"
+                    foodId={food.id}
                   />
                 ))
               ) : (
@@ -142,6 +143,7 @@ function CoachNutritionHome() {
                     fontWeight: "normal",
 
                     boxSizing: "border-box",
+                    marginTop: 20,
                   }}
                 >
                   <h5> There are no assigned Meals for now </h5>
@@ -164,6 +166,7 @@ function CoachNutritionHome() {
                     nutrition={nutrition}
                     food={food}
                     idx={idx}
+                    foodId={food.id}
                   />
                 ))
               ) : (
@@ -176,6 +179,7 @@ function CoachNutritionHome() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
+                    marginTop: 10,
 
                     boxSizing: "border-box",
                   }}
@@ -211,6 +215,8 @@ function CoachNutritionHome() {
                     selectedWeekNum={food.data.weeks[0].weeknum}
                     navigate={true}
                     type="view"
+                    nutritionName={food?.data?.nutritionName}
+                    foodId={food.id}
                   />
                 ))
               ) : (
@@ -223,6 +229,7 @@ function CoachNutritionHome() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
+                    marginTop: 10,
 
                     boxSizing: "border-box",
                   }}
@@ -254,6 +261,8 @@ function CoachNutritionHome() {
                     food={food.data}
                     selectedWeekNum={food.data.weeks[0].weeknum}
                     navigate={true}
+                    nutritionName={food?.data?.nutritionName}
+                    foodId={food.id}
                   />
                 ))
               ) : (
@@ -266,6 +275,7 @@ function CoachNutritionHome() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
+                    marginTop: 10,
 
                     boxSizing: "border-box",
                   }}

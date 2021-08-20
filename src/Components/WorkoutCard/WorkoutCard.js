@@ -262,6 +262,7 @@ function WorkoutCard({
                   console.log("Delete completed");
                 });
             } else {
+              console.log(item.id);
               db.collection("longTermWorkout")
                 .doc(item.id)
                 .delete()

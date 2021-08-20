@@ -311,10 +311,17 @@ function CoachDashboard(props) {
           >
             {athletes.length > 0 ? (
               athletes.map((item) => (
-                <div className="athletes__card" style={{ marginTop: 10 }}>
+                <div
+                  className="athletes__card"
+                  style={{ marginTop: 10, boxSizing: "border-box" }}
+                >
                   <div className="athletes__cardInfo">
                     <img
-                      src={item.imageUrl}
+                      src={
+                        item.imageUrl
+                          ? item.imageUrl
+                          : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                      }
                       alt={item.name}
                       width="40px"
                       height="40px"

@@ -560,12 +560,11 @@ const CreateLongTermTrainingPlan = () => {
                       assignedToId: ath.id,
                       date: formatDate(addDays(local_date, 7 * idx + idx2)),
                       selectedAthletes: [ath],
-                      timestamp:
-                        firebase.firestore.FieldValue.serverTimestamp(),
+                      timestamp: new Date(),
                       completed: false,
                       preWorkout: dat2[id2].preWorkout,
                       saved: false,
-                      coachWorkoutId: "",
+
                       isLongTerm: true,
                       coachWorkoutId: docRef.id,
                     })
@@ -2201,6 +2200,7 @@ const CreateLongTermTrainingPlan = () => {
             />{" "}
           </div>
         </div>
+        {console.log(weeks)}
         {editable && (
           <div style={{ margin: 40 }}>
             <div
@@ -2495,18 +2495,36 @@ const CreateLongTermTrainingPlan = () => {
                   padding: "5px 20px",
                 }}
                 onClick={() => {
-                  db.collection("longTermWorkout").add({
+                  console.log(
                     weeks,
-                    completed: false,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    assignedToId: "",
-                    assignedById: userData?.id,
-                    date: formatDate(new Date()),
-                    workoutName: workoutName,
-                    isLongTerm: true,
-                  });
-                  setModal(false);
-                  setModal1(true);
+                    false,
+                    new Date(),
+                    "",
+                    userData?.id,
+
+                    formatDate(new Date()),
+                    workoutName
+                  );
+                  db.collection("longTermWorkout")
+                    .add({
+                      weeks,
+                      completed: false,
+                      timestamp:
+                        firebase.firestore.FieldValue.serverTimestamp(),
+                      assignedToId: "",
+                      assignedById: userData?.id,
+                      date: formatDate(new Date()),
+                      workoutName: workoutName,
+                      isLongTerm: true,
+                    })
+                    .then(() => {
+                      console.log("done");
+                      setModal(false);
+                      setModal1(true);
+                    })
+                    .catch((e) => {
+                      console.log(1, e);
+                    });
                 }}
               >
                 SAVE

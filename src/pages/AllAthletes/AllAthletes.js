@@ -245,6 +245,7 @@ function AllAthletes() {
             padding: "8px 10px",
             borderRadius: 10,
             marginLeft: "auto",
+            marginRight: 20,
           }}
           onClick={() => {
             history.push("/pending-invites");

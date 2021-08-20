@@ -115,6 +115,7 @@ function CoachWorkouts() {
               ) : (
                 <div
                   style={{
+                    marginTop: 20,
                     fontSize: "13px",
                     backgroundColor: "#fff",
                     width: "90%",
@@ -151,6 +152,8 @@ function CoachWorkouts() {
               ) : (
                 <div
                   style={{
+                    marginTop: 20,
+
                     fontSize: "13px",
                     backgroundColor: "#fff",
                     width: "90%",
@@ -198,6 +201,8 @@ function CoachWorkouts() {
                     backgroundColor: "#fff",
                     width: "90%",
                     padding: "10px 20px",
+                    marginTop: 20,
+
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
@@ -243,6 +248,7 @@ function CoachWorkouts() {
                     textAlign: "center",
                     borderRadius: "5px",
                     fontWeight: "normal",
+                    marginTop: 20,
                   }}
                 >
                   <h5> There are no saved LongTerm workouts for now </h5>

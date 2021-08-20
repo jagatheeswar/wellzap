@@ -138,7 +138,6 @@ function ViewAllUploadedVideos({ navigation }) {
   return (
     <div
       style={{
-        margin: 20,
         boxSizing: "border-box",
         minHeight: "100vh",
       }}
@@ -202,7 +201,6 @@ function ViewAllUploadedVideos({ navigation }) {
           style={{
             display: "flex",
             position: "relative",
-            width: "100px",
             justifyContent: "center",
             textAlign: "center",
           }}
@@ -340,12 +338,13 @@ function ViewAllUploadedVideos({ navigation }) {
               style={{
                 fontSize: "13px",
                 backgroundColor: "#fff",
-                width: "90%",
+                width: "510px",
                 padding: "10px 20px",
                 textAlign: "center",
                 borderRadius: "5px",
                 fontWeight: "normal",
-                marginLeft: 10,
+                margin: 20,
+                boxSizing: "border-box",
               }}
             >
               <h5> There are no uploaded videos for now </h5>

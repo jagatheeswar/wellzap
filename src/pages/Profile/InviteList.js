@@ -112,7 +112,11 @@ function InvitesList() {
                     }}
                   >
                     <img
-                      src={appObj?.imageUrl}
+                      src={
+                        appObj?.imageUrl
+                          ? appObj?.imageUrl
+                          : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                      }
                       style={{
                         width: 50,
                         height: 50,
@@ -146,6 +150,23 @@ function InvitesList() {
       <div className="coachProfile__container">
         <div className="coachProfile__leftContainer">
           <Header />
+          {athletes?.length == 0 && (
+            <h1
+              style={{
+                fontSize: 15,
+                backgroundColor: "white",
+                textAlign: "center",
+                height: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 5,
+                width: "100%",
+              }}
+            >
+              There are no athletes now
+            </h1>
+          )}
           {athletes}
         </div>
       </div>
