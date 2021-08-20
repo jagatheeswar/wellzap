@@ -245,7 +245,7 @@ function AthleteOnBoarding(props) {
           </div>
 
           <div>
-            <h3> Verify Athlete</h3>
+            <h3>Enter Coach ID</h3>
           </div>
 
           <div style={{ marginBottom: 20 }}>
