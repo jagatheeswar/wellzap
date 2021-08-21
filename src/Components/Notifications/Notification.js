@@ -100,22 +100,27 @@ function Notification({ route }) {
           style={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
+            marginLeft: 10,
           }}
         >
+          <h3>Notifications</h3>
           <div
             onClick={() => {
               setshow(!show);
             }}
             style={{
-              transform: show ? "rotate(90deg)" : "rotate(0deg)",
+              transform: show ? "rotate(90deg)" : "rotate(180deg)",
               transition: "transform 0.2s",
               marginTop: 5,
+              position: "absolute",
+              right: 0,
             }}
             // class="arrow-right"
           >
             <ChevronRightRounded style={{ height: 30, width: 30 }} />
           </div>
-          <h3>Notifications</h3>
+
           {/* <div>
             
             {unreadMessages.length == 0 && unreadMessages.length}</div> */}
@@ -164,16 +169,37 @@ function Notification({ route }) {
               // });
             }}
           >
-            <p
-              style={{
-                textAlign: "center",
-                marginRight: 20,
-                opacity: show ? 1 : 0,
-                transition: "all 0.1s",
-              }}
-            >
-              Mark All as Read
-            </p>
+            {show ? (
+              <h3
+                style={{
+                  textAlign: "center",
+                  marginRight: 20,
+                  transition: "all 0.1s",
+                  width: 150,
+                  fontWeight: "normal",
+                  fontSize: 15,
+                }}
+              >
+                Mark All as Read
+              </h3>
+            ) : (
+              <h3
+                style={{
+                  textAlign: "center",
+                  marginRight: 20,
+                  transition: "all 0.1s",
+                  backgroundColor: "red",
+                  padding: 5,
+                  borderRadius: 10,
+                  marginTop: 20,
+                  display: unreadMessages.length > 0 ? "block" : "none",
+                  fontWeight: "normal",
+                  fontSize: 15,
+                }}
+              >
+                {unreadMessages.length > 0 && `${unreadMessages.length} unread`}
+              </h3>
+            )}
           </div>
         )}
       </div>

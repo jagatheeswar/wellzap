@@ -76,12 +76,8 @@ function CoachWorkouts() {
             }))
           );
         });
-
-      console.log(LongTermWorkouts, savedLongTermWorkouts);
     }
   }, [userData?.id]);
-
-  console.log({ LongTermWorkouts });
 
   return (
     <div style={{ minHeight: "99vh" }} className="workouts__home">
@@ -178,6 +174,7 @@ function CoachWorkouts() {
                 View All
               </div>
             </div>
+            {console.log(LongTermWorkouts)}
 
             <div style={{ width: "90%", marginLeft: 20 }}>
               {LongTermWorkouts?.length > 0 ? (
@@ -222,7 +219,6 @@ function CoachWorkouts() {
               </div>
             </div>
 
-            {console.log("ss", savedLongTermWorkouts)}
             <div style={{ width: "90%" }}>
               {savedLongTermWorkouts?.length > 0 ? (
                 savedLongTermWorkouts?.map((workout, i) => (

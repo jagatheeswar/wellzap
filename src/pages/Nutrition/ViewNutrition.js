@@ -24,6 +24,7 @@ import { useHistory, useLocation } from "react-router";
 import firebase from "firebase";
 import AddFoodCard from "./AddFoodCard";
 import "./CoachNutrition.css";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -468,318 +469,361 @@ function CreateNutrition(props) {
             </Listbox>
           ) : null}
           <div>
-            {selectedAthletes1?.map((athlete, index) => (
-              <div
-                key={index}
-                style={{
-                  marginLeft: "4%",
-                  marginTop: "25px",
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    backgroundColor: "#ffe486",
-                    borderRadius: "10px",
-                    height: "45px",
-                    width: "350px",
-                  }}
-                >
-                  <img
-                    style={{
-                      width: "35px",
-                      height: "35px",
-                      borderRadius: "10px",
-                      marginLeft: "20px",
-                      marginRight: "20px",
-                    }}
-                    src={athlete.imageUrl ? athlete.imageUrl : null}
-                  />
-                  <h2
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "600",
-                      lineHeight: "28px",
-                      color: "black",
-                      marginLeft: "15%",
-                    }}
-                  >
-                    {athlete.name}
-                  </h2>
-                </div>
-                <h2
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    marginTop: "10px",
-                    lineHeight: "28px",
-                    marginLeft: "1%",
-                  }}
-                >
-                  Select days
-                </h2>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    flexWrap: "wrap",
-                    marginBottom: "10px",
-                    width: "300px",
-                  }}
+            <Grid
+              container
+              spacing={2}
+              className="coachNutrition__homeContainer"
+            >
+              {selectedAthletes1?.map((athlete, index) => (
+                <Grid
+                  item
+                  xs={6}
+                  className="coachNutrition__homeRightContainer"
                 >
                   <div
+                    key={index}
                     style={{
-                      marginLeft: "3%",
+                      marginTop: "25px",
                       display: "flex",
-                      alignItems: "center",
                       justifyContent: "center",
-                      width: "300px",
+                      flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    <IconButton
+                    <div
                       style={{
-                        marginRight: "10px",
-                        marginLeft: "25%",
                         display: "flex",
                         alignItems: "center",
-                      }}
-                      onClick={() => {
-                        var curr = new Date(athlete.currentStartWeek); // get current date
-                        // get current date
-                        var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
-
-                        var firstday = new Date(
-                          curr.setDate(first)
-                        ).toUTCString();
-                        var lastday = new Date(
-                          curr.setDate(curr.getDate() + 6)
-                        ).toUTCString();
-                        if (new Date(athlete.currentStartWeek) > new Date()) {
-                          let temp = { ...athlete_dates };
-                          let tm = [...selectedAthletes1];
-                          tm[index].currentStartWeek =
-                            formatSpecificDate(firstday);
-
-                          tm[index].currentEndWeek =
-                            formatSpecificDate(lastday);
-                          setSelectedAthletes1(tm);
-
-                          let tmp = formatSpecificDate(firstday);
-
-                          let datesCollection = [];
-
-                          for (var i = 0; i < 7; i++) {
-                            datesCollection.push(tmp);
-                            tmp = incr_date(tmp);
-                          }
-
-                          temp[athlete.id] = datesCollection;
-
-                          setathlete_dates(temp);
-                        }
+                        backgroundColor: "#ffe486",
+                        borderRadius: "10px",
+                        height: "45px",
+                        width: "350px",
                       }}
                     >
-                      <ChevronLeftIcon />
-                    </IconButton>
-                    {daysList.map((day, idx) => (
+                      <img
+                        style={{
+                          width: "35px",
+                          height: "35px",
+                          borderRadius: "20px",
+                          marginLeft: "20px",
+                          marginRight: "20px",
+                        }}
+                        src={
+                          athlete.imageUrl
+                            ? athlete.imageUrl
+                            : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                        }
+                      />
+                      <h2
+                        style={{
+                          fontSize: "15px",
+                          fontWeight: "600",
+                          lineHeight: "28px",
+                          color: "black",
+                        }}
+                      >
+                        {athlete.name}
+                      </h2>
+                    </div>
+                    <h2
+                      style={{
+                        fontSize: "15px",
+                        fontWeight: "600",
+                        marginTop: "10px",
+                        lineHeight: "28px",
+                        marginLeft: "1%",
+                      }}
+                    >
+                      Select days
+                    </h2>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        flexWrap: "wrap",
+                        marginBottom: "10px",
+                        width: "300px",
+                      }}
+                    >
                       <div
-                        key={idx}
-                        onClick={() => {
-                          console.log(day);
-                          if (type !== "view") {
+                        style={{
+                          marginLeft: "3%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "300px",
+                        }}
+                      >
+                        <IconButton
+                          style={{
+                            marginRight: "10px",
+
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                          onClick={() => {
+                            var curr = new Date(athlete.currentStartWeek); // get current date
+                            // get current date
+                            var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
+
+                            var firstday = new Date(
+                              curr.setDate(first)
+                            ).toUTCString();
+                            var lastday = new Date(
+                              curr.setDate(curr.getDate() + 6)
+                            ).toUTCString();
                             if (
+                              new Date(athlete.currentStartWeek) > new Date()
+                            ) {
+                              let temp = { ...athlete_dates };
+                              let tm = [...selectedAthletes1];
+                              tm[index].currentStartWeek =
+                                formatSpecificDate(firstday);
+
+                              tm[index].currentEndWeek =
+                                formatSpecificDate(lastday);
+                              setSelectedAthletes1(tm);
+
+                              let tmp = formatSpecificDate(firstday);
+
+                              let datesCollection = [];
+
+                              for (var i = 0; i < 7; i++) {
+                                datesCollection.push(tmp);
+                                tmp = incr_date(tmp);
+                              }
+
+                              temp[athlete.id] = datesCollection;
+
+                              setathlete_dates(temp);
+                            }
+                          }}
+                        >
+                          <ChevronLeftIcon />
+                        </IconButton>
+                        {daysList.map((day, idx) => (
+                          <div
+                            key={idx}
+                            onClick={() => {
+                              console.log(day);
+                              if (type !== "view") {
+                                if (
+                                  athlete?.selectedDays?.includes(
+                                    athlete_dates[athlete.id][idx]
+                                  )
+                                ) {
+                                  let selected =
+                                    selectedAthletes[index].selectedDays;
+                                  var index1 = selected.indexOf(
+                                    athlete_dates[athlete.id][idx]
+                                  );
+                                  if (index1 !== -1) {
+                                    selected.splice(index1, 1);
+                                    selectedAthletes[index] = {
+                                      ...selectedAthletes[index],
+                                      selected,
+                                    };
+                                    setSelectedAthletes([...selectedAthletes]);
+                                  }
+                                } else {
+                                  if (
+                                    new Date(athlete_dates[athlete.id][idx]) >
+                                      new Date() ||
+                                    athlete_dates[athlete.id][idx] ===
+                                      formatDate()
+                                  ) {
+                                    let selectedDays =
+                                      selectedAthletes[index].selectedDays;
+                                    selectedAthletes[index] = {
+                                      ...selectedAthletes[index],
+                                      selectedDays: [
+                                        ...selectedDays,
+                                        athlete_dates[athlete.id][idx],
+                                      ],
+                                    };
+                                    let temp = athlete_selecteddays;
+                                    temp[selectedAthletes[index].id] =
+                                      selectedAthletes[index].selectedDays;
+
+                                    setathlete_selecteddays(temp);
+                                    setSelectedAthletes([...selectedAthletes]);
+                                  }
+                                }
+                              }
+                            }}
+                            style={
                               athlete?.selectedDays?.includes(
                                 athlete_dates[athlete.id][idx]
                               )
-                            ) {
-                              let selected =
-                                selectedAthletes[index].selectedDays;
-                              var index1 = selected.indexOf(
-                                athlete_dates[athlete.id][idx]
-                              );
-                              if (index1 !== -1) {
-                                selected.splice(index1, 1);
-                                selectedAthletes[index] = {
-                                  ...selectedAthletes[index],
-                                  selected,
-                                };
-                                setSelectedAthletes([...selectedAthletes]);
-                              }
-                            } else {
-                              if (
-                                new Date(athlete_dates[athlete.id][idx]) >
-                                  new Date() ||
-                                athlete_dates[athlete.id][idx] === formatDate()
-                              ) {
-                                let selectedDays =
-                                  selectedAthletes[index].selectedDays;
-                                selectedAthletes[index] = {
-                                  ...selectedAthletes[index],
-                                  selectedDays: [
-                                    ...selectedDays,
-                                    athlete_dates[athlete.id][idx],
-                                  ],
-                                };
-                                let temp = athlete_selecteddays;
-                                temp[selectedAthletes[index].id] =
-                                  selectedAthletes[index].selectedDays;
+                                ? {
+                                    backgroundColor: "#ffe486",
+                                    color: "#fff",
+                                    width: "85px",
 
-                                setathlete_selecteddays(temp);
-                                setSelectedAthletes([...selectedAthletes]);
-                              }
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    position: "relative",
+                                    borderRadius: "8px",
+                                    marginRight: "2px",
+                                    cursor: "pointer",
+                                  }
+                                : {
+                                    width: "85px",
+
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    position: "relative",
+                                    borderRadius: "8px",
+                                    marginRight: "2px",
+                                    cursor: "pointer",
+                                  }
                             }
-                          }
-                        }}
-                        style={
-                          athlete?.selectedDays?.includes(
-                            athlete_dates[athlete.id][idx]
-                          )
-                            ? {
-                                backgroundColor: "#ffe486",
-                                color: "#fff",
-                                width: "85px",
-                                height: "25px",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                position: "relative",
-                                borderRadius: "8px",
-                                marginRight: "2px",
-                                marginBottom: "5px",
-                                padding: "5px",
-                                cursor: "pointer",
-                              }
-                            : {
-                                width: "85px",
-                                height: "25px",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                position: "relative",
-                                borderRadius: "8px",
-                                marginRight: "2px",
-                                marginBottom: "5px",
-                                padding: "5px",
-                                cursor: "pointer",
-                              }
-                        }
-                      >
-                        <div>
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              fontWeight: "600",
-                              lineHeight: "20px",
-                              width: "80%",
-                              textAlign: "center",
-                              padding: "5px",
-                              color:
-                                new Date(athlete_dates[athlete.id][idx]) <
-                                new Date(formatDate())
-                                  ? "grey"
-                                  : "black",
-                            }}
                           >
-                            {day}
+                            <div>
+                              <div
+                                style={{
+                                  fontSize: "12px",
+                                  fontWeight: "600",
+                                  lineHeight: "20px",
+
+                                  textAlign: "center",
+                                  padding: "5px",
+                                  color:
+                                    new Date(athlete_dates[athlete.id][idx]) <
+                                    new Date(formatDate())
+                                      ? "grey"
+                                      : "black",
+                                }}
+                              >
+                                {day}
+                              </div>
+
+                              <div
+                                style={{
+                                  width: "45px",
+                                  height: "30px",
+                                }}
+                                key={idx}
+                              >
+                                <div
+                                  style={{
+                                    fontSize: "10px",
+                                    fontWeight: "500",
+                                    lineHeight: "18px",
+
+                                    paddingLeft: "5px",
+                                    paddingRight: "5px",
+                                    paddingBottom: "5px",
+                                    textAlign: "center",
+                                    color:
+                                      new Date(athlete_dates[athlete.id][idx]) <
+                                      new Date(formatDate())
+                                        ? "grey"
+                                        : "black",
+                                  }}
+                                >
+                                  {formatSpecificDate1(
+                                    athlete_dates[athlete.id][idx]
+                                  )}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    ))}
+                        ))}
 
-                    <IconButton
-                      style={{
-                        marginLeft: "10%",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      onClick={() => {
-                        var curr = new Date(athlete.currentStartWeek); // get current date
-                        var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
-
-                        var firstday = new Date(
-                          curr.setDate(first)
-                        ).toUTCString();
-                        var lastday = new Date(
-                          curr.setDate(curr.getDate() + 6)
-                        ).toUTCString();
-
-                        let temp = { ...athlete_dates };
-                        let tm = [...selectedAthletes1];
-                        tm[index].currentStartWeek =
-                          formatSpecificDate(firstday);
-
-                        tm[index].currentEndWeek = formatSpecificDate(lastday);
-                        setSelectedAthletes1(tm);
-
-                        let tmp = formatSpecificDate(firstday);
-
-                        let datesCollection = [];
-
-                        for (var i = 0; i < 7; i++) {
-                          datesCollection.push(tmp);
-                          tmp = incr_date(tmp);
-                        }
-
-                        temp[athlete.id] = datesCollection;
-
-                        setathlete_dates(temp);
-                      }}
-                    >
-                      <ChevronRightIcon />
-                    </IconButton>
-                  </div>
-
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      fontWeight: "500",
-                      lineHeight: "18px",
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                      alignItems: "center",
-                      width: "100%",
-                      height: "25px",
-                      marginLeft: "35px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {athlete_dates[athlete.id]?.map((tempDate, idx) => (
-                      <div
-                        style={{
-                          width: "45px",
-                          height: "30px",
-                        }}
-                        key={idx}
-                      >
-                        <div
+                        <IconButton
                           style={{
-                            fontSize: "10px",
-                            fontWeight: "500",
-                            lineHeight: "18px",
-                            width: "100%",
-                            paddingLeft: "5px",
-                            paddingRight: "5px",
-                            paddingBottom: "5px",
-                            textAlign: "center",
-                            color:
-                              new Date(athlete_dates[athlete.id][idx]) <
-                              new Date(formatDate())
-                                ? "grey"
-                                : "black",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                          onClick={() => {
+                            var curr = new Date(athlete.currentStartWeek); // get current date
+                            var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
+
+                            var firstday = new Date(
+                              curr.setDate(first)
+                            ).toUTCString();
+                            var lastday = new Date(
+                              curr.setDate(curr.getDate() + 6)
+                            ).toUTCString();
+
+                            let temp = { ...athlete_dates };
+                            let tm = [...selectedAthletes1];
+                            tm[index].currentStartWeek =
+                              formatSpecificDate(firstday);
+
+                            tm[index].currentEndWeek =
+                              formatSpecificDate(lastday);
+                            setSelectedAthletes1(tm);
+
+                            let tmp = formatSpecificDate(firstday);
+
+                            let datesCollection = [];
+
+                            for (var i = 0; i < 7; i++) {
+                              datesCollection.push(tmp);
+                              tmp = incr_date(tmp);
+                            }
+
+                            temp[athlete.id] = datesCollection;
+
+                            setathlete_dates(temp);
                           }}
                         >
-                          {formatSpecificDate1(tempDate)}
-                        </div>
+                          <ChevronRightIcon />
+                        </IconButton>
                       </div>
-                    ))}
+
+                      <div
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: "500",
+                          lineHeight: "18px",
+                          display: "flex",
+                          justifyContent: "space-evenly",
+                          alignItems: "center",
+                          width: "100%",
+                          height: "25px",
+                          marginLeft: "35px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {/* {athlete_dates[athlete.id]?.map((tempDate, idx) => (
+                          <div
+                            style={{
+                              width: "45px",
+                              height: "30px",
+                            }}
+                            key={idx}
+                          >
+                            <div
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "500",
+                                lineHeight: "18px",
+                                width: "100%",
+                                paddingLeft: "5px",
+                                paddingRight: "5px",
+                                paddingBottom: "5px",
+                                textAlign: "center",
+                                color:
+                                  new Date(athlete_dates[athlete.id][idx]) <
+                                  new Date(formatDate())
+                                    ? "grey"
+                                    : "black",
+                              }}
+                            >
+                              {formatSpecificDate1(tempDate)}
+                            </div>
+                          </div>
+                        ))} */}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                </Grid>
+              ))}
+            </Grid>
           </div>
         </div>
       ) : (
@@ -849,7 +893,11 @@ function CreateNutrition(props) {
                     >
                       <img
                         style={{ borderRadius: 18 }}
-                        src={athlete.imageUrl}
+                        src={
+                          athlete.imageUrl
+                            ? athlete.imageUrl
+                            : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                        }
                         alt=""
                         width="36"
                         height="36"
@@ -891,11 +939,15 @@ function CreateNutrition(props) {
                       style={{
                         width: "35px",
                         height: "35px",
-                        borderRadius: "10px",
+                        borderRadius: "20px",
                         marginLeft: "20px",
                         marginRight: "20px",
                       }}
-                      src={athlete.imageUrl ? athlete.imageUrl : null}
+                      src={
+                        athlete.imageUrl
+                          ? athlete.imageUrl
+                          : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                      }
                     />
                     <h2
                       style={{
@@ -948,38 +1000,40 @@ function CreateNutrition(props) {
                           alignItems: "center",
                         }}
                         onClick={() => {
-                          var curr = new Date(athlete.currentStartWeek); // get current date
-                          // get current date
-                          var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
+                          if (type != "view") {
+                            var curr = new Date(athlete.currentStartWeek); // get current date
+                            // get current date
+                            var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
 
-                          var firstday = new Date(
-                            curr.setDate(first)
-                          ).toUTCString();
-                          var lastday = new Date(
-                            curr.setDate(curr.getDate() + 6)
-                          ).toUTCString();
-                          if (new Date(currentStartWeek) > new Date()) {
-                            let temp = { ...athlete_dates };
-                            let tm = [...selectedAthletes1];
-                            tm[index].currentStartWeek =
-                              formatSpecificDate(firstday);
+                            var firstday = new Date(
+                              curr.setDate(first)
+                            ).toUTCString();
+                            var lastday = new Date(
+                              curr.setDate(curr.getDate() + 6)
+                            ).toUTCString();
+                            if (new Date(currentStartWeek) > new Date()) {
+                              let temp = { ...athlete_dates };
+                              let tm = [...selectedAthletes1];
+                              tm[index].currentStartWeek =
+                                formatSpecificDate(firstday);
 
-                            tm[index].currentEndWeek =
-                              formatSpecificDate(lastday);
-                            setSelectedAthletes1(tm);
+                              tm[index].currentEndWeek =
+                                formatSpecificDate(lastday);
+                              setSelectedAthletes1(tm);
 
-                            let tmp = formatSpecificDate(firstday);
+                              let tmp = formatSpecificDate(firstday);
 
-                            let datesCollection = [];
+                              let datesCollection = [];
 
-                            for (var i = 0; i < 7; i++) {
-                              datesCollection.push(tmp);
-                              tmp = incr_date(tmp);
+                              for (var i = 0; i < 7; i++) {
+                                datesCollection.push(tmp);
+                                tmp = incr_date(tmp);
+                              }
+
+                              temp[athlete.id] = datesCollection;
+
+                              setathlete_dates(temp);
                             }
-
-                            temp[athlete.id] = datesCollection;
-
-                            setathlete_dates(temp);
                           }
                         }}
                       >
@@ -1038,26 +1092,22 @@ function CreateNutrition(props) {
                                   backgroundColor: "#ffe486",
                                   color: "#fff",
                                   width: "85px",
-                                  height: "25px",
                                   justifyContent: "center",
                                   alignItems: "center",
                                   position: "relative",
                                   borderRadius: "8px",
                                   marginRight: "2px",
-                                  marginBottom: "5px",
-                                  padding: "5px",
+
                                   cursor: "pointer",
                                 }
                               : {
                                   width: "85px",
-                                  height: "25px",
+
                                   justifyContent: "center",
                                   alignItems: "center",
                                   position: "relative",
                                   borderRadius: "8px",
                                   marginRight: "2px",
-                                  marginBottom: "5px",
-                                  padding: "5px",
                                   cursor: "pointer",
                                 }
                           }
@@ -1074,11 +1124,40 @@ function CreateNutrition(props) {
                                 color: athlete?.selectedDays?.includes(
                                   athlete_dates[athlete.id][idx]
                                 )
-                                  ? "black"
+                                  ? "grey"
                                   : "black",
                               }}
                             >
                               {day}
+                            </div>
+
+                            <div
+                              style={{
+                                width: "43px",
+                                height: "30px",
+                              }}
+                              key={idx}
+                            >
+                              <div
+                                style={{
+                                  fontSize: "10px",
+                                  fontWeight: "500",
+                                  lineHeight: "18px",
+                                  width: "100%",
+
+                                  paddingBottom: "5px",
+                                  textAlign: "center",
+                                  color:
+                                    new Date(athlete_dates[athlete.id][idx]) <
+                                    new Date(formatDate())
+                                      ? "grey"
+                                      : "black",
+                                }}
+                              >
+                                {formatSpecificDate1(
+                                  athlete_dates[athlete.id][idx]
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1091,41 +1170,43 @@ function CreateNutrition(props) {
                           alignItems: "center",
                         }}
                         onClick={() => {
-                          var curr = new Date(athlete.currentStartWeek); // get current date
-                          // get current date
-                          var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
+                          if (type != "view") {
+                            var curr = new Date(athlete.currentStartWeek); // get current date
+                            // get current date
+                            var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
-                          var firstday = new Date(
-                            curr.setDate(first)
-                          ).toUTCString();
-                          var lastday = new Date(
-                            curr.setDate(curr.getDate() + 6)
-                          ).toUTCString();
+                            var firstday = new Date(
+                              curr.setDate(first)
+                            ).toUTCString();
+                            var lastday = new Date(
+                              curr.setDate(curr.getDate() + 6)
+                            ).toUTCString();
 
-                          let temp = { ...athlete_dates };
-                          let tm = [...selectedAthletes1];
-                          tm[index].currentStartWeek =
-                            formatSpecificDate(firstday);
+                            let temp = { ...athlete_dates };
+                            let tm = [...selectedAthletes1];
+                            tm[index].currentStartWeek =
+                              formatSpecificDate(firstday);
 
-                          tm[index].currentEndWeek =
-                            formatSpecificDate(lastday);
-                          setSelectedAthletes1(tm);
+                            tm[index].currentEndWeek =
+                              formatSpecificDate(lastday);
+                            setSelectedAthletes1(tm);
 
-                          let tmp = formatSpecificDate(firstday);
+                            let tmp = formatSpecificDate(firstday);
 
-                          let datesCollection = [];
+                            let datesCollection = [];
 
-                          for (var i = 0; i < 7; i++) {
-                            datesCollection.push(tmp);
-                            tmp = incr_date(tmp);
+                            for (var i = 0; i < 7; i++) {
+                              datesCollection.push(tmp);
+                              tmp = incr_date(tmp);
+                            }
+
+                            temp[athlete.id] = datesCollection;
+
+                            setathlete_dates(temp);
+
+                            setCurrentStartWeek(formatSpecificDate(firstday));
+                            setCurrentEndWeek(formatSpecificDate(lastday));
                           }
-
-                          temp[athlete.id] = datesCollection;
-
-                          setathlete_dates(temp);
-
-                          setCurrentStartWeek(formatSpecificDate(firstday));
-                          setCurrentEndWeek(formatSpecificDate(lastday));
                         }}
                       >
                         <ChevronRightIcon />
@@ -1146,7 +1227,7 @@ function CreateNutrition(props) {
                         cursor: "pointer",
                       }}
                     >
-                      {athlete_dates[athlete.id]?.map((tempDate, idx) => (
+                      {/* {athlete_dates[athlete.id]?.map((tempDate, idx) => (
                         <div
                           style={{
                             width: "43px",
@@ -1169,7 +1250,7 @@ function CreateNutrition(props) {
                             {formatSpecificDate1(tempDate)}
                           </div>
                         </div>
-                      ))}
+                      ))} */}
                     </div>
                   </div>
                 </div>

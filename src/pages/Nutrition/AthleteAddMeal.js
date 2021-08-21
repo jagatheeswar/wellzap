@@ -180,6 +180,7 @@ function AthleteAddMeal() {
 
   useEffect(() => {
     if (location.state?.todaysFoodId) {
+      setSelectedDate(new Date(location.state.todaysFoodId));
       setFoodId(location.state.todaysFoodId);
     }
   }, [location.state?.todaysFoodId]);

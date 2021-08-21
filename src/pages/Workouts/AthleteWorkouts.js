@@ -112,8 +112,8 @@ function AthleteWorkouts() {
     }
   }, [userData?.id]);
   useEffect(() => {
-    console.log(AthleteWorkouts, pastWorkouts);
-  }, [AthleteWorkouts, pastWorkouts]);
+    console.log(1, workouts);
+  }, [workouts]);
   return (
     <div
       style={{ minHeight: "100vh", marginBottom: 50 }}
@@ -142,6 +142,11 @@ function AthleteWorkouts() {
                     item={workout}
                     idx={i}
                     type={"non-editable"}
+                    workoutName={
+                      workout.data?.workoutName
+                        ? workout.data?.workoutName
+                        : workout.data?.preWorkout?.workoutName
+                    }
                   />
                 ))
               ) : (
@@ -200,6 +205,11 @@ function AthleteWorkouts() {
                     idx={i}
                     type={"non-editable"}
                     completed={true}
+                    workoutName={
+                      workout.data?.workoutName
+                        ? workout.data?.workoutName
+                        : workout.data?.preWorkout?.workoutName
+                    }
                   />
                 ))
               ) : (

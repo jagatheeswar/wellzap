@@ -139,26 +139,6 @@ function CoachAddMeal(props) {
           )}
         </div>
 
-        {props?.isLongTerm ? null : (
-          <div style={{ width: "95%" }}>
-            <h4 style={{ borderTop: 20 }}>Date</h4>
-
-            <div className="Datepicker__container" style={{ zIndex: 999 }}>
-              <DatePicker
-                placeholder="Set Date"
-                // dateFormat="YYYY-MM-DD"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                selected={selectedDate}
-                onChange={(date) => {
-                  setSelectedDate(date);
-                }}
-                disabled={foodId ? true : false}
-              />
-            </div>
-          </div>
-        )}
         <input
           type="text"
           placeholder="Enter Nutrition Plan Name"

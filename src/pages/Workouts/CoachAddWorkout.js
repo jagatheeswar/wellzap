@@ -2614,35 +2614,50 @@ function CoachAddWorkout(props) {
               <div
                 className="createWorkout__modalButton"
                 onClick={() => {
-                  setModal(false);
-                  console.log(props);
-                  if (props.isLongTerm) {
-                    var lweeks = props.weeks;
-                    var lselectedWeekNum = props.selectedWeekNum;
-                    var lselectedDay = props.selectedDay;
-                    lweeks[lselectedWeekNum - 1].days[lselectedDay] = {
-                      assignedById: userData?.id,
-                      assignedToId: "",
-                      date: formatDate(),
-                      timestamp:
-                        firebase.firestore.FieldValue.serverTimestamp(),
-                      preWorkout: {
-                        workoutName,
-                        workoutDescription,
-                        equipmentsNeeded,
-                        targetedMuscleGroup,
-                        workoutDuration,
-                        caloriesBurnEstimate,
-                        workoutDifficulty,
-                        selectedExercises,
-                      },
-                    };
+                  if (workoutName) {
+                    setModal(false);
+                    let compliance = 0;
+                    console.log(props);
+                    if (props.isLongTerm) {
+                      selectedExercises.map((ex) => {
+                        ex.sets.map((s) => {
+                          if (s.time) {
+                            compliance = compliance + s.time;
+                          } else if (s.weights) {
+                            compliance = compliance + s.reps * s.weights;
+                          } else {
+                            compliance = compliance + s.reps;
+                          }
+                        });
+                      });
+                      var lweeks = props.weeks;
+                      var lselectedWeekNum = props.selectedWeekNum;
+                      var lselectedDay = props.selectedDay;
+                      lweeks[lselectedWeekNum - 1].days[lselectedDay] = {
+                        assignedById: userData?.id,
+                        assignedToId: "",
+                        date: formatDate(),
+                        timestamp:
+                          firebase.firestore.FieldValue.serverTimestamp(),
+                        preWorkout: {
+                          workoutName,
+                          workoutDescription,
+                          equipmentsNeeded,
+                          targetedMuscleGroup,
+                          workoutDuration,
+                          caloriesBurnEstimate,
+                          workoutDifficulty,
+                          selectedExercises,
+                          compliance,
+                        },
+                      };
 
-                    props.setWeeks(lweeks);
+                      props.setWeeks(lweeks);
 
-                    props.handleCloseworkout();
-                  } else {
-                    setModal1(true);
+                      props.handleCloseworkout();
+                    } else {
+                      setModal1(true);
+                    }
                   }
                 }}
                 style={{
@@ -2660,6 +2675,19 @@ function CoachAddWorkout(props) {
                 }}
                 onClick={() => {
                   if (workoutName) {
+                    let compliance = 0;
+
+                    selectedExercises.map((ex) => {
+                      ex.sets.map((s) => {
+                        if (s.time) {
+                          compliance = compliance + s.time;
+                        } else if (s.weights) {
+                          compliance = compliance + s.reps * s.weights;
+                        } else {
+                          compliance = compliance + s.reps;
+                        }
+                      });
+                    });
                     db.collection("CoachWorkouts")
                       .add({
                         assignedById: userData?.id,
@@ -2675,6 +2703,7 @@ function CoachAddWorkout(props) {
                           caloriesBurnEstimate,
                           workoutDifficulty,
                           selectedExercises,
+                          compliance,
                         },
                       })
                       .then(() => {
@@ -2698,6 +2727,7 @@ function CoachAddWorkout(props) {
                               caloriesBurnEstimate,
                               workoutDifficulty,
                               selectedExercises,
+                              compliance,
                             },
                           };
 
@@ -2706,6 +2736,7 @@ function CoachAddWorkout(props) {
                           props.handleCloseworkout();
                         } else {
                           setModal1(true);
+                          console.log(compliance, "cop");
                         }
                       })
                       .catch((e) => console.error(e));
@@ -2772,7 +2803,13 @@ function CoachAddWorkout(props) {
                   let compliance = 0;
                   selectedExercises.map((ex) => {
                     ex.sets.map((s) => {
-                      compliance = compliance + s.reps * s.weights;
+                      if (s.time) {
+                        compliance = compliance + s.time;
+                      } else if (s.weights) {
+                        compliance = compliance + s.reps * s.weights;
+                      } else {
+                        compliance = compliance + s.reps;
+                      }
                     });
                   });
                   history.push({

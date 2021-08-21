@@ -121,7 +121,9 @@ function WorkoutCard({
                 pathname: "/assign-workout",
                 state: {
                   workout: workouts[idx],
-                  workoutName: item?.data?.preWorkout?.workoutName,
+                  workoutName: workoutName
+                    ? workoutName
+                    : item?.data?.preWorkout?.workoutName,
                   assignType: "non-editable",
                 },
               });
@@ -131,7 +133,9 @@ function WorkoutCard({
                 pathname: "/post-workout",
                 state: {
                   workout: item,
-                  workoutName: item?.data?.preWorkout?.workoutName,
+                  workoutName: workoutName
+                    ? workoutName
+                    : item?.data?.preWorkout?.workoutName,
                   completed: true,
                 },
               });
@@ -177,7 +181,9 @@ function WorkoutCard({
                   pathname: "/post-workout",
                   state: {
                     workout: item,
-                    workoutName: item?.data?.preWorkout?.workoutName,
+                    workoutName: workoutName
+                      ? workoutName
+                      : item?.data?.preWorkout?.workoutName,
                     completed: true,
                   },
                 });
@@ -187,7 +193,9 @@ function WorkoutCard({
                   pathname: "/post-workout",
                   state: {
                     workout: workouts[idx],
-                    workoutName: item?.data?.preWorkout?.workoutName,
+                    workoutName: workoutName
+                      ? workoutName
+                      : item?.data?.preWorkout?.workoutName,
                     assignType: "view",
                   },
                 });
@@ -205,7 +213,7 @@ function WorkoutCard({
       />
       <div className="workoutCard__info">
         <h1>
-          {isLongTerm ? workoutName : item?.data?.preWorkout?.workoutName}
+          {workoutName ? workoutName : item?.data?.preWorkout?.workoutName}
         </h1>
         <div className="workoutCard__macroNutrients">
           <h3>Calories</h3>
@@ -220,91 +228,106 @@ function WorkoutCard({
           <h3>{item?.data?.preWorkout?.workoutDuration}</h3>
         </div>
       </div>
+      <div>
+        <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
+        {isLongTerm && console.log(item.data)}
+        {userType === "coach" && (
+          <div
+            style={{ position: "absolute", top: 10, right: 10 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              var r = window.confirm("are you sure to delete!");
+              if (r == true) {
+                if (!isLongTerm) {
+                  db.collection("CoachWorkouts")
+                    .doc(item.id)
+                    .delete()
+                    .then(() => {
+                      console.log("Document successfully deleted!");
+                    })
+                    .catch((error) => {
+                      console.error("Error removing document: ", error);
+                    });
 
-      <img className="right__arrow" src="/assets/right__arrow.png" alt="" />
-      {isLongTerm && console.log(item.data)}
-      <div
-        style={{ position: "absolute", top: 10, right: 10 }}
-        onClick={(e) => {
-          e.stopPropagation();
-          var r = window.confirm("are you sure to delete!");
-          if (r == true) {
-            if (!isLongTerm) {
-              db.collection("CoachWorkouts")
-                .doc(item.id)
-                .delete()
-                .then(() => {
-                  console.log("Document successfully deleted!");
-                })
-                .catch((error) => {
-                  console.error("Error removing document: ", error);
-                });
+                  db.collection("workouts")
+                    .where("coachWorkoutId", "==", item.id)
+                    .get()
+                    .then(function (querySnapshot) {
+                      // Once we get the results, begin a batch
+                      var batch = db.batch();
 
-              db.collection("workouts")
-                .where("coachWorkoutId", "==", item.id)
-                .get()
-                .then(function (querySnapshot) {
-                  // Once we get the results, begin a batch
-                  var batch = db.batch();
+                      querySnapshot.forEach(function (doc) {
+                        // For each doc, add a delete operation to the batch
+                        batch.delete(doc.ref);
+                      });
 
-                  querySnapshot.forEach(function (doc) {
-                    // For each doc, add a delete operation to the batch
-                    batch.delete(doc.ref);
-                  });
+                      // Commit the batch
+                      return batch.commit();
+                    })
+                    .then(function () {
+                      // Delete completed!
+                      // ...
 
-                  // Commit the batch
-                  return batch.commit();
-                })
-                .then(function () {
-                  // Delete completed!
-                  // ...
+                      console.log("Delete completed");
+                    });
+                } else {
+                  console.log(item.id);
+                  db.collection("longTermWorkout")
+                    .doc(item.id)
+                    .delete()
+                    .then(() => {
+                      console.log("Document successfully deleted!");
+                    })
+                    .catch((error) => {
+                      console.error("Error removing document: ", error);
+                    });
 
-                  console.log("Delete completed");
-                });
-            } else {
-              console.log(item.id);
-              db.collection("longTermWorkout")
-                .doc(item.id)
-                .delete()
-                .then(() => {
-                  console.log("Document successfully deleted!");
-                })
-                .catch((error) => {
-                  console.error("Error removing document: ", error);
-                });
+                  db.collection("workouts")
+                    .where("coachWorkoutId", "==", item.id)
+                    .get()
+                    .then(function (querySnapshot) {
+                      // Once we get the results, begin a batch
+                      var batch = db.batch();
 
-              db.collection("workouts")
-                .where("coachWorkoutId", "==", item.id)
-                .get()
-                .then(function (querySnapshot) {
-                  // Once we get the results, begin a batch
-                  var batch = db.batch();
+                      querySnapshot.forEach(function (doc) {
+                        // For each doc, add a delete operation to the batch
+                        batch.delete(doc.ref);
+                      });
 
-                  querySnapshot.forEach(function (doc) {
-                    // For each doc, add a delete operation to the batch
-                    batch.delete(doc.ref);
-                  });
+                      // Commit the batch
+                      return batch.commit();
+                    })
+                    .then(function () {
+                      // Delete completed!
+                      // ...
 
-                  // Commit the batch
-                  return batch.commit();
-                })
-                .then(function () {
-                  // Delete completed!
-                  // ...
-
-                  console.log("Delete completed");
-                });
-            }
-          } else {
-          }
-        }}
-      >
-        <CloseIcon
-          style={{
-            width: 30,
-          }}
-        />
+                      console.log("Delete completed");
+                    });
+                }
+              } else {
+              }
+            }}
+          >
+            <CloseIcon
+              style={{
+                width: 30,
+              }}
+            />
+          </div>
+        )}
       </div>
+      {userType == "athlete" && (
+        <div
+          style={{
+            fontSize: 12,
+            position: "absolute",
+            bottom: 10,
+            right: 10,
+          }}
+        >
+          {item.data.date}
+        </div>
+      )}
     </div>
   );
 }

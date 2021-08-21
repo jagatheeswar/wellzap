@@ -278,9 +278,11 @@ const CreateLongTermTrainingPlan = () => {
       let temp = location.state.weeks;
       setWeeks(temp);
       let tmp = [];
-      if (location?.state?.selectedAthletes) {
+      if (location?.state?.workout?.selectedAthletes) {
         tmp.push(location.state.workout?.selectedAthletes[0]);
         setshow_data(tmp);
+        console.log(location.state.workout?.selectedAthletes);
+        setSelectedAthletes(location?.state?.workout?.selectedAthletes);
       }
 
       console.log(location.state.workout);
@@ -311,10 +313,12 @@ const CreateLongTermTrainingPlan = () => {
 
   useEffect(() => {
     //console.log("4")
-    value.map((v) => {
+    value?.map((v) => {
       v.selectedDays = [];
     });
-    setSelectedAthletes(value);
+    if (value.length > 0) {
+      setSelectedAthletes(value);
+    }
   }, [value]);
 
   useEffect(() => {
@@ -629,15 +633,6 @@ const CreateLongTermTrainingPlan = () => {
         }}
       >
         <WorkoutScreenHeader name="Create Long-Term Workout Plan" />
-
-        <div
-          className="addWorkout__button"
-          style={{ width: 180 }}
-          onClick={() => setOpenCreateExercise(true)}
-        >
-          <img src="/assets/plus_thin.png" alt="" width="15px" height="15px" />
-          <h5>ADD OWN EXERCISE</h5>
-        </div>
       </div>
       <div
         style={{
@@ -648,20 +643,82 @@ const CreateLongTermTrainingPlan = () => {
           flexDirection: "column",
           alignItems: "center",
 
-          backgroundColor: "white",
           borderRadius: 10,
           //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
         }}
       >
         {!editable && (
-          <div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+          >
+            <div
+              className="selectedAthletes_list"
+              style={{
+                height:
+                  `${selectedAthletes?.length}` > 4
+                    ? 260
+                    : `${selectedAthletes?.length}` * 65,
+                overflow: "scroll",
+                overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
+                backgroundColor: "white",
+                overflowX: "hidden",
+                width: "47%",
+                borderRadius: 10,
+              }}
+            >
+              {console.log("sa", selectedAthletes)}
+              {selectedAthletes?.map((athlete, idx) => (
+                <div
+                  onClick={() => {
+                    let temp = [];
+                    if (show_data[0]?.id == athlete.id) {
+                      setshow_data([]);
+                    } else {
+                      temp.push(athlete);
+                      setshow_data(temp);
+                      // console.log(athlete.name, show_data);
+                    }
+                  }}
+                  style={{
+                    backgroundColor:
+                      athlete?.id == show_data[0]?.id ? "#FFE486" : "white",
+                  }}
+                  className="selectedAthletes_item"
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: 10,
+                    }}
+                  >
+                    <img
+                      style={{ borderRadius: 18 }}
+                      src={
+                        athlete.imageUrl
+                          ? athlete.imageUrl
+                          : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                      }
+                      alt=""
+                      width="36"
+                      height="36"
+                    />
+                    <span style={{ marginLeft: 15 }}>{athlete.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
             {console.log(show_data)}
             {show_data?.map((athlete, index) => (
               <div
                 key={index}
                 style={{
                   //  marginLeft: "4%",
-                  marginTop: 20,
+                  width: "47%",
                   display: "flex",
                   justifyContent: "center",
                   flexDirection: "column",
@@ -715,7 +772,13 @@ const CreateLongTermTrainingPlan = () => {
                     Select days
                   </h2>
                 )}
-                <div
+
+                <div>
+                  {athlete.selectedDays?.map((date, idx) => (
+                    <div>{formatSpecificDate1(date)}</div>
+                  ))}
+                </div>
+                {/* <div
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -916,7 +979,7 @@ const CreateLongTermTrainingPlan = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

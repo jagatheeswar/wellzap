@@ -14,6 +14,8 @@ import CoachProfileForm from "./CoachProfileForm";
 import Header from "../../Components/Header/Header";
 import "./Profile.css";
 import { useHistory } from "react-router-dom";
+import { Typography } from "@material-ui/core";
+import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 // import CoachMedicalAssessment from './AthleteMedicalAssessment';
 
 function InvitesList() {
@@ -149,7 +151,26 @@ function InvitesList() {
     <div className="coachProfile" style={{ minHeight: "99.99vh" }}>
       <div className="coachProfile__container">
         <div className="coachProfile__leftContainer">
-          <Header />
+          <div className="allAthletes__info">
+            <div
+              onClick={() => history.goBack()}
+              style={{ marginTop: 20, display: "flex", alignItems: "center" }}
+            >
+              <ArrowBackIosRoundedIcon
+                style={{ height: 18, width: 18, padding: 5, cursor: "pointer" }}
+              />
+              <Typography variant="h6" style={{ fontSize: 25, marginLeft: 5 }}>
+                Pending Invites
+              </Typography>
+            </div>
+            <div
+              style={{ marginTop: 20 }}
+              className="allAthletes__inviteAthletesButton"
+              onClick={() => history.push("/invite-athlete")}
+            >
+              <img src="/assets/fab.png" alt="" width="32px" height="32px" />
+            </div>
+          </div>
           {athletes?.length == 0 && (
             <h1
               style={{

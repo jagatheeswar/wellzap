@@ -201,7 +201,7 @@ function CoachHomeReports() {
 
   return (
     <div className="home__reports">
-      <h1 onClick={() => history.push("/reports")}>Reports</h1>
+      <h1>Reports</h1>
       <div className="home__reportsMainContainer">
         <div className="home__reportsLeftContainer">
           <h1 style={{ cursor: "auto" }}>Compliance</h1>
@@ -275,7 +275,7 @@ function CoachHomeReports() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "red",
+                      backgroundColor: "orange",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -294,7 +294,7 @@ function CoachHomeReports() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "#34B334",
+                      backgroundColor: "red",
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -313,7 +313,8 @@ function CoachHomeReports() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "rgb(0, 177, 192)",
+                      backgroundColor: "#ffe486",
+
                       borderRadius: 100,
                       alignSelf: "center",
                       alignItems: "center",
@@ -332,8 +333,8 @@ function CoachHomeReports() {
                     style={{
                       height: 10,
                       width: 10,
-                      backgroundColor: "#ffe486",
                       borderRadius: 100,
+                      backgroundColor: "green",
                       alignSelf: "center",
                       alignItems: "center",
                       marginRight: 10,

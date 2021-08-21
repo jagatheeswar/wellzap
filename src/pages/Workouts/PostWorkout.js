@@ -166,9 +166,14 @@ export default function PostWorkoutDetails() {
           // value={postWorkout?.workoutDuration}
           placeholder="Title"
           disabled={true}
-          value={location?.state?.workoutName}
+          value={
+            location?.state?.workout?.data?.workoutName
+              ? location?.state?.workout?.data?.workoutName
+              : location?.state?.workout?.data?.preWorkout?.workoutName
+          }
         />
         <h4 style={{ borderTop: 20 }}>Date</h4>
+        {console.log(location.state?.workout)}
 
         <div className="Datepicker__container">
           <DatePicker
@@ -1332,6 +1337,7 @@ export default function PostWorkoutDetails() {
           </div>
         </div>
       )}
+      {console.log(location.state?.workout?.data)}
       <button
         style={{
           backgroundColor: "#ffe486",
@@ -1354,20 +1360,27 @@ export default function PostWorkoutDetails() {
             let compliance = 0;
             let complianceMessage = "";
 
-            group.map((grp) => {
-              grp.exercises.map((ex) => {
+            location.state?.workout?.data?.preWorkout?.selectedExercises.map(
+              (ex) => {
                 ex.sets.map((s) => {
-                  compliance = compliance + s.actualReps * s.weights;
+                  if (s.time) {
+                    compliance = compliance + s.time;
+                  } else if (s.weights) {
+                    compliance = compliance + s.reps * s.weights;
+                  } else {
+                    compliance = compliance + s.reps;
+                  }
                 });
-              });
-            });
+              }
+            );
+
             if (
               compliance <
               0.2 * location.state?.workout?.data?.preWorkout?.compliance
             ) {
               complianceMessage = "Non compliant";
             } else if (
-              compliance >
+              compliance >=
                 0.2 * location.state?.workout?.data?.preWorkout?.compliance &&
               compliance <
                 0.8 * location.state?.workout?.data?.preWorkout?.compliance
@@ -1376,18 +1389,19 @@ export default function PostWorkoutDetails() {
             } else if (
               compliance >
                 0.8 * location.state?.workout?.data?.preWorkout?.compliance &&
-              compliance <
+              compliance <=
                 1 * location.state?.workout?.data?.preWorkout?.compliance
             ) {
               complianceMessage = "Fully compliant";
             } else if (
-              compliance >
+              compliance >=
               1.1 * location.state?.workout?.data?.preWorkout?.compliance
             ) {
               complianceMessage = "Exceeded";
             } else {
               complianceMessage = "";
             }
+            console.log("c", compliance);
             if (postWorkout?.compliance) {
               postWorkout.compliance = compliance;
               postWorkout.group = group;
