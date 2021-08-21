@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { EventNoteOutlined, DashboardOutlined } from "@material-ui/icons";
 import CoachAddWorkout from "./CoachAddWorkout";
+
 import ViewAllSavedWorkouts from "./ViewAllSavedWorkouts";
 import { db } from "../../utils/firebase";
 import { selectUserData } from "../../features/userSlice";
@@ -283,6 +284,10 @@ const CreateLongTermTrainingPlan = () => {
         setshow_data(tmp);
         console.log(location.state.workout?.selectedAthletes);
         setSelectedAthletes(location?.state?.workout?.selectedAthletes);
+      }
+      if (location.state?.workoutName) {
+        setWorkoutName(location.state?.workoutName);
+        console.log(location.state?.workoutName);
       }
 
       console.log(location.state.workout);
@@ -637,7 +642,7 @@ const CreateLongTermTrainingPlan = () => {
       <div
         style={{
           //  marginLeft: "4%",
-          marginTop: 20,
+          margin: 20,
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
@@ -653,6 +658,7 @@ const CreateLongTermTrainingPlan = () => {
               width: "100%",
               display: "flex",
               justifyContent: "space-around",
+              flexDirection: "column",
             }}
           >
             <div
@@ -666,7 +672,6 @@ const CreateLongTermTrainingPlan = () => {
                 overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
                 backgroundColor: "white",
                 overflowX: "hidden",
-                width: "47%",
                 borderRadius: 10,
               }}
             >
@@ -697,7 +702,7 @@ const CreateLongTermTrainingPlan = () => {
                     }}
                   >
                     <img
-                      style={{ borderRadius: 18 }}
+                      style={{ borderRadius: 20 }}
                       src={
                         athlete.imageUrl
                           ? athlete.imageUrl
@@ -718,7 +723,6 @@ const CreateLongTermTrainingPlan = () => {
                 key={index}
                 style={{
                   //  marginLeft: "4%",
-                  width: "47%",
                   display: "flex",
                   justifyContent: "center",
                   flexDirection: "column",
@@ -726,6 +730,7 @@ const CreateLongTermTrainingPlan = () => {
 
                   backgroundColor: "white",
                   borderRadius: 10,
+                  marginTop: 20,
                   //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
                 }}
               >
@@ -746,7 +751,11 @@ const CreateLongTermTrainingPlan = () => {
                       marginLeft: "20px",
                       marginRight: "20px",
                     }}
-                    src={athlete?.imageUrl ? athlete?.imageUrl : null}
+                    src={
+                      athlete?.imageUrl
+                        ? athlete?.imageUrl
+                        : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                    }
                   />
                   <h2
                     style={{
@@ -760,24 +769,16 @@ const CreateLongTermTrainingPlan = () => {
                   </h2>
                 </div>
                 {!editable && (
-                  <h2
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "600",
-                      marginTop: "10px",
-                      lineHeight: "28px",
-                      marginLeft: "1%",
-                    }}
-                  >
-                    Select days
-                  </h2>
+                  <div style={{ padding: 10 }}>
+                    Start Date : {formatSpecificDate1(athlete.selectedDays[0])}
+                    {"    "}
+                    End Date :{" "}
+                    {formatSpecificDate1(
+                      athlete.selectedDays[athlete.selectedDays.length - 1]
+                    )}
+                  </div>
                 )}
 
-                <div>
-                  {athlete.selectedDays?.map((date, idx) => (
-                    <div>{formatSpecificDate1(date)}</div>
-                  ))}
-                </div>
                 {/* <div
                   style={{
                     display: "flex",
@@ -1159,6 +1160,7 @@ const CreateLongTermTrainingPlan = () => {
       >
         <label>Workout Name</label>
         <br />
+        {console.log(location.state?.workoutName)}
         <input
           style={{
             width: "100%",
@@ -1169,6 +1171,7 @@ const CreateLongTermTrainingPlan = () => {
             borderRadius: 5,
             marginTop: 10,
           }}
+          disabled={!editable}
           placeholder="Workout Name"
           value={workoutName}
           onChange={(val) => {
@@ -1178,7 +1181,7 @@ const CreateLongTermTrainingPlan = () => {
       </div>
       <div
         className="weeksContainer"
-        style={{ overflow: "auto", marginLeft: 20 }}
+        style={{ overflow: "auto", marginLeft: weeks.length > 1 ? 0 : 20 }}
       >
         <div
           className="eachWeek"
@@ -1300,10 +1303,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1437,10 +1444,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1574,10 +1585,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1714,10 +1729,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1851,10 +1870,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1988,10 +2011,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -2125,10 +2152,14 @@ const CreateLongTermTrainingPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>

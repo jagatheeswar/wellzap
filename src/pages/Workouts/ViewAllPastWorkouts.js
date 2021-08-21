@@ -249,6 +249,11 @@ function PastWorkouts() {
               idx={i}
               type={"non-editable"}
               completed={true}
+              workoutName={
+                workout.data?.workoutName
+                  ? workout.data?.workoutName
+                  : workout.data?.preWorkout?.workoutName
+              }
             />
           ))
         ) : (

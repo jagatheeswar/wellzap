@@ -97,7 +97,7 @@ function WorkoutCard({
                 pathname: "/long-term-training",
                 state: {
                   workout: workouts,
-                  workoutName: item?.data?.preWorkout?.workoutName,
+                  workoutName: item?.data?.workoutName,
                   weeks: weeks,
                   assignType: type,
                 },

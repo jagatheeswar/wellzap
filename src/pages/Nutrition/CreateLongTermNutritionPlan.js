@@ -343,10 +343,17 @@ const CreateLongTermNutritionPlan = () => {
       let temp = location.state.weeks;
       setWeeks(temp);
       let tmp = [];
-      tmp.push(location.state.food?.selectedAthletes[0]);
-      setshow_data(tmp);
+      if (location?.state?.food?.selectedAthletes) {
+        tmp.push(location.state.food?.selectedAthletes[0]);
+        setshow_data(tmp);
+        console.log(location.state.food?.selectedAthletes);
+        setSelectedAthletes(location?.state?.food?.selectedAthletes);
+      }
 
-      console.log(location.state.food);
+      if (location.state?.food?.nutritionName) {
+        setNutritionName(location.state?.food?.nutritionName);
+        //console.log(location.state?.workoutName);
+      }
       seteditable(location.state.assignType === "view" ? false : true);
       console.log(location.state.assignType, editable);
     }
@@ -587,7 +594,7 @@ const CreateLongTermNutritionPlan = () => {
       <div
         style={{
           //  marginLeft: "4%",
-          marginTop: 20,
+          margin: 20,
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
@@ -599,14 +606,77 @@ const CreateLongTermNutritionPlan = () => {
         }}
       >
         {!editable && (
-          <div>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-around",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              className="selectedAthletes_list"
+              style={{
+                height:
+                  `${selectedAthletes?.length}` > 4
+                    ? 260
+                    : `${selectedAthletes?.length}` * 65,
+                overflow: "scroll",
+                overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
+                backgroundColor: "white",
+                overflowX: "hidden",
+                borderRadius: 10,
+                marginBottom: 10,
+              }}
+            >
+              {console.log("sa", selectedAthletes)}
+              {selectedAthletes?.map((athlete, idx) => (
+                <div
+                  onClick={() => {
+                    let temp = [];
+                    if (show_data[0]?.id == athlete.id) {
+                      setshow_data([]);
+                    } else {
+                      temp.push(athlete);
+                      setshow_data(temp);
+                      // console.log(athlete.name, show_data);
+                    }
+                  }}
+                  style={{
+                    backgroundColor:
+                      athlete?.id == show_data[0]?.id ? "#FFE486" : "white",
+                  }}
+                  className="selectedAthletes_item"
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: 10,
+                    }}
+                  >
+                    <img
+                      style={{ borderRadius: 20 }}
+                      src={
+                        athlete.imageUrl
+                          ? athlete.imageUrl
+                          : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                      }
+                      alt=""
+                      width="36"
+                      height="36"
+                    />
+                    <span style={{ marginLeft: 15 }}>{athlete.name}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
             {console.log(show_data)}
             {show_data?.map((athlete, index) => (
               <div
                 key={index}
                 style={{
                   //  marginLeft: "4%",
-                  marginTop: 20,
                   display: "flex",
                   justifyContent: "center",
                   flexDirection: "column",
@@ -614,6 +684,7 @@ const CreateLongTermNutritionPlan = () => {
 
                   backgroundColor: "white",
                   borderRadius: 10,
+                  marginTop: 20,
                   //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
                 }}
               >
@@ -634,7 +705,11 @@ const CreateLongTermNutritionPlan = () => {
                       marginLeft: "20px",
                       marginRight: "20px",
                     }}
-                    src={athlete.imageUrl ? athlete.imageUrl : null}
+                    src={
+                      athlete?.imageUrl
+                        ? athlete?.imageUrl
+                        : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+                    }
                   />
                   <h2
                     style={{
@@ -644,224 +719,19 @@ const CreateLongTermNutritionPlan = () => {
                       color: "black",
                     }}
                   >
-                    {athlete.name}
+                    {athlete?.name}
                   </h2>
                 </div>
                 {!editable && (
-                  <h2
-                    style={{
-                      fontSize: "15px",
-                      fontWeight: "600",
-                      marginTop: "10px",
-                      lineHeight: "28px",
-                      marginLeft: "1%",
-                    }}
-                  >
-                    Select days
-                  </h2>
+                  <div style={{ padding: 10 }}>
+                    Start Date : {formatSpecificDate1(athlete.selectedDays[0])}
+                    {"    "}
+                    End Date :{" "}
+                    {formatSpecificDate1(
+                      athlete.selectedDays[athlete.selectedDays.length - 1]
+                    )}
+                  </div>
                 )}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexWrap: "wrap",
-                    marginBottom: "10px",
-                    width: "45%",
-                  }}
-                >
-                  <div
-                    style={{
-                      marginLeft: "3%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "50%",
-                    }}
-                  >
-                    <IconButton
-                      style={{
-                        marginRight: "10px",
-                        marginLeft: "25%",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      onClick={() => {
-                        var curr = new Date(currentStartWeek); // get current date
-                        var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
-
-                        var firstday = new Date(
-                          curr.setDate(first)
-                        ).toUTCString();
-                        var lastday = new Date(
-                          curr.setDate(curr.getDate() + 6)
-                        ).toUTCString();
-                        if (new Date(currentStartWeek) > new Date()) {
-                          setCurrentStartWeek(formatSpecificDate(firstday));
-                          setCurrentEndWeek(formatSpecificDate(lastday));
-                        }
-                      }}
-                    >
-                      <ChevronLeftIcon />
-                    </IconButton>
-                    {daysList.map((day, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => {
-                          if (!editable) {
-                            console.log(day);
-                            if (
-                              athlete?.selectedDays?.includes(
-                                specificDates[idx]
-                              )
-                            ) {
-                              let selected =
-                                selectedAthletes[index].selectedDays;
-                              var index1 = selected.indexOf(specificDates[idx]);
-                              if (index1 !== -1) {
-                                selected.splice(index1, 1);
-                                selectedAthletes[index] = {
-                                  ...selectedAthletes[index],
-                                  selected,
-                                };
-                                setSelectedAthletes([...selectedAthletes]);
-                              }
-                            } else {
-                              if (
-                                new Date(specificDates[idx]) > new Date() ||
-                                specificDates[idx] === formatDate()
-                              ) {
-                                let selectedDays =
-                                  selectedAthletes[index].selectedDays;
-                                selectedAthletes[index] = {
-                                  ...selectedAthletes[index],
-                                  selectedDays: [
-                                    ...selectedDays,
-                                    specificDates[idx],
-                                  ],
-                                };
-                                setSelectedAthletes([...selectedAthletes]);
-                              }
-                            }
-                          }
-                        }}
-                        style={
-                          athlete?.selectedDays?.includes(specificDates[idx])
-                            ? {
-                                backgroundColor: "#ffe486",
-                                color: "#fff",
-                                width: "85px",
-                                height: "25px",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                position: "relative",
-                                borderRadius: "8px",
-                                marginRight: "2px",
-                                marginBottom: "5px",
-                                padding: "5px",
-                                cursor: "pointer",
-                              }
-                            : {
-                                width: "85px",
-                                height: "25px",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                position: "relative",
-                                borderRadius: "8px",
-                                marginRight: "2px",
-                                marginBottom: "5px",
-                                padding: "5px",
-                                cursor: "pointer",
-                              }
-                        }
-                      >
-                        <div>
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              fontWeight: "600",
-                              lineHeight: "20px",
-                              width: "80%",
-                              textAlign: "center",
-                              padding: "5px",
-                              color: athlete?.selectedDays?.includes(
-                                specificDates[idx]
-                              )
-                                ? "black"
-                                : "black",
-                            }}
-                          >
-                            {day}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    <IconButton
-                      style={{
-                        marginLeft: "10%",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      onClick={() => {
-                        var curr = new Date(currentStartWeek); // get current date
-                        var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
-
-                        var firstday = new Date(
-                          curr.setDate(first)
-                        ).toUTCString();
-                        var lastday = new Date(
-                          curr.setDate(curr.getDate() + 6)
-                        ).toUTCString();
-
-                        setCurrentStartWeek(formatSpecificDate(firstday));
-                        setCurrentEndWeek(formatSpecificDate(lastday));
-                      }}
-                    >
-                      <ChevronRightIcon />
-                    </IconButton>
-                  </div>
-
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      fontWeight: "500",
-                      lineHeight: "18px",
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                      alignItems: "center",
-                      width: "100%",
-                      height: "25px",
-                      marginLeft: "45px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {specificDates?.map((tempDate, idx) => (
-                      <div
-                        style={{
-                          width: "43px",
-                          height: "30px",
-                        }}
-                        key={idx}
-                      >
-                        <div
-                          style={{
-                            fontSize: "10px",
-                            fontWeight: "500",
-                            lineHeight: "18px",
-                            width: "100%",
-                            paddingLeft: "5px",
-                            paddingRight: "5px",
-                            paddingBottom: "5px",
-                            textAlign: "center",
-                          }}
-                        >
-                          {formatSpecificDate1(tempDate)}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             ))}
           </div>
@@ -1039,7 +909,7 @@ const CreateLongTermNutritionPlan = () => {
           margin: 20,
         }}
       >
-        <label>Workout Name</label>
+        <label>Nutrition Name</label>
         <br />
         <input
           style={{
@@ -1051,7 +921,8 @@ const CreateLongTermNutritionPlan = () => {
             borderRadius: 5,
             marginTop: 10,
           }}
-          placeholder="Workout Name"
+          placeholder="Nutrition Name"
+          disabled={!editable}
           value={nutritionName}
           onChange={(val) => {
             setNutritionName(val.target.value);
@@ -1060,7 +931,7 @@ const CreateLongTermNutritionPlan = () => {
       </div>
       <div
         className="weeksContainer"
-        style={{ overflow: "auto", marginLeft: 20 }}
+        style={{ overflow: "auto", marginLeft: weeks.length > 1 ? 0 : 20 }}
       >
         <div
           className="eachWeek"
@@ -1093,23 +964,26 @@ const CreateLongTermNutritionPlan = () => {
                 style={{
                   backgroundColor: "#fff",
                   borderRadius: 15,
-                  padding: 1,
+
+                  paddingTop: !editable && 20,
                 }}
               >
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <p style={{ marginLeft: 20 }}>Nutrition Plan</p>
-                  <p
-                    onClick={() => {
-                      setWeekIndex(index.weeknum);
-                      handleClickOpenDialogCopy();
-                    }}
-                    style={{ marginRight: 20, cursor: "pointer" }}
+                {editable && (
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    Copy
-                  </p>
-                </div>
+                    <p style={{ marginLeft: 20 }}>Nutrition Plan</p>
+                    <p
+                      onClick={() => {
+                        setWeekIndex(index.weeknum);
+                        handleClickOpenDialogCopy();
+                      }}
+                      style={{ marginRight: 20, cursor: "pointer" }}
+                    >
+                      Copy
+                    </p>
+                  </div>
+                )}
                 <div
                   style={{
                     alignSelf: "center",
@@ -1181,10 +1055,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1320,10 +1198,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1459,10 +1341,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1598,10 +1484,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1737,10 +1627,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -1876,10 +1770,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>
@@ -2015,10 +1913,14 @@ const CreateLongTermNutritionPlan = () => {
                               marginLeft: 10,
                               marginTop: 2,
                               marginBottom: 4,
-                              marginRight: 20,
+                              marginRight: 10,
                             }}
                           >
-                            x
+                            <CloseIcon
+                              style={{
+                                width: 30,
+                              }}
+                            />
                           </p>
                         )}
                       </div>

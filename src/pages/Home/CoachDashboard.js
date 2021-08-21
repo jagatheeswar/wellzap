@@ -301,7 +301,7 @@ function CoachDashboard(props) {
           <div
             className="athlestes__list"
             style={{
-              height: 200,
+              height: athletes?.length > 2 ? 200 : 140,
               overflowY: "scroll",
               overflow: "scroll",
               marginTop: 10,
