@@ -16,7 +16,7 @@ import { Chart } from "chart.js";
 import Graph3_ from "./Graph3";
 import { useParams } from "react-router";
 import NutritionGoalProgress from "../../Components/NutritionGoalProgress/NutritionGoalProgress";
-import {Grid, Typography} from '@material-ui/core'
+import { Grid, Typography } from "@material-ui/core";
 import NutritionWeekGoal from "../Nutrition/NutritionWeekGoal";
 const Reports = (props) => {
   const [chart_data, setchart_data] = useState({});
@@ -49,17 +49,17 @@ const Reports = (props) => {
   const [graph3Data2, setGraph3Data2] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [graph3Data3, setGraph3Data3] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [iscompliancedata_empty, setiscompliance_empty] = useState(true);
-  var params = props.Id;
-  var Id = props.Id && props.Id;
+
+  var Id = props.Id ? props.Id : temperoryId;
 
   useEffect(() => {
     if (userType) {
       db.collection("athletes")
-        .doc(Id ? Id : "Zonwno1E5oyZ3sYImBjY")
+        .doc(Id ? Id : userData?.id)
         .get()
         .then(function (snap) {
           setAthleteDetails({
-            id: Id,
+            id: Id ? Id : userData?.id,
             data: snap.data(),
           });
         })
@@ -364,113 +364,128 @@ const Reports = (props) => {
     },
   ];
   return (
-    <Grid style={{marginLeft: props.showOthers === false ? 0 : 10}} container spacing={2} className="reports__container">
+    <Grid
+      style={{ marginLeft: props.showOthers === false ? 0 : 10 }}
+      container
+      spacing={2}
+      className="reports__container"
+    >
       <Grid item xs={6}>
-        <h1 style={{fontSize: 19, fontWeight: "600"}}>Compliance</h1>
-        {<Compliance_report Id={Id} height={200} />}
+        <h1 style={{ fontSize: 19, fontWeight: "600" }}>Compliance</h1>
+        {<Compliance_report Id={Id ? Id : userData?.id} height={200} />}
       </Grid>
       <Grid item xs={6} className="chart_container">
         <div>
-        <h1 style={{fontSize: 19, fontWeight: "600", marginBottom: 20}}>Stats</h1>
-        <div className="chart_">
-          {iscompliancedata_empty && (
-            <div
-              style={{
-                position: "absolute",
-                marginLeft: "auto",
-                marginRight: "auto",
-                transform: "translateX(40%)",
-                top: 220,
-              }}
-            >
-              No data available to show
-            </div>
-          )}
-          <div
-            className="chart_legend"
-            style={{
-              color: "#808080",
-              display: "flex",
-              fontSize: 20,
-              justifyContent: "space-around",
-              alignItems: "center",
-            }}
-          >
-            Weekly Report
-            <div className="dropdown_" style={{ fontSize: 20, fontFamily: 'Montserrat' }}>
-              <Dropdown_
-                change_graph={changeGraph_option}
-                options={dropdown_options}
-              />
-            </div>
-          </div>
-
-          <div className="chart_header">
-            <img
-              onClick={() => {
-                var curr = new Date(currentStartWeek2); // get current date
-                var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
-
-                var firstday = new Date(curr.setDate(first)).toUTCString();
-                var lastday = new Date(
-                  curr.setDate(curr.getDate() + 6)
-                ).toUTCString();
-
-                setCurrentStartWeek2(formatSpecificDate(firstday));
-                setCurrentEndWeek2(formatSpecificDate(lastday));
-              }}
-              className="left_arrow"
-              width={10}
-              alt="legend"
-              style={{ marginRight: "auto" }}
-              src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
-            />
+          <h1 style={{ fontSize: 19, fontWeight: "600", marginBottom: 20 }}>
+            Stats
+          </h1>
+          <div className="chart_">
+            {iscompliancedata_empty && (
+              <div
+                style={{
+                  position: "absolute",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  transform: "translateX(40%)",
+                  top: 220,
+                }}
+              >
+                No data available to show
+              </div>
+            )}
             <div
               className="chart_legend"
-              style={{ color: "#808080", fontSize: 14 }}
+              style={{
+                color: "#808080",
+                display: "flex",
+                fontSize: 20,
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
             >
-              {formatDate2(currentStartWeek2)} - {formatDate2(currentEndWeek2)}
+              Weekly Report
+              <div
+                className="dropdown_"
+                style={{ fontSize: 20, fontFamily: "Montserrat" }}
+              >
+                <Dropdown_
+                  change_graph={changeGraph_option}
+                  options={dropdown_options}
+                />
+              </div>
             </div>
-            <img
-              onClick={() => {
-                var curr = new Date(currentStartWeek2); // get current date
-                var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
-                var firstday = new Date(curr.setDate(first)).toUTCString();
-                var lastday = new Date(
-                  curr.setDate(curr.getDate() + 6)
-                ).toUTCString();
-                if (!(moment(firstday).valueOf() > moment().valueOf())) {
+            <div className="chart_header">
+              <img
+                onClick={() => {
+                  var curr = new Date(currentStartWeek2); // get current date
+                  var first = curr.getDate() - curr.getDay() - 7; // First day is the  day of the month - the day of the week \
+
+                  var firstday = new Date(curr.setDate(first)).toUTCString();
+                  var lastday = new Date(
+                    curr.setDate(curr.getDate() + 6)
+                  ).toUTCString();
+
                   setCurrentStartWeek2(formatSpecificDate(firstday));
                   setCurrentEndWeek2(formatSpecificDate(lastday));
-                }
-              }}
-              className="right_arrow"
-              width={10}
-              alt="legend"
-              src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
-              style={{ transform: "rotate(180deg)", marginLeft: "auto" }}
-            />
-          </div>
+                }}
+                className="left_arrow"
+                width={10}
+                alt="legend"
+                style={{ marginRight: "auto" }}
+                src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
+              />
+              <div
+                className="chart_legend"
+                style={{ color: "#808080", fontSize: 14 }}
+              >
+                {formatDate2(currentStartWeek2)} -{" "}
+                {formatDate2(currentEndWeek2)}
+              </div>
+              <img
+                onClick={() => {
+                  var curr = new Date(currentStartWeek2); // get current date
+                  var first = curr.getDate() - curr.getDay() + 7; // First day is the  day of the month - the day of the week \
 
-          <div className="chart_bar" style={{ marginTop: 80 }}>
-            {Weekly_report()}
+                  var firstday = new Date(curr.setDate(first)).toUTCString();
+                  var lastday = new Date(
+                    curr.setDate(curr.getDate() + 6)
+                  ).toUTCString();
+                  if (!(moment(firstday).valueOf() > moment().valueOf())) {
+                    setCurrentStartWeek2(formatSpecificDate(firstday));
+                    setCurrentEndWeek2(formatSpecificDate(lastday));
+                  }
+                }}
+                className="right_arrow"
+                width={10}
+                alt="legend"
+                src="https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png"
+                style={{ transform: "rotate(180deg)", marginLeft: "auto" }}
+              />
+            </div>
+
+            <div className="chart_bar" style={{ marginTop: 80 }}>
+              {Weekly_report()}
+            </div>
           </div>
         </div>
-        </div>
       </Grid>
-      {props.showOthers === false ? (<></>) : (
+      {props.showOthers === false ? (
+        <></>
+      ) : (
         <>
-        <Grid item xs={6}>
-        <h1 style={{fontSize: 19, fontWeight: "600"}}>Body Stats</h1>
-          <Graph3_ Id={Id} />
-        </Grid>
-      <Grid item xs={6}>
-        {/* <NutritionGoalProgress /> */}
-        <h1 style={{fontSize: 19, fontWeight: "600"}}>Average Macronutrients consumed</h1>
-        <NutritionWeekGoal />
-      </Grid>
-      </>
+          <Grid item xs={6}>
+            <h1 style={{ fontSize: 19, fontWeight: "600" }}>Body Stats</h1>
+            <Graph3_ Id={Id} />
+          </Grid>
+          <Grid item xs={6}>
+            {/* <NutritionGoalProgress /> */}
+            <h1 style={{ fontSize: 19, fontWeight: "600" }}>
+              Average Macronutrients consumed
+            </h1>
+            <NutritionWeekGoal />
+          </Grid>
+        </>
       )}
     </Grid>
   );

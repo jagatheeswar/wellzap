@@ -9,6 +9,7 @@ import { useHistory } from "react-router";
 import "./Messaging.css";
 import { Divider } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
+import formatSpecificDate1 from "../../functions/formatSpecificDate1";
 
 function Messaging({ route, navigation }) {
   const userType = useSelector(selectUserType);
@@ -184,7 +185,7 @@ function Messaging({ route, navigation }) {
   };
 
   return (
-    <div style={{minHeight: "99.7vh"}}>
+    <div style={{ minHeight: "99.7vh" }}>
       <div style={{ flex: 9 }}>
         <div>
           <div
@@ -224,7 +225,7 @@ function Messaging({ route, navigation }) {
         </div>
       </div>
 
-      <div style={{ height: "82vh", overflowY: 'auto' }}>
+      <div style={{ height: "82vh", overflowY: "auto" }}>
         {allMessages?.map((msg) => (
           <div key={msg.id}>
             {type === "coach" ? (
@@ -266,45 +267,51 @@ function Messaging({ route, navigation }) {
                     }
                   />
                 ) : (
-                  <h3
-                    style={
-                      msg.from_id === to_id
-                        ? {
-                            backgroundColor: "black",
-                            paddingLeft: "15px",
-                            paddingRight: "15px",
-                            paddingTop: "10px",
-                            paddingBottom: "10px",
-                            borderRadius: "15px",
-                            alignSelf: "flex-end",
-                            color: "white",
-                            fontSize: "18px",
-                            borderBottomRightRadius: 0,
-                            marginRight: "5px",
-                            marginLeft: "300px",
-                            width: "50%",
-                            fontWeight: "500",
-                            textAlign: "end",
-                          }
-                        : {
-                            backgroundColor: "#EAECF2",
-                            borderRadius: 15,
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            paddingTop: "5px",
-                            paddingBottom: "5px",
-                            alignSelf: "flex-start",
-                            fontSize: "18px",
-                            color: "#63697B",
-                            borderBottomLeftRadius: 0,
-                            marginLeft: "5px",
-                            width: "50%",
-                            fontWeight: "500",
-                          }
-                    }
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent:
+                        msg.from_id === to_id ? "flex-end" : "flex-start",
+                    }}
                   >
-                    {msg.message}
-                  </h3>
+                    <div
+                      style={
+                        msg.from_id === to_id
+                          ? {
+                              backgroundColor: "black",
+                              paddingLeft: "15px",
+                              paddingRight: "15px",
+                              paddingTop: "10px",
+                              paddingBottom: "10px",
+                              borderRadius: "15px",
+                              alignSelf: "flex-end",
+                              color: "white",
+                              fontSize: "18px",
+                              borderBottomRightRadius: 0,
+                              marginRight: "5px",
+                              marginLeft: "300px",
+                              fontWeight: "500",
+                              textAlign: "end",
+                            }
+                          : {
+                              backgroundColor: "#EAECF2",
+                              borderRadius: 15,
+                              paddingLeft: "10px",
+                              paddingRight: "10px",
+                              paddingTop: "5px",
+                              paddingBottom: "5px",
+                              alignSelf: "flex-start",
+                              fontSize: "18px",
+                              color: "#63697B",
+                              borderBottomLeftRadius: 0,
+                              marginLeft: "5px",
+                              fontWeight: "500",
+                            }
+                      }
+                    >
+                      {msg.message}
+                    </div>
+                  </div>
                 )}
                 {/* <Text
                 style={
@@ -340,9 +347,8 @@ function Messaging({ route, navigation }) {
                             borderBottomRightRadius: 0,
                             marginRight: "5px",
                             height: "50%",
-                            width: "50%",
                             fontWeight: "500",
-                            objectFit: 'contain'
+                            objectFit: "contain",
                           }
                         : {
                             borderRadius: "15px",
@@ -356,56 +362,82 @@ function Messaging({ route, navigation }) {
                             borderBottomLeftRadius: 0,
                             marginLeft: "5px",
                             height: "50%",
-                            width: "50%",
                             fontWeight: "500",
-                            objectFit: 'contain'
+                            objectFit: "contain",
                           }
                     }
                   />
                 ) : (
-                  <h3
-                    style={
-                      msg.from_id === from_id
-                        ? {
-                            backgroundColor: "black",
-                            paddingLeft: "15px",
-                            paddingRight: "15px",
-                            paddingTop: "10px",
-                            paddingBottom: "10px",
-                            borderRadius: "15px",
-                            alignSelf: "flex-grow",
-                            color: "white",
-                            fontSize: "18px",
-                            borderBottomRightRadius: 0,
-                            marginRight: "5px",
-                            marginLeft: "300px",
-                            width: "50%",
-                            height: "fit-content",
-                            textAlign: "end",
-                            fontWeight: "500",
-                            width: "50%",
-                          }
-                        : {
-                            backgroundColor: "#EAECF2",
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            paddingTop: "5px",
-                            paddingBottom: "5px",
-                            borderRadius: "15px",
-                            alignSelf: "flex-start",
-                            fontSize: "18px",
-                            color: "#63697B",
-                            borderBottomLeftRadius: 0,
-                            marginLeft: "5px",
-                            width: "fit-content",
-                            textAlign: "start",
-                            fontWeight: "500",
-                            width: "50%",
-                          }
-                    }
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent:
+                        msg.from_id === from_id ? "flex-end" : "flex-start",
+                    }}
                   >
-                    {msg.message}
-                  </h3>
+                    <div
+                      style={
+                        msg.from_id === from_id
+                          ? {
+                              backgroundColor: "black",
+                              paddingLeft: "15px",
+                              paddingRight: "15px",
+                              paddingTop: "10px",
+                              paddingBottom: "10px",
+                              borderRadius: "15px",
+                              alignSelf: "flex-grow",
+                              color: "white",
+                              fontSize: "18px",
+                              borderBottomRightRadius: 0,
+                              marginRight: "5px",
+                              marginLeft: "300px",
+                              height: "fit-content",
+                              textAlign: "end",
+                              fontWeight: "500",
+                            }
+                          : {
+                              backgroundColor: "#EAECF2",
+                              paddingLeft: "10px",
+                              paddingRight: "10px",
+                              paddingTop: "5px",
+                              paddingBottom: "5px",
+                              borderRadius: "15px",
+                              alignSelf: "flex-start",
+                              fontSize: "18px",
+                              color: "#63697B",
+                              borderBottomLeftRadius: 0,
+                              marginLeft: "5px",
+                              width: "fit-content",
+                              textAlign: "start",
+                              fontWeight: "500",
+                            }
+                      }
+                    >
+                      {msg.message}
+                    </div>
+                    {/* <div
+                      style={{
+                        paddingLeft: "15px",
+                        paddingRight: "15px",
+
+                        borderRadius: "15px",
+                        alignSelf: "flex-grow",
+                        color: "white",
+                        fontSize: "12px",
+                        borderBottomRightRadius: 0,
+                        marginRight: "5px",
+                        marginLeft: "300px",
+                        height: "fit-content",
+                        textAlign: "end",
+                        fontWeight: "500",
+                        color: "black",
+                      }}
+                    >
+                      {formatSpecificDate1(
+                        new Date(msg.timestamp.seconds * 1000)
+                      )}
+                    </div> */}
+                  </div>
                 )}
                 {/* <Text
                 style={
@@ -432,7 +464,6 @@ function Messaging({ route, navigation }) {
         style={{
           display: "flex",
           alignItems: "center",
-          width: "50%",
           backgroundColor: "white",
           justifyContent: "space-between",
           paddingLeft: "10px",
@@ -440,11 +471,12 @@ function Messaging({ route, navigation }) {
           flex: 1,
           marginLeft: "10px",
           paddingTop: "5px",
-          paddingBottom: "5px",
+          paddingBottom: "10px",
+          paddingRight: 10,
           // position: "relative",
-          // bottom: "30px", 
-          position: 'absolute',
-          bottom: 10
+          // bottom: "30px",
+          position: "relative",
+          bottom: 10,
         }}
       >
         <div

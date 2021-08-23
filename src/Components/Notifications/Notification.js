@@ -172,7 +172,7 @@ function Notification({ route }) {
             {show ? (
               <h3
                 style={{
-                  textAlign: "center",
+                  textAlign: "left",
                   marginRight: 20,
                   transition: "all 0.1s",
                   width: 150,
@@ -185,16 +185,16 @@ function Notification({ route }) {
             ) : (
               <h3
                 style={{
-                  textAlign: "center",
+                  textAlign: "left",
                   marginRight: 20,
                   transition: "all 0.1s",
-                  backgroundColor: "red",
                   padding: 5,
                   borderRadius: 10,
                   marginTop: 20,
                   display: unreadMessages.length > 0 ? "block" : "none",
                   fontWeight: "normal",
                   fontSize: 15,
+                  width: 150,
                 }}
               >
                 {unreadMessages.length > 0 && `${unreadMessages.length} unread`}

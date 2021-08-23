@@ -380,7 +380,7 @@ function CreateNutrition() {
       <div>
         <div {...getRootProps()}>
           {/* <Label {...getInputLabelProps()}>Search for Athletes</Label> */}
-          <h3 style={{ marginLeft: 30 }}>Search For Athletes</h3>
+          <h3 style={{ marginLeft: 30, margin: 10 }}>Search For Athletes</h3>
 
           <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
             {value.map((option, index) => (

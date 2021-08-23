@@ -427,7 +427,7 @@ function CreateNutrition(props) {
           padding: 20,
         }}
       >
-        <h4>Nutrition Plan Name</h4>
+        <h4 style={{ marginTop: 10, marginBottom: 10 }}>Nutrition Plan Name</h4>
         <input
           type="text"
           placeholder="Enter Nutrition Plan Name"
@@ -446,7 +446,9 @@ function CreateNutrition(props) {
               marginLeft: 20,
             }}
           >
-            <h4>Search for Athletes</h4>
+            <h4 style={{ marginTop: 10, marginBottom: 10 }}>
+              Search for Athletes
+            </h4>
             <InputWrapper
               ref={setAnchorEl}
               className={focused ? "focused" : ""}
@@ -542,7 +544,6 @@ function CreateNutrition(props) {
                         alignItems: "center",
                         justifyContent: "flex-start",
                         flexWrap: "wrap",
-                        marginBottom: "10px",
                         width: "300px",
                       }}
                     >
@@ -702,7 +703,6 @@ function CreateNutrition(props) {
                               <div
                                 style={{
                                   width: "45px",
-                                  height: "30px",
                                 }}
                                 key={idx}
                               >
@@ -714,7 +714,6 @@ function CreateNutrition(props) {
 
                                     paddingLeft: "5px",
                                     paddingRight: "5px",
-                                    paddingBottom: "5px",
                                     textAlign: "center",
                                     color:
                                       new Date(athlete_dates[athlete.id][idx]) <
@@ -829,7 +828,8 @@ function CreateNutrition(props) {
       ) : (
         <div
           style={{
-            padding: "20px",
+            paddingLeft: "20px",
+            paddingRight: "20px",
           }}
         >
           {" "}
@@ -1134,7 +1134,6 @@ function CreateNutrition(props) {
                             <div
                               style={{
                                 width: "43px",
-                                height: "30px",
                               }}
                               key={idx}
                             >
@@ -1145,7 +1144,6 @@ function CreateNutrition(props) {
                                   lineHeight: "18px",
                                   width: "100%",
 
-                                  paddingBottom: "5px",
                                   textAlign: "center",
                                   color:
                                     new Date(athlete_dates[athlete.id][idx]) <

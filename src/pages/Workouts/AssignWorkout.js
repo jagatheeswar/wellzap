@@ -1457,7 +1457,7 @@ function AssignWorkout(props) {
             <div className="Workouts_body">
               <h3>Add Exercises</h3>
               {console.log(selectedExercises)}
-              {selectedExercises.map((workout, idx1) => (
+              {selectedExercises?.map((workout, idx1) => (
                 <div key={idx1}>
                   <div
                     style={{

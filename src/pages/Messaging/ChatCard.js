@@ -130,7 +130,11 @@ function ChatCard({ to_id, from_id, id }) {
         <div className="athlete_card">
           <img
             className="athlete_image"
-            src={athleteDetails?.imageUrl ? athleteDetails?.imageUrl : null}
+            src={
+              athleteDetails?.imageUrl
+                ? athleteDetails?.imageUrl
+                : "https://firebasestorage.googleapis.com/v0/b/triden-workout-app.appspot.com/o/images%2FuserImage.jpeg?alt=media&token=7a57513d-4d38-410d-b176-cdb5a3bdb6ef"
+            }
           />
           <div>
             <h3 className="athlete_name">{athleteDetails?.name}</h3>{" "}

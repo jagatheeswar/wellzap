@@ -149,28 +149,28 @@ function InvitesList() {
   }, [userData]);
   return (
     <div className="coachProfile" style={{ minHeight: "99.99vh" }}>
+      <div className="allAthletes__info">
+        <div
+          onClick={() => history.goBack()}
+          style={{ marginTop: 20, display: "flex", alignItems: "center" }}
+        >
+          <ArrowBackIosRoundedIcon
+            style={{ height: 18, width: 18, padding: 5, cursor: "pointer" }}
+          />
+          <Typography variant="h6" style={{ fontSize: 25, marginLeft: 5 }}>
+            Pending Invites
+          </Typography>
+        </div>
+        <div
+          style={{ marginTop: 20 }}
+          className="allAthletes__inviteAthletesButton"
+          onClick={() => history.push("/invite-athlete")}
+        >
+          <img src="/assets/fab.png" alt="" width="32px" height="32px" />
+        </div>
+      </div>
       <div className="coachProfile__container">
         <div className="coachProfile__leftContainer">
-          <div className="allAthletes__info">
-            <div
-              onClick={() => history.goBack()}
-              style={{ marginTop: 20, display: "flex", alignItems: "center" }}
-            >
-              <ArrowBackIosRoundedIcon
-                style={{ height: 18, width: 18, padding: 5, cursor: "pointer" }}
-              />
-              <Typography variant="h6" style={{ fontSize: 25, marginLeft: 5 }}>
-                Pending Invites
-              </Typography>
-            </div>
-            <div
-              style={{ marginTop: 20 }}
-              className="allAthletes__inviteAthletesButton"
-              onClick={() => history.push("/invite-athlete")}
-            >
-              <img src="/assets/fab.png" alt="" width="32px" height="32px" />
-            </div>
-          </div>
           {athletes?.length == 0 && (
             <h1
               style={{
@@ -185,7 +185,7 @@ function InvitesList() {
                 width: "100%",
               }}
             >
-              There are no athletes now
+              There are no pending requests now
             </h1>
           )}
           {athletes}

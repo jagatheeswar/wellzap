@@ -46,12 +46,10 @@
   justify-content: space-between;
   display: flex;
   background-color: white;
-  width: 97%;
   box-sizing: border-box;
   align-items: center;
   border-radius: 5px;
-  margin: 10px;
-  width: 95%;
+  margin: 20px 20px 5px 20px;
   padding: 5px 18px;
 }
 

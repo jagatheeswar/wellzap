@@ -46,7 +46,7 @@ const Compliance_report = (props) => {
   const [iscompliancedata_empty, setiscompliance_empty] = useState(true);
   const [bar_colors, setbar_colors] = useState([]);
   var Id = props.Id && props.Id;
-
+  console.log(Id, "d");
   useEffect(() => {
     if (userType) {
       db.collection("athletes")

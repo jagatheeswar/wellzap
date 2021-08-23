@@ -670,7 +670,6 @@ const CreateLongTermTrainingPlan = () => {
                     : `${selectedAthletes?.length}` * 65,
                 overflow: "scroll",
                 overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
-                backgroundColor: "white",
                 overflowX: "hidden",
                 borderRadius: 10,
               }}
@@ -691,6 +690,7 @@ const CreateLongTermTrainingPlan = () => {
                   style={{
                     backgroundColor:
                       athlete?.id == show_data[0]?.id ? "#FFE486" : "white",
+                    borderRadius: 10,
                   }}
                   className="selectedAthletes_item"
                 >
@@ -730,7 +730,6 @@ const CreateLongTermTrainingPlan = () => {
 
                   backgroundColor: "white",
                   borderRadius: 10,
-                  marginTop: 20,
                   //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
                 }}
               >

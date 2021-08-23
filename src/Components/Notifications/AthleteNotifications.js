@@ -83,6 +83,8 @@ function AthleteNotifications({ route }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          justifyContent: "space-between",
+          marginLeft: 10,
         }}
       >
         <div
@@ -91,20 +93,22 @@ function AthleteNotifications({ route }) {
             alignItems: "center",
           }}
         >
+          <h3>Notifications</h3>
           <div
             onClick={() => {
               setshow(!show);
             }}
             style={{
-              transform: show ? "rotate(90deg)" : "rotate(0deg)",
+              transform: show ? "rotate(90deg)" : "rotate(180deg)",
               transition: "transform 0.2s",
               marginTop: 5,
+              position: "absolute",
+              right: 10,
             }}
             // class="arrow-right"
           >
             <ChevronRightRounded style={{ height: 30, width: 30 }} />
           </div>
-          <h3>Notifications</h3>
         </div>
         {switchScreen === false && (
           <div
@@ -148,15 +152,42 @@ function AthleteNotifications({ route }) {
               // });
             }}
           >
-            <p
-              style={{
-                textAlign: "center",
-                opacity: show ? 1 : 0,
-                marginRight: 20,
-              }}
-            >
-              Mark All as Read
-            </p>
+            {show ? (
+              <h3
+                style={{
+                  textAlign: "left",
+                  marginRight: 30,
+                  transition: "all 0.1s",
+                  width: 150,
+                  fontWeight: "normal",
+                  fontSize: 15,
+                  transition: "all 0.1s",
+                  padding: 5,
+                  marginTop: 20,
+                }}
+              >
+                Mark All as Read
+              </h3>
+            ) : (
+              <h3
+                style={{
+                  textAlign: "center",
+                  marginRight: 30,
+                  transition: "all 0.1s",
+                  padding: 5,
+                  borderRadius: 10,
+                  marginTop: 20,
+                  display: unreadMessages.length > 0 ? "block" : "none",
+                  fontWeight: "normal",
+                  transition: "all 0.1s",
+
+                  fontSize: 15,
+                  width: 150,
+                }}
+              >
+                {unreadMessages.length > 0 && `${unreadMessages.length} unread`}
+              </h3>
+            )}
           </div>
         )}
       </div>
@@ -209,7 +240,7 @@ function AthleteNotifications({ route }) {
         </div>
         <div
           style={{
-            margin: 5,
+            margin: 10,
             flex: 1,
             alignItems: "center",
             justifyContent: "space-between",
@@ -224,9 +255,8 @@ function AthleteNotifications({ route }) {
                   style={{
                     backgroundColor: "white",
                     padding: 10,
-                    width: "95%",
                     margin: 10,
-                    marginLeft: -5,
+                    marginLeft: 10,
                     borderRadius: 5,
                   }}
                 >

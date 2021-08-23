@@ -77,7 +77,7 @@ export default function CreateEvent(props) {
   const location = useLocation();
   const [meetURL, setmeetURL] = useState("");
   const [t, sett] = useState(true);
-  const [MeetType, setMeetType] = useState("gmeet");
+  const [MeetType, setMeetType] = useState("");
   // useEffect(async () => {
   //   console.log(location);
   //   const queryURL = new URLSearchParams(location.search);
@@ -819,6 +819,7 @@ export default function CreateEvent(props) {
           }}
           onClick={() => {
             setShowVideoLink(!showVideoLink);
+            setMeetType("");
           }}
         >
           {!showVideoLink

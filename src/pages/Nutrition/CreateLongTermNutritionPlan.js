@@ -594,13 +594,12 @@ const CreateLongTermNutritionPlan = () => {
       <div
         style={{
           //  marginLeft: "4%",
-          margin: 20,
+          margin: "20px 20px 10px 20px",
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
           alignItems: "center",
 
-          backgroundColor: "white",
           borderRadius: 10,
           //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
         }}
@@ -623,7 +622,6 @@ const CreateLongTermNutritionPlan = () => {
                     : `${selectedAthletes?.length}` * 65,
                 overflow: "scroll",
                 overflowY: `${selectedAthletes?.length}` <= 4 && "hidden",
-                backgroundColor: "white",
                 overflowX: "hidden",
                 borderRadius: 10,
                 marginBottom: 10,
@@ -645,6 +643,7 @@ const CreateLongTermNutritionPlan = () => {
                   style={{
                     backgroundColor:
                       athlete?.id == show_data[0]?.id ? "#FFE486" : "white",
+                    borderRadius: 10,
                   }}
                   className="selectedAthletes_item"
                 >
@@ -684,7 +683,6 @@ const CreateLongTermNutritionPlan = () => {
 
                   backgroundColor: "white",
                   borderRadius: 10,
-                  marginTop: 20,
                   //boxShadow: "0 0 1px 2px rgba(0, 0, 0, 0.1)",
                 }}
               >
