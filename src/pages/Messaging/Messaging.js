@@ -128,6 +128,7 @@ function Messaging({ route, navigation }) {
             id: doc.id,
           }));
 
+          console.log(data);
           setAllMessages(data);
         });
 
@@ -231,41 +232,43 @@ function Messaging({ route, navigation }) {
             {type === "coach" ? (
               <div style={{ margin: "15px" }}>
                 {msg.format && msg.format == "image" ? (
-                  <img
-                    src={msg.message}
-                    style={
-                      msg.from_id === to_id
-                        ? {
-                            backgroundColor: "black",
-                            paddingLeft: "15px",
-                            paddingRight: "15px",
-                            paddingTop: "10px",
-                            paddingBottom: "10px",
-                            borderRadius: "15px",
-                            alignSelf: "flex-start",
-                            color: "white",
-                            fontSize: "18px",
-                            borderBottomRightRadius: 0,
-                            marginRight: "5px",
-                            height: "200px",
-                            width: "50px",
-                          }
-                        : {
-                            borderRadius: 15,
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            paddingTop: "5px",
-                            paddingBottom: "5px",
-                            alignSelf: "flex-end",
-                            fontSize: "18px",
-                            color: "#63697B",
-                            borderBottomLeftRadius: 0,
-                            marginLeft: "5px",
-                            height: "200px",
-                            width: "50px",
-                          }
-                    }
-                  />
+                  msg.message && (
+                    <img
+                      src={msg.message}
+                      style={
+                        msg.from_id === to_id
+                          ? {
+                              backgroundColor: "black",
+                              paddingLeft: "15px",
+                              paddingRight: "15px",
+                              paddingTop: "10px",
+                              paddingBottom: "10px",
+                              borderRadius: "15px",
+                              alignSelf: "flex-start",
+                              color: "white",
+                              fontSize: "18px",
+                              borderBottomRightRadius: 0,
+                              marginRight: "5px",
+                              height: "200px",
+                              width: "90px",
+                            }
+                          : {
+                              borderRadius: 15,
+                              paddingLeft: "10px",
+                              paddingRight: "10px",
+                              paddingTop: "5px",
+                              paddingBottom: "5px",
+                              alignSelf: "flex-end",
+                              fontSize: "18px",
+                              color: "#63697B",
+                              borderBottomLeftRadius: 0,
+                              marginLeft: "5px",
+                              height: "200px",
+                              width: "90px",
+                            }
+                      }
+                    />
+                  )
                 ) : (
                   <div
                     style={{
@@ -346,7 +349,7 @@ function Messaging({ route, navigation }) {
                             fontSize: "18px",
                             borderBottomRightRadius: 0,
                             marginRight: "5px",
-                            height: "50%",
+                            height: "200px",
                             fontWeight: "500",
                             objectFit: "contain",
                           }
@@ -361,7 +364,7 @@ function Messaging({ route, navigation }) {
                             color: "#63697B",
                             borderBottomLeftRadius: 0,
                             marginLeft: "5px",
-                            height: "50%",
+                            height: "200px",
                             fontWeight: "500",
                             objectFit: "contain",
                           }

@@ -437,14 +437,13 @@ export default function PostWorkoutDetails() {
                             >
                               <div>
                                 <div style={{ alignItems: "center" }}>
-                                  <h3 style={{ fontSize: 11 }}>Edit</h3>
+                                  <h3 style={{ fontSize: 11 }}>Edit1</h3>
                                   <div>
                                     {selectedWorkoutEdit === idx1 ? (
                                       <img
                                         style={{
                                           width: 20,
                                           height: 20,
-                                          marginRight: 5,
                                         }}
                                         src="../assets/up.png"
                                       />
@@ -453,7 +452,6 @@ export default function PostWorkoutDetails() {
                                         style={{
                                           width: 20,
                                           height: 20,
-                                          marginRight: 5,
                                         }}
                                         src="../assets/down.png"
                                       />
@@ -621,7 +619,7 @@ export default function PostWorkoutDetails() {
                               display: "flex",
                               flexDirection: "row",
                               width: "100%",
-                              justifyContent: "space-between",
+
                               alignItems: "center",
                               marginVertical: 10,
                               backgroundColor: "white",
@@ -889,7 +887,9 @@ export default function PostWorkoutDetails() {
                               v
                             </h3> */}
                             </div>
-                            <div style={{ marginRight: 100 }}>
+                            <div
+                              style={{ marginRight: 100, marginLeft: "auto" }}
+                            >
                               <div style={{ alignItems: "center" }}>
                                 <h3 style={{ fontSize: 11 }}>Edit</h3>
                                 <div>
@@ -898,7 +898,6 @@ export default function PostWorkoutDetails() {
                                       style={{
                                         width: 20,
                                         height: 20,
-                                        marginRight: 5,
                                       }}
                                       src="../assets/up.png"
                                     />
@@ -907,7 +906,6 @@ export default function PostWorkoutDetails() {
                                       style={{
                                         width: 20,
                                         height: 20,
-                                        marginRight: 5,
                                       }}
                                       src="../assets/down.png"
                                     />

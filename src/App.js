@@ -470,7 +470,7 @@ function App() {
             <Route path="/my-workouts">
               <RoutesComp
                 AthleteComp={<AthleteWorkoutsList />}
-                CoachComp={<NotFound />}
+                CoachComp={<AthleteWorkoutsList />}
               />
             </Route>
             <Route path="/view-all-saved-workouts">
@@ -507,7 +507,7 @@ function App() {
             <Route path="/view-all-past-workouts">
               <RoutesComp
                 AthleteComp={<ViewAllPastWorkouts />}
-                CoachComp={<NotFound />}
+                CoachComp={<ViewAllPastWorkouts />}
               />
             </Route>
             <Route path="/post-workout">

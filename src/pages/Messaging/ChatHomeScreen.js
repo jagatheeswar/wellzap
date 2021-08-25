@@ -177,7 +177,7 @@ function ChatHomeScreen({ navigation }) {
               borderRadius: 10,
             }}
           >
-            No Conversions yet, Start a conversion
+            No Conversations yet, Start a conversation
           </h1>
         )}
       </div>

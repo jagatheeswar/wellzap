@@ -266,6 +266,15 @@ function AssignWorkout(props) {
   }, [workoutVideoUrl]);
 
   useEffect(() => {
+    if (selectedExercises && workout) {
+      let temp = { ...workout };
+
+      temp.data.preWorkout.selectedExercises = selectedExercises;
+      setWorkout(temp);
+    }
+  }, [selectedExercises]);
+
+  useEffect(() => {
     if (location.state?.assignType) {
       setType(location.state?.assignType);
     }
@@ -287,10 +296,21 @@ function AssignWorkout(props) {
     }
   }, [location.state?.athlete_id]);
 
+  // useEffect(() => {
+  //   if (workout) {
+  //     let temp = [...workout];
+  //     if (selectedExercises.length > 0) {
+  //       temp.data.preWorkout.selectedExercises = selectedExercises;
+  //       setWorkout(temp);
+  //     }
+  //   }
+  // }, [selectedExercises, workout]);
+
   useEffect(() => {
     console.log("st", location.state);
     if (location.state?.workout) {
       setWorkout(location.state?.workout);
+
       setworkoutDifficulty(
         location.state?.workout?.data?.preWorkout?.workoutDifficulty
       );
@@ -538,9 +558,9 @@ function AssignWorkout(props) {
                 value={workoutDescription}
                 disabled={type == "non-editable" || type == "view"}
                 onChange={(val) => {
-                  let temp = workout;
+                  let temp = { ...workout };
                   setworkoutDescription(val.target.value);
-                  temp.data.preWorkout.workoutDescription = workoutDescription;
+                  temp.data.preWorkout.workoutDescription = val.target.value;
                   setWorkout(temp);
                 }}
               />
@@ -553,7 +573,7 @@ function AssignWorkout(props) {
                   onChange={(val) => {
                     let temp = workout;
                     setworkoutDuration(val.target.value);
-                    temp.data.preWorkout.workoutDuration = workoutDuration;
+                    temp.data.preWorkout.workoutDuration = val.target.value;
                     setWorkout(temp);
                   }}
                 />
@@ -566,7 +586,7 @@ function AssignWorkout(props) {
                     let temp = workout;
                     setcaloriesBurnEstimate(val.target.value);
                     temp.data.preWorkout.caloriesBurnEstimate =
-                      caloriesBurnEstimate;
+                      val.target.value;
                     setWorkout(temp);
                   }}
                 />
@@ -1454,10 +1474,11 @@ function AssignWorkout(props) {
           )}
 
           <div>
+            {console.log(workout, selectedExercises)}
             <div className="Workouts_body">
               <h3>Add Exercises</h3>
               {console.log(selectedExercises)}
-              {selectedExercises?.map((workout, idx1) => (
+              {selectedExercises?.map((item, idx1) => (
                 <div key={idx1}>
                   <div
                     style={{
@@ -1480,6 +1501,8 @@ function AssignWorkout(props) {
                               options={exercises}
                               onChange={(d, f) => {
                                 let temp = [...selectedExercises];
+                                let tmp = { ...workout };
+
                                 console.log(d, f);
                                 temp[idx1] = f;
                                 temp[idx1].sets = [];
@@ -1491,8 +1514,12 @@ function AssignWorkout(props) {
                                   rest: "12",
                                 });
 
+                                console.log(workout);
+                                tmp.data.preWorkout.selectedExercises = temp;
+
                                 setSelectedExercises(temp);
                                 console.log(f);
+                                setWorkout(tmp);
 
                                 // navigation.navigate("AddWorkout");
                               }}
@@ -1581,7 +1608,7 @@ function AssignWorkout(props) {
                     style={{
                       marginTop: 20,
                       boxSizing: "border-box",
-                      display: workout.value ? "block" : "none",
+                      display: item.value ? "block" : "none",
                       width: "100%",
                     }}
                   >
@@ -1610,9 +1637,9 @@ function AssignWorkout(props) {
                           alignItems: "center",
                         }}
                         onClick={() => {
-                          console.log(workout);
-                          if (workout?.videoUrl) {
-                            setWorkoutVideoUrl(workout.videoUrl);
+                          console.log(item);
+                          if (item?.videoUrl) {
+                            setWorkoutVideoUrl(item.videoUrl);
                             setOpenDialog(true);
                             setVideoLoading(true);
                           }
@@ -1628,8 +1655,8 @@ function AssignWorkout(props) {
                             marginRight: "15px",
                           }}
                           src={
-                            workout.thumbnail_url
-                              ? workout.thumbnail_url
+                            item.thumbnail_url
+                              ? item.thumbnail_url
                               : "/assets/illustration.jpeg"
                           }
                         />
@@ -1659,7 +1686,7 @@ function AssignWorkout(props) {
                                 marginBottom: 7,
                               }}
                             >
-                              {workout?.name}
+                              {item?.name}
                             </div>
                           </div>
                           <div
@@ -1668,7 +1695,7 @@ function AssignWorkout(props) {
                               flexDirection: "row",
                             }}
                           >
-                            {workout?.sets?.map((s, i) => (
+                            {item?.sets?.map((s, i) => (
                               <div
                                 style={{
                                   display: i == 0 ? "flex" : "none",
@@ -1697,7 +1724,7 @@ function AssignWorkout(props) {
                                         width: "100%",
                                       }}
                                     >
-                                      {workout?.sets?.map((s, i) => (
+                                      {item?.sets?.map((s, i) => (
                                         <div
                                           style={{
                                             display: "flex",
@@ -1715,7 +1742,7 @@ function AssignWorkout(props) {
                                           >
                                             {s[set_] ? s[set_] : 12}
                                           </div>
-                                          {i < workout.sets.length - 1
+                                          {i < item.sets.length - 1
                                             ? "  -  "
                                             : null}
                                         </div>
@@ -1739,13 +1766,14 @@ function AssignWorkout(props) {
                               marginTop: 10,
                             }}
                           >
+                            <h3 style={{ fontSize: 11 }}>Edit</h3>
+
                             <div>
                               {selectedWorkoutEdit === idx1 ? (
                                 <img
                                   style={{
                                     width: 20,
                                     height: 20,
-                                    marginRight: 5,
                                   }}
                                   src="../assets/up.png"
                                 />
@@ -1754,7 +1782,6 @@ function AssignWorkout(props) {
                                   style={{
                                     width: 20,
                                     height: 20,
-                                    marginRight: 5,
                                   }}
                                   src="../assets/down.png"
                                 />
@@ -1778,12 +1805,12 @@ function AssignWorkout(props) {
                           backgroundColor: "white",
                           padding: 20,
                           boxSizing: "border-box",
-                          display: workout.value ? "block" : "none",
+                          display: item.value ? "block" : "none",
                           marginTop: 20,
                           borderRadius: 10,
                         }}
                       >
-                        {workout.sets?.map((set, idx2) => (
+                        {item.sets?.map((set, idx2) => (
                           <div
                             key={idx2}
                             style={{
@@ -1854,7 +1881,7 @@ function AssignWorkout(props) {
                                     borderRadius: "8px",
                                     textAlign: "center",
                                   }}
-                                  value={workout.sets[idx2][set_]}
+                                  value={item.sets[idx2][set_]}
                                   placeholder={"12"}
                                   onChange={(e) => {
                                     let temp = [...selectedExercises];
@@ -2014,6 +2041,7 @@ function AssignWorkout(props) {
                             onClick={() => {
                               // navigation.navigate("AddWorkout");
                               let temp = [...selectedExercises];
+
                               let tmp = {};
 
                               Object.keys(temp[idx1].sets[0]).forEach((val) => {
@@ -2170,7 +2198,7 @@ function AssignWorkout(props) {
                       <div></div>
                     </div>
 
-                    {selectedExercises?.map((workout, idx1) => (
+                    {selectedExercises?.map((item, idx1) => (
                       <div>
                         <div
                           key={idx1}
@@ -2220,7 +2248,7 @@ function AssignWorkout(props) {
                                   cursor: "pointer",
                                 }}
                                 onClick={(e) => {
-                                  setWorkoutVideoUrl(workout.videoUrl);
+                                  setWorkoutVideoUrl(item.videoUrl);
                                   setOpenDialog(true);
                                   setVideoLoading(true);
                                 }}
@@ -2235,8 +2263,8 @@ function AssignWorkout(props) {
                                     objectFit: "cover",
                                   }}
                                   src={
-                                    workout.thumbnail_url
-                                      ? ` ${workout.thumbnail_url}`
+                                    item.thumbnail_url
+                                      ? ` ${item.thumbnail_url}`
                                       : "../assets/illustration.jpeg"
                                   }
                                 />
@@ -2255,7 +2283,7 @@ function AssignWorkout(props) {
                                     marginBottom: 7,
                                   }}
                                 >
-                                  {workout.name}
+                                  {item.name}
                                 </div>
                                 <div
                                   style={{
@@ -2263,7 +2291,7 @@ function AssignWorkout(props) {
                                     flexDirection: "row",
                                   }}
                                 >
-                                  {workout?.sets?.map((s, i) => (
+                                  {item?.sets?.map((s, i) => (
                                     <div
                                       style={{
                                         display: i == 0 ? "flex" : "none",
@@ -2292,7 +2320,7 @@ function AssignWorkout(props) {
                                               width: "100%",
                                             }}
                                           >
-                                            {workout?.sets?.map((s, i) => (
+                                            {item?.sets?.map((s, i) => (
                                               <div
                                                 style={{
                                                   display: "flex",
@@ -2310,7 +2338,7 @@ function AssignWorkout(props) {
                                                 >
                                                   {s[set_] ? s[set_] : 12}
                                                 </div>
-                                                {i < workout.sets.length - 1
+                                                {i < item.sets.length - 1
                                                   ? "  -  "
                                                   : null}
                                               </div>
@@ -2383,7 +2411,7 @@ function AssignWorkout(props) {
                                 borderRadius: 10,
                               }}
                             >
-                              {workout.sets?.map((set, idx2) => (
+                              {item.sets?.map((set, idx2) => (
                                 <div
                                   key={idx2}
                                   style={{
@@ -2415,7 +2443,7 @@ function AssignWorkout(props) {
                                     </div>
                                     <div style={{}}>Set {idx2 + 1}</div>
                                   </div>
-                                  {console.log("st1", workout.sets)}
+                                  {console.log("st1", item.sets)}
                                   {Object.keys(set).map((set_, idx5) => (
                                     <div
                                       key={idx5}

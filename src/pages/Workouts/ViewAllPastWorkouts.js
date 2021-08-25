@@ -1,7 +1,11 @@
 import React from "react";
 import { db } from "../../utils/firebase";
 import { useSelector } from "react-redux";
-import { selectUserData, selectUserType } from "../../features/userSlice";
+import {
+  selectTemperoryId,
+  selectUserData,
+  selectUserType,
+} from "../../features/userSlice";
 import WorkoutCard from "../../Components/WorkoutCard/WorkoutCard";
 import WorkoutScreenHeader from "./WorkoutScreenHeader";
 
@@ -22,6 +26,7 @@ function PastWorkouts() {
   const [SearchList, setSearchList] = React.useState(null);
   const [SearchLoading, SetSearhLoading] = React.useState(false);
   const [AthleteId, setAthleteId] = React.useState(null);
+  const temperoryId = useSelector(selectTemperoryId);
   const [sorting, setsorting] = React.useState("desc");
 
   React.useEffect(() => {
@@ -36,8 +41,12 @@ function PastWorkouts() {
     }
   });
   React.useEffect(() => {
-    setAthleteId(location?.state?.AthleteId);
-  }, [location?.state]);
+    if (location?.state?.AthleteId) {
+      setAthleteId(location?.state?.AthleteId);
+    } else {
+      setAthleteId(temperoryId);
+    }
+  }, [location?.state, temperoryId]);
 
   React.useEffect(async () => {
     SetSearhLoading(true);

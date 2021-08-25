@@ -176,13 +176,18 @@ function AthleteHistory(props) {
     <div style={{ minHeight: "99.7vh" }}>
       <div
         onClick={() => history.goBack()}
-        style={{ display: "flex", alignItems: "center", marginTop: 20 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginTop: 20,
+          marginBottom: 20,
+        }}
       >
         <ArrowBackIosRoundedIcon
           style={{ height: 18, width: 18, padding: 5, cursor: "pointer" }}
         />
         <Typography variant="h6" style={{ fontSize: 25, marginLeft: 5 }}>
-          Print Preview
+          Athlete History
         </Typography>
       </div>
       <Grid container>
@@ -196,9 +201,9 @@ function AthleteHistory(props) {
             }}
           >
             {" "}
-            <h2
+            <div
               style={{
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: 500,
                 display: "flex",
                 alignItems: "center",
@@ -206,8 +211,8 @@ function AthleteHistory(props) {
               }}
             >
               Workouts
-            </h2>{" "}
-            <p
+            </div>
+            <div
               onClick={() => {
                 history.push({
                   pathname: "/view-all-workouts",
@@ -216,10 +221,10 @@ function AthleteHistory(props) {
                   },
                 });
               }}
-              style={{ fontFamily: "Montserrat", cursor: "pointer" }}
+              style={{ fontSize: 13, cursor: "pointer" }}
             >
               See all
-            </p>
+            </div>
           </div>
           {workouts.length > 0 ? (
             <div style={{ width: "90%" }}>
@@ -265,9 +270,9 @@ function AthleteHistory(props) {
             }}
           >
             {" "}
-            <h2
+            <div
               style={{
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: 500,
                 display: "flex",
                 alignItems: "center",
@@ -275,7 +280,7 @@ function AthleteHistory(props) {
               }}
             >
               Completed Workouts
-            </h2>{" "}
+            </div>{" "}
             <p
               onClick={() => {
                 history.push({
@@ -285,7 +290,7 @@ function AthleteHistory(props) {
                   },
                 });
               }}
-              style={{ fontFamily: "Montserrat", cursor: "pointer" }}
+              style={{ fontSize: 13, cursor: "pointer" }}
             >
               See all
             </p>
@@ -335,10 +340,9 @@ function AthleteHistory(props) {
               width: "90%",
             }}
           >
-            {" "}
-            <h2
+            <div
               style={{
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: 500,
                 display: "flex",
                 alignItems: "center",
@@ -346,7 +350,7 @@ function AthleteHistory(props) {
               }}
             >
               Meal History
-            </h2>{" "}
+            </div>
             <p
               onClick={() => {
                 history.push({
@@ -356,7 +360,7 @@ function AthleteHistory(props) {
                   },
                 });
               }}
-              style={{ fontFamily: "Montserrat", cursor: "pointer" }}
+              style={{ fontSize: 13, cursor: "pointer" }}
             >
               See all
             </p>
@@ -406,18 +410,32 @@ function AthleteHistory(props) {
               width: "90%",
             }}
           >
-            {" "}
-            <h2
+            <div
               style={{
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: 500,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                paddingTop: 9,
+                paddingBottom: 9,
               }}
             >
               Today's Diet
-            </h2>{" "}
+            </div>
+            <p
+              onClick={() => {
+                history.push({
+                  pathname: "/view-all-meal-history",
+                  state: {
+                    AthleteId: temperoryId,
+                  },
+                });
+              }}
+              style={{ fontSize: 13, cursor: "pointer" }}
+            >
+              {" "}
+            </p>
           </div>
           {nutrition.length > 0 ? (
             <div style={{ width: "90%" }}>
@@ -464,10 +482,9 @@ function AthleteHistory(props) {
               width: "90%",
             }}
           >
-            {" "}
-            <h2
+            <div
               style={{
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: 500,
                 display: "flex",
                 alignItems: "center",
@@ -475,7 +492,7 @@ function AthleteHistory(props) {
               }}
             >
               {userType === "athlete" ? "Your Workouts" : "self workouts"}
-            </h2>{" "}
+            </div>
             <p
               onClick={() => {
                 // history.push("/athlete-workouts");
@@ -486,7 +503,7 @@ function AthleteHistory(props) {
                   },
                 });
               }}
-              style={{ fontFamily: "Montserrat", cursor: "pointer" }}
+              style={{ fontSize: 13, cursor: "pointer" }}
             >
               See all
             </p>
