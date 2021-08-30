@@ -573,6 +573,9 @@ const CreateLongTermTrainingPlan = () => {
                       completed: false,
                       preWorkout: dat2[id2].preWorkout,
                       saved: false,
+                      selectedDay: new Date(
+                        addDays(local_date, 7 * idx + idx2)
+                      ),
 
                       isLongTerm: true,
                       coachWorkoutId: docRef.id,

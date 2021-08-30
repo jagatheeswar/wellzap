@@ -246,12 +246,19 @@ function AllAthletes() {
             borderRadius: 10,
             marginLeft: "auto",
             marginRight: 20,
+            color: "white",
           }}
           onClick={() => {
             history.push("/pending-invites");
           }}
         >
-          <div>pending invites</div>
+          <div
+            style={{
+              color: "white",
+            }}
+          >
+            pending invites
+          </div>
         </div>
       </div>
       {search?.length > 0 && (
@@ -336,6 +343,7 @@ function AllAthletes() {
                 backgroundColor: "#ffe486",
                 borderRadius: 8,
                 cursor: "pointer",
+                color: "white",
               }}
             >
               View Profile

@@ -12,6 +12,7 @@ import {
   setUserType,
 } from "../../features/userSlice";
 import { useHistory } from "react-router";
+import firebase from "firebase";
 
 function Signup() {
   const [isLoading, setisLoading] = useState(false);
@@ -109,6 +110,7 @@ function Signup() {
                         4 * 1.5 * values.weight +
                         9 * 1 * values.weight,
                     },
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
 
                     listOfAthletes: [],
                   })
@@ -151,6 +153,7 @@ function Signup() {
                   sports: [],
                   videolink: "https://meet.jit.si/wellzap-" + pin,
                   listOfAthletes: [],
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 });
 
                 db.collection("counter")

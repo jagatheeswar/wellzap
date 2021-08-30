@@ -113,9 +113,6 @@ function App() {
   console.log(12111, isMobile);
 
   useEffect(() => {
-    console.log("nnnnnnnnnnnnnnnnnnnnnnnnn", userVerified, user);
-  }, [userVerified, user]);
-  useEffect(() => {
     if (user) {
       db.collection("athletes")
         .where("email", "==", user)
@@ -507,7 +504,7 @@ function App() {
             <Route path="/view-all-past-workouts">
               <RoutesComp
                 AthleteComp={<ViewAllPastWorkouts />}
-                CoachComp={<ViewAllPastWorkouts />}
+                CoachComp={<NotFound />}
               />
             </Route>
             <Route path="/post-workout">

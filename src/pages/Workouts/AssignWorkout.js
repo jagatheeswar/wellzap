@@ -2609,6 +2609,7 @@ function AssignWorkout(props) {
                           saved: false,
                           selectedAthletes: selectedAthletes,
                           selectedDates: tempDate1,
+
                           timestamp:
                             firebase.firestore.FieldValue.serverTimestamp(),
                         })
@@ -2634,6 +2635,7 @@ function AssignWorkout(props) {
                                   saved: false,
                                   selectedAthletes,
                                   coachWorkoutId: docRef.id,
+                                  selectedDay: new Date(workout.date?.date),
                                   timestamp:
                                     firebase.firestore.FieldValue.serverTimestamp(),
                                 })
