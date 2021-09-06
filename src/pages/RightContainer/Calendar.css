@@ -101,13 +101,11 @@
 }
 
 */
-.Calendar {
-  width: 350px !important;
+.mycal{
+  font-size: 10px;
+max-width: 760px;
 }
-.custom-calendar {
-  border-radius: 10px;
-  min-width: 350px !important;
-}
+
 .Calendar__monthArrow {
   background-image: url("https://cdn0.iconfinder.com/data/icons/glyphpack/26/nav-arrow-left-512.png") !important;
   width: 7px !important;
@@ -265,3 +263,85 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+@media screen and (max-width: 1550px) {
+  .sidebar {
+    width: 260px;
+
+  }
+  .mycal{
+      max-width: 330px;
+    }
+    .events_container{
+        max-width: 330px;
+    }
+    .rightContainer {
+      width: 350px;
+    }
+    .home__main{
+        margin-left:280px;
+    }
+}
+  
+  @media screen and (max-width: 1498px) {
+    .sidebar {
+      width: 240px;
+    }
+    .events_container{
+        max-width: 310px;
+      }
+      .mycal{
+        max-width: 310px;
+        font-size: 9px;
+      }
+      .rightContainer {
+        width: 330px;
+      }
+      .home__main{
+          margin-left:220px;
+      }
+  }
+  
+   
+  @media screen and (max-width: 1460px) {
+    .sidebar {
+      width: 220px;
+    }
+    .events_container{
+        max-width: 290px;
+      }
+      .mycal{
+        max-width: 290px;
+        font-size: 8.5px;
+      }
+      .rightContainer {
+        width: 310px;
+      }
+      .home__main{
+          margin-left:220px ;
+      }
+       
+  }
+  
+  @media screen and (max-width: 1415px) {
+    .sidebar {
+      width: 200px;
+    }
+    .events_container{
+        max-width: 290px;
+      }
+      .mycal{
+        max-width: 290px;
+        font-size: 8.5px;
+      }
+      .rightContainer {
+        width: 310px;
+      }
+      .home__main{
+          margin-left:200px ;
+      }
+      .drawer__container{
+          width: 150px;
+      } 
+  }
+   

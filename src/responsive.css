@@ -1,0 +1,385 @@
+
+  .mycal{
+    font-size: 10px;
+  max-width: 760px;
+  background-color: red;
+  }
+  
+@media screen and (max-width: 1550px) {
+  .sidebar {
+    width: 260px;
+
+  }
+  .mycal{
+      max-width: 330px;
+    }
+    .events_container{
+        max-width: 330px;
+    }
+    .rightContainer {
+      width: 350px;
+    }
+    .home__main{
+        margin-left:280px !important ;
+    }
+}
+  
+  @media screen and (max-width: 1498px) {
+    .sidebar {
+      width: 240px;
+    }
+    .events_container{
+        max-width: 310px;
+      }
+      .mycal{
+        max-width: 310px;
+        font-size: 9px;
+      }
+      .rightContainer {
+        width: 330px;
+      }
+      .home__main{
+          margin-left:240px !important;
+      }
+      
+      .upcoming_event_right {
+        margin-right: 20px !important;
+      }
+           
+  }
+  
+   
+  @media screen and (max-width: 1460px) {
+    .sidebar {
+      width: 220px;
+    }
+    .events_container{
+        max-width: 290px;
+      }
+      .mycal{
+        max-width: 290px;
+        font-size: 8.5px;
+      }
+      .rightContainer {
+        width: 310px;
+      }
+      .home__main{
+          margin-left:220px !important;
+      }
+      .upcoming_event_right {
+    margin-right: 40px !important;
+  }
+       
+  }
+  
+  @media screen and (max-width: 1415px) {
+    
+    .sidebar {
+      width: 200px;
+    }
+    .events_container{
+        max-width: 290px;
+      }
+      .mycal{
+        max-width: 290px;
+        font-size: 8.5px;
+      }
+      .rightContainer {
+        width: 310px;
+      }
+      .home__main{
+          margin-left:200px !important;
+      }
+      .drawer__container{
+          width: 150px;
+      } 
+  }
+   
+  @media screen and (max-width: 1388px) {
+    .sidebar {
+      width: 230px !important;
+    }
+    .events_container{
+        max-width: 330px !important;
+      }
+      .mycal{
+        max-width: 330px !important;
+        font-size: 9px !important;
+      }
+      .rightContainer {
+        width: 350px !important;
+      }
+      .home__main{
+          margin-left:230px !important ;
+      }
+      .drawer__container{
+          width: 160px;
+      }
+      .home__reportsRightInnerContainer{
+          width: 350px !important;
+          height: 323px !important;
+      }
+      .chart_container{
+        width: 370px !important;
+      } 
+      .chart_{
+        width: 350px !important;
+      }
+      
+      .eachevent{
+        margin-bottom: 20px !important;
+      }
+  }
+  
+  @media screen and (max-width: 1350px) {
+    .sidebar {
+      width: 210px !important;
+    }
+    .events_container{
+        max-width: 310px !important;
+      }
+      .mycal{
+        max-width: 310px !important;
+        font-size: 9px !important;
+      }
+      .rightContainer {
+        width: 330px !important;
+      }
+      .home__main{
+          margin-left:210px !important ;
+      }
+      .drawer__container{
+          width: 150px;
+      }
+      .home__reportsRightInnerContainer{
+          width: 350px !important;
+          height: 323px !important;
+      }
+      .chart_container{
+        width: 370px !important;
+      } 
+      .chart_{
+        width: 350px !important;
+      }
+  }
+
+  
+  @media screen and (max-width: 1297px) {
+    .sidebar {
+      width: 180px !important;
+    }
+    .events_container{
+        max-width: 310px !important;
+      }
+      .mycal{
+        max-width: 310px !important;
+        font-size: 9px !important;
+      }
+      .rightContainer {
+        width: 330px !important;
+      }
+      .home__main{
+          margin-left:180px !important ;
+      }
+      .drawer__container{
+          width: 140px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 350px !important;
+          height: 323px !important;
+      }
+      .chart_container{
+        width: 370px !important;
+      } 
+      .chart_{
+        width: 350px !important;
+      }
+  }
+  
+  @media screen and (max-width: 1271px) {
+    .sidebar {
+      width: 180px !important;
+    }
+    .events_container{
+        max-width: 280px !important;
+      }
+      .mycal{
+        max-width: 280px !important;
+        font-size: 8.5px !important;
+      }
+      .rightContainer {
+        width: 300px !important;
+      }
+      .home__main{
+          margin-left:180px !important ;
+      }
+      .drawer__container{
+          width: 140px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 350px !important;
+          height: 323px !important;
+      }
+      .chart_container{
+        width: 370px !important;
+      } 
+      .chart_{
+        width: 350px !important;
+      }
+      
+      .upcoming_event_right {
+        margin-right: 50px !important;
+      }
+  }
+  @media screen and (max-width: 1235px) {
+    .sidebar {
+      width: 180px !important;
+    }
+    .events_container{
+        max-width: 280px !important;
+      }
+      .mycal{
+        max-width: 280px !important;
+        font-size: 8.5px !important;
+      }
+      .rightContainer {
+        width: 300px !important;
+      }
+      .home__main{
+          margin-left:180px !important ;
+      }
+      .drawer__container{
+          width: 140px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 320px !important;
+          height: 310px !important;
+      }
+      .chart_container{
+        width: 340px !important;
+      } 
+      .chart_{
+        width: 320px !important;
+      }
+  }
+
+  @media screen and (max-width: 1179px) {
+
+    .sidebar {
+      width: 170px !important;
+    }
+    .events_container{
+        max-width: 280px !important;
+      }
+      .mycal{
+        max-width: 280px !important;
+        font-size: 8.5px !important;
+      }
+      .rightContainer {
+        width: 300px !important;
+      }
+      .home__main{
+          margin-left:170px !important ;
+      }
+      .drawer__container{
+          width: 130px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 320px !important;
+          height: 310px !important;
+      }
+      .chart_container{
+        width: 330px !important;
+      } 
+      .chart_{
+        width: 320px !important;
+      }
+      
+      .upcoming_event_right {
+        margin-right: 50px !important;
+      }
+      
+      .eachevent{
+        margin-bottom: 20px !important;
+      }
+           
+  }
+  @media screen and (max-width: 1159px) {
+
+    .sidebar {
+      width: 170px !important;
+    }
+    .events_container{
+        max-width: 260px !important;
+      }
+      .mycal{
+        max-width: 260px !important;
+        font-size: 8px !important;
+        font-weight: bold !important;
+      }
+      .rightContainer {
+        width: 280px !important;
+      }
+      .home__main{
+          margin-left:170px !important ;
+      }
+      .drawer__container{
+          width: 130px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 320px !important;
+          height: 310px !important;
+      }
+      .chart_container{
+        width: 330px !important;
+      } 
+      .chart_{
+        width: 320px !important;
+      }
+      .events_container{
+          padding: 10px !important;
+      }
+      .eachevent{
+        margin-bottom: 20px !important;
+      }
+  }
+  @media screen and (max-width: 1135px) {
+
+    .sidebarclass {
+      display: none;
+    }
+    .events_container{
+        max-width: 290px !important;
+      }
+      .mycal{
+        max-width: 290px !important;
+        font-size: 8.5px !important;
+        font-weight: bold !important;
+      }
+      .rightContainer {
+        width: 310px !important;
+      }
+      .home__main{
+          margin-left:0px !important ;
+       
+      }
+      .drawer__container{
+          width: 130px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 360px !important;
+          height: 328px !important;
+      }
+      .chart_container{
+        width: 380px !important;
+      } 
+      .chart_{
+        width: 360px !important;
+      }
+      .events_container{
+          padding: 10px !important;
+      }
+      .eachevent{
+        margin-bottom: 20px !important;
+      }
+  }

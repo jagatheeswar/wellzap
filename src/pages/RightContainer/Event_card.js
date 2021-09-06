@@ -11,6 +11,7 @@ import {
 import firebase from "firebase";
 import Axios from "axios";
 import "./Calendar.css";
+import "../../responsive.css"
 import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 var win = "";
 
@@ -25,10 +26,10 @@ function Event_card(props) {
   }
 
   return (
-    <div>
+    <div >
       {events.map((item) => {
         return (
-          <div key={item.id} style={{}}>
+          <div  className="eachevent" key={item.id}>
             <div
               className=""
               style={{
@@ -43,7 +44,6 @@ function Event_card(props) {
               <div
                 style={{
                   display: "flex",
-
                   alignItems: "center",
                 }}
               >
@@ -409,12 +409,14 @@ function Event_card(props) {
                 </a>
               ) : (
                 <span
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                id="timespan"
+                  style={{ cursor: "pointer", textDecoration: "underline",marginBottom:'40px' }}
                   onClick={() =>
                     window.open(item.showVideoLink && item.videolink)
                   }
                 >
                   {item.showVideoLink && item.videolink}
+                
                 </span>
               )}
             </div>

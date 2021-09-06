@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import "./Calendar.css";
+
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../utils/firebase";
@@ -16,7 +17,7 @@ import Selected_events from "./SelectedEvents";
 
 import { useHistory } from "react-router-dom";
 // import {Dialog, DialogTitle, DialogContent} from '@material-ui/core'
-
+import "../../responsive.css"
 const Calendar_coach = (props) => {
   const user = useSelector(selectUser);
   const userData = useSelector(selectUserData);
@@ -25,7 +26,6 @@ const Calendar_coach = (props) => {
     moment(new Date()).utc().format("YYYY-MM-DD")
   );
   const history = useHistory();
-
   const [events, setEvents] = useState({});
   const [markedDates, setMarkedDates] = useState({});
 
@@ -234,7 +234,7 @@ const Calendar_coach = (props) => {
   }, [userData?.id]);
 
   return (
-    <div className="calendar_container">
+    <div className="calendar_container" >
       <div className="calendar_header">
         <h3 className="calendar_title">Calendar</h3>
         <span className="calendar_right">
@@ -281,12 +281,11 @@ const Calendar_coach = (props) => {
         <Calendar
           value={selectedDay}
           onChange={setSelectedDay}
-          colorPrimary="#ffe486" // added this
-          calendarClassName="custom-calendar" // and this
+          colorPrimary="red" // added this
+          calendarClassName="mycal" // and this
           calendarTodayClassName="custom-today-day" // also this
         />
       )}
-
       <div className="events_container">
         <div class="events_today">
           <div style={{ fontWeight: 100, fontSize: 16, color: "grey" }}>

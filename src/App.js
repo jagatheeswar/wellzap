@@ -271,25 +271,20 @@ function App() {
             </div>
           ) : (
             <Grid container>
-              <Grid item xs={2}>
+              <div className="sidebarclass">
                 <Sidebar show_menu={active} />
-              </Grid>
-              <Grid
-                item
-                xs={7}
-                style={{ marginLeft: 13 }}
-                className="home__main"
-              >
+              </div>
+              <div className="home__main" style={{}} >
                 {userType === "coach" ? CoachComp : AthleteComp}
-              </Grid>
-              <Grid item xs={3} className="home__rightContainer">
+              </div>
+              <div style={{background:'red'}} className="home__rightContainer">
                 {active && (
                   <RightContainer
                     toggle_date={toggle_date}
                     selectedDate={selectedDate}
                   />
                 )}
-              </Grid>
+              </div>
             </Grid>
           )}
         </div>

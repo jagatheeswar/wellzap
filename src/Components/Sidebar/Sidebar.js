@@ -8,6 +8,7 @@ import {
 } from "../../features/userSlice";
 import { auth } from "../../utils/firebase";
 import "./Sidebar.css";
+import "../../responsive.css"
 import SidebarComponent from "./SidebarComponent";
 
 function Sidebar({ show_menu }) {

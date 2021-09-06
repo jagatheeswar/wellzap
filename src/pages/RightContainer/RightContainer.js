@@ -6,6 +6,7 @@ import Calendar_ from "./Calendar";
 import Calendar_coach from "./Calendar_coach";
 import { useDispatch, useSelector } from "react-redux";
 import "./RightContainer.css";
+import "../../responsive.css"
 import {
   selectUser,
   selectUserData,

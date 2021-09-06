@@ -3,6 +3,7 @@
   height: 99.9vh;
   border: 1px solid #d3d3d3;
   position: fixed;
+  max-width: 300px;  
 }
 
 .sidebar__container {
@@ -21,7 +22,7 @@
 
 .sidebar__container > h1 {
   font-size: 18px;
-  line-height: 10px;
+  line-height: 18px;
   letter-spacing: 1px;
   font-weight: bold;
   color: #003049;

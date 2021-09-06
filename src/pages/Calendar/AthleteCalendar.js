@@ -15,6 +15,7 @@ import {
 import EventCard from "./EventCard";
 import SelectedEvents from "./SelectedEvents";
 import "./Calendar.css";
+import "../../responsive.css"
 import AddGoal from "./AddGoal";
 import EventInfo from "./EventInfo";
 

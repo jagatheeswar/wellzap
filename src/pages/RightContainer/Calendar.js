@@ -3,6 +3,7 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 
 import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
 import "./Calendar.css";
+import "../../responsive.css"
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../utils/firebase";
@@ -12,7 +13,7 @@ import {
   selectUserType,
   setUserData,
 } from "../../features/userSlice";
-import Event_card from "./Event_card";
+import Event_card from "./Event_card";  
 import Selected_events from "./SelectedEvents";
 import { useHistory } from "react-router-dom";
 

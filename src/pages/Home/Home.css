@@ -1,6 +1,7 @@
 .home__main {
   flex: 0.7;
   height: 100%;
+  margin-left: auto;
 }
 
 .home__container {

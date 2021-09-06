@@ -9,7 +9,7 @@ import {
   Slide,
   DialogContentText,
 } from "@material-ui/core";
-
+import "../../responsive.css"
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -58,6 +58,7 @@ function SidebarComponent({ logo, name, path }) {
         </DialogContent>
         <DialogActions>
           <button
+          className="sidebarbutton"
             style={{
               outline: "none",
               border: "none",

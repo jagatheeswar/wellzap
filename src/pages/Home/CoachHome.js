@@ -87,10 +87,10 @@ function Home(props) {
   }, [user]);
 
   return (
-    <div className="coachHome">
+    <div className="coachHome" style={{width:'100%'}}>
       <div className="coachHome__container">
         <div className="home__leftContainer">
-          <div className="home__header">
+          <div className="home__header">s
             <div className="home__headerFirst">
               <h1>Hello, {userData?.data?.name}</h1>
               <h2>Here’s your progress summary.</h2>

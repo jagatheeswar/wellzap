@@ -212,7 +212,7 @@ function CoachHomeReports() {
         <div className="home__reportsRightContainer">
           <h1 onClick={() => history.push("/payments")}>Payments</h1>
           <div style={{ width: "100%", marginTop: 20 }}>
-            <div
+            <div className="home__reportsRightInnerContainer"
               style={{
                 backgroundColor: "white",
                 justifyContent: "space-around",
@@ -220,7 +220,7 @@ function CoachHomeReports() {
                 height: "340px",
                 borderRadius: 10,
                 display: "flex",
-                width: 420,
+                width: "420px",
               }}
             >
               {console.log(
