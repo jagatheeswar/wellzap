@@ -281,7 +281,7 @@ const Calendar_coach = (props) => {
         <Calendar
           value={selectedDay}
           onChange={setSelectedDay}
-          colorPrimary="red" // added this
+          colorPrimary="#ffe486" // added this
           calendarClassName="mycal" // and this
           calendarTodayClassName="custom-today-day" // also this
         />

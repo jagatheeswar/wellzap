@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   login,
@@ -8,11 +8,21 @@ import {
   setUserData,
   setUserType,
   setUserVerified,
+  logout,
   selectUserVerified,
+
 } from "./features/userSlice";
-
+import { auth } from "./utils/firebase"
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slide,
+  DialogContentText,
+} from "@material-ui/core";
 import { isMobile } from "react-device-detect";
-
+import SidebarComponent from "../src/Components/Sidebar/SidebarComponent"
 import { db } from "./utils/firebase";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -94,6 +104,21 @@ import EditPayments from "./pages/Payments/EditPayments";
 import AthleteOnBoarding from "./pages/Profile/AnthleteOnBoard";
 
 function App() {
+  const history = useHistory();
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+  const [openDialogs, setOpenDialogs] = React.useState(false);
+
+  const handleClickOpenDialogs = () => {
+    setOpenDialogs(true);
+  };
+
+  const handleCloseDialogs = () => {
+    setOpenDialogs(false);
+  };
+
   const user = useSelector(selectUser);
   const userType = useSelector(selectUserType);
   const dispatch = useDispatch();
@@ -274,9 +299,70 @@ function App() {
               <div className="sidebarclass">
                 <Sidebar show_menu={active} />
               </div>
+              <i className="fa fa-bars" id="menutoggle" onClick={handleClickOpenDialogs}></i>
+              
+      <Dialog
+        open={openDialogs}
+        TransitionComponent={Transition}
+        keepMounted
+        minWidth="lg"
+        
+        fullWidth
+        onClose={handleCloseDialogs}
+      >
+        <DialogTitle>Support</DialogTitle>
+        <DialogContent className="paper">
+        <div className="dialogflex">
+          <div className="dialogflexone">
+          <SidebarComponent logo="Home" name="Home" path="" />
+          <SidebarComponent disabled={true} logo="hamburger" name="Nutrition" path="nutrition"/>
+          <SidebarComponent logo="user" name="Athletes" path="all-athletes"/>
+          <SidebarComponent logo="rupee" name="Payments" path="payments" />
+            </div>
+            
+          <div className="dialogflextwo">
+          <SidebarComponent logo="dumbell" name="Workouts" path="workouts"/>
+          <SidebarComponent logo="play" name="VOD" path="vod" />
+          <SidebarComponent logo="message" name="Messaging" path="chat" />
+          <SidebarComponent logo="settings" name="Support" />
+            </div>
+            <div
+        className="signout__button dialogsignout"
+        onClick={() => {
+          auth.signOut();
+          dispatch(logout());
+          history.push("/");
+        }}
+      >
+        <h2>Signout</h2>
+      </div>
+        </div>
+        </DialogContent>
+        <DialogActions>
+          <button
+          className="sidebarbutton"
+            style={{
+              position:"absolute",
+              top:'10px',
+              outline: "none",
+              border: "none",
+              backgroundColor: "transparent",
+              padding: "8px 30px",
+              marginRight: 30,
+              borderRadius: 10,
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+            onClick={() => handleCloseDialogs()}
+          >
+            <i className="fa fa-close fa-2x"></i>
+          </button>
+        </DialogActions>
+      </Dialog>
               <div className="home__main" style={{}} >
                 {userType === "coach" ? CoachComp : AthleteComp}
               </div>
+              
               <div style={{background:'red'}} className="home__rightContainer">
                 {active && (
                   <RightContainer

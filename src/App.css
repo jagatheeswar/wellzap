@@ -45,3 +45,29 @@
 .devicebutton:hover {
   cursor: pointer;
 }
+.dialogflex{
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+}
+.dialogflexone{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.dialogflextwo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.dialogsignout{
+  position: absolute;
+  margin-bottom: 10px !important;
+}

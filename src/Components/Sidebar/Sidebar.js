@@ -46,7 +46,7 @@ function Sidebar({ show_menu }) {
         </Link>
         {userType === "coach" ? (
           show_menu && (
-            <div>
+            <div id="scrolldiv">
               <SidebarComponent logo="Home" name="Home" path="" />
 
               <SidebarComponent

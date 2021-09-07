@@ -1,14 +1,24 @@
-
+.paper{
+  min-height: 350px;
+}
+#menutoggle{
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
   .mycal{
     font-size: 10px;
   max-width: 760px;
-  background-color: red;
+  background-color:#ffe486 ;
   }
   
 @media screen and (max-width: 1550px) {
   .sidebar {
     width: 260px;
-
+  }
+  .signout__button {
+    width: 260px;
   }
   .mycal{
       max-width: 330px;
@@ -25,6 +35,9 @@
 }
   
   @media screen and (max-width: 1498px) {
+    .signout__button {
+      width: 240px;
+    }
     .sidebar {
       width: 240px;
     }
@@ -69,7 +82,9 @@
       .upcoming_event_right {
     margin-right: 40px !important;
   }
-       
+  .signout__button {
+    width: 220px;
+  }       
   }
   
   @media screen and (max-width: 1415px) {
@@ -92,7 +107,10 @@
       }
       .drawer__container{
           width: 150px;
-      } 
+      }
+      .signout__button {
+        width: 200px;
+      }
   }
    
   @media screen and (max-width: 1388px) {
@@ -129,6 +147,9 @@
       .eachevent{
         margin-bottom: 20px !important;
       }
+      .signout__button {
+        width: 230px;
+      }
   }
   
   @media screen and (max-width: 1350px) {
@@ -160,6 +181,9 @@
       } 
       .chart_{
         width: 350px !important;
+      }
+      .signout__button {
+        width: 210px;
       }
   }
 
@@ -194,6 +218,9 @@
       .chart_{
         width: 350px !important;
       }
+      .signout__button {
+        width: 180px;
+      }
   }
   
   @media screen and (max-width: 1271px) {
@@ -202,6 +229,9 @@
     }
     .events_container{
         max-width: 280px !important;
+      }
+      .signout__button {
+        width: 170px;
       }
       .mycal{
         max-width: 280px !important;
@@ -260,6 +290,9 @@
       } 
       .chart_{
         width: 320px !important;
+      }
+      .signout__button {
+        width: 180px;
       }
   }
 
@@ -344,7 +377,15 @@
       }
   }
   @media screen and (max-width: 1135px) {
-
+    #menutoggle{
+      display: block;
+    }
+    .fab__icon img{
+      margin-top: 20px;
+    }
+    .home__headerFirst{
+      margin-top: 20px;
+    }
     .sidebarclass {
       display: none;
     }
@@ -364,7 +405,7 @@
        
       }
       .drawer__container{
-          width: 130px !important;
+          width: 180px !important;
       }
       .home__reportsRightInnerContainer{
           width: 360px !important;
@@ -383,3 +424,118 @@
         margin-bottom: 20px !important;
       }
   }
+
+  @media screen and (max-width: 1095px) {
+        .events_container{
+        max-width: 290px !important;
+      }
+      .mycal{
+        max-width: 290px !important;
+        font-size: 8.5px !important;
+        font-weight: bold !important;
+      }
+      .rightContainer {
+        width: 310px !important;
+      }
+      .home__reportsRightInnerContainer{
+          width: 340px !important;
+          height: 319px !important;
+      }
+      .chart_container{
+        width: 360px !important;
+      } 
+      .chart_{
+        width: 340px !important;
+      }
+      .events_container{
+          padding: 10px !important;
+      }
+      .eachevent{
+        margin-bottom: 20px !important;
+      }
+  }
+  @media screen and (max-width: 1049px) {
+    .events_container{
+    max-width: 270px !important;
+  }
+  .mycal{
+    max-width: 270px !important;
+    font-size: 8px !important;
+    font-weight: bold !important;
+  }
+  .rightContainer {
+    width: 290px !important;
+  }
+  .home__reportsRightInnerContainer{
+      width: 340px !important;
+      height: 319px !important;
+  }
+  .chart_container{
+    width: 360px !important;
+  } 
+  .chart_{
+    width: 340px !important;
+  }
+  .events_container{
+      padding: 10px !important;
+  }
+  .eachevent{
+    margin-bottom: 20px !important;
+  }
+}
+@media screen and (max-width: 1027px) {
+  .events_container{
+  max-width: 270px !important;
+}
+.mycal{
+  max-width: 270px !important;
+  font-size: 8px !important;
+  font-weight: bold !important;
+}
+.rightContainer {
+  width: 290px !important;
+}
+.home__reportsRightInnerContainer{
+    width: 320px !important;
+    height: 310px !important;
+}
+.chart_container{
+  width: 340px !important;
+} 
+.chart_{
+  width: 320px !important;
+}
+.events_container{
+    padding: 10px !important;
+}
+.eachevent{
+  margin-bottom: 20px !important;
+}
+}
+
+@media screen and (max-height: 730px) {
+  #scrolldiv{
+    max-height: 380px;
+  }
+}
+@media screen and (max-height: 703px) {
+  #scrolldiv{
+    max-height: 350px;
+  }
+}
+
+@media screen and (max-height: 673px) {
+  #scrolldiv{
+    max-height: 320px;
+  }
+}
+@media screen and (max-height: 629px) {
+  #scrolldiv{
+    max-height: 300px;
+  }
+}
+@media screen and (max-height: 610px) {
+  #scrolldiv{
+    max-height: 260px;
+  }
+}
